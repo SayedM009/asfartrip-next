@@ -15,6 +15,8 @@ function LanguageSwitcher() {
       <button
         className="border-2 bg-black text-white py-2 px-2 cursor-pointer hover:bg-[#333] transition-colors flex items-center gap-1"
         onClick={() => setIsOpen(true)}
+        aria-label="Open languages list"
+        title="Open languages list"
       >
         <GlobeAltIcon />
         {displayedLocal.toUpperCase()}
@@ -41,14 +43,16 @@ function DisplayLocales({ closeModal }) {
     <MyModal onClick={closeModal}>
       <ul>
         {locales.map((locale) => (
-          <li
+          <button
             key={locale}
-            className="hover:bg-amber-400 cursor-pointer transition-colors ps-1 bg-amber-500 mb-1 flex gap-1"
+            className="w-full hover:bg-amber-400 cursor-pointer transition-colors ps-1 bg-amber-500 mb-1 flex gap-1"
             onClick={() => handleSwitch(locale)}
+            aria-label={`Selecte ${locale} language`}
+            title={`Selecte ${locale} language`}
           >
             <GlobeAltIcon />
             {locale.toUpperCase()}
-          </li>
+          </button>
         ))}
       </ul>
     </MyModal>

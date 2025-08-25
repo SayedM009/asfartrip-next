@@ -5,8 +5,6 @@ import { rootLayoutMetadata } from "../_libs/metadata";
 import { NextIntlClientProvider, useLocale } from "next-intl";
 
 import "./globals.css";
-import LanguageSwitcher from "../_components/LanguageSwitcher";
-import ThemeSwitcher from "../_components/ThemeSwitcher";
 export const metadata = rootLayoutMetadata;
 
 // Convert all possible pages into static.
@@ -25,8 +23,6 @@ export default function RootLayout({ children }) {
       <body className={`${openSans.className}`}>
         <NextIntlClientProvider>
           <ThemeProvider attribute="class" enableSystem defaultTheme="system">
-            <LanguageSwitcher />
-            <ThemeSwitcher />
             <main>{children}</main>
           </ThemeProvider>
         </NextIntlClientProvider>

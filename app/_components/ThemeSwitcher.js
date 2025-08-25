@@ -11,6 +11,8 @@ function ThemeSwitcher() {
     <button
       className="border-1 cursor-pointer p-1 rounded-full"
       onClick={handleSwitch}
+      aria-label="Change Theme Mode"
+      title="Change Theme Mode"
     >
       {condition ? <SunIcon /> : <MoonIcon />}
     </button>
