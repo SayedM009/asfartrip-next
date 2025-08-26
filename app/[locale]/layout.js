@@ -5,6 +5,7 @@ import { rootLayoutMetadata } from "../_libs/metadata";
 import { NextIntlClientProvider, useLocale } from "next-intl";
 
 import "./globals.css";
+import Header from "../_components/Header";
 export const metadata = rootLayoutMetadata;
 
 // Convert all possible pages into static.
@@ -14,16 +15,18 @@ export function generateStaticParams({}) {
 
 export default function RootLayout({ children }) {
   const locale = useLocale();
+
   return (
     <html
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
       suppressHydrationWarning
     >
-      <body className={`${openSans.className}`}>
+      <body className={`${openSans.className} `}>
         <NextIntlClientProvider>
           <ThemeProvider attribute="class" enableSystem defaultTheme="system">
-            <main>{children}</main>
+            <Header />
+            <main className="w-full-light-colors">{children}</main>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

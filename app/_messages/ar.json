@@ -1,5 +1,22 @@
 {
   "Homepage": {
-    "title": "مرحبا"
+    "title": "أسفار تربز"
+  },
+  "Languageswitcher": {
+    "close": "إغلاق القائمة",
+    "language": "اللغة",
+    "regionalSettings": "إعدادات المنطقة",
+    "ariaLabel": "تبديل اللغة",
+    "title": "مبدل اللغة"
+  },
+  "ThemeSwitcher": {
+    "light": "ثيم فاتح",
+    "dark": "ثيم داكن",
+    "ariaLabel": "تبديل السمة",
+    "title": "مبدل السمة"
+  },
+  "Login": {
+    "ariaLabel": "تسجيل الدخول",
+    "title": "تسجيل الدخول"
   }
 }

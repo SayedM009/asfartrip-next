@@ -1,5 +1,22 @@
 {
   "Homepage": {
-    "title": "Hello"
+    "title": "ِAsfartrip.com"
+  },
+  "Languageswitcher": {
+    "close": "close menu",
+    "language": "Language",
+    "regionalSettings": "Regional Settings",
+    "ariaLabel": "Switch Language",
+    "title": "Language Switcher"
+  },
+  "ThemeSwitcher": {
+    "light": "Light Theme",
+    "dark": "Dark Theme",
+    "ariaLabel": "Switch Theme",
+    "title": "Theme Switcher"
+  },
+  "Login": {
+    "ariaLabel": "Login",
+    "title": "Login"
   }
 }

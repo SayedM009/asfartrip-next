@@ -6,7 +6,14 @@ export const metadata = homeMetadata;
 function HomePage() {
   const t = useTranslations("Homepage");
 
-  return <div>{t("title")}</div>;
+  return (
+    <section>
+      <div className="w-full-main-colors">
+        <div className="container-custom">test</div>
+      </div>
+      <div className="container-custom ">{t("title")}</div>
+    </section>
+  );
 }
 
 export default HomePage;
