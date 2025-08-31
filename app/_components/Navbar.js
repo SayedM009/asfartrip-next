@@ -5,14 +5,14 @@ import ThemeSwitcher from "./ThemeSwitcher";
 
 function Header() {
   return (
-    <header className="flex items-center justify-between container-custom ">
+    <nav className="flex items-center justify-between container-custom">
       <Logo />
-      <div className="flex items-center gap-0.5">
+      <div className="flex items-center gap-1">
         <LanguageSwitcher />
         <ThemeSwitcher />
         <Login />
       </div>
-    </header>
+    </nav>
   );
 }
 

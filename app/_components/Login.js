@@ -6,12 +6,12 @@ function Login() {
 
   return (
     <button
-      className="icons-hover-600 flex gap-2 "
+      className="icons-hover-600  gap-2 border-1 border-accent-50 hidden md:flex"
       aria-label={t("Login.ariaLabel")}
       title={t("Login.title")}
     >
-      <UserCircleIcon />
-      <p className="font-medium hidden lg:block">{t("Login.title")}</p>
+      {/* <UserCircleIcon /> */}
+      <p className="font-medium ">{t("Login.title")}</p>
     </button>
   );
 }

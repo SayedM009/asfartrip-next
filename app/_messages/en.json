@@ -7,7 +7,19 @@
     "language": "Language",
     "regionalSettings": "Regional Settings",
     "ariaLabel": "Switch Language",
-    "title": "Language Switcher"
+    "title": "Language & Currency",
+    "sub_title": "Select your preferred language and currency for the best experience.",
+    "select_language": "Select language",
+    "select_currency": "Select currency",
+    "apply": "Apply",
+    "cancel": "Cancel",
+    "currencies": {
+      "us": "US Dollar",
+      "eu": "Euro",
+      "gbp": "British Pound",
+      "chf": "Swiss Franc",
+      "ae": "UAE Dirham"
+    }
   },
   "ThemeSwitcher": {
     "light": "Light Theme",
@@ -17,6 +29,6 @@
   },
   "Login": {
     "ariaLabel": "Login",
-    "title": "Login"
+    "title": "Sign in"
   }
 }

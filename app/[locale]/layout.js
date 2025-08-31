@@ -5,7 +5,7 @@ import { rootLayoutMetadata } from "../_libs/metadata";
 import { NextIntlClientProvider, useLocale } from "next-intl";
 
 import "./globals.css";
-import Header from "../_components/Header";
+import Navbar from "../_components/Navbar";
 export const metadata = rootLayoutMetadata;
 
 // Convert all possible pages into static.
@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
       <body className={`${openSans.className} `}>
         <NextIntlClientProvider>
           <ThemeProvider attribute="class" enableSystem defaultTheme="system">
-            <Header />
+            <Navbar />
             <main className="w-full-light-colors">{children}</main>
           </ThemeProvider>
         </NextIntlClientProvider>

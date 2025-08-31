@@ -2,51 +2,35 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
-  ChatBubbleBottomCenterIcon,
-  ChevronDownIcon,
-  GlobeEuropeAfricaIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import { useState } from "react";
-import { routing } from "@/i18n/routing";
-import MyModal from "./MyModal";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import { Button } from "./ui/button";
+import { Label } from "./ui/label";
 import {
-  Listbox,
-  ListboxButton,
-  ListboxOption,
-  ListboxOptions,
-} from "@headlessui/react";
-
-const localeNames = {
-  en: "English",
-  ar: "العربية",
-};
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { Separator } from "./ui/separator";
+import { Globe, DollarSign } from "lucide-react";
+import { useState } from "react";
 
 function LanguageSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
-  const closeModal = () => setIsOpen(false);
-  const t = useTranslations("Languageswitcher");
-  return (
-    <>
-      <button
-        className="icons-hover-600"
-        onClick={() => setIsOpen(true)}
-        aria-label={t("ariaLabel")}
-        title={t("title")}
-      >
-        <GlobeEuropeAfricaIcon />
-      </button>
-      {isOpen && <DisplayLocales closeModal={closeModal} />}
-    </>
-  );
-}
-
-function DisplayLocales({ closeModal }) {
+  const [currency, setCurrency] = useState("USD");
   const pathname = usePathname();
   const router = useRouter();
   const currentLocale = pathname.split("/")[1] || "en";
-  const [selected] = useState(currentLocale);
   const t = useTranslations("Languageswitcher");
+
+  const condition = currentLocale == "ar";
   //   Handle switcher
   function handleSwitch(locale) {
     const nextLocale = locale;
@@ -55,47 +39,149 @@ function DisplayLocales({ closeModal }) {
     const newPath = segments.join("/");
     router.push(newPath);
   }
-  return (
-    <MyModal onClick={closeModal}>
-      <div className="flex items-center justify-between mb-7">
-        <p className="text-primary-800 font-bold">{t("regionalSettings")}</p>
-        <XMarkIcon
-          className="text-primary-800 cursor-pointer hover:bg-primary-800 hover:text-primary-50 transition-colors font-extrabold"
-          title={t("close")}
-          onClick={closeModal}
-        />
-      </div>
-      <DisplayLaunages selected={selected} handleSwitch={handleSwitch} />
-    </MyModal>
-  );
-}
+  const languages = [
+    { code: "en", name: "English", flag: "🇺🇸" },
+    { code: "ar", name: "العربية", flag: "🇦🇪" },
+    // { code: "fr", name: "Français", flag: "🇫🇷" },
+    // { code: "de", name: "Deutsch", flag: "🇩🇪" },
+    // { code: "it", name: "Italiano", flag: "🇮🇹" },
+    // { code: "pt", name: "Português", flag: "🇧🇷" },
+    // { code: "zh", name: "中文", flag: "🇨🇳" },
+    // { code: "ja", name: "日本語", flag: "🇯🇵" },
+  ];
 
-function DisplayLaunages({ selected, handleSwitch }) {
-  const locales = routing.locales;
-  const t = useTranslations("Languageswitcher");
+  const currencies = [
+    { code: "USD", name: t("currencies.us"), symbol: "$" },
+    { code: "EUR", name: t("currencies.eu"), symbol: "€" },
+    { code: "GBP", name: t("currencies.gbp"), symbol: "£" },
+    { code: "CHF", name: t("currencies.chf"), symbol: "CHF" },
+    { code: "AED", name: t("currencies.ae"), symbol: "AED" },
+  ];
+  const selectedLanguage = languages.find(
+    (lang) => lang.code === currentLocale
+  );
+  const selectedCurrency = currencies.find((curr) => curr.code === currency);
   return (
-    <section className="text-primary-800 relative">
-      <div className="flex gap-1 items-center">
-        <ChatBubbleBottomCenterIcon />
-        <p className="text-xs font-bold">{t("language")}</p>
-      </div>
-      <Listbox value={selected} onChange={handleSwitch}>
-        <ListboxButton className="border px-3 py-1 rounded w-full cursor-pointer  mt-3 flex justify-between text-md">
-          {localeNames[selected].toUpperCase()} <ChevronDownIcon />
-        </ListboxButton>
-        <ListboxOptions className="border mt-1 rounded absolute w-full z-50 h-full bg-white">
-          {locales.map((locale) => (
-            <ListboxOption
-              key={locale}
-              value={locale}
-              className="hover:bg-primary-200 px-3 py-1 cursor-pointer text-md"
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild className=" icons-hover-600">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="flex items-center space-x-2 hover:bg-accent"
+        >
+          <Globe className="h-4 w-4" />
+          <span className="hidden sm:inline  hover:cursor-pointer">
+            {selectedLanguage?.code.toUpperCase()} | {selectedCurrency?.symbol}
+          </span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center space-x-2">
+            <Globe className="h-5 w-5" />
+            <span>{t("title")}</span>
+          </DialogTitle>
+          <DialogDescription className={`${condition && "text-right"}`}>
+            {t("sub_title")}
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-6">
+          {/* Language Selection */}
+          <div>
+            <Label className="text-sm mb-3 block">{t("select_language")}</Label>
+            <Select
+              value={currentLocale}
+              onValueChange={(e) => handleSwitch(e)}
+              className={`${condition && "text-right"} `}
             >
-              {localeNames[locale]}
-            </ListboxOption>
-          ))}
-        </ListboxOptions>
-      </Listbox>
-    </section>
+              <SelectTrigger
+                className="w-full text-[var(--main-text)] cursor-pointer"
+                dir={condition && "rtl"}
+              >
+                <SelectValue>
+                  <div className="flex items-center space-x-2">
+                    <span>{selectedLanguage?.flag}</span>
+                    <span>{selectedLanguage?.name}</span>
+                  </div>
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {languages.map((lang) => (
+                  <SelectItem
+                    key={lang.code}
+                    value={lang.code}
+                    dir={condition && "rtl"}
+                    className="cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span>{lang.flag}</span>
+                      <span>{lang.name}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <Separator />
+
+          {/* Currency Selection */}
+          <div>
+            <Label className="text-sm mb-3 block">{t("select_currency")}</Label>
+            <Select value={currency} onValueChange={setCurrency}>
+              <SelectTrigger
+                className="w-full text-[var(--main-text)] cursor-pointer"
+                dir={condition && "rtl"}
+              >
+                <SelectValue>
+                  <div className="flex items-center space-x-2">
+                    <DollarSign className="h-4 w-4" />
+                    <span>
+                      {selectedCurrency?.symbol} {selectedCurrency?.name}
+                    </span>
+                  </div>
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {currencies.map((curr) => (
+                  <SelectItem
+                    key={curr.code}
+                    value={curr.code}
+                    dir={condition && "rtl"}
+                    className="cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span>{curr.symbol}</span>
+                      <span>{curr.name}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div
+            className={`flex justify-end space-x-3 pt-4 ${
+              condition && "flex-row-reverse justify-start gap-2"
+            }`}
+          >
+            <Button
+              variant="outline"
+              onClick={() => setIsOpen(false)}
+              className="hover:cursor-pointer"
+            >
+              {t("cancel")}
+            </Button>
+            <Button
+              onClick={() => setIsOpen(false)}
+              className="hover:cursor-pointer hover:bg-accent hover:text-background"
+            >
+              {t("apply")}
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
