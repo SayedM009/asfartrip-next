@@ -11,13 +11,13 @@ function ThemeSwitcher() {
   }
   return (
     <button
-      className="icons-hover-600"
+      className="icons-hover-600  md:px-2 md:py-1.5"
       onClick={handleSwitch}
       aria-label={t("ariaLabel")}
       title={t("title")}
     >
-      <SunIcon className={`${condition ? "block" : "hidden"} `} />
-      <MoonIcon className={`${condition ? "hidden" : "block"}`} />
+      <SunIcon className={`${condition ? "block svg" : "hidden"} `} />
+      <MoonIcon className={`${condition ? "hidden" : "block svg"}`} />
     </button>
   );
 }

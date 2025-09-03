@@ -1,3 +1,4 @@
+import { FlightSearchForm } from "../_components/flightSearchFormMobile/FlightSearchFormMobile";
 import { homeMetadata } from "../_libs/metadata";
 import { useTranslations } from "next-intl";
 
@@ -9,7 +10,10 @@ function HomePage() {
   return (
     <section>
       <div className="w-full-main-colors">
-        <div className="container-custom">test</div>
+        <div className="container-custom">
+          <img src="/icons/airplane.gif" />
+          <FlightSearchForm />
+        </div>
       </div>
       <div className="container-custom ">{t("title")}</div>
     </section>

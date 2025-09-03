@@ -8,7 +8,6 @@
   --main-bg: #fff;
   --main-text: #0c1c32;
   /* Testing */
-  --font-size: 14px;
   --card: #ffffff;
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -135,7 +134,7 @@
 
 @layer components {
   .container-custom {
-    @apply max-w-[96%] sm:max-w-[93%] 2xl:max-w-[65%] m-auto md:pt-10 p-2 pt-4;
+    @apply max-w-[96%] sm:max-w-[93%] 2xl:max-w-[65%] m-auto md:pt-10 p-2 pt-3;
   }
   .w-full-light-colors {
     @apply bg-[var(--main-bg)] text-[var(--main-text)];
@@ -146,15 +145,14 @@
   .icons-hover-600 {
     @apply cursor-pointer  hover:bg-accent transition-colors py-1 px-1  md:px-3 rounded-md hover:text-accent-foreground;
   }
+  .svg {
+    @apply w-5 h-5;
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-}
-
-svg {
-  width: 1.5rem;
 }
 
 @theme inline {
@@ -197,7 +195,7 @@ svg {
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
-/* 
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -206,11 +204,8 @@ svg {
   body {
     @apply bg-background text-foreground;
   }
-} */
+}
 
-/**
- * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
- */
 @layer base {
   :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
     h1 {

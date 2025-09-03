@@ -67,9 +67,9 @@ function LanguageSwitcher() {
         <Button
           variant="ghost"
           size="sm"
-          className="flex items-center space-x-2 hover:bg-accent"
+          className="flex items-center hover:bg-accent"
         >
-          <Globe className="h-4 w-4" />
+          <Globe className="svg" />
           <span className="hidden sm:inline  hover:cursor-pointer">
             {selectedLanguage?.code.toUpperCase()} | {selectedCurrency?.symbol}
           </span>
@@ -168,7 +168,7 @@ function LanguageSwitcher() {
             <Button
               variant="outline"
               onClick={() => setIsOpen(false)}
-              className="hover:cursor-pointer"
+              className="hover:cursor-pointer "
             >
               {t("cancel")}
             </Button>

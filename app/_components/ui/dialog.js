@@ -12,8 +12,6 @@ function Dialog({ ...props }) {
 }
 
 const DialogTrigger = ({ ...props }, ref) => {
-  console.log(props);
-
   return (
     <DialogPrimitive.Trigger ref={ref} data-slot="dialog-trigger" {...props} />
   );
