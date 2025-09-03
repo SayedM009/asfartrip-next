@@ -1,7 +1,6 @@
 import LanguageSwitcher from "./LanguageSwitcher";
 import Login from "./Login";
 import Logo from "./Logo";
-import MobileSideMenu from "./flightSearchFormMobile/MobileSideMenu";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 function Header() {
@@ -12,7 +11,6 @@ function Header() {
         <LanguageSwitcher />
         <ThemeSwitcher />
         <Login />
-        <MobileSideMenu />
       </div>
     </nav>
   );

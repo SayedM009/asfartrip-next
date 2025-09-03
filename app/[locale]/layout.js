@@ -6,6 +6,8 @@ import { NextIntlClientProvider, useLocale } from "next-intl";
 
 import "./globals.css";
 import Navbar from "../_components/Navbar";
+import AppFooterBar from "../_components/AppFooterBar";
+import ServicesNavigation from "../_components/ServicesNavigation";
 export const metadata = rootLayoutMetadata;
 
 // Convert all possible pages into static.
@@ -26,7 +28,9 @@ export default function RootLayout({ children }) {
         <NextIntlClientProvider>
           <ThemeProvider attribute="class" enableSystem defaultTheme="system">
             <Navbar />
+            <ServicesNavigation />
             <main className="w-full-light-colors">{children}</main>
+            <AppFooterBar />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

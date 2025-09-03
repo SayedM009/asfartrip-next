@@ -30,5 +30,12 @@
   "Login": {
     "ariaLabel": "Login",
     "title": "Sign in"
+  },
+
+  "Services": {
+    "Flights": "Flights",
+    "Hotels": "Hotels",
+    "Insurance": "Insurance",
+    "Cars": "Tranfers"
   }
 }

@@ -1,6 +1,8 @@
+import Image from "next/image";
 import { FlightSearchForm } from "../_components/flightSearchFormMobile/FlightSearchFormMobile";
 import { homeMetadata } from "../_libs/metadata";
 import { useTranslations } from "next-intl";
+import ServicesNavigation from "../_components/ServicesNavigation";
 
 export const metadata = homeMetadata;
 
@@ -11,7 +13,6 @@ function HomePage() {
     <section>
       <div className="w-full-main-colors">
         <div className="container-custom">
-          <img src="/icons/airplane.gif" />
           <FlightSearchForm />
         </div>
       </div>

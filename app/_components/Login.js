@@ -5,7 +5,7 @@ function Login() {
 
   return (
     <button
-      className="icons-hover-600  gap-2 border-1 border-accent-50 hidden md:flex text-sm"
+      className="icons-hover-600  gap-2 border-1 border-accent-50 flex text-sm px-3 rounded"
       aria-label={t("Login.ariaLabel")}
       title={t("Login.title")}
     >

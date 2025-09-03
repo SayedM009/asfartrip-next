@@ -30,5 +30,11 @@
   "Login": {
     "ariaLabel": "تسجيل الدخول",
     "title": "تسجيل الدخول"
+  },
+  "Services": {
+    "Flights": "طيران",
+    "Hotels": "فنادق",
+    "Insurance": "تأمين",
+    "Cars": "توصيل"
   }
 }

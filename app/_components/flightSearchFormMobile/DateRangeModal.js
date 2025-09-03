@@ -205,7 +205,7 @@ export function DateRangeModal({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="w-full h-full max-w-none max-h-none m-0 p-0 rounded-none border-0 inset-0 fixed">
+      <DialogContent className="w-full  max-w-none max-h-none m-0 p-0 rounded-none border-0 top-100 left-0 fixed overflow-scroll h-screen">
         <div className="flex flex-col h-full bg-white">
           {/* Accessible Dialog Header - Hidden visually but available to screen readers */}
           <DialogHeader className="sr-only">
@@ -216,7 +216,6 @@ export function DateRangeModal({
               date{tripType === "roundtrip" ? "s" : ""}.
             </DialogDescription>
           </DialogHeader>
-
           {/* Visual Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <Button
@@ -240,16 +239,15 @@ export function DateRangeModal({
               />
             </div>
           </div>
-
           {/* Calendar Content */}
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex-1 overflow-y-scroll p-4">
             {monthsToShow.map((monthData, index) => (
               <div key={`${monthData.year}-${monthData.month}`}>
                 {renderCalendar(monthData.month, monthData.year)}
               </div>
             ))}
           </div>
-
+          tesr
           {/* Bottom Section with Selected Dates */}
           <div className="p-4 border-t border-gray-200 bg-white">
             <div className="flex justify-between items-center mb-4">

@@ -3,21 +3,17 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Card, CardContent } from "../ui/card";
-import { ServiceNavigation } from "./ServiceNavigation";
 import { PassengerClassModal } from "./PassengerClassModal";
 import { DateRangeModal } from "./DateRangeModal";
 import { DestinationSearchModal } from "./DestinationSearchModal";
-import {
-  ArrowLeftRight,
-  Search,
-  User,
-  Users,
-  Baby,
-  PlaneIcon,
-  RefreshCw,
-  RefreshCcw,
-  Repeat,
-} from "lucide-react";
+import { User, Users, Baby, RefreshCcw } from "lucide-react";
+import { useLocale } from "next-intl";
+import DaterRangeDialog from "./DaterRangeDialog";
+
+const langs = {
+  en: "en-US",
+  ar: "ar-AE",
+};
 
 export function FlightSearchForm() {
   const [tripType, setTripType] = useState("roundtrip");
@@ -34,6 +30,8 @@ export function FlightSearchForm() {
   const [departureModalOpen, setDepartureModalOpen] = useState(false);
   const [destinationModalOpen, setDestinationModalOpen] = useState(false);
   const [spinning, setSpinning] = useState(false);
+  const locale = useLocale();
+  console.log(locale);
   const swapCities = () => {
     const temp = departure;
     setDeparture(destination);
@@ -43,10 +41,17 @@ export function FlightSearchForm() {
   };
 
   // Helper functions for date formatting
-  const formatDisplayDate = () => {
+  const formatDisplayDate = (date) => {
     if (!date) return "";
     try {
-      return new Date(date).toLocaleDateString("en-US", {
+      console.log(
+        new Date(date).toLocaleDateString(langs[locale], {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+        })
+      );
+      return new Date(date).toLocaleDateString(langs[locale], {
         weekday: "short",
         month: "short",
         day: "numeric",
@@ -226,6 +231,13 @@ export function FlightSearchForm() {
             </div>
 
             {/* Date Section - Clickable */}
+            <DaterRangeDialog
+              tripType={tripType}
+              departDate={departDate}
+              returnDate={returnDate}
+              onDepartDateChange={setDepartDate}
+              onReturnDateChange={setReturnDate}
+            />
             <DateRangeModal
               tripType={tripType}
               departDate={departDate}
@@ -263,7 +275,7 @@ export function FlightSearchForm() {
                     <div className="font-semibold text-gray-900">
                       {departDate
                         ? formatDisplayDate(departDate)
-                        : "Fri, Sep 5"}
+                        : "Choose Date"}
                     </div>
                   </div>
                 )}
