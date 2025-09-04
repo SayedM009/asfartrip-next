@@ -70,32 +70,36 @@ function LanguageSwitcher() {
           className="flex items-center hover:bg-accent"
         >
           <Globe className="svg" />
-          <span className="hidden sm:inline  hover:cursor-pointer">
+          <span className="hidden sm:inline  hover:cursor-pointer ">
             {selectedLanguage?.code.toUpperCase()} | {selectedCurrency?.symbol}
           </span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-black border-0">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
-            <Globe className="h-5 w-5" />
-            <span>{t("title")}</span>
+            <Globe className="h-5 w-5 text-gray-50" />
+            <span className="text-gray-50">{t("title")}</span>
           </DialogTitle>
-          <DialogDescription className={`${condition && "text-right"}`}>
+          <DialogDescription
+            className={`text-gray-400 ${condition && "text-right"}`}
+          >
             {t("sub_title")}
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-6">
           {/* Language Selection */}
           <div>
-            <Label className="text-sm mb-3 block">{t("select_language")}</Label>
+            <Label className="text-sm mb-3 block text-gray-50">
+              {t("select_language")}
+            </Label>
             <Select
               value={currentLocale}
               onValueChange={(e) => handleSwitch(e)}
               className={`${condition && "text-right"} `}
             >
               <SelectTrigger
-                className="w-full text-[var(--main-text)] cursor-pointer"
+                className="w-full  cursor-pointer"
                 dir={condition && "rtl"}
               >
                 <SelectValue>
@@ -130,7 +134,7 @@ function LanguageSwitcher() {
             <Label className="text-sm mb-3 block">{t("select_currency")}</Label>
             <Select value={currency} onValueChange={setCurrency}>
               <SelectTrigger
-                className="w-full text-[var(--main-text)] cursor-pointer"
+                className="w-full cursor-pointer"
                 dir={condition && "rtl"}
               >
                 <SelectValue>

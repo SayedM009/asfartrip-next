@@ -36,5 +36,19 @@
     "Hotels": "فنادق",
     "Insurance": "تأمين",
     "Cars": "توصيل"
+  },
+  "Hooks": {
+    "day": "يوم"
+  },
+  "Calender": {
+    "travel_date": "تاريخ السفر",
+    "departure_date": "تاريخ الذهاب",
+    "return_date": "تاريخ العودة",
+    "select_date": "إختر التاريخ",
+    "apply": "تطبيق"
+  },
+  "Flight": {
+    "one_way": "ذهاب فقط",
+    "round_trip": "ذهاب و عودة"
   }
 }

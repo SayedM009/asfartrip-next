@@ -1,16 +1,19 @@
+import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 
 function Login() {
   const t = useTranslations();
 
   return (
-    <button
-      className="icons-hover-600  gap-2 border-1 border-accent-50 flex text-sm px-3 rounded"
+    <Button
+      variant="outline"
+      className="icons-hover-600   border-1  flex text-sm px-3 py-0 rounded border-gray-500"
       aria-label={t("Login.ariaLabel")}
       title={t("Login.title")}
+      size="sm"
     >
       {t("Login.title")}
-    </button>
+    </Button>
   );
 }
 

@@ -6,7 +6,6 @@ import { NextIntlClientProvider, useLocale } from "next-intl";
 
 import "./globals.css";
 import Navbar from "../_components/Navbar";
-import AppFooterBar from "../_components/AppFooterBar";
 import ServicesNavigation from "../_components/ServicesNavigation";
 export const metadata = rootLayoutMetadata;
 
@@ -30,7 +29,6 @@ export default function RootLayout({ children }) {
             <Navbar />
             <ServicesNavigation />
             <main className="w-full-light-colors">{children}</main>
-            <AppFooterBar />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

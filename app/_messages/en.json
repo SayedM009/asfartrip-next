@@ -37,5 +37,19 @@
     "Hotels": "Hotels",
     "Insurance": "Insurance",
     "Cars": "Tranfers"
+  },
+  "Hooks": {
+    "day": "day"
+  },
+  "Calender": {
+    "travel_date": "Travel date",
+    "departure_date": "Departure date",
+    "return_date": "Return date",
+    "select_date": "Select date",
+    "apply": "Apply"
+  },
+  "Flight": {
+    "one_way": "One way",
+    "round_trip": "Round trip"
   }
 }

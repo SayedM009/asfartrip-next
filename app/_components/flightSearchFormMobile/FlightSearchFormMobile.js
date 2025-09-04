@@ -4,34 +4,30 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Card, CardContent } from "../ui/card";
 import { PassengerClassModal } from "./PassengerClassModal";
-import { DateRangeModal } from "./DateRangeModal";
-import { DestinationSearchModal } from "./DestinationSearchModal";
 import { User, Users, Baby, RefreshCcw } from "lucide-react";
-import { useLocale } from "next-intl";
-import DaterRangeDialog from "./DaterRangeDialog";
-
-const langs = {
-  en: "en-US",
-  ar: "ar-AE",
-};
+import DateRangeDialog from "./DateRangeDialog";
+import { useLocale, useTranslations } from "next-intl";
+import DestinationSearchDialog from "./DestinationSearchDialog";
 
 export function FlightSearchForm() {
-  const [tripType, setTripType] = useState("roundtrip");
-  const [departure, setDeparture] = useState("");
-  const [destination, setDestination] = useState("");
-  const [departDate, setDepartDate] = useState("");
-  const [returnDate, setReturnDate] = useState("");
+  const [tripType, setTripType] = useState(
+    () => sessionStorage.getItem("tripType") || "roundtrip"
+  );
+  const [departure, setDeparture] = useState("Dubai");
+  const [destination, setDestination] = useState("Cairo");
+  const [departDate, setDepartDate] = useState(null);
+  const [range, setRange] = useState({ from: null, to: null });
   const [passengers, setPassengers] = useState({
     adults: 1,
     children: 0,
     infants: 0,
   });
   const [travelClass, setTravelClass] = useState("economy");
-  const [departureModalOpen, setDepartureModalOpen] = useState(false);
-  const [destinationModalOpen, setDestinationModalOpen] = useState(false);
   const [spinning, setSpinning] = useState(false);
   const locale = useLocale();
-  console.log(locale);
+  const t = useTranslations("Flight");
+
+  // Functions
   const swapCities = () => {
     const temp = departure;
     setDeparture(destination);
@@ -40,49 +36,10 @@ export function FlightSearchForm() {
     setTimeout(() => setSpinning(false), 1000);
   };
 
-  // Helper functions for date formatting
-  const formatDisplayDate = (date) => {
-    if (!date) return "";
-    try {
-      console.log(
-        new Date(date).toLocaleDateString(langs[locale], {
-          weekday: "short",
-          month: "short",
-          day: "numeric",
-        })
-      );
-      return new Date(date).toLocaleDateString(langs[locale], {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-      });
-    } catch {
-      return date;
-    }
-  };
-
-  const calculateDaysBetween = () => {
-    if (!start || !end) return "";
-    try {
-      const startDate = new Date(start);
-      const endDate = new Date(end);
-      const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return `${diffDays} days`;
-    } catch {
-      return "";
-    }
-  };
-
-  const totalPassengers =
-    passengers.adults + passengers.children + passengers.infants;
-
   const getClassDisplayName = (className) => {
     switch (className) {
       case "economy":
         return "Economy";
-      case "premium":
-        return "Premium Economy";
       case "business":
         return "Business";
       case "first":
@@ -92,14 +49,18 @@ export function FlightSearchForm() {
     }
   };
 
+  function handleTripType(type) {
+    setTripType(type);
+    sessionStorage.setItem("tripType", type);
+  }
+
+  function handleSearch() {
+    console.log(tripType);
+  }
+
   return (
     <div className=" from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800  ">
       <div className="max-w-md mx-auto">
-        {/* Service Navigation - Only show on larger screens */}
-        {/* <div className="hidden lg:block mb-8">
-          <ServiceNavigation />
-        </div> */}
-
         {/* Main Search Card */}
         <Card className="shadow-lg bg-white backdrop-blur-sm">
           <CardContent className="px-4 space-y-2 pt-4 pb-1">
@@ -111,10 +72,11 @@ export function FlightSearchForm() {
                 style={{
                   left:
                     tripType === "oneway"
-                      ? "4px"
+                      ? `${locale === "en" ? "4px" : "calc(50%)"}`
                       : tripType === "roundtrip"
-                      ? "calc(50% + 2px)"
-                      : "calc(66.66% + 2px)",
+                      ? `${locale === "en" ? "calc(50% + 2px)" : "4px"}`
+                      : "",
+
                   width: "calc(50% - 6px)",
                 }}
               />
@@ -122,20 +84,20 @@ export function FlightSearchForm() {
               {/* Tab buttons */}
               <div className="relative grid grid-cols-2 h-full ">
                 <button
-                  onClick={() => setTripType("oneway")}
+                  onClick={() => handleTripType("oneway")}
                   className={`text-sm font-semibold transition-colors duration-200 rounded-md ${
                     tripType === "oneway" ? "text-gray-900" : "text-gray-600"
                   }`}
                 >
-                  One-way
+                  {t("one_way")}
                 </button>
                 <button
-                  onClick={() => setTripType("roundtrip")}
+                  onClick={() => handleTripType("roundtrip")}
                   className={`text-sm font-semibold transition-colors duration-200 rounded-md ${
                     tripType === "roundtrip" ? "text-gray-900" : "text-gray-600"
                   }`}
                 >
-                  Round trip
+                  {t("round_trip")}
                 </button>
                 {/* Multi cities */}
                 {/* <button
@@ -155,25 +117,11 @@ export function FlightSearchForm() {
               <div className="relative">
                 <div className="flex items-center justify-between py-2">
                   {/* From City - Clickable */}
-                  <DestinationSearchModal
-                    isOpen={departureModalOpen}
-                    onOpenChange={setDepartureModalOpen}
+                  <DestinationSearchDialog
+                    destination={departure}
                     onSelect={setDeparture}
-                    currentValue={departure}
-                    title="Select departure city"
-                  >
-                    <div
-                      className="flex-1 cursor-pointer hover:bg-gray-50 rounded p-2 transition-colors"
-                      onClick={() => setDepartureModalOpen(true)}
-                    >
-                      <div className="text-lg font-semibold text-gray-900">
-                        {departure || "New York"}
-                      </div>
-                      <div className="text-sm text-primary-900">
-                        All airports
-                      </div>
-                    </div>
-                  </DestinationSearchModal>
+                    locale={locale}
+                  />
 
                   {/* Swap Button */}
                   <Button
@@ -181,13 +129,9 @@ export function FlightSearchForm() {
                     size="icon"
                     onClick={swapCities}
                     className="mx-3 h-8 w-8 rounded-full hover:bg-blue-50 border-1 border-gray-300 relative"
+                    aria-label="Switch destination values"
                   >
-                    {/* <PlaneIcon
-                      className=" text-primary-900 rotate-45"
-                      size={32}
-                    /> */}
                     <RefreshCcw
-                      size={60}
                       className={`cursor-pointer text-primary-900 transition-transform ${
                         spinning ? "animate-spin duration-75" : ""
                       }`}
@@ -195,23 +139,12 @@ export function FlightSearchForm() {
                   </Button>
 
                   {/* To City - Clickable */}
-                  <DestinationSearchModal
-                    isOpen={destinationModalOpen}
-                    onOpenChange={setDestinationModalOpen}
+                  <DestinationSearchDialog
+                    destination={destination}
                     onSelect={setDestination}
-                    currentValue={destination}
-                    title="Select destination city"
-                  >
-                    <div
-                      className="flex-1 text-right cursor-pointer hover:bg-gray-50 rounded p-2 transition-colors"
-                      onClick={() => setDestinationModalOpen(true)}
-                    >
-                      <div className="text-lg font-semibold text-gray-900">
-                        {destination || "London"}
-                      </div>
-                      <div className="text-sm text-gray-500">All airports</div>
-                    </div>
-                  </DestinationSearchModal>
+                    locale={locale}
+                    dir="end"
+                  />
                 </div>
               </div>
 
@@ -231,56 +164,13 @@ export function FlightSearchForm() {
             </div>
 
             {/* Date Section - Clickable */}
-            <DaterRangeDialog
+            <DateRangeDialog
               tripType={tripType}
               departDate={departDate}
-              returnDate={returnDate}
+              range={range}
               onDepartDateChange={setDepartDate}
-              onReturnDateChange={setReturnDate}
+              onRangeDateChange={setRange}
             />
-            <DateRangeModal
-              tripType={tripType}
-              departDate={departDate}
-              returnDate={returnDate}
-              onDepartDateChange={setDepartDate}
-              onReturnDateChange={setReturnDate}
-            >
-              <div className="flex items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors">
-                {tripType === "roundtrip" ? (
-                  <>
-                    <div>
-                      <div className="font-semibold text-gray-900">
-                        {departDate
-                          ? formatDisplayDate(departDate)
-                          : "Fri, Sep 5"}
-                      </div>
-                    </div>
-                    <div className="text-center flex-1">
-                      <div className="text-xs text-gray-500">
-                        {departDate && returnDate
-                          ? calculateDaysBetween(departDate, returnDate)
-                          : "4 days"}
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-semibold text-gray-900">
-                        {returnDate
-                          ? formatDisplayDate(returnDate)
-                          : "Mon, Sep 8"}
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <div>
-                    <div className="font-semibold text-gray-900">
-                      {departDate
-                        ? formatDisplayDate(departDate)
-                        : "Choose Date"}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </DateRangeModal>
 
             {/* Class and Passengers - Clickable */}
             <PassengerClassModal
@@ -322,8 +212,10 @@ export function FlightSearchForm() {
             </PassengerClassModal>
 
             {/* Search Button */}
-            <Button className="w-full h-10 bg-accent-500 hover:bg-accent-400 text-white font-semibold rounded cursor-pointer transition-colors">
-              {/* <Button className="w-full h-10 bg-primary-600 hover:bg-primary-500 text-white font-semibold rounded cursor-pointer transition-colors"> */}
+            <Button
+              className="w-full h-10 bg-primary-900 hover:bg-primary-700 text-white font-semibold rounded cursor-pointer transition-colors"
+              onClick={handleSearch}
+            >
               Search
             </Button>
           </CardContent>

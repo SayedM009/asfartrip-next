@@ -1,5 +1,5 @@
 import LanguageSwitcher from "./LanguageSwitcher";
-import Login from "./Login";
+import LoginButton from "./LoginButton";
 import Logo from "./Logo";
 import ThemeSwitcher from "./ThemeSwitcher";
 
@@ -10,7 +10,7 @@ function Header() {
       <div className="flex items-center gap-1 ">
         <LanguageSwitcher />
         <ThemeSwitcher />
-        <Login />
+        <LoginButton />
       </div>
     </nav>
   );
