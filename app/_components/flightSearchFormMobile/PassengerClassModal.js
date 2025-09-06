@@ -18,6 +18,7 @@ import {
 } from "../ui/select";
 import { Separator } from "../ui/separator";
 import { Users, Plus, Minus } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 export function PassengerClassModal({
   passengers,
@@ -73,21 +74,21 @@ export function PassengerClassModal({
     {
       type: "adults",
       label: "Adults",
-      description: "12+ years",
+      adults_description: "12+ years",
       min: 1,
       max: 9,
     },
     {
       type: "children",
       label: "Children",
-      description: "2-11 years",
+      children_description: "2-11 years",
       min: 0,
       max: 8,
     },
     {
       type: "infants",
       label: "Infants",
-      description: "Under 2 years",
+      infants_description: "Under 2 years",
       min: 0,
       max: 4,
     },
@@ -96,25 +97,25 @@ export function PassengerClassModal({
   const travelClasses = [
     {
       value: "economy",
-      label: "Economy",
-      description: "Standard seating and service",
+      label: "economy",
+      economy_description: "Standard seating and service",
     },
-    {
-      value: "premium",
-      label: "Premium Economy",
-      description: "Extra legroom and amenities",
-    },
+
     {
       value: "business",
-      label: "Business",
-      description: "Priority service and comfort",
+      label: "business",
+      business_description: "Priority service and comfort",
     },
     {
       value: "first",
-      label: "First Class",
-      description: "Luxury travel experience",
+      label: "first",
+      first_description: "Luxury travel experience",
     },
   ];
+
+  const t = useTranslations("Flight");
+  const local = useLocale();
+  const condition = local === "ar";
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -124,7 +125,7 @@ export function PassengerClassModal({
             <Users className="h-4 w-4 mr-2 text-muted-foreground" />
             <div className="flex flex-col items-start">
               <span className="text-xs text-muted-foreground font-normal">
-                Passengers & Class
+                {t("passengers.title")}
               </span>
               <span className="text-sm">
                 {totalPassengers}{" "}
@@ -138,17 +139,17 @@ export function PassengerClassModal({
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <Users className="h-5 w-5" />
-            <span>Passengers & Class</span>
+            <span>{t("passengers.title")}</span>
           </DialogTitle>
-          <DialogDescription>
-            Select the number of passengers and travel class for your flight.
-          </DialogDescription>
+          <DialogDescription>{t("passengers.subtitle")}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Passenger Selection */}
           <div>
-            <Label className="text-sm mb-3 block">Passengers</Label>
+            <Label className="text-sm mb-3 block">
+              {t("passengers.passengers")}
+            </Label>
             <div className="space-y-4">
               {passengerTypes.map((passengerType) => (
                 <div
@@ -156,9 +157,11 @@ export function PassengerClassModal({
                   className="flex items-center justify-between"
                 >
                   <div className="flex-1">
-                    <div className="font-medium">{passengerType.label}</div>
+                    <div className="font-medium">
+                      {t(`passengers.${passengerType.type}`)}
+                    </div>
                     <div className="text-xs text-muted-foreground">
-                      {passengerType.description}
+                      {t(`passengers.${passengerType.type}_description`)}
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -201,18 +204,25 @@ export function PassengerClassModal({
 
           {/* Travel Class Selection */}
           <div>
-            <Label className="text-sm mb-3 block">Travel Class</Label>
+            <Label className="text-sm mb-3 block">
+              {t("passengers.travel_class")}
+            </Label>
             <Select value={tempClass} onValueChange={setTempClass}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full" dir={condition && "rtl"}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 {travelClasses.map((cls) => (
-                  <SelectItem key={cls.value} value={cls.value}>
+                  <SelectItem
+                    key={cls.value}
+                    value={cls.value}
+                    dir={condition && "rtl"}
+                  >
                     <div className="flex flex-col items-start">
-                      <span>{cls.label}</span>
+                      <span>{t(`ticket_class.${cls.label}`)}</span>
                       <span className="text-xs text-muted-foreground">
                         {cls.description}
+                        {t(`ticket_class.${cls.value}_description`)}
                       </span>
                     </div>
                   </SelectItem>
@@ -221,11 +231,15 @@ export function PassengerClassModal({
             </Select>
           </div>
 
-          <div className="flex justify-end space-x-3 pt-4">
+          <div
+            className={`flex justify-end space-x-3 pt-4 ${
+              condition && "flex-row-reverse justify-start gap-2"
+            }`}
+          >
             <Button variant="outline" onClick={handleCancel}>
-              Cancel
+              {t("passengers.cancel")}
             </Button>
-            <Button onClick={handleApply}>Apply</Button>
+            <Button onClick={handleApply}>{t("passengers.apply")}</Button>
           </div>
         </div>
       </DialogContent>

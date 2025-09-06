@@ -13,8 +13,14 @@ export function FlightSearchForm() {
   const [tripType, setTripType] = useState(
     () => sessionStorage.getItem("tripType") || "roundtrip"
   );
-  const [departure, setDeparture] = useState("Dubai");
-  const [destination, setDestination] = useState("Cairo");
+  const [departure, setDeparture] = useState({
+    city: "Dubai",
+    code: "DXB",
+  });
+  const [destination, setDestination] = useState({
+    city: "Cairo",
+    code: "CAI",
+  });
   const [departDate, setDepartDate] = useState(null);
   const [range, setRange] = useState({ from: null, to: null });
   const [passengers, setPassengers] = useState({
@@ -39,13 +45,13 @@ export function FlightSearchForm() {
   const getClassDisplayName = (className) => {
     switch (className) {
       case "economy":
-        return "Economy";
+        return "economy";
       case "business":
-        return "Business";
+        return "business";
       case "first":
-        return "First Class";
+        return "first";
       default:
-        return "Economy";
+        return "economy";
     }
   };
 
@@ -55,7 +61,7 @@ export function FlightSearchForm() {
   }
 
   function handleSearch() {
-    console.log(tripType);
+    // console.log(tripType);
   }
 
   return (
@@ -72,7 +78,7 @@ export function FlightSearchForm() {
                 style={{
                   left:
                     tripType === "oneway"
-                      ? `${locale === "en" ? "4px" : "calc(50%)"}`
+                      ? `${locale === "en" ? "4px" : "calc(50% + 2px)"}`
                       : tripType === "roundtrip"
                       ? `${locale === "en" ? "calc(50% + 2px)" : "4px"}`
                       : "",
@@ -182,7 +188,7 @@ export function FlightSearchForm() {
               <div className="flex items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors">
                 <div className="flex-1">
                   <div className="text-sm text-primary-900 font-semibold">
-                    {getClassDisplayName(travelClass)}
+                    {t(`ticket_class.${getClassDisplayName(travelClass)}`)}
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -216,7 +222,7 @@ export function FlightSearchForm() {
               className="w-full h-10 bg-primary-900 hover:bg-primary-700 text-white font-semibold rounded cursor-pointer transition-colors"
               onClick={handleSearch}
             >
-              Search
+              {t("operations.search")}
             </Button>
           </CardContent>
         </Card>

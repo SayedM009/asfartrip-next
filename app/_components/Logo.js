@@ -9,7 +9,7 @@ function Logo() {
   return (
     <Link href="/">
       <Image
-        src={condition ? "/lightLogo.webp" : "/logo.png"}
+        src={condition ? "/lightLogo.webp" : "/logo.webp"}
         width={100}
         height={30}
         priority

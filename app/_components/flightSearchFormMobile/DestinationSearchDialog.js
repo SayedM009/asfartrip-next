@@ -11,43 +11,44 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { LucideSearch } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 const popularCities = [
-  "Cairo",
-  "Manila",
-  "Sharjah",
-  "London",
-  "Dubai",
-  "Jeddah",
+  "cairo",
+  "manila",
+  "sharjah",
+  "london",
+  "dubai",
+  "jeddah",
 ];
 
 const destinationsByRegion = {
-  Asia: ["Dubai", "Abu Dhabi", "Sharjah", "Kochi", "Kozhikode", "Manila"],
-  Europe: ["London", "Madrid", "Milan", "Tbilisi", "Paris", "Amsterdam"],
-  "North America": [
-    "New York",
-    "Los Angeles",
-    "Miami",
-    "Chicago",
-    "San Francisco",
-    "Toronto",
+  asia: ["dubai", "abu_dhabi", "sharjah", "kochi", "kozhikode", "manila"],
+  europe: ["london", "madrid", "milan", "tbilisi", "paris", "amsterdam"],
+  north_america: [
+    "new_york",
+    "los_angeles",
+    "miami",
+    "chicago",
+    "san_francisco",
+    "toronto",
   ],
-  "South America": [
-    "Sao Paulo",
-    "Rio de Janeiro",
-    "Bogota",
-    "Buenos Aires",
-    "Santiago",
-    "Lima",
+  south_america: [
+    "sao_paulo",
+    "rio_de_janeiro",
+    "bogota",
+    "buenos_ires",
+    "santiago",
+    "lima",
   ],
-  Africa: [
-    "Cairo",
-    "Giza Governorate",
-    "Alexandria",
-    "Casablanca",
-    "Tunis",
-    "Algiers",
+  africa: [
+    "cairo",
+    "south_africa",
+    "alexandria",
+    "casablanca",
+    "tunis",
+    "algiers",
   ],
 };
 
@@ -57,9 +58,9 @@ function DestinationSearchDialog({
   locale,
   dir = "start",
 }) {
-  // const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const searchDirection = locale == "en" ? "left-3" : "right-3";
+  const t = useTranslations("Flight");
   async function handleSearch(value) {
     if (!value) return setResults([]);
     if (value.length <= 2) return setResults([]);
@@ -67,14 +68,20 @@ function DestinationSearchDialog({
     setResults(data);
   }
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={() => {
+        setResults([]);
+      }}
+    >
       <DialogTrigger
-        className={`flex-1 flex flex-wrap justify-${dir} font-semibold text-primary-900`}
+        className={`flex-1 flex flex-wrap justify-${dir} font-semibold text-primary-900 `}
       >
-        {destination || "Cairo"}
-        {/* <span className="w-full text-gray-500 font-normal text-sm flex justify-start">
-          test
-        </span> */}
+        {destination.city || "City"}
+        <span
+          className={`w-full text-gray-500 font-normal text-sm flex justify-${dir}`}
+        >
+          {destination.code || "City"}
+        </span>
       </DialogTrigger>
       <DialogContent className=" bg-background h-full w-full max-w-none rounded-none border-0 p-3 overflow-y-auto">
         <DialogHeader>
@@ -83,8 +90,8 @@ function DestinationSearchDialog({
             <div className="relative w-full max-w-sm">
               <Input
                 type="search"
-                placeholder="City or airport"
-                className="rounded focus:outline-0 placeholder:text-sm placeholder:text-gray-400 text-sm text-primary-900 ps-10 shadow-none focus:ring-0 focus:border-gray-300"
+                placeholder={t("search_by_city_airport")}
+                className="rounded focus:outline-0 placeholder:text-sm placeholder:text-gray-400 text-sm  ps-10 shadow-none focus:ring-0 focus:border-gray-300"
                 onChange={(e) => handleSearch(e.target.value)}
               />
               <LucideSearch
@@ -110,9 +117,14 @@ function APIResultsList({ results, onSelect }) {
       {results.map((result) => (
         <DialogClose
           key={result.label_code + result.country}
-          className="flex flex-col justify-start  h-fit items-start bg-white border-b-1  w-full text-gray-900 p-2 mb-2"
+          className="flex mb-3 w-full "
         >
-          <Button onClick={() => onSelect(result.city)}>
+          <Button
+            onClick={() =>
+              onSelect({ city: result.city, code: result.label_code })
+            }
+            className="bg-white text-primary-900 h-14 flex flex-col gap-0 items-start w-full "
+          >
             <div>
               <span className="font-bold text-md text-accent-600">
                 {result.label_code}
@@ -130,15 +142,16 @@ function APIResultsList({ results, onSelect }) {
 }
 
 function PreparedResultsList({ onSelect }) {
+  const t = useTranslations("Flight");
   return (
     <section className="mt-5">
       <div className="flex flex-col items-start mb-0">
-        <span className="mb-3 font-bold">Popular cities</span>
-        <div className="grid grid-cols-3 gap-3 gap-x-8 px-8">
+        <span className="mb-3 font-bold">{t("popular_cities")}</span>
+        <div className="grid grid-cols-3 gap-3 w-full">
           {popularCities.map((city) => (
             <DialogClose asChild key={city} onClick={() => onSelect(city)}>
-              <Button className="w-24 rounded bg-gray-200 text-gray-950 text-[.7rem]">
-                {city}
+              <Button className="w-full  rounded bg-gray-200 text-gray-950 text-[.7rem] ">
+                {t(`cities.${city}`)}
               </Button>
             </DialogClose>
           ))}
@@ -146,13 +159,15 @@ function PreparedResultsList({ onSelect }) {
       </div>
       <div className="flex flex-col items-start mt-4">
         {Object.entries(destinationsByRegion).map(([region, cities]) => (
-          <div key={region}>
-            <div className="mt-3 mb-3 font-bold text-start">{region}</div>
-            <div className="grid grid-cols-3 gap-3 gap-x-8 px-8">
+          <div key={region} className="w-full">
+            <div className="mt-3 mb-3 font-bold text-start">
+              {t(`${region}`)}
+            </div>
+            <div className="grid grid-cols-3 gap-3">
               {cities.map((city) => (
                 <DialogClose asChild key={city} onClick={() => onSelect(city)}>
-                  <Button className="w-24 rounded bg-gray-200 text-gray-950 text-[.7rem]">
-                    {city}
+                  <Button className=" rounded bg-gray-200 text-gray-950 text-[.7rem]">
+                    {t(`cities.${city}`)}
                   </Button>
                 </DialogClose>
               ))}

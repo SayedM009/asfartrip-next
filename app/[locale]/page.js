@@ -1,8 +1,6 @@
-import Image from "next/image";
 import { FlightSearchForm } from "../_components/flightSearchFormMobile/FlightSearchFormMobile";
 import { homeMetadata } from "../_libs/metadata";
 import { useTranslations } from "next-intl";
-import ServicesNavigation from "../_components/ServicesNavigation";
 
 export const metadata = homeMetadata;
 

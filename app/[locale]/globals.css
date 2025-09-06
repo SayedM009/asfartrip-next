@@ -123,6 +123,8 @@
   --color-accent-800: #823412;
   --color-accent-900: #6a2b0f;
 
+  --breakpoint-xs: 480px;
+
   --animate-open: open 0.3s ease-in-out;
   @keyframes open {
     0% {

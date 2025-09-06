@@ -64,6 +64,11 @@ function ServicesNavigation() {
             alt={service.subTitle}
             width={WIDTH}
             height={HEIGHT}
+            unoptimized
+            priority
+            fetchPriority="high"
+            loading="eager"
+            quality={100}
             className={`${
               service.path == pathname
                 ? "bg-accent-300"

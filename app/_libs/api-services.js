@@ -1,5 +1,5 @@
+import { supabase } from "./supbase";
 const API = process.env.NEXT_PUBLIC_APP_API_BASE_URL;
-
 // Search airports
 export async function searchAirports(value) {
   if (!value) throw new Error("There is no value");
@@ -10,4 +10,25 @@ export async function searchAirports(value) {
   } catch (error) {
     console.error(error.message);
   }
+}
+
+export async function sendOtp(email) {
+  const { data, error } = await supabase.auth.signInWithOtp({
+    email: "Elsayedmoharam000@gmail.com",
+    options: {
+      shouldCreateUser: true,
+    },
+  });
+  if (error) alert(error.message);
+  else console.log(data);
+}
+
+export async function verifyOtp(email, otp) {
+  const { data, error } = await supabase.auth.verifyOtp({
+    email,
+    token: otp,
+    type: "email",
+  });
+  if (error) alert(error.message);
+  else console.log("Logged in ✅", data);
 }
