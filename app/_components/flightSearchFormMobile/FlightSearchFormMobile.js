@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Card, CardContent } from "../ui/card";
@@ -10,9 +10,7 @@ import { useLocale, useTranslations } from "next-intl";
 import DestinationSearchDialog from "./DestinationSearchDialog";
 
 export function FlightSearchForm() {
-  const [tripType, setTripType] = useState(
-    () => sessionStorage.getItem("tripType") || "roundtrip"
-  );
+  const [tripType, setTripType] = useState("roundtrip");
   const [departure, setDeparture] = useState({
     city: "Dubai",
     code: "DXB",
@@ -32,6 +30,14 @@ export function FlightSearchForm() {
   const [spinning, setSpinning] = useState(false);
   const locale = useLocale();
   const t = useTranslations("Flight");
+
+  // Avoid getting sessionStorage on server to skip an error
+  useEffect(() => {
+    const savedTripType = sessionStorage.getItem("tripType");
+    if (savedTripType) {
+      setTripType(savedTripType);
+    }
+  }, []);
 
   // Functions
   const swapCities = () => {

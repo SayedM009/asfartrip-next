@@ -8,8 +8,8 @@ function Header() {
     <nav className="flex items-center justify-between container-custom">
       <Logo />
       <div className="flex items-center gap-1 ">
-        <LanguageSwitcher />
-        <ThemeSwitcher />
+        {/* <LanguageSwitcher /> */}
+        {/* <ThemeSwitcher /> */}
         <LoginButton />
       </div>
     </nav>

@@ -14,13 +14,13 @@ export async function searchAirports(value) {
 
 export async function sendOtp(email) {
   const { data, error } = await supabase.auth.signInWithOtp({
-    email: "Elsayedmoharam000@gmail.com",
+    email,
     options: {
       shouldCreateUser: true,
     },
   });
-  if (error) alert(error.message);
-  else console.log(data);
+  if (error) return { error, errorStatus: true };
+  else return data;
 }
 
 export async function verifyOtp(email, otp) {
@@ -29,6 +29,6 @@ export async function verifyOtp(email, otp) {
     token: otp,
     type: "email",
   });
-  if (error) alert(error.message);
-  else console.log("Logged in ✅", data);
+  if (error) return { error, errorStatus: true };
+  else console.log(data);
 }
