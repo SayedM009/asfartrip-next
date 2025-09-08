@@ -150,7 +150,7 @@ function PreparedResultsList({ onSelect }) {
         <div className="grid grid-cols-3 gap-3 w-full">
           {popularCities.map((city) => (
             <DialogClose asChild key={city} onClick={() => onSelect(city)}>
-              <Button className="w-full  rounded bg-gray-200 text-gray-950 text-[.7rem] ">
+              <Button className="w-full  rounded bg-gray-200 text-gray-950 text-[.7rem] capitalize">
                 {t(`cities.${city}`)}
               </Button>
             </DialogClose>
@@ -166,7 +166,7 @@ function PreparedResultsList({ onSelect }) {
             <div className="grid grid-cols-3 gap-3">
               {cities.map((city) => (
                 <DialogClose asChild key={city} onClick={() => onSelect(city)}>
-                  <Button className=" rounded bg-gray-200 text-gray-950 text-[.7rem]">
+                  <Button className=" rounded bg-gray-200 text-gray-950 text-[.7rem] capitalize">
                     {t(`cities.${city}`)}
                   </Button>
                 </DialogClose>

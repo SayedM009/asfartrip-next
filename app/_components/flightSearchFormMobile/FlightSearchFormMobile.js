@@ -193,7 +193,7 @@ export function FlightSearchForm() {
             >
               <div className="flex items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors">
                 <div className="flex-1">
-                  <div className="text-sm text-primary-900 font-semibold">
+                  <div className="text-sm text-primary-900 font-semibold capitalize">
                     {t(`ticket_class.${getClassDisplayName(travelClass)}`)}
                   </div>
                 </div>

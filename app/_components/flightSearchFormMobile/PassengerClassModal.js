@@ -121,7 +121,11 @@ export function PassengerClassModal({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         {children || (
-          <Button variant="outline" className="h-12 w-full justify-start">
+          <Button
+            variant="outline"
+            className="h-12 w-full justify-start"
+            aria-label="Passengers & Flight classes button"
+          >
             <Users className="h-4 w-4 mr-2 text-muted-foreground" />
             <div className="flex flex-col items-start">
               <span className="text-xs text-muted-foreground font-normal">
@@ -157,7 +161,7 @@ export function PassengerClassModal({
                   className="flex items-center justify-between"
                 >
                   <div className="flex-1">
-                    <div className="font-medium">
+                    <div className="font-medium ">
                       {t(`passengers.${passengerType.type}`)}
                     </div>
                     <div className="text-xs text-muted-foreground">
@@ -219,7 +223,9 @@ export function PassengerClassModal({
                     dir={condition && "rtl"}
                   >
                     <div className="flex flex-col items-start">
-                      <span>{t(`ticket_class.${cls.label}`)}</span>
+                      <span className="capitalize">
+                        {t(`ticket_class.${cls.label}`)}
+                      </span>
                       <span className="text-xs text-muted-foreground">
                         {cls.description}
                         {t(`ticket_class.${cls.value}_description`)}

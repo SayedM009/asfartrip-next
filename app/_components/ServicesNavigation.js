@@ -11,28 +11,28 @@ const SERVICES = [
   {
     title: "Flights",
     subTitle: "Flights service can display over +500 airline",
-    src: "/icons/airplane.gif",
+    src: "/icons/airplane-m.gif",
     path: "/flights",
     default: true,
   },
   {
     title: "Hotels",
     subTitle: "Hotels: Check Over 2M hotel around the world",
-    src: "/icons/bed.gif",
+    src: "/icons/bed-m.gif",
     path: "/hotels",
     default: false,
   },
   {
     title: "Insurance",
     subTitle: "Insurance: Make your trip safe and enjoy with life.",
-    src: "/icons/insurance.gif",
+    src: "/icons/insurance-m.gif",
     path: "/insurance",
     default: false,
   },
   {
     title: "Cars",
     subTitle: "Cars: Transfers became easy.",
-    src: "/icons/car.gif",
+    src: "/icons/car-m.gif",
     path: "/cars",
     default: false,
   },
@@ -68,7 +68,6 @@ function ServicesNavigation() {
             priority
             fetchPriority="high"
             loading="eager"
-            quality={100}
             className={`${
               service.path == pathname
                 ? "bg-accent-300"
