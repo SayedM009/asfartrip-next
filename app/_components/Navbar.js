@@ -1,5 +1,5 @@
 import LanguageSwitcher from "./LanguageSwitcher";
-import LoginButton from "./LoginButton";
+import LoginButton from "./loginButton/LoginButton";
 import Logo from "./Logo";
 import ThemeSwitcher from "./ThemeSwitcher";
 

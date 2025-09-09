@@ -2,8 +2,6 @@ import { FlightSearchForm } from "../_components/flightSearchFormMobile/FlightSe
 // import { homeMetadata } from "../_libs/metadata";
 import { useTranslations } from "next-intl";
 
-// export const metadata = homeMetadata;
-
 export const metadata = {
   title: "Welcome / Asfartrip.com",
   description:
