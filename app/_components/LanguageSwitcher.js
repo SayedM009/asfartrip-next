@@ -63,15 +63,18 @@ function LanguageSwitcher() {
   const selectedCurrency = currencies.find((curr) => curr.code === currency);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild className=" icons-hover-600">
+      <DialogTrigger
+        asChild
+        className=" icons-hover-600 text-gray-900 dark:text-gray-100"
+      >
         <Button
           variant="ghost"
           size="sm"
           className="flex items-center hover:bg-accent"
         >
           <Globe className="svg" />
-          <span className="hidden sm:inline  hover:cursor-pointer ">
-            {selectedLanguage?.code.toUpperCase()} | {selectedCurrency?.symbol}
+          <span className="  hover:cursor-pointer ">
+            {selectedLanguage?.name.toUpperCase()} | {selectedCurrency?.symbol}
           </span>
         </Button>
       </DialogTrigger>

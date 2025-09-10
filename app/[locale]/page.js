@@ -1,3 +1,4 @@
+import BottomAppBar from "../_components/bottomAppBar/BottomAppBar";
 import { FlightSearchForm } from "../_components/flightSearchFormMobile/FlightSearchFormMobile";
 // import { homeMetadata } from "../_libs/metadata";
 import { useTranslations } from "next-intl";
@@ -8,18 +9,21 @@ export const metadata = {
     "Asfartrip.com is an online travel agency (OTA) that provides tourizm services such as (Flight ticket, Hotel bookings, Travel insurance, Car rentals & Holiday packages)",
 };
 
-function HomePage() {
+function HomePage({ params }) {
   const t = useTranslations("Homepage");
-
+  console.log(params.slug, "*********************************");
   return (
-    <section>
-      <div className="w-full-main-colors">
-        <div className="container-custom">
-          <FlightSearchForm />
+    <>
+      <section>
+        <div className="w-full-main-colors">
+          <div className="container-custom">
+            <FlightSearchForm />
+          </div>
         </div>
-      </div>
-      <div className="container-custom ">{t("title")}</div>
-    </section>
+        <div className="container-custom ">{t("title")}</div>
+      </section>
+      <BottomAppBar />
+    </>
   );
 }
 

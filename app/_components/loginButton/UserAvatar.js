@@ -5,7 +5,6 @@ import Image from "next/image";
 export default function UserAvatar({ user }) {
   return (
     <>
-      {/* On mobile */}
       <Link href="/profile" className="block sm:hidden">
         <Avatar>
           <AvatarImage

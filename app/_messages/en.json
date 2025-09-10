@@ -1,6 +1,10 @@
 {
   "Homepage": {
-    "title": "ِAsfartrip.com"
+    "title": "ِAsfartrip.com",
+    "home": "home",
+    "trips": "trips",
+    "offers": "offers",
+    "more": "more"
   },
   "Languageswitcher": {
     "close": "close menu",
@@ -29,7 +33,19 @@
   },
   "Login": {
     "ariaLabel": "Login",
-    "title": "Sign in"
+    "title": "Sign in",
+    "signin_register": "sign in / register",
+    "sub_title_one": "get member benefits",
+    "sub_title_two": "rewards for booking",
+    "email": "Email",
+    "continue": "continue",
+    "continue_google": "continue with Google",
+    "or": "or",
+    "empty_email": "please enter an email address",
+    "invalid_email": "Please enter a valid email address",
+    "verification_code": "Enter verification code",
+    "short_message": "We've sent a verification code to",
+    "submit": "submit"
   },
 
   "Services": {

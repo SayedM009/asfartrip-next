@@ -7,6 +7,7 @@ const nextConfig = {
   images: {
     remotePatterns: [new URL("https://lh3.googleusercontent.com/a/**")],
     domains: ["lh3.googleusercontent.com"],
+    domains: ["github.com"],
   },
 };
 

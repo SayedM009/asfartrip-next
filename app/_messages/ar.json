@@ -1,6 +1,10 @@
 {
   "Homepage": {
-    "title": "أسفار تربز"
+    "title": "أسفار تربز",
+    "home": "الرئيسية",
+    "trips": "رحلات",
+    "offers": "عروض",
+    "more": "المزيد"
   },
   "Languageswitcher": {
     "close": "إغلاق القائمة",
@@ -29,7 +33,19 @@
   },
   "Login": {
     "ariaLabel": "تسجيل الدخول",
-    "title": "تسجيل الدخول"
+    "title": "تسجيل الدخول",
+    "signin_register": "تسجيل الدخول / تسجيل",
+    "sub_title_one": "احصل على مزايا الأعضاء",
+    "sub_title_two": "مكافأت على الحجز",
+    "email": "البريد الإلكترونى",
+    "continue": "متابعة",
+    "continue_google": "المتابعة باستخدم جوجل",
+    "or": "أو",
+    "empty_email": "يرجى إدخال بريد إلكترونى",
+    "invalid_email": "يرجى إدخال بريد إلكترونى صالح",
+    "verification_code": "أدخل رمز التحقق لتجسيل الدخول",
+    "short_message": "لقد أرسلنا رمز التحقق الى ",
+    "submit": "إرسال"
   },
   "Services": {
     "Flights": "طيران",
