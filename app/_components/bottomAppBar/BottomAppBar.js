@@ -32,7 +32,7 @@ function BottomAppBar() {
     },
   ];
   return (
-    <footer className=" fixed w-full bottom-0 px-4 flex justify-around shadow-3xl border-t-2 border-gray-100">
+    <footer className=" fixed w-full bottom-0 px-4 flex justify-around shadow-3xl ">
       {HOME_PAGE_LINKS.map((link) => (
         <Link
           href={link.path}

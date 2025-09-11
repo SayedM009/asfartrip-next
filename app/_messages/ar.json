@@ -6,17 +6,34 @@
     "offers": "عروض",
     "more": "المزيد"
   },
+  "Pages": {
+    "about_us": "من نحن",
+    "contact_us": "إتصل بنا",
+    "privacy_policy": "سياسة الخصوصية",
+    "terms_conditions": "الشروط و الأحكام",
+    "faqs": "الأسئلة التكررة"
+  },
   "Languageswitcher": {
     "close": "إغلاق القائمة",
     "language": "اللغة",
     "regionalSettings": "إعدادات المنطقة",
     "ariaLabel": "تبديل اللغة",
-    "title": "اللغة & العملة",
-    "sub_title": "اختر لغتك وعملتك المفضلة للحصول على أفضل تجربة.",
+    "title": "تغير اللغة",
+    "sub_title": "اختر لغتك المفضلة للحصول على أفضل تجربة.",
     "select_language": "إختر اللغة",
-    "select_currency": "إختر العملة",
     "apply": "تطبيق",
-    "cancel": "إلغاء",
+    "cancel": "إلغاء"
+  },
+  "ThemeSwitcher": {
+    "light": "ثيم فاتح",
+    "dark": "ثيم داكن",
+    "ariaLabel": "تبديل السمة",
+    "title": "مبدل السمة",
+    "dark_mode": "الوضع المظلم"
+  },
+  "CurrencySwitcher": {
+    "title": "تغير العملة",
+    "select_currency": "إختر العملة",
     "currencies": {
       "us": "الدولار الأمريكى",
       "eu": "اليورو",
@@ -24,12 +41,6 @@
       "chf": "الفرانك السويسري",
       "ae": "الدرهم الإماراتي"
     }
-  },
-  "ThemeSwitcher": {
-    "light": "ثيم فاتح",
-    "dark": "ثيم داكن",
-    "ariaLabel": "تبديل السمة",
-    "title": "مبدل السمة"
   },
   "Login": {
     "ariaLabel": "تسجيل الدخول",
@@ -45,7 +56,8 @@
     "invalid_email": "يرجى إدخال بريد إلكترونى صالح",
     "verification_code": "أدخل رمز التحقق لتجسيل الدخول",
     "short_message": "لقد أرسلنا رمز التحقق الى ",
-    "submit": "إرسال"
+    "submit": "إرسال",
+    "sign_out": "تسجيل الخروج"
   },
   "Services": {
     "Flights": "طيران",

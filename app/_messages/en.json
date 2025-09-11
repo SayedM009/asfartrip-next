@@ -6,17 +6,35 @@
     "offers": "offers",
     "more": "more"
   },
+  "Pages": {
+    "about_us": "About Us",
+    "contact_us": "Contact Us",
+    "privacy_policy": "Privacy Policy",
+    "terms_conditions": "Terms & Conditions",
+    "faqs": "FAQs"
+  },
   "Languageswitcher": {
     "close": "close menu",
     "language": "Language",
     "regionalSettings": "Regional Settings",
     "ariaLabel": "Switch Language",
-    "title": "Language & Currency",
-    "sub_title": "Select your preferred language and currency for the best experience.",
+    "title": "Change Language",
+    "sub_title": "Select your preferred language  for the best experience.",
     "select_language": "Select language",
-    "select_currency": "Select currency",
+
     "apply": "Apply",
-    "cancel": "Cancel",
+    "cancel": "Cancel"
+  },
+  "ThemeSwitcher": {
+    "light": "Light Theme",
+    "dark": "Dark Theme",
+    "ariaLabel": "Switch Theme",
+    "title": "Theme Switcher",
+    "dark_mode": "Dark Mode"
+  },
+  "CurrencySwitcher": {
+    "title": "Change Currency",
+    "select_currency": "Select currency",
     "currencies": {
       "us": "US Dollar",
       "eu": "Euro",
@@ -24,12 +42,6 @@
       "chf": "Swiss Franc",
       "ae": "UAE Dirham"
     }
-  },
-  "ThemeSwitcher": {
-    "light": "Light Theme",
-    "dark": "Dark Theme",
-    "ariaLabel": "Switch Theme",
-    "title": "Theme Switcher"
   },
   "Login": {
     "ariaLabel": "Login",
@@ -45,7 +57,8 @@
     "invalid_email": "Please enter a valid email address",
     "verification_code": "Enter verification code",
     "short_message": "We've sent a verification code to",
-    "submit": "submit"
+    "submit": "submit",
+    "sign_out": "Sign Out"
   },
 
   "Services": {
