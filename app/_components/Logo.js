@@ -4,22 +4,21 @@ import { useTheme } from "next-themes";
 import Image from "next/image";
 
 function Logo() {
-  const { theme } = useTheme();
-  const condition = theme === "light";
-  console.log(condition);
-  return (
-    <Link href="/">
-      <Image
-        src={condition ? "/logo.webp" : "/lightLogo.webp"}
-        width={100}
-        height={30}
-        priority
-        fetchPriority="high"
-        loading="eager"
-        alt="logo"
-      />
-    </Link>
-  );
+    const { theme } = useTheme();
+    const condition = theme === "light";
+    return (
+        <Link href="/">
+            <Image
+                src={condition ? "/logo.webp" : "/lightLogo.webp"}
+                width={100}
+                height={30}
+                priority
+                fetchPriority="high"
+                loading="eager"
+                alt="logo"
+            />
+        </Link>
+    );
 }
 
 export default Logo;

@@ -7,8 +7,7 @@ import { getMessages } from "next-intl/server";
 import { AuthProvider } from "./providers";
 import { Toaster } from "@/components/ui/sonner";
 import "@/app/[locale]/globals.css";
-import Navbar from "@/app/_components/Navbar";
-import ServicesNavigation from "@/app/_components/ServicesNavigation";
+import { Footer } from "../_components/Footer";
 
 export const metadata = rootLayoutMetadata;
 
@@ -18,8 +17,6 @@ export function generateStaticParams() {
 
 export default async function RootLayout({ children, params: { locale } }) {
     const conditions = locale === "ar";
-
-    // جلب الـ messages
     const messages = await getMessages();
 
     return (
@@ -38,11 +35,10 @@ export default async function RootLayout({ children, params: { locale } }) {
                             enableSystem
                             defaultTheme="system"
                         >
-                            <Navbar />
-                            <ServicesNavigation />
                             <main className="w-full-light-colors">
                                 {children}
                             </main>
+                            <Footer />
                             <Toaster position="top-center" />
                         </ThemeProvider>
                     </NextIntlClientProvider>
