@@ -60,7 +60,9 @@ export function PassengerClassModal({
 
   const handleApply = () => {
     onPassengersChange(tempPassengers);
+    sessionStorage.setItem("flightPassengers", JSON.stringify(tempPassengers));
     onClassChange(tempClass);
+    sessionStorage.setItem("travelClass", tempClass);
     setIsOpen(false);
   };
 

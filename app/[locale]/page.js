@@ -11,7 +11,7 @@ export const metadata = {
 
 function HomePage({ params }) {
   const t = useTranslations("Homepage");
-  console.log(params.slug, "*********************************");
+
   return (
     <>
       <section>

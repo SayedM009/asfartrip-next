@@ -87,6 +87,8 @@
     "north_america": "North America",
     "south_america": "South America",
     "africa": "Africa",
+    "departure": "Departure",
+    "destination": "Destination",
     "cities": {
       "cairo": "cairo",
       "manila": "manila",
@@ -146,7 +148,16 @@
       "apply": "Apply",
       "cancel": "Cancel",
       "close": "Close",
-      "search": "Search"
+      "search": "Search",
+      "searching": "Searching flights..."
+    },
+
+    "errors": {
+      "same_city": "Cannot select the same city twice: {city}",
+      "departure_required": "Departure city is required",
+      "destination_required": "Destination city is required",
+      "departure_date_required": "Departure date is required",
+      "return_date_required": "Return date is required"
     }
   }
 }

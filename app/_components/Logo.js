@@ -5,11 +5,12 @@ import Image from "next/image";
 
 function Logo() {
   const { theme } = useTheme();
-  const condition = theme === "dark";
+  const condition = theme === "light";
+  console.log(condition);
   return (
     <Link href="/">
       <Image
-        src={condition ? "/lightLogo.webp" : "/logo.webp"}
+        src={condition ? "/logo.webp" : "/lightLogo.webp"}
         width={100}
         height={30}
         priority

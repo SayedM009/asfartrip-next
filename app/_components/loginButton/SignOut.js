@@ -9,7 +9,7 @@ function SignOutButton() {
   const { data: session, status } = useSession();
   if (status === "loading") return null; // أثناء التحميل متعرضش حاجة
   if (!session) return null; // لو مفيش مستخدم مسجل، مخفي
-
+  console.log(status);
   return (
     <Button
       onClick={() => signOut()}

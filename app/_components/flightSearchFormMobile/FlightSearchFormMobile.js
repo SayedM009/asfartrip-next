@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Card, CardContent } from "../ui/card";
@@ -8,17 +9,13 @@ import { User, Users, Baby, RefreshCcw } from "lucide-react";
 import DateRangeDialog from "./DateRangeDialog";
 import { useLocale, useTranslations } from "next-intl";
 import DestinationSearchDialog from "./DestinationSearchDialog";
+import { safeParse } from "@/app/_helpers/safeParse";
+import { useRouter } from "@/i18n/navigation";
 
 export function FlightSearchForm() {
   const [tripType, setTripType] = useState("roundtrip");
-  const [departure, setDeparture] = useState({
-    city: "Dubai",
-    code: "DXB",
-  });
-  const [destination, setDestination] = useState({
-    city: "Cairo",
-    code: "CAI",
-  });
+  const [departure, setDeparture] = useState("");
+  const [destination, setDestination] = useState("");
   const [departDate, setDepartDate] = useState(null);
   const [range, setRange] = useState({ from: null, to: null });
   const [passengers, setPassengers] = useState({
@@ -30,13 +27,25 @@ export function FlightSearchForm() {
   const [spinning, setSpinning] = useState(false);
   const locale = useLocale();
   const t = useTranslations("Flight");
+  const router = useRouter();
 
   // Avoid getting sessionStorage on server to skip an error
   useEffect(() => {
-    const savedTripType = sessionStorage.getItem("tripType");
-    if (savedTripType) {
-      setTripType(savedTripType);
-    }
+    setTripType(sessionStorage.getItem("tripType") || "roundtrip");
+    setDeparture(safeParse(sessionStorage.getItem("departure"), ""));
+    setDestination(safeParse(sessionStorage.getItem("destination"), ""));
+    setDepartDate(safeParse(sessionStorage.getItem("departureDate"), null));
+    setRange(
+      safeParse(sessionStorage.getItem("rangeDate"), { from: null, to: null })
+    );
+    setTravelClass(sessionStorage.getItem("travelClass") || "economy");
+    setPassengers(
+      safeParse(sessionStorage.getItem("flightPassengers"), {
+        adults: 1,
+        children: 0,
+        infants: 0,
+      })
+    );
   }, []);
 
   // Functions
@@ -67,7 +76,39 @@ export function FlightSearchForm() {
   }
 
   function handleSearch() {
-    // console.log(tripType);
+    if (departure && destination && departure?.city === destination?.city) {
+      toast.error(t("errors.same_city", { city: departure?.city }));
+      return;
+    }
+
+    if (!departure) {
+      toast.error(t("errors.departure_required"));
+      return;
+    }
+
+    if (!destination) {
+      toast.error(t("errors.destination_required"));
+      return;
+    }
+
+    if (tripType === "oneway") {
+      if (!departDate) {
+        toast.error(t("errors.departure_date_required"));
+        return;
+      }
+    }
+
+    if (tripType === "roundtrip") {
+      if (!range?.from || !range?.to) {
+        toast.error(t("errors.return_date_required"));
+        return;
+      }
+    }
+
+    toast.success(t("operations.searching"));
+    // هنا ممكن تضيف الكود اللي بيعمل Search أو Redirect لصفحة النتائج
+    console.log("Current locale:", locale);
+    router.push("/flights/list");
   }
 
   return (
@@ -133,6 +174,7 @@ export function FlightSearchForm() {
                     destination={departure}
                     onSelect={setDeparture}
                     locale={locale}
+                    sessionKey="departure"
                   />
 
                   {/* Swap Button */}
@@ -156,6 +198,7 @@ export function FlightSearchForm() {
                     onSelect={setDestination}
                     locale={locale}
                     dir="end"
+                    sessionKey="destination"
                   />
                 </div>
               </div>
