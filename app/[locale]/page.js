@@ -4,8 +4,7 @@ import { FlightSearchForm } from "../_components/flightSearchFormMobile/FlightSe
 import { useTranslations } from "next-intl";
 import Navbar from "@/app/_components/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
-import MobileDetect from "mobile-detect";
-import { headers } from "next/headers";
+import useIsDevice from "../_hooks/useIsDevice";
 
 export const metadata = {
     title: "Welcome / Asfartrip.com",
@@ -15,32 +14,19 @@ export const metadata = {
 
 function HomePage() {
     const t = useTranslations("Homepage");
-    const ua = headers().get("user-agent") || "";
-    const md = new MobileDetect(ua);
+    const { mobile } = useIsDevice();
 
     return (
         <>
             <Navbar />
-            <section className="container-custom">
+            <section>
                 <ServicesNavigation />
-                {md.mobile() ? <FlightSearchForm /> : null}
+                {mobile ? <FlightSearchForm /> : null}
                 <div>{t("title")}</div>
             </section>
-            {md.mobile() && <BottomAppBar />}
+            {mobile && <BottomAppBar />}
         </>
     );
 }
 
 export default HomePage;
-
-// <>
-//     <section>
-//         <div className="w-full-main-colors">
-//             <div className="container-custom">
-//                 <FlightSearchForm />
-//             </div>
-//         </div>
-//         <div className="container-custom ">{t("title")}</div>
-//     </section>
-//     <BottomAppBar />
-// </>

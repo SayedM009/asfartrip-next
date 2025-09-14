@@ -8,81 +8,83 @@ const WIDTH = 60;
 const HEIGHT = 60;
 
 const SERVICES = [
-  {
-    title: "Flights",
-    subTitle: "Flights service can display over +500 airline",
-    src: "/icons/airplane-m.gif",
-    path: "/flights",
-    default: true,
-  },
-  {
-    title: "Hotels",
-    subTitle: "Hotels: Check Over 2M hotel around the world",
-    src: "/icons/bed-m.gif",
-    path: "/hotels",
-    default: false,
-  },
-  {
-    title: "Insurance",
-    subTitle: "Insurance: Make your trip safe and enjoy with life.",
-    src: "/icons/insurance-m.gif",
-    path: "/insurance",
-    default: false,
-  },
-  {
-    title: "Cars",
-    subTitle: "Cars: Transfers became easy.",
-    src: "/icons/car-m.gif",
-    path: "/cars",
-    default: false,
-  },
+    {
+        title: "Flights",
+        subTitle: "Flights service can display over +500 airline",
+        src: "/icons/airplane-m.gif",
+        path: "/flights",
+        default: true,
+    },
+    {
+        title: "Hotels",
+        subTitle: "Hotels: Check Over 2M hotel around the world",
+        src: "/icons/bed-m.gif",
+        path: "/hotels",
+        default: false,
+    },
+    {
+        title: "Insurance",
+        subTitle: "Insurance: Make your trip safe and enjoy with life.",
+        src: "/icons/insurance-m.gif",
+        path: "/insurance",
+        default: false,
+    },
+    {
+        title: "Cars",
+        subTitle: "Cars: Transfers became easy.",
+        src: "/icons/car-m.gif",
+        path: "/cars",
+        default: false,
+    },
 ];
 
-//  pathname = path
-
 function ServicesNavigation() {
-  const pathname = usePathname();
-  const t = useTranslations("Services");
-  const { theme } = useTheme();
-  const condition = theme === "dark";
-  return (
-    <nav className="grid grid-cols-4 gap-8 mt-5 mb-0 px-6 ">
-      {SERVICES.map((service) => (
-        <Link
-          key={service.title}
-          href={service.path}
-          className={`flex justify-center flex-col items-center md:flex-row gap-2  md:w-fit md:text-black md:p-2 rounded-2xl ${
-            service.path == pathname
-              ? "md:bg-accent-300"
-              : service.path == "/flights" && pathname == "/"
-              ? "md:bg-accent-300"
-              : "md:bg-white"
-          }`}
-        >
-          <Image
-            src={service.src}
-            alt={service.subTitle}
-            width={WIDTH}
-            height={HEIGHT}
-            unoptimized
-            priority
-            fetchPriority="high"
-            loading="eager"
-            className={`${
-              service.path == pathname
-                ? "bg-accent-300"
-                : service.path == "/flights" && pathname == "/"
-                ? "bg-accent-300"
-                : `bg-gradient-to-b ${
-                    condition ? " from-gray-100" : " to-gray-300 from-white"
-                  }`
-            } rounded-lg p-2.5 md:p-0 aspect-square`}
-          />
-          <span className="font-normal mt-1">{t(`${service.title}`)}</span>
-        </Link>
-      ))}
-    </nav>
-  );
+    const pathname = usePathname();
+    const t = useTranslations("Services");
+    const { theme } = useTheme();
+    const condition = theme === "dark";
+    return (
+        <nav className="flex items-center justify-between my-5">
+            {SERVICES.map((service) => (
+                <Link
+                    key={service.title}
+                    href={service.path}
+                    className={`flex justify-center flex-col items-center md:flex-row gap-2  md:w-fit md:text-black md:p-2 rounded-2xl ${
+                        service.path == pathname
+                            ? "md:bg-accent-300"
+                            : service.path == "/flights" && pathname == "/"
+                            ? "md:bg-accent-300"
+                            : "md:bg-white"
+                    }`}
+                >
+                    <Image
+                        src={service.src}
+                        alt={service.subTitle}
+                        width={WIDTH}
+                        height={HEIGHT}
+                        unoptimized
+                        priority
+                        fetchPriority="high"
+                        loading="eager"
+                        className={`${
+                            service.path == pathname
+                                ? "bg-accent-300"
+                                : service.path == "/flights" && pathname == "/"
+                                ? "bg-accent-300"
+                                : `bg-gradient-to-b ${
+                                      condition
+                                          ? " from-gray-100"
+                                          : " to-gray-300 from-white"
+                                  }`
+                        } rounded-lg p-2.5 md:p-0 aspect-square`}
+                    />
+                    <span className="font-normal mt-1">
+                        {t(`${service.title}`)}
+                    </span>
+                </Link>
+            ))}
+        </nav>
+    );
 }
 
 export default ServicesNavigation;

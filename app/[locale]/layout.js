@@ -6,8 +6,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { AuthProvider } from "./providers";
 import { Toaster } from "@/components/ui/sonner";
-import "@/app/[locale]/globals.css";
 import { Footer } from "../_components/Footer";
+import "@/app/[locale]/globals.css";
 
 export const metadata = rootLayoutMetadata;
 
@@ -35,9 +35,7 @@ export default async function RootLayout({ children, params: { locale } }) {
                             enableSystem
                             defaultTheme="system"
                         >
-                            <main className="w-full-light-colors">
-                                {children}
-                            </main>
+                            <main className="container-custom">{children}</main>
                             <Footer />
                             <Toaster position="top-center" />
                         </ThemeProvider>

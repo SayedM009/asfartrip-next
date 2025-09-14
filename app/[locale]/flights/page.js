@@ -3,15 +3,11 @@ import ServicesNavigation from "@/app/_components/ServicesNavigation";
 import Navbar from "@/app/_components/Navbar";
 
 function page() {
-  return (
-    <section>
-      <div className="w-full-main-colors">
-        <div className="container-custom">
-          <FlightSearchForm />
-        </div>
-      </div>
-    </section>
-  );
+    return (
+        <section>
+            <FlightSearchForm />
+        </section>
+    );
 }
 
 export default page;

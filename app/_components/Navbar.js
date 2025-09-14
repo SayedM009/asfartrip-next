@@ -4,16 +4,16 @@ import Logo from "./Logo";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 function Header() {
-  return (
-    <nav className="flex items-center justify-between container-custom">
-      <Logo />
-      <div className="flex items-center gap-1 ">
-        <LanguageSwitcher hiddenOnMobile={true} />
-        <ThemeSwitcher hiddenOnMobile={true} />
-        <LoginButton />
-      </div>
-    </nav>
-  );
+    return (
+        <nav className="flex items-center justify-between ">
+            <Logo />
+            <div className="flex items-center gap-1 ">
+                <LanguageSwitcher hiddenOnMobile={true} />
+                <ThemeSwitcher hiddenOnMobile={true} />
+                <LoginButton />
+            </div>
+        </nav>
+    );
 }
 
 export default Header;

@@ -1,6 +1,5 @@
 import React from "react";
 import { Separator } from "./ui/separator";
-
 import {
     Plane,
     Facebook,
@@ -11,8 +10,11 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import useIsDevice from "../_hooks/useIsDevice";
 
 export function Footer() {
+    const { mobile } = useIsDevice();
+    if (mobile) return null;
     return (
         <footer className="bg-muted text-muted-foreground hidden md:block">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
