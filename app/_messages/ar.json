@@ -1,160 +1,166 @@
 {
-  "Homepage": {
-    "title": "أسفار تربز",
-    "home": "الرئيسية",
-    "trips": "رحلات",
-    "offers": "عروض",
-    "more": "المزيد"
-  },
-  "Pages": {
-    "about_us": "من نحن",
-    "contact_us": "إتصل بنا",
-    "privacy_policy": "سياسة الخصوصية",
-    "terms_conditions": "الشروط و الأحكام",
-    "faqs": "الأسئلة التكررة"
-  },
-  "Languageswitcher": {
-    "close": "إغلاق القائمة",
-    "language": "اللغة",
-    "regionalSettings": "إعدادات المنطقة",
-    "ariaLabel": "تبديل اللغة",
-    "title": "تغير اللغة",
-    "sub_title": "اختر لغتك المفضلة للحصول على أفضل تجربة.",
-    "select_language": "إختر اللغة",
-    "apply": "تطبيق",
-    "cancel": "إلغاء"
-  },
-  "ThemeSwitcher": {
-    "light": "ثيم فاتح",
-    "dark": "ثيم داكن",
-    "ariaLabel": "تبديل السمة",
-    "title": "مبدل السمة",
-    "dark_mode": "الوضع المظلم"
-  },
-  "CurrencySwitcher": {
-    "title": "تغير العملة",
-    "select_currency": "إختر العملة",
-    "currencies": {
-      "us": "الدولار الأمريكى",
-      "eu": "اليورو",
-      "gbp": "الجنية الإسترليني",
-      "chf": "الفرانك السويسري",
-      "ae": "الدرهم الإماراتي"
+    "Homepage": {
+        "title": "أسفار تربز",
+        "home": "الرئيسية",
+        "trips": "رحلات",
+        "offers": "عروض",
+        "more": "المزيد"
+    },
+    "Pages": {
+        "about_us": "من نحن",
+        "contact_us": "إتصل بنا",
+        "privacy_policy": "سياسة الخصوصية",
+        "terms_conditions": "الشروط و الأحكام",
+        "faqs": "الأسئلة التكررة"
+    },
+    "Languageswitcher": {
+        "close": "إغلاق القائمة",
+        "language": "اللغة",
+        "regionalSettings": "إعدادات المنطقة",
+        "ariaLabel": "تبديل اللغة",
+        "title": "تغير اللغة",
+        "sub_title": "اختر لغتك المفضلة للحصول على أفضل تجربة.",
+        "select_language": "إختر اللغة",
+        "apply": "تطبيق",
+        "cancel": "إلغاء"
+    },
+    "ThemeSwitcher": {
+        "light": "ثيم فاتح",
+        "dark": "ثيم داكن",
+        "ariaLabel": "تبديل السمة",
+        "title": "مبدل السمة",
+        "dark_mode": "الوضع المظلم"
+    },
+    "CurrencySwitcher": {
+        "title": "تغير العملة",
+        "select_currency": "إختر العملة",
+        "currencies": {
+            "us": "الدولار الأمريكى",
+            "eu": "اليورو",
+            "gbp": "الجنية الإسترليني",
+            "chf": "الفرانك السويسري",
+            "ae": "الدرهم الإماراتي"
+        }
+    },
+    "Login": {
+        "ariaLabel": "تسجيل الدخول",
+        "title": "تسجيل الدخول",
+        "signin_register": "تسجيل الدخول / تسجيل",
+        "sub_title_one": "احصل على مزايا الأعضاء",
+        "sub_title_two": "مكافأت على الحجز",
+        "email": "البريد الإلكترونى",
+        "continue": "متابعة",
+        "continue_google": "المتابعة باستخدم جوجل",
+        "or": "أو",
+        "empty_email": "يرجى إدخال بريد إلكترونى",
+        "invalid_email": "يرجى إدخال بريد إلكترونى صالح",
+        "verification_code": "أدخل رمز التحقق لتجسيل الدخول",
+        "short_message": "لقد أرسلنا رمز التحقق الى ",
+        "submit": "إرسال",
+        "sign_out": "تسجيل الخروج"
+    },
+    "Services": {
+        "Flights": "طيران",
+        "Hotels": "فنادق",
+        "Insurance": "تأمين",
+        "Cars": "توصيل",
+        "Flights_sub_title": "حجز التذاكر",
+        "Hotels_sub_title": "فنادق ممتازة",
+        "Insurance_sub_title": "أمن رحلتك",
+        "Cars_sub_title": "تأجير مركبات"
+    },
+    "Hooks": {
+        "day": "يوم"
+    },
+    "Calender": {
+        "travel_date": "تاريخ السفر",
+        "departure_date": "تاريخ المغادرة",
+        "return_date": "تاريخ العودة",
+        "select_date": "إختر التاريخ",
+        "apply": "تطبيق"
+    },
+    "Flight": {
+        "one_way": "ذهاب فقط",
+        "round_trip": "ذهاب و عودة",
+        "search_by_city_airport": "مدينة أو مطار",
+        "popular_cities": "مدن شعبية",
+        "asia": "آسيا",
+        "europe": "أوروبا",
+        "north_america": "أمريكا الشمالية",
+        "south_america": "أمريكا الجنوبية",
+        "africa": "أفريقيا",
+        "departure": "المغادرة",
+        "destination": "الوجهة",
+        "from": "من",
+        "to": "إلى",
+        "cities": {
+            "cairo": "القاهرة",
+            "manila": "مانيلا",
+            "sharjah": "الشارقة",
+            "jeddah": "جدة",
+            "dubai": "دبي",
+            "london": "لندن",
+            "abu_dhabi": "أبو ظبي",
+            "kochi": "كوتشي",
+            "kozhikode": "كوزيكود",
+            "madrid": "مدريد",
+            "milan": "ميلان",
+            "tbilisi": "تبليسي",
+            "paris": "باريس",
+            "amsterdam": "أمستردام",
+            "new_york": "نيويورك",
+            "los_angeles": "لوس أنجلوس",
+            "san_francisco": "سان فرانسيسكو",
+            "miami": "ميامي",
+            "chicago": " شيكاغو",
+            "santiago": "سانتياغو",
+            "toronto": "تورونتو",
+            "sao_paulo": "ساو باولو",
+            "rio_de_janeiro": "ريو دي جانيرو",
+            "bogota": "بوغوتا",
+            "lima": "ليما",
+            "buenos_ires": "بوينس آيرس",
+            "alexandria": "الإسكندرية",
+            "casablanca": "الدار البيضاء",
+            "tunis": "تونس",
+            "algiers": "الجزائر",
+            "south_africa": "جنوب أفريقيا"
+        },
+        "ticket_class": {
+            "economy": "الدرجة السياحية",
+            "economy_description": "مقاعد وخدمات قياسية",
+            "business": "درجة رجال الأعمال",
+            "business_description": "خدمة وراحة أولوية",
+            "first": "الدرجة الأولى",
+            "first_description": "تجربة سفر فاخرة"
+        },
+        "passengers": {
+            "title": "الركاب و الدرجة",
+            "subtitle": "إختر عدد الركاب و درجة السفر",
+            "passengers": "الركاب",
+            "travel_class": "درجة السفر",
+            "adults": "البالغين",
+            "adults_description": "12 سنة فما فوق",
+            "children": "الأطفال",
+            "children_description": "2-11 سنة",
+            "infants": "الرضع",
+            "infants_description": "أقل من سنتين",
+            "cancel": "إلغاء",
+            "apply": "تطبيق"
+        },
+        "operations": {
+            "apply": "تطبيق",
+            "cancel": "إلغاء",
+            "close": "إغلاق",
+            "search": "بحث",
+            "searching": "جاري البحث عن الرحلات..."
+        },
+        "errors": {
+            "same_city": "لا يمكن اختيار نفس المدينة مرتين: {city}",
+            "departure_required": "حقل المغادرة مطلوب",
+            "destination_required": "حقل الوجهة مطلوب",
+            "departure_date_required": "حقل تاريخ المغادرة مطلوب",
+            "return_date_required": "حقل تاريخ العودة مطلوب"
+        }
     }
-  },
-  "Login": {
-    "ariaLabel": "تسجيل الدخول",
-    "title": "تسجيل الدخول",
-    "signin_register": "تسجيل الدخول / تسجيل",
-    "sub_title_one": "احصل على مزايا الأعضاء",
-    "sub_title_two": "مكافأت على الحجز",
-    "email": "البريد الإلكترونى",
-    "continue": "متابعة",
-    "continue_google": "المتابعة باستخدم جوجل",
-    "or": "أو",
-    "empty_email": "يرجى إدخال بريد إلكترونى",
-    "invalid_email": "يرجى إدخال بريد إلكترونى صالح",
-    "verification_code": "أدخل رمز التحقق لتجسيل الدخول",
-    "short_message": "لقد أرسلنا رمز التحقق الى ",
-    "submit": "إرسال",
-    "sign_out": "تسجيل الخروج"
-  },
-  "Services": {
-    "Flights": "طيران",
-    "Hotels": "فنادق",
-    "Insurance": "تأمين",
-    "Cars": "توصيل"
-  },
-  "Hooks": {
-    "day": "يوم"
-  },
-  "Calender": {
-    "travel_date": "تاريخ السفر",
-    "departure_date": "تاريخ المغادرة",
-    "return_date": "تاريخ العودة",
-    "select_date": "إختر التاريخ",
-    "apply": "تطبيق"
-  },
-  "Flight": {
-    "one_way": "ذهاب فقط",
-    "round_trip": "ذهاب و عودة",
-    "search_by_city_airport": "مدينة أو مطار",
-    "popular_cities": "مدن شعبية",
-    "asia": "آسيا",
-    "europe": "أوروبا",
-    "north_america": "أمريكا الشمالية",
-    "south_america": "أمريكا الجنوبية",
-    "africa": "أفريقيا",
-    "departure": "المغادرة",
-    "destination": "الوجهة",
-    "cities": {
-      "cairo": "القاهرة",
-      "manila": "مانيلا",
-      "sharjah": "الشارقة",
-      "jeddah": "جدة",
-      "dubai": "دبي",
-      "london": "لندن",
-      "abu_dhabi": "أبو ظبي",
-      "kochi": "كوتشي",
-      "kozhikode": "كوزيكود",
-      "madrid": "مدريد",
-      "milan": "ميلان",
-      "tbilisi": "تبليسي",
-      "paris": "باريس",
-      "amsterdam": "أمستردام",
-      "new_york": "نيويورك",
-      "los_angeles": "لوس أنجلوس",
-      "san_francisco": "سان فرانسيسكو",
-      "miami": "ميامي",
-      "chicago": " شيكاغو",
-      "santiago": "سانتياغو",
-      "toronto": "تورونتو",
-      "sao_paulo": "ساو باولو",
-      "rio_de_janeiro": "ريو دي جانيرو",
-      "bogota": "بوغوتا",
-      "lima": "ليما",
-      "buenos_ires": "بوينس آيرس",
-      "alexandria": "الإسكندرية",
-      "casablanca": "الدار البيضاء",
-      "tunis": "تونس",
-      "algiers": "الجزائر",
-      "south_africa": "جنوب أفريقيا"
-    },
-    "ticket_class": {
-      "economy": "الدرجة السياحية",
-      "economy_description": "مقاعد وخدمات قياسية",
-      "business": "درجة رجال الأعمال",
-      "business_description": "خدمة وراحة أولوية",
-      "first": "الدرجة الأولى",
-      "first_description": "تجربة سفر فاخرة"
-    },
-    "passengers": {
-      "title": "الركاب و الدرجة",
-      "subtitle": "إختر عدد الركاب و درجة السفر",
-      "passengers": "الركاب",
-      "travel_class": "درجة السفر",
-      "adults": "البالغين",
-      "adults_description": "12 سنة فما فوق",
-      "children": "الأطفال",
-      "children_description": "2-11 سنة",
-      "infants": "الرضع",
-      "infants_description": "أقل من سنتين",
-      "cancel": "إلغاء",
-      "apply": "تطبيق"
-    },
-    "operations": {
-      "apply": "تطبيق",
-      "cancel": "إلغاء",
-      "close": "إغلاق",
-      "search": "بحث",
-      "searching": "جاري البحث عن الرحلات..."
-    },
-    "errors": {
-      "same_city": "لا يمكن اختيار نفس المدينة مرتين: {city}",
-      "departure_required": "حقل المغادرة مطلوب",
-      "destination_required": "حقل الوجهة مطلوب",
-      "departure_date_required": "حقل تاريخ المغادرة مطلوب",
-      "return_date_required": "حقل تاريخ العودة مطلوب"
-    }
-  }
 }

@@ -10,28 +10,28 @@ const HEIGHT = 60;
 const SERVICES = [
     {
         title: "Flights",
-        subTitle: "Flights service can display over +500 airline",
+        subTitle: "Book Flights",
         src: "/icons/airplane-m.gif",
         path: "/flights",
         default: true,
     },
     {
         title: "Hotels",
-        subTitle: "Hotels: Check Over 2M hotel around the world",
+        subTitle: "Perfect Stays",
         src: "/icons/bed-m.gif",
         path: "/hotels",
         default: false,
     },
     {
         title: "Insurance",
-        subTitle: "Insurance: Make your trip safe and enjoy with life.",
+        subTitle: "Safe Trip",
         src: "/icons/insurance-m.gif",
         path: "/insurance",
         default: false,
     },
     {
         title: "Cars",
-        subTitle: "Cars: Transfers became easy.",
+        subTitle: "Rent Vehicles",
         src: "/icons/car-m.gif",
         path: "/cars",
         default: false,
@@ -44,17 +44,17 @@ function ServicesNavigation() {
     const { theme } = useTheme();
     const condition = theme === "dark";
     return (
-        <nav className="flex items-center justify-between my-5">
+        <nav className="flex items-center justify-between my-5 sm:my-8">
             {SERVICES.map((service) => (
                 <Link
                     key={service.title}
                     href={service.path}
-                    className={`flex justify-center flex-col items-center md:flex-row gap-2  md:w-fit md:text-black md:p-2 rounded-2xl ${
+                    className={`flex justify-start flex-col sm:min-w-40 items-center md:flex-row gap-2  md:w-fit md:text-black md:p-2 rounded-2xl ${
                         service.path == pathname
                             ? "md:bg-accent-300"
                             : service.path == "/flights" && pathname == "/"
                             ? "md:bg-accent-300"
-                            : "md:bg-white"
+                            : "md:bg-gradient-to-b to-gray-300 from-white"
                     }`}
                 >
                     <Image
@@ -78,8 +78,11 @@ function ServicesNavigation() {
                                   }`
                         } rounded-lg p-2.5 md:p-0 aspect-square`}
                     />
-                    <span className="font-normal mt-1">
+                    <span className="font-normal mt-1 flex flex-col">
                         {t(`${service.title}`)}
+                        <span className="text-xs hidden sm:block">
+                            {t(`${service.title}_sub_title`)}
+                        </span>
                     </span>
                 </Link>
             ))}

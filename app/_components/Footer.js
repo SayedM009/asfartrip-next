@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import useIsDevice from "../_hooks/useIsDevice";
+import Logo from "./Logo";
 
 export function Footer() {
     const { mobile } = useIsDevice();
@@ -22,12 +23,7 @@ export function Footer() {
                     {/* Company Info */}
                     <div>
                         <div className="flex items-center space-x-2 mb-4">
-                            <div className="bg-primary text-primary-foreground p-2 rounded-lg">
-                                <Plane className="h-5 w-5" />
-                            </div>
-                            <span className="text-lg text-foreground">
-                                SkyWings
-                            </span>
+                            <Logo />
                         </div>
                         <p className="text-sm mb-4">
                             Your trusted partner for affordable flights

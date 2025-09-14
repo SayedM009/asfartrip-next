@@ -1,163 +1,167 @@
 {
-  "Homepage": {
-    "title": "ِAsfartrip.com",
-    "home": "home",
-    "trips": "trips",
-    "offers": "offers",
-    "more": "more"
-  },
-  "Pages": {
-    "about_us": "About Us",
-    "contact_us": "Contact Us",
-    "privacy_policy": "Privacy Policy",
-    "terms_conditions": "Terms & Conditions",
-    "faqs": "FAQs"
-  },
-  "Languageswitcher": {
-    "close": "close menu",
-    "language": "Language",
-    "regionalSettings": "Regional Settings",
-    "ariaLabel": "Switch Language",
-    "title": "Change Language",
-    "sub_title": "Select your preferred language  for the best experience.",
-    "select_language": "Select language",
+    "Homepage": {
+        "title": "ِAsfartrip.com",
+        "home": "home",
+        "trips": "trips",
+        "offers": "offers",
+        "more": "more"
+    },
+    "Pages": {
+        "about_us": "About Us",
+        "contact_us": "Contact Us",
+        "privacy_policy": "Privacy Policy",
+        "terms_conditions": "Terms & Conditions",
+        "faqs": "FAQs"
+    },
+    "Languageswitcher": {
+        "close": "close menu",
+        "language": "Language",
+        "regionalSettings": "Regional Settings",
+        "ariaLabel": "Switch Language",
+        "title": "Change Language",
+        "sub_title": "Select your preferred language  for the best experience.",
+        "select_language": "Select language",
 
-    "apply": "Apply",
-    "cancel": "Cancel"
-  },
-  "ThemeSwitcher": {
-    "light": "Light Theme",
-    "dark": "Dark Theme",
-    "ariaLabel": "Switch Theme",
-    "title": "Theme Switcher",
-    "dark_mode": "Dark Mode"
-  },
-  "CurrencySwitcher": {
-    "title": "Change Currency",
-    "select_currency": "Select currency",
-    "currencies": {
-      "us": "US Dollar",
-      "eu": "Euro",
-      "gbp": "British Pound",
-      "chf": "Swiss Franc",
-      "ae": "UAE Dirham"
+        "apply": "Apply",
+        "cancel": "Cancel"
+    },
+    "ThemeSwitcher": {
+        "light": "Light Theme",
+        "dark": "Dark Theme",
+        "ariaLabel": "Switch Theme",
+        "title": "Theme Switcher",
+        "dark_mode": "Dark Mode"
+    },
+    "CurrencySwitcher": {
+        "title": "Change Currency",
+        "select_currency": "Select currency",
+        "currencies": {
+            "us": "US Dollar",
+            "eu": "Euro",
+            "gbp": "British Pound",
+            "chf": "Swiss Franc",
+            "ae": "UAE Dirham"
+        }
+    },
+    "Login": {
+        "ariaLabel": "Login",
+        "title": "Sign in",
+        "signin_register": "sign in / register",
+        "sub_title_one": "get member benefits",
+        "sub_title_two": "rewards for booking",
+        "email": "Email",
+        "continue": "continue",
+        "continue_google": "continue with Google",
+        "or": "or",
+        "empty_email": "please enter an email address",
+        "invalid_email": "Please enter a valid email address",
+        "verification_code": "Enter verification code",
+        "short_message": "We've sent a verification code to",
+        "submit": "submit",
+        "sign_out": "Sign Out"
+    },
+
+    "Services": {
+        "Flights": "Flights",
+        "Hotels": "Hotels",
+        "Insurance": "Insurance",
+        "Cars": "Tranfers",
+        "Flights_sub_title": "Book Flights",
+        "Hotels_sub_title": "Prefect Stays",
+        "Insurance_sub_title": "Safe Trip",
+        "Cars_sub_title": "Rent Vechicles"
+    },
+    "Hooks": {
+        "day": "day"
+    },
+    "Calender": {
+        "travel_date": "Travel date",
+        "departure_date": "Departure date",
+        "return_date": "Return date",
+        "select_date": "Select date",
+        "apply": "Apply"
+    },
+    "Flight": {
+        "one_way": "One way",
+        "round_trip": "Round trip",
+        "search_by_city_airport": "City or airport",
+        "popular_cities": "Popular cities",
+        "asia": "Asia",
+        "europe": "Europe",
+        "north_america": "North America",
+        "south_america": "South America",
+        "africa": "Africa",
+        "departure": "Departure",
+        "destination": "Destination",
+        "cities": {
+            "cairo": "cairo",
+            "manila": "manila",
+            "sharjah": "sharjah",
+            "jeddah": "jeddah",
+            "dubai": "dubai",
+            "london": "london",
+            "abu_dhabi": "Abu Dhabi",
+            "kochi": "kochi",
+            "kozhikode": "kozhikode",
+            "madrid": "madrid",
+            "milan": "milan",
+            "tbilisi": "tbilisi",
+            "paris": "paris",
+            "amsterdam": "amsterdam",
+            "new_york": "new york",
+            "los_angeles": "los angeles",
+            "san_francisco": "san francisco",
+            "miami": "miami",
+            "chicago": "chicago",
+            "santiago": "santiago",
+            "toronto": "toronto",
+            "sao_paulo": "sao paulo",
+            "rio_de_janeiro": "rio de janeiro",
+            "bogota": "bogota",
+            "lima": "lima",
+            "buenos_ires": "buenos aires",
+            "alexandria": "alexandria",
+            "casablanca": "casablanca",
+            "tunis": "tunis",
+            "algiers": "algiers",
+            "south_africa": "south africa"
+        },
+        "ticket_class": {
+            "economy": "economy",
+            "economy_description": "Standard seating and service",
+            "business": "business",
+            "business_description": "Priority service and comfort",
+            "first": "first",
+            "first_description": "Luxury travel experience"
+        },
+        "passengers": {
+            "title": "Passengers & Class",
+            "subtitle": "Select number of passengers and travel class",
+            "passengers": "Passengers",
+            "travel_class": "Travel Class",
+            "adults": "Adults",
+            "adults_description": "12+ years",
+            "children": "Children",
+            "children_description": "2-11 years",
+            "infants": "Infants",
+            "infants_description": "Under 2 years",
+            "cancel": "Cancel",
+            "apply": "Apply"
+        },
+        "operations": {
+            "apply": "Apply",
+            "cancel": "Cancel",
+            "close": "Close",
+            "search": "Search",
+            "searching": "Searching flights..."
+        },
+
+        "errors": {
+            "same_city": "Cannot select the same city twice: {city}",
+            "departure_required": "Departure city is required",
+            "destination_required": "Destination city is required",
+            "departure_date_required": "Departure date is required",
+            "return_date_required": "Return date is required"
+        }
     }
-  },
-  "Login": {
-    "ariaLabel": "Login",
-    "title": "Sign in",
-    "signin_register": "sign in / register",
-    "sub_title_one": "get member benefits",
-    "sub_title_two": "rewards for booking",
-    "email": "Email",
-    "continue": "continue",
-    "continue_google": "continue with Google",
-    "or": "or",
-    "empty_email": "please enter an email address",
-    "invalid_email": "Please enter a valid email address",
-    "verification_code": "Enter verification code",
-    "short_message": "We've sent a verification code to",
-    "submit": "submit",
-    "sign_out": "Sign Out"
-  },
-
-  "Services": {
-    "Flights": "Flights",
-    "Hotels": "Hotels",
-    "Insurance": "Insurance",
-    "Cars": "Tranfers"
-  },
-  "Hooks": {
-    "day": "day"
-  },
-  "Calender": {
-    "travel_date": "Travel date",
-    "departure_date": "Departure date",
-    "return_date": "Return date",
-    "select_date": "Select date",
-    "apply": "Apply"
-  },
-  "Flight": {
-    "one_way": "One way",
-    "round_trip": "Round trip",
-    "search_by_city_airport": "City or airport",
-    "popular_cities": "Popular cities",
-    "asia": "Asia",
-    "europe": "Europe",
-    "north_america": "North America",
-    "south_america": "South America",
-    "africa": "Africa",
-    "departure": "Departure",
-    "destination": "Destination",
-    "cities": {
-      "cairo": "cairo",
-      "manila": "manila",
-      "sharjah": "sharjah",
-      "jeddah": "jeddah",
-      "dubai": "dubai",
-      "london": "london",
-      "abu_dhabi": "Abu Dhabi",
-      "kochi": "kochi",
-      "kozhikode": "kozhikode",
-      "madrid": "madrid",
-      "milan": "milan",
-      "tbilisi": "tbilisi",
-      "paris": "paris",
-      "amsterdam": "amsterdam",
-      "new_york": "new york",
-      "los_angeles": "los angeles",
-      "san_francisco": "san francisco",
-      "miami": "miami",
-      "chicago": "chicago",
-      "santiago": "santiago",
-      "toronto": "toronto",
-      "sao_paulo": "sao paulo",
-      "rio_de_janeiro": "rio de janeiro",
-      "bogota": "bogota",
-      "lima": "lima",
-      "buenos_ires": "buenos aires",
-      "alexandria": "alexandria",
-      "casablanca": "casablanca",
-      "tunis": "tunis",
-      "algiers": "algiers",
-      "south_africa": "south africa"
-    },
-    "ticket_class": {
-      "economy": "economy",
-      "economy_description": "Standard seating and service",
-      "business": "business",
-      "business_description": "Priority service and comfort",
-      "first": "first",
-      "first_description": "Luxury travel experience"
-    },
-    "passengers": {
-      "title": "Passengers & Class",
-      "subtitle": "Select number of passengers and travel class",
-      "passengers": "Passengers",
-      "travel_class": "Travel Class",
-      "adults": "Adults",
-      "adults_description": "12+ years",
-      "children": "Children",
-      "children_description": "2-11 years",
-      "infants": "Infants",
-      "infants_description": "Under 2 years",
-      "cancel": "Cancel",
-      "apply": "Apply"
-    },
-    "operations": {
-      "apply": "Apply",
-      "cancel": "Cancel",
-      "close": "Close",
-      "search": "Search",
-      "searching": "Searching flights..."
-    },
-
-    "errors": {
-      "same_city": "Cannot select the same city twice: {city}",
-      "departure_required": "Departure city is required",
-      "destination_required": "Destination city is required",
-      "departure_date_required": "Departure date is required",
-      "return_date_required": "Return date is required"
-    }
-  }
 }
