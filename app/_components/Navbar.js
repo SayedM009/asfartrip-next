@@ -5,7 +5,7 @@ import ThemeSwitcher from "./ThemeSwitcher";
 
 function Header() {
     return (
-        <nav className="flex items-center justify-between ">
+        <nav className="flex items-center justify-between border-b-1 pb-1">
             <Logo />
             <div className="flex items-center gap-1 ">
                 <LanguageSwitcher hiddenOnMobile={true} />

@@ -1,11 +1,10 @@
 import BottomAppBar from "../_components/bottomAppBar/BottomAppBar";
-import { FlightSearchForm } from "../_components/flightSearchFormMobile/FlightSearchFormMobile";
 // import { homeMetadata } from "../_libs/metadata";
 import { useTranslations } from "next-intl";
 import Navbar from "@/app/_components/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
 import useIsDevice from "../_hooks/useIsDevice";
-import { FlightSearchFormDesktop } from "../_components/flightSearchFormDesktop/FlightSearchFromDesktop";
+import FlightSearchWrapper from "../_components/FlightSearchWrapper";
 
 export const metadata = {
     title: "Welcome / Asfartrip.com",
@@ -22,7 +21,7 @@ function HomePage() {
             <Navbar />
             <section>
                 <ServicesNavigation />
-                {mobile ? <FlightSearchForm /> : <FlightSearchFormDesktop />}
+                <FlightSearchWrapper />
                 <div>{t("title")}</div>
             </section>
             {mobile && <BottomAppBar />}

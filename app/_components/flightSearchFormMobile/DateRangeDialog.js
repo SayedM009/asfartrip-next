@@ -12,9 +12,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { formatDisplayDate } from "@/app/_helpers/formatDisplayDate";
 import useCalculateDaysBetween from "@/app/_hooks/useCalculateDaysBetween";
 
-import { enUS, arSA } from "date-fns/locale";
 import { useLocale, useTranslations } from "next-intl";
-const locales = { en: enUS, ar: arSA };
+import useCalendarLocale from "@/app/_hooks/useCalendarLocale";
 
 function DateRangeDialog({
     tripType,
@@ -23,9 +22,9 @@ function DateRangeDialog({
     onDepartDateChange,
     onRangeDateChange,
 }) {
-    const locale = useLocale();
-    const dateLocale = locales[locale] || enUS;
     const t = useTranslations("Calender");
+    const locale = useLocale();
+    const { dateLocale } = useCalendarLocale();
     const differenceInDays = useCalculateDaysBetween(range?.from, range?.to);
 
     function handleSelectDepartureDateWithSession(value) {
@@ -43,19 +42,19 @@ function DateRangeDialog({
                 {tripType === "roundtrip" ? (
                     <>
                         <div>
-                            <div className="font-semibold text-gray-900">
+                            <div className="font-semibold dark:text-gray-50">
                                 {range?.from
                                     ? formatDisplayDate(range.from, locale)
                                     : t("departure_date")}
                             </div>
                         </div>
                         <div className="text-center flex-1">
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs dark:text-gray-50">
                                 {differenceInDays}
                             </div>
                         </div>
                         <div className="text-right">
-                            <div className="font-semibold text-gray-900">
+                            <div className="font-semibold dark:text-gray-50">
                                 {range?.to
                                     ? formatDisplayDate(range.to, locale)
                                     : t("return_date")}
@@ -64,7 +63,7 @@ function DateRangeDialog({
                     </>
                 ) : (
                     <div>
-                        <div className="font-semibold text-gray-900">
+                        <div className="font-semibold dark:text-gray-50">
                             {departDate
                                 ? formatDisplayDate(departDate, locale)
                                 : t("departure_date")}
@@ -89,7 +88,6 @@ function DateRangeDialog({
                         numberOfMonths={12}
                         hideNavigation
                         locale={dateLocale}
-                        min={2}
                     />
                 ) : (
                     <Calendar

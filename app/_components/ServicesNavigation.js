@@ -78,12 +78,15 @@ function ServicesNavigation() {
                                   }`
                         } rounded-lg p-2.5 md:p-0 aspect-square`}
                     />
-                    <span className="font-normal mt-1 flex flex-col">
-                        {t(`${service.title}`)}
+
+                    <div className=" mt-1 flex flex-col ">
+                        <span className="font-semibold">
+                            {t(`${service.title}`)}
+                        </span>
                         <span className="text-xs hidden sm:block">
                             {t(`${service.title}_sub_title`)}
                         </span>
-                    </span>
+                    </div>
                 </Link>
             ))}
         </nav>

@@ -12,6 +12,7 @@ import DestinationSearchDialog from "./DestinationSearchDialog";
 import { safeParse } from "@/app/_helpers/safeParse";
 import { useRouter } from "@/i18n/navigation";
 import { CheckBadgeIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import SwapButton from "../SwapButton";
 
 export function FlightSearchForm() {
     const [tripType, setTripType] = useState("roundtrip");
@@ -25,7 +26,7 @@ export function FlightSearchForm() {
         infants: 0,
     });
     const [travelClass, setTravelClass] = useState("economy");
-    const [spinning, setSpinning] = useState(false);
+
     const locale = useLocale();
     const t = useTranslations("Flight");
     const router = useRouter();
@@ -57,8 +58,6 @@ export function FlightSearchForm() {
         const temp = departure;
         setDeparture(destination);
         setDestination(temp);
-        setSpinning(true);
-        setTimeout(() => setSpinning(false), 1000);
     };
 
     const getClassDisplayName = (className) => {
@@ -130,10 +129,10 @@ export function FlightSearchForm() {
         <div className=" from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800  ">
             <div className="max-w-md mx-auto">
                 {/* Main Search Card */}
-                <Card className="shadow-lg bg-white backdrop-blur-sm">
+                <Card className="shadow-lg ">
                     <CardContent className="px-4 space-y-2 pt-4 pb-1">
                         {/* Trip Type Tabs with Sliding Animation */}
-                        <div className="relative bg-secondary-200 rounded-lg p-1 h-10">
+                        <div className="relative bg-gray-950 rounded-lg p-1 h-10">
                             {/* Sliding background */}
                             <div
                                 className="absolute top-1 bottom-1 bg-white rounded-md shadow-sm transition-all duration-300 ease-out"
@@ -205,7 +204,8 @@ export function FlightSearchForm() {
                                     />
 
                                     {/* Swap Button */}
-                                    <Button
+                                    <SwapButton callBack={swapCities} />
+                                    {/* <Button
                                         variant="ghost"
                                         size="icon"
                                         onClick={swapCities}
@@ -219,7 +219,7 @@ export function FlightSearchForm() {
                                                     : ""
                                             }`}
                                         />
-                                    </Button>
+                                    </Button> */}
 
                                     {/* To City - Clickable */}
                                     <DestinationSearchDialog
@@ -269,7 +269,7 @@ export function FlightSearchForm() {
                         >
                             <div className="flex items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors">
                                 <div className="flex-1">
-                                    <div className="text-sm text-primary-900 font-semibold capitalize">
+                                    <div className="text-sm  font-semibold capitalize">
                                         {t(
                                             `ticket_class.${getClassDisplayName(
                                                 travelClass
@@ -280,22 +280,22 @@ export function FlightSearchForm() {
                                 <div className="flex items-center space-x-3">
                                     {/* Adults */}
                                     <div className="flex items-center space-x-1">
-                                        <User className="h-4 w-4 text-gray-600" />
-                                        <span className="text-sm font-medium text-primary-500">
+                                        <User className="h-4 w-4 " />
+                                        <span className="text-sm font-medium ">
                                             {passengers.adults}
                                         </span>
                                     </div>
                                     {/* Children */}
                                     <div className="flex items-center space-x-1">
-                                        <Users className="h-4 w-4 text-gray-600" />
-                                        <span className="text-sm font-medium text-primary-500">
+                                        <Users className="h-4 w-4 " />
+                                        <span className="text-sm font-medium ">
                                             {passengers.children}
                                         </span>
                                     </div>
                                     {/* Infants */}
                                     <div className="flex items-center space-x-1">
-                                        <Baby className="h-4 w-4 text-gray-600" />
-                                        <span className="text-sm font-medium text-primary-500">
+                                        <Baby className="h-4 w-4 " />
+                                        <span className="text-sm font-medium ">
                                             {passengers.infants}
                                         </span>
                                     </div>

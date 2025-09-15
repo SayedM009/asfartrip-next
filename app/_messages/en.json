@@ -93,6 +93,8 @@
         "africa": "Africa",
         "departure": "Departure",
         "destination": "Destination",
+        "from": "From",
+        "to": "To",
         "cities": {
             "cairo": "cairo",
             "manila": "manila",
@@ -153,7 +155,8 @@
             "cancel": "Cancel",
             "close": "Close",
             "search": "Search",
-            "searching": "Searching flights..."
+            "searching": "Searching flights...",
+            "no_results": "There are no results"
         },
 
         "errors": {
