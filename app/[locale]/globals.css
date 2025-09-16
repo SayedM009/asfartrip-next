@@ -159,7 +159,7 @@
 
 @layer components {
     .container-custom {
-        @apply max-w-[96%] sm:max-w-[93%] 2xl:max-w-[80%] m-auto  p-2 pt-5 md:pt-7;
+        @apply max-w-[96%] sm:max-w-[93%] 2xl:max-w-[65%] m-auto  p-2 pt-3 md:pt-7;
     }
     .w-full-light-colors {
         @apply bg-[var(--main-bg)] text-[var(--main-text)];

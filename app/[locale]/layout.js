@@ -26,7 +26,9 @@ export default async function RootLayout({ children, params: { locale } }) {
             suppressHydrationWarning
         >
             <body
-                className={`${conditions ? ibm.className : ibmSans.className} `}
+                className={`${
+                    conditions ? ibm.className : ibmSans.className
+                }  `}
             >
                 <AuthProvider>
                     <NextIntlClientProvider locale={locale} messages={messages}>
@@ -35,7 +37,9 @@ export default async function RootLayout({ children, params: { locale } }) {
                             enableSystem
                             defaultTheme="system"
                         >
-                            <main className="container-custom">{children}</main>
+                            <main className="container-custom min-h-screen ">
+                                {children}
+                            </main>
                             <Footer />
                             <Toaster position="top-center" />
                         </ThemeProvider>

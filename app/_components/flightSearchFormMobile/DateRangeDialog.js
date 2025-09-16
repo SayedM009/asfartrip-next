@@ -38,7 +38,7 @@ function DateRangeDialog({
     }
     return (
         <Dialog>
-            <DialogTrigger className="text-primary-800 w-full flex items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors">
+            <DialogTrigger className="text-primary-800 w-full flex items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors ">
                 {tripType === "roundtrip" ? (
                     <>
                         <div>

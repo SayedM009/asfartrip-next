@@ -132,10 +132,10 @@ export function FlightSearchForm() {
                 <Card className="shadow-lg ">
                     <CardContent className="px-4 space-y-2 pt-4 pb-1">
                         {/* Trip Type Tabs with Sliding Animation */}
-                        <div className="relative bg-gray-950 rounded-lg p-1 h-10">
+                        <div className="relative  bg-secondary-200 dark:bg-input-background/5 rounded-lg p-1 h-10">
                             {/* Sliding background */}
                             <div
-                                className="absolute top-1 bottom-1 bg-white rounded-md shadow-sm transition-all duration-300 ease-out"
+                                className="absolute top-1 bottom-1 bg-white  rounded-md shadow-sm transition-all duration-300 ease-out"
                                 style={{
                                     left:
                                         tripType === "oneway"
@@ -305,7 +305,7 @@ export function FlightSearchForm() {
 
                         {/* Search Button */}
                         <Button
-                            className="w-full h-10 bg-primary-900 hover:bg-primary-700 text-white font-semibold rounded cursor-pointer transition-colors"
+                            className="w-full h-10 bg-accent-500 hover:bg-accent-600 text-white font-semibold rounded cursor-pointer transition-colors"
                             onClick={handleSearch}
                         >
                             {t("operations.search")}

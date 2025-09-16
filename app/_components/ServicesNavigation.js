@@ -53,7 +53,7 @@ function ServicesNavigation() {
                         service.path == pathname
                             ? "md:bg-accent-300"
                             : service.path == "/flights" && pathname == "/"
-                            ? "md:bg-accent-300"
+                            ? "md:bg-accent-400"
                             : "md:bg-gradient-to-b to-gray-300 from-white"
                     }`}
                 >
@@ -70,7 +70,7 @@ function ServicesNavigation() {
                             service.path == pathname
                                 ? "bg-accent-300"
                                 : service.path == "/flights" && pathname == "/"
-                                ? "bg-accent-300"
+                                ? "bg-accent-400"
                                 : `bg-gradient-to-b ${
                                       condition
                                           ? " from-gray-100"
@@ -83,7 +83,7 @@ function ServicesNavigation() {
                         <span className="font-semibold">
                             {t(`${service.title}`)}
                         </span>
-                        <span className="text-xs hidden sm:block">
+                        <span className="text-[10px]  hidden sm:block">
                             {t(`${service.title}_sub_title`)}
                         </span>
                     </div>

@@ -5,6 +5,7 @@ import Navbar from "@/app/_components/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
 import useIsDevice from "../_hooks/useIsDevice";
 import FlightSearchWrapper from "../_components/FlightSearchWrapper";
+import { PromotionalSlider } from "../_components/PromotionalSlider";
 
 export const metadata = {
     title: "Welcome / Asfartrip.com",
@@ -19,10 +20,10 @@ function HomePage() {
     return (
         <>
             <Navbar />
-            <section>
+            <section className="">
                 <ServicesNavigation />
                 <FlightSearchWrapper />
-                <div>{t("title")}</div>
+                <PromotionalSlider />
             </section>
             {mobile && <BottomAppBar />}
         </>

@@ -97,8 +97,8 @@ export function FlightSearchFormDesktop() {
     }
 
     return (
-        <div className="bg-background min-h-screen">
-            <div className="">
+        <div className="bg-background">
+            <div>
                 <div className=" mx-auto">
                     {/* Search Form */}
                     <Card className="border shadow-sm">
@@ -134,7 +134,8 @@ export function FlightSearchFormDesktop() {
                                 {/* Search Button - Redesigned */}
                                 <div className="flex-shrink-0">
                                     <Button
-                                        className="h-12 px-8 bg-primary hover:bg-primary/90 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer"
+                                        // className="h-12 px-8 bg-primary hover:bg-primary/90 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer"
+                                        className="h-12 ps-6 pe-8 bg-accent-500 hover:bg-accent-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer gap-2"
                                         onClick={handleSearch}
                                     >
                                         <Search className="mr-2 h-5 w-5" />
