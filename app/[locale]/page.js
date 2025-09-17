@@ -1,11 +1,13 @@
 import BottomAppBar from "../_components/bottomAppBar/BottomAppBar";
 // import { homeMetadata } from "../_libs/metadata";
 import { useTranslations } from "next-intl";
+import { PromotionalSlider } from "../_components/sliders/PromotionalSlider";
+import { DestinationSlider } from "../_components/sliders/DestinationSlider";
+import { FlightsSlider } from "../_components/sliders/FlightsSlider";
 import Navbar from "@/app/_components/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
 import useIsDevice from "../_hooks/useIsDevice";
 import FlightSearchWrapper from "../_components/FlightSearchWrapper";
-import { PromotionalSlider } from "../_components/PromotionalSlider";
 
 export const metadata = {
     title: "Welcome / Asfartrip.com",
@@ -24,6 +26,8 @@ function HomePage() {
                 <ServicesNavigation />
                 <FlightSearchWrapper />
                 <PromotionalSlider />
+                <DestinationSlider />
+                <FlightsSlider />
             </section>
             {mobile && <BottomAppBar />}
         </>

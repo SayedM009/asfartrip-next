@@ -1,12 +1,10 @@
 "use client";
-
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useLocale } from "next-intl";
+import useCheckLocal from "../_hooks/useCheckLocal";
 
 function ChevronBasedOnLanguage() {
-  const locale = useLocale();
-  const condition = locale === "ar";
-  return <>{condition ? <ChevronLeft /> : <ChevronRight />}</>;
+    const { isRTL } = useCheckLocal();
+    return <>{isRTL ? <ChevronLeft /> : <ChevronRight />}</>;
 }
 
 export default ChevronBasedOnLanguage;

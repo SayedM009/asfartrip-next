@@ -1,7 +1,8 @@
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
 export default function TripType({ tripType, setTripType }) {
-    const locale = useLocale();
+    const { locale } = useCheckLocal();
     const t = useTranslations("Flight");
     function handleTripType(type) {
         setTripType(type);

@@ -166,5 +166,31 @@
             "departure_date_required": "Departure date is required",
             "return_date_required": "Return date is required"
         }
+    },
+    "Offers_slider": {
+        "title": "special offers",
+        "sub_title": "Don't miss out on these amazing deals"
+    },
+    "Destination_slider": {
+        "title": "dream trips",
+        "sub_title": "Make your dream trips a reality",
+        "cities": {
+            "dubai": "dubai",
+            "phuket": "phuket town",
+            "istanbul": "istanbul",
+            "salalah": "salalah",
+            "kuala_lumpur": "kuala lumpur"
+        },
+        "countries": {
+            "uae": "untied arab emirates",
+            "thailand": "thailand",
+            "turkey": "turkey",
+            "oman": "oman",
+            "malaysia": "malaysia"
+        }
+    },
+    "Flights_slider": {
+        "title": "Quick Trip",
+        "sub_title": "Fast and easy bookings for your next adventure"
     }
 }

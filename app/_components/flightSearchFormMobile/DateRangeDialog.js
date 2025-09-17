@@ -12,8 +12,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { formatDisplayDate } from "@/app/_helpers/formatDisplayDate";
 import useCalculateDaysBetween from "@/app/_hooks/useCalculateDaysBetween";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import useCalendarLocale from "@/app/_hooks/useCalendarLocale";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
 
 function DateRangeDialog({
     tripType,
@@ -23,7 +24,7 @@ function DateRangeDialog({
     onRangeDateChange,
 }) {
     const t = useTranslations("Calender");
-    const locale = useLocale();
+    const { locale } = useCheckLocal();
     const { dateLocale } = useCalendarLocale();
     const differenceInDays = useCalculateDaysBetween(range?.from, range?.to);
 

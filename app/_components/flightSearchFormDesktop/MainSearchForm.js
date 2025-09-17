@@ -8,9 +8,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, Plane } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { searchAirports } from "@/app/_libs/api-services";
 import SwapButton from "../SwapButton";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
 
 // Popular destinations data
 const popularDestinations = [
@@ -133,6 +134,11 @@ export default function MainSearchForm({
                                 setIsSearchingDeparture(true);
                                 setShowDepartureResults(true);
                             }}
+                            aria-label={
+                                isSearchingDeparture
+                                    ? "Search departure city"
+                                    : `Selected departure city: ${departure.city}`
+                            }
                         >
                             {isSearchingDeparture ? (
                                 <Input
@@ -203,6 +209,11 @@ export default function MainSearchForm({
                                 setIsSearchingDestination(true);
                                 setShowDestinationResults(true);
                             }}
+                            aria-label={
+                                isSearchingDeparture
+                                    ? "Search destination city"
+                                    : `Selected destination city: ${destination.city}`
+                            }
                         >
                             {isSearchingDestination ? (
                                 <Input
@@ -280,8 +291,8 @@ function DestinationsContent({
                       .includes(search.toLowerCase()) ||
                   dest.country.toLowerCase().includes(search.toLowerCase())
           );
-    const locale = useLocale();
-    const dir = locale === "ar" ? "rtl" : "ltr";
+    const { locale, isRTL } = useCheckLocal();
+    const dir = isRTL ? "rtl" : "ltr";
     const t = useTranslations("Flight");
 
     const handleSelect = (dest) => {

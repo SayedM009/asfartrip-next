@@ -135,7 +135,7 @@ export function FlightSearchFormDesktop() {
                                 <div className="flex-shrink-0">
                                     <Button
                                         // className="h-12 px-8 bg-primary hover:bg-primary/90 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer"
-                                        className="h-12 ps-6 pe-8 bg-accent-500 hover:bg-accent-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer gap-2"
+                                        className="h-12 lg:ps-6 lg:pe-8 bg-accent-500 hover:bg-accent-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer gap-2"
                                         onClick={handleSearch}
                                     >
                                         <Search className="mr-2 h-5 w-5" />

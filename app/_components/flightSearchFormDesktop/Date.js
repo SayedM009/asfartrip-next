@@ -8,7 +8,8 @@ import {
 import useCalendarLocale from "@/app/_hooks/useCalendarLocale";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
 export default function Dates({
     tripType,
     departDate,
@@ -18,7 +19,7 @@ export default function Dates({
 }) {
     const c = useTranslations("Calender");
     const { dateLocale } = useCalendarLocale();
-    const locale = useLocale();
+    const { locale } = useCheckLocal();
 
     function handleSelectDepartureDateWithSession(value) {
         setDepartDate(value);

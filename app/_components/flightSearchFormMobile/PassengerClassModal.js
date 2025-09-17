@@ -18,7 +18,8 @@ import {
 } from "../ui/select";
 import { Separator } from "../ui/separator";
 import { Users, Plus, Minus } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
 
 export function PassengerClassModal({
     passengers,
@@ -119,8 +120,7 @@ export function PassengerClassModal({
     ];
 
     const t = useTranslations("Flight");
-    const local = useLocale();
-    const condition = local === "ar";
+    const { isRTL } = useCheckLocal();
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -237,7 +237,7 @@ export function PassengerClassModal({
                         <Select value={tempClass} onValueChange={setTempClass}>
                             <SelectTrigger
                                 className="w-full"
-                                dir={condition && "rtl"}
+                                dir={isRTL && "rtl"}
                             >
                                 <SelectValue />
                             </SelectTrigger>
@@ -246,7 +246,7 @@ export function PassengerClassModal({
                                     <SelectItem
                                         key={cls.value}
                                         value={cls.value}
-                                        dir={condition && "rtl"}
+                                        dir={isRTL && "rtl"}
                                     >
                                         <div className="flex flex-col items-start">
                                             <span className="capitalize">
@@ -267,7 +267,7 @@ export function PassengerClassModal({
 
                     <div
                         className={`flex justify-end space-x-3 pt-4 ${
-                            condition && "flex-row-reverse justify-start gap-2"
+                            isRTL && "flex-row-reverse justify-start gap-2"
                         }`}
                     >
                         <Button variant="outline" onClick={handleCancel}>

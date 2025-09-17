@@ -163,5 +163,32 @@
             "departure_date_required": "حقل تاريخ المغادرة مطلوب",
             "return_date_required": "حقل تاريخ العودة مطلوب"
         }
+    },
+    "Offers_slider": {
+        "title": "عروض مميزة",
+        "sub_title": "اغتنم أفضل العروض الآن!"
+    },
+    "Destination_slider": {
+        "title": "أماكن فى إنتظارك",
+        "sub_title": "اكتشف رحلتك المثالية اليوم",
+        "cities": {
+            "dubai": "دبي",
+            "phuket": "بوكيت",
+            "istanbul": "إسطنبول",
+            "salalah": "صلاله",
+            "kuala_lumpur": "كوالالمبور"
+        },
+        "countries": {
+            "uae": "الإمارات العربية المتحدة",
+            "thailand": "تايلاند",
+            "turkey": "تركيا",
+            "oman": "عمان",
+            "malaysia": "ماليزيا"
+        }
+    },
+
+    "Flights_slider": {
+        "title": "رحلة سريعة",
+        "sub_title": "حجز سريع وسهل لرحلتك القادمة"
     }
 }

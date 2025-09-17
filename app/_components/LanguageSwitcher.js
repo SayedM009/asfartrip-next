@@ -1,6 +1,6 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import {
     Dialog,
     DialogContent,
@@ -20,16 +20,16 @@ import {
 } from "./ui/select";
 import { Globe } from "lucide-react";
 import { useState } from "react";
+import useCheckLocal from "../_hooks/useCheckLocal";
 
 function LanguageSwitcher({ hiddenOnMobile = false }) {
     const [isOpen, setIsOpen] = useState(false);
+    const { locale, isRTL } = useCheckLocal();
+    const [currentLanguage, setCurrentLanguage] = useState(locale);
     const pathname = usePathname();
     const router = useRouter();
-    const locale = useLocale();
-    const [currentLanguage, setCurrentLanguage] = useState(locale);
     const t = useTranslations("Languageswitcher");
 
-    const condition = locale == "ar";
     //   Handle switcher
     function handleSwitch(locale) {
         const nextLocale = locale;
@@ -74,7 +74,7 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                         <span className="text-gray-50">{t("title")}</span>
                     </DialogTitle>
                     <DialogDescription
-                        className={`text-gray-400 ${condition && "text-right"}`}
+                        className={`text-gray-400 ${isRTL && "text-right"}`}
                     >
                         {t("sub_title")}
                     </DialogDescription>
@@ -88,11 +88,11 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                         <Select
                             value={currentLanguage}
                             onValueChange={(e) => setCurrentLanguage(e)}
-                            className={`${condition && "text-right"} `}
+                            className={`${isRTL && "text-right"} `}
                         >
                             <SelectTrigger
                                 className="w-full  cursor-pointer"
-                                dir={condition && "rtl"}
+                                dir={isRTL && "rtl"}
                             >
                                 <SelectValue>
                                     <div className="flex items-center space-x-2 uppercase">
@@ -106,7 +106,7 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                                     <SelectItem
                                         key={lang.code}
                                         value={lang.code}
-                                        dir={condition && "rtl"}
+                                        dir={isRTL && "rtl"}
                                         className="cursor-pointer"
                                     >
                                         <div className="flex items-center space-x-2">
@@ -121,7 +121,7 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
 
                     <div
                         className={`flex justify-end space-x-3 pt-4 ${
-                            condition && "flex-row-reverse justify-start gap-2"
+                            isRTL && "flex-row-reverse justify-start gap-2"
                         }`}
                     >
                         <Button

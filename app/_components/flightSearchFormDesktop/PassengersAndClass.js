@@ -7,12 +7,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
 
 export default function PassengersAndClass({
     passengers,
@@ -20,8 +21,8 @@ export default function PassengersAndClass({
     travelClass,
     setTravelClass,
 }) {
-    const locale = useLocale();
-    const dir = locale === "ar" ? "rtl" : "ltr";
+    const { locale, isRTL } = useCheckLocal();
+    const dir = isRTL ? "rtl" : "ltr";
     const t = useTranslations("Flight");
     const totalPassengers =
         passengers.adults + passengers.children + passengers.infants;

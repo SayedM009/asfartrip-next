@@ -7,12 +7,13 @@ import { Card, CardContent } from "../ui/card";
 import { PassengerClassModal } from "./PassengerClassModal";
 import { User, Users, Baby, RefreshCcw } from "lucide-react";
 import DateRangeDialog from "./DateRangeDialog";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import DestinationSearchDialog from "./DestinationSearchDialog";
 import { safeParse } from "@/app/_helpers/safeParse";
 import { useRouter } from "@/i18n/navigation";
 import { CheckBadgeIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import SwapButton from "../SwapButton";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
 
 export function FlightSearchForm() {
     const [tripType, setTripType] = useState("roundtrip");
@@ -27,7 +28,7 @@ export function FlightSearchForm() {
     });
     const [travelClass, setTravelClass] = useState("economy");
 
-    const locale = useLocale();
+    const { locale } = useCheckLocal();
     const t = useTranslations("Flight");
     const router = useRouter();
 
@@ -126,7 +127,7 @@ export function FlightSearchForm() {
     }
 
     return (
-        <div className=" from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800  ">
+        <div className=" from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 mt-5  ">
             <div className="max-w-md mx-auto">
                 {/* Main Search Card */}
                 <Card className="shadow-lg ">
@@ -305,7 +306,7 @@ export function FlightSearchForm() {
 
                         {/* Search Button */}
                         <Button
-                            className="w-full h-10 bg-accent-500 hover:bg-accent-600 text-white font-semibold rounded cursor-pointer transition-colors"
+                            className="w-full h-10 bg-accent-400 hover:bg-accent-700 text-white font-semibold rounded cursor-pointer transition-colors"
                             onClick={handleSearch}
                         >
                             {t("operations.search")}
