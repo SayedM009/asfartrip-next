@@ -134,11 +134,6 @@ export default function MainSearchForm({
                                 setIsSearchingDeparture(true);
                                 setShowDepartureResults(true);
                             }}
-                            aria-label={
-                                isSearchingDeparture
-                                    ? "Search departure city"
-                                    : `Selected departure city: ${departure.city}`
-                            }
                         >
                             {isSearchingDeparture ? (
                                 <Input
@@ -150,7 +145,9 @@ export default function MainSearchForm({
                                             setDepartureResults
                                         )
                                     }
-                                    placeholder="Search departure city"
+                                    placeholder={t(
+                                        "operations.departure_search"
+                                    )}
                                     className="h-12 pl-10   border-0"
                                     autoFocus
                                     onBlur={(e) => {
@@ -167,11 +164,17 @@ export default function MainSearchForm({
                                             }, 100);
                                         }
                                     }}
+                                    aria-label={
+                                        isSearchingDeparture
+                                            ? "Search departure city"
+                                            : `Selected departure city: ${departure.city}`
+                                    }
                                 />
                             ) : (
                                 <div className="h-12 bg-input-background dark:bg-input-background/5 rounded-md border-0 px-3 py-2 pl-10 flex items-center">
                                     <span className="font-medium text-foreground capitalize">
-                                        {departure.city}
+                                        {departure.city ||
+                                            t("operations.departure_search")}
                                     </span>
                                 </div>
                             )}
@@ -209,11 +212,6 @@ export default function MainSearchForm({
                                 setIsSearchingDestination(true);
                                 setShowDestinationResults(true);
                             }}
-                            aria-label={
-                                isSearchingDeparture
-                                    ? "Search destination city"
-                                    : `Selected destination city: ${destination.city}`
-                            }
                         >
                             {isSearchingDestination ? (
                                 <Input
@@ -225,7 +223,9 @@ export default function MainSearchForm({
                                             setDestinationResults
                                         )
                                     }
-                                    placeholder="Search destination city"
+                                    placeholder={t(
+                                        "operations.destination_search"
+                                    )}
                                     className="h-12 pl-10 bg-input-background border-0"
                                     autoFocus
                                     onBlur={(e) => {
@@ -246,11 +246,17 @@ export default function MainSearchForm({
                                             }, 100);
                                         }
                                     }}
+                                    aria-label={
+                                        isSearchingDeparture
+                                            ? "Search destination city"
+                                            : `Selected destination city: ${destination.city}`
+                                    }
                                 />
                             ) : (
                                 <div className="h-12 bg-input-background dark:bg-input-background/5 rounded-md border-0 px-3 py-2 pl-10 flex items-center">
                                     <span className="font-medium text-foreground capitalize">
-                                        {destination.city}
+                                        {destination.city ||
+                                            t("operations.destination_search")}
                                     </span>
                                 </div>
                             )}

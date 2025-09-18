@@ -59,11 +59,11 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                 <Button
                     variant="ghost"
                     size="sm"
-                    className={` items-center hover:bg-accent font-bold sm:flex dark:text-gray-50  cursor-pointer ${
+                    className={` sm:items-center hover:bg-accent font-bold sm:flex dark:text-gray-50  cursor-pointer w-full sm:w-auto justify-start ${
                         hiddenOnMobile ? "hidden sm:flex" : "flex"
                     }`}
                 >
-                    <Globe className="svg" />
+                    <Globe className="size-4" />
                     <span>{selectedLanguage?.name.toUpperCase()}</span>
                 </Button>
             </DialogTrigger>
@@ -95,7 +95,7 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                                 dir={isRTL && "rtl"}
                             >
                                 <SelectValue>
-                                    <div className="flex items-center space-x-2 uppercase">
+                                    <div className="flex items-center space-x-2 uppercase text-white">
                                         <span>{selectedLanguage?.flag}</span>
                                         <span>{selectedLanguage?.name}</span>
                                     </div>

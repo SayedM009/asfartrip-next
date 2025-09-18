@@ -116,7 +116,7 @@ export function DestinationSlider() {
                     <div>
                         <div className="flex items-center sm:mb-2 gap-2">
                             <Image
-                                src="/icons/earth.gif"
+                                src="/icons/globe.gif"
                                 alt="Destination dream trip"
                                 width={30}
                                 height={30}
@@ -192,6 +192,9 @@ export function DestinationSlider() {
                                         alt={`${card.city}, ${card.country}`}
                                         fill
                                         className="object-cover"
+                                        priority
+                                        fetchPriority="high"
+                                        loading="eager"
                                     />
 
                                     {/* Gradient Overlay */}

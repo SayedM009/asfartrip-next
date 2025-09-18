@@ -29,21 +29,25 @@ import { DialogFooter } from "../ui/dialog";
 import SignOutButton from "../loginButton/SignOut";
 
 const HELPER_LINKS = [
-    { title: "about_us", icon: <ExclamationCircleIcon />, path: "/about-us" },
+    {
+        title: "about_us",
+        icon: <ExclamationCircleIcon className="size-5" />,
+        path: "/about-us",
+    },
     { title: "contact_us", icon: <PhoneIcon />, path: "/about-us" },
     {
         title: "privacy_policy",
-        icon: <DocumentCheckIcon />,
+        icon: <DocumentCheckIcon className="size-5" />,
         path: "/privacy_policy",
     },
     {
         title: "terms_conditions",
-        icon: <DocumentTextIcon />,
+        icon: <DocumentTextIcon className="size-5" />,
         path: "/terms_condition",
     },
     {
         title: "faqs",
-        icon: <QuestionMarkCircleIcon />,
+        icon: <QuestionMarkCircleIcon className="size-5" />,
         path: "/faqs",
     },
 ];

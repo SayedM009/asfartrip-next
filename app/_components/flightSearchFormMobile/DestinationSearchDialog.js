@@ -112,7 +112,7 @@ function DestinationSearchDialog({
                 <span
                     className={`w-full dark:text-gray-50 font-normal text-sm flex justify-${dir}`}
                 >
-                    {destination?.code ?? "City"}
+                    {destination?.label_code ?? "City"}
                 </span>
             </DialogTrigger>
             <DialogContent className=" bg-background h-full w-full max-w-none rounded-none border-0 p-3 overflow-y-auto">

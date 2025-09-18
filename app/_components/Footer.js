@@ -12,9 +12,57 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import useIsDevice from "../_hooks/useIsDevice";
 import Logo from "./Logo";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import Image from "next/image";
+
+const quick_links = [
+    {
+        title: "about_us",
+        path: "/about",
+    },
+    {
+        title: "contact_us",
+        path: "/contact",
+    },
+    {
+        title: "faqs",
+        path: "/faqs",
+    },
+    {
+        title: "blog",
+        path: "/blog",
+    },
+];
+
+const services = [
+    {
+        title: "flight",
+        path: "/flight",
+    },
+    {
+        title: "hotel",
+        path: "/hotel",
+    },
+    {
+        title: "car",
+        path: "/car",
+    },
+    {
+        title: "insurance",
+        path: "/insurance",
+    },
+];
+
+const important_links = [
+    { title: "privacy_policy", path: "/privacy" },
+    { title: "terms_conditions", path: "/terms" },
+];
 
 export function Footer() {
     const { mobile } = useIsDevice();
+    const t = useTranslations("Footer");
+    const p = useTranslations("Pages");
     if (mobile) return null;
     return (
         <footer className="bg-muted text-muted-foreground hidden md:block">
@@ -25,16 +73,13 @@ export function Footer() {
                         <div className="flex items-center space-x-2 mb-4">
                             <Logo />
                         </div>
-                        <p className="text-sm mb-4">
-                            Your trusted partner for affordable flights
-                            worldwide. Discover amazing destinations and create
-                            unforgettable memories.
-                        </p>
+                        <p className="text-sm mb-4">{t("title")}</p>
                         <div className="flex space-x-3">
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 className="h-8 w-8"
+                                title={t("social_icons.face_book")}
                             >
                                 <Facebook className="h-4 w-4" />
                             </Button>
@@ -42,136 +87,96 @@ export function Footer() {
                                 variant="ghost"
                                 size="icon"
                                 className="h-8 w-8"
+                                title={t("social_icons.x")}
                             >
-                                <Twitter className="h-4 w-4" />
+                                <Image
+                                    src="/icons/x.png"
+                                    alt="x"
+                                    width={12}
+                                    height={8}
+                                />
                             </Button>
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 className="h-8 w-8"
+                                title={t("social_icons.instagram")}
                             >
                                 <Instagram className="h-4 w-4" />
                             </Button>
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8"
+                                className="h-8 w-8 relative"
+                                title={t("social_icons.tik_tok")}
                             >
-                                <Youtube className="h-4 w-4" />
+                                <Image
+                                    src="/icons/tiktok.png"
+                                    alt="tiktok"
+                                    width={16}
+                                    height={8}
+                                />
                             </Button>
                         </div>
                     </div>
 
                     {/* Quick Links */}
                     <div>
-                        <h3 className="text-foreground mb-4">Quick Links</h3>
+                        <h3 className="text-foreground mb-4 font-semibold">
+                            {t("quick_links")}
+                        </h3>
                         <ul className="space-y-2 text-sm">
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-foreground transition-colors"
-                                >
-                                    About Us
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-foreground transition-colors"
-                                >
-                                    Contact
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-foreground transition-colors"
-                                >
-                                    Careers
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-foreground transition-colors"
-                                >
-                                    Press
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-foreground transition-colors"
-                                >
-                                    Blog
-                                </a>
-                            </li>
+                            {quick_links.map((link) => (
+                                <li key={link.path}>
+                                    <Link
+                                        href={link.path}
+                                        className="hover:text-foreground transition-colors"
+                                    >
+                                        {p(`${link.title}`)}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
                     {/* Services */}
                     <div>
-                        <h3 className="text-foreground mb-4">Services</h3>
+                        <h3 className="text-foreground mb-4 font-semibold">
+                            {t("services.title")}
+                        </h3>
                         <ul className="space-y-2 text-sm">
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-foreground transition-colors"
-                                >
-                                    Flight Booking
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-foreground transition-colors"
-                                >
-                                    Hotel Reservations
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-foreground transition-colors"
-                                >
-                                    Car Rentals
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-foreground transition-colors"
-                                >
-                                    Travel Insurance
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-foreground transition-colors"
-                                >
-                                    Group Travel
-                                </a>
-                            </li>
+                            {services.map((Service) => (
+                                <li key={Service.path}>
+                                    <Link
+                                        href={Service.path}
+                                        className="hover:text-foreground transition-colors"
+                                    >
+                                        {t(`services.${Service.title}`)}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
                     {/* Newsletter */}
                     <div>
-                        <h3 className="text-foreground mb-4">Stay Updated</h3>
+                        <h3 className="text-foreground mb-4 font-semibold">
+                            {t("stay_updated.title")}
+                        </h3>
                         <p className="text-sm mb-4">
-                            Subscribe to our newsletter for exclusive deals and
-                            travel tips.
+                            {t("stay_updated.sub_title")}
                         </p>
                         <div className="flex space-x-2">
                             <div className="relative flex-1">
                                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4" />
                                 <Input
-                                    placeholder="Enter your email"
+                                    placeholder={t("stay_updated.place_holder")}
                                     className="pl-10 bg-background"
                                 />
                             </div>
-                            <Button size="sm">Subscribe</Button>
+                            <Button size="sm" className="cursor-pointer">
+                                {t("stay_updated.subscribe")}
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -181,27 +186,21 @@ export function Footer() {
                 {/* Bottom Footer */}
                 <div className="flex flex-col md:flex-row justify-between items-center text-sm">
                     <div className="mb-4 md:mb-0">
-                        <p>&copy; 2025 SkyWings. All rights reserved.</p>
+                        <p>
+                            &copy; {new Date().getFullYear().toString()}{" "}
+                            {t("copy_right.website")} {t("copy_right.text")}
+                        </p>
                     </div>
                     <div className="flex space-x-6">
-                        <a
-                            href="#"
-                            className="hover:text-foreground transition-colors"
-                        >
-                            Privacy Policy
-                        </a>
-                        <a
-                            href="#"
-                            className="hover:text-foreground transition-colors"
-                        >
-                            Terms of Service
-                        </a>
-                        <a
-                            href="#"
-                            className="hover:text-foreground transition-colors"
-                        >
-                            Cookie Policy
-                        </a>
+                        {important_links.map((link) => (
+                            <Link
+                                href={link.path}
+                                key={link.path}
+                                className="hover:text-foreground transition-colors"
+                            >
+                                {p(`${link.title}`)}
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </div>

@@ -11,7 +11,8 @@
         "contact_us": "Contact Us",
         "privacy_policy": "Privacy Policy",
         "terms_conditions": "Terms & Conditions",
-        "faqs": "FAQs"
+        "faqs": "FAQs",
+        "blog": "Blog"
     },
     "Languageswitcher": {
         "close": "close menu",
@@ -156,7 +157,9 @@
             "close": "Close",
             "search": "Search",
             "searching": "Searching flights...",
-            "no_results": "There are no results"
+            "no_results": "There are no results",
+            "departure_search": "Leaving from",
+            "destination_search": "Going to"
         },
 
         "errors": {
@@ -191,6 +194,61 @@
     },
     "Flights_slider": {
         "title": "Quick Trip",
-        "sub_title": "Fast and easy bookings for your next adventure"
+        "sub_title": "Fast and easy bookings for your next adventure",
+        "start_from": "Start from",
+        "direct": "Direct",
+        "cities": {
+            "dubai": "dubai",
+            "riyadh": "riyadh",
+            "salalah": "salalah",
+            "trabzon": "trabzon",
+            "tbilisi": "tbilisi",
+            "saraievo": "saraievo",
+            "vienna": "vienna",
+            "salzburg": "salzburg",
+            "cairo": "cairo"
+        }
+    },
+    "Hotels_slider": {
+        "title": "Inspiring Hotels",
+        "sub_title": "Stay inspired, explore more",
+        "hotels": {
+            "atlantis": "Atlantis The Palm",
+            "one": "One&Only One Zaabeel",
+            "salalah": "Salalah Rotana Resort",
+            "mazagan": "Mazagan Beach & Golf Resort"
+        },
+        "locations": {
+            "dubai": "Dubai, United Arab Emirates",
+            "salalah": "Salalah, Oman",
+            "eljadida": "Eljadida, Morocco"
+        }
+    },
+    "Footer": {
+        "title": "Your trusted partner for affordable flights worldwide. Discover amazing destinations and create unforgettable memories.",
+        "social_icons": {
+            "face_book": "facebook",
+            "x": "X",
+            "instagram": "Instagram",
+            "tik_tok": "Tiktok"
+        },
+        "quick_links": "Quick links",
+        "services": {
+            "title": "Services",
+            "flight": "Flight Booking",
+            "hotel": "Hotel Reservations",
+            "car": "Car Rentals",
+            "insurance": "Travel Insurance"
+        },
+        "stay_updated": {
+            "title": "Stay Updated",
+            "sub_title": "Subscribe to our newsletter for exclusive deals and travel tips.",
+            "place_holder": "Enter your email",
+            "subscribe": "Subscribe"
+        },
+        "copy_right": {
+            "website": "Asfartrip.",
+            "text": "All rights reserved."
+        }
     }
 }
