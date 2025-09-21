@@ -15,7 +15,8 @@ export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
 }
 
-export default async function RootLayout({ children, params: { locale } }) {
+export default async function RootLayout({ children, params }) {
+    const { locale } = await params;
     const conditions = locale === "ar";
     const messages = await getMessages();
 

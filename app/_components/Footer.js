@@ -89,12 +89,7 @@ export function Footer() {
                                 className="h-8 w-8"
                                 title={t("social_icons.x")}
                             >
-                                <Image
-                                    src="/icons/x.png"
-                                    alt="x"
-                                    width={12}
-                                    height={8}
-                                />
+                                <Twitter className="h-4 w-4" />
                             </Button>
                             <Button
                                 variant="ghost"
@@ -104,7 +99,7 @@ export function Footer() {
                             >
                                 <Instagram className="h-4 w-4" />
                             </Button>
-                            <Button
+                            {/* <Button
                                 variant="ghost"
                                 size="icon"
                                 className="h-8 w-8 relative"
@@ -116,7 +111,7 @@ export function Footer() {
                                     width={16}
                                     height={8}
                                 />
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
 
@@ -174,7 +169,7 @@ export function Footer() {
                                     className="pl-10 bg-background"
                                 />
                             </div>
-                            <Button size="sm" className="cursor-pointer">
+                            <Button size="sm" className="cursor-pointer px-5">
                                 {t("stay_updated.subscribe")}
                             </Button>
                         </div>

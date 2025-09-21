@@ -1,6 +1,7 @@
 {
     "Homepage": {
-        "title": "ِAsfartrip.com",
+        "title": "AsfarTrip.com",
+        "description": "AsfarTrip.com is an online travel agency providing flights, hotels, car rentals, travel insurance & holiday packages.",
         "home": "home",
         "trips": "trips",
         "offers": "offers",
@@ -36,6 +37,8 @@
     "CurrencySwitcher": {
         "title": "Change Currency",
         "select_currency": "Select currency",
+        "cancel": "Cancel",
+        "apply": "Apply",
         "currencies": {
             "us": "US Dollar",
             "eu": "Euro",

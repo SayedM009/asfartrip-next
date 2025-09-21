@@ -182,7 +182,7 @@ export function DestinationSlider() {
                             >
                                 <div
                                     className={cn(
-                                        "h-70 rounded-md p-6 relative overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-105",
+                                        "h-70 rounded-2xl p-6 relative overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-105",
                                         card.backgroundColor
                                     )}
                                 >
@@ -195,6 +195,7 @@ export function DestinationSlider() {
                                         priority
                                         fetchPriority="high"
                                         loading="eager"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     />
 
                                     {/* Gradient Overlay */}

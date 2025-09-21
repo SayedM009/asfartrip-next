@@ -64,14 +64,16 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                     }`}
                 >
                     <Globe className="size-4" />
-                    <span>{selectedLanguage?.name.toUpperCase()}</span>
+                    <span className="sm:hidden">
+                        {selectedLanguage?.name.toUpperCase()}
+                    </span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md bg-black border-0">
+            <DialogContent className="sm:max-w-md border-0">
                 <DialogHeader>
                     <DialogTitle className="flex items-center space-x-2">
-                        <Globe className="h-5 w-5 text-gray-50" />
-                        <span className="text-gray-50">{t("title")}</span>
+                        <Globe className="size-5" />
+                        <span>{t("title")}</span>
                     </DialogTitle>
                     <DialogDescription
                         className={`text-gray-400 ${isRTL && "text-right"}`}
@@ -95,7 +97,7 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                                 dir={isRTL && "rtl"}
                             >
                                 <SelectValue>
-                                    <div className="flex items-center space-x-2 uppercase text-white">
+                                    <div className="flex items-center space-x-2 uppercase dark:text-white">
                                         <span>{selectedLanguage?.flag}</span>
                                         <span>{selectedLanguage?.name}</span>
                                     </div>

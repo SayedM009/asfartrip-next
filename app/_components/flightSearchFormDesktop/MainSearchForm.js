@@ -134,6 +134,16 @@ export default function MainSearchForm({
                                 setIsSearchingDeparture(true);
                                 setShowDepartureResults(true);
                             }}
+                            role={!isSearchingDeparture ? "button" : undefined}
+                            tabIndex={!isSearchingDeparture ? 0 : undefined}
+                            aria-label={
+                                !isSearchingDeparture
+                                    ? `Selected departure city: ${
+                                          departure.city ||
+                                          t("operations.departure_search")
+                                      }`
+                                    : undefined
+                            }
                         >
                             {isSearchingDeparture ? (
                                 <Input
@@ -148,10 +158,9 @@ export default function MainSearchForm({
                                     placeholder={t(
                                         "operations.departure_search"
                                     )}
-                                    className="h-12 pl-10   border-0"
+                                    className="h-12 pl-10 border-0"
                                     autoFocus
                                     onBlur={(e) => {
-                                        // Only close if we're not clicking on a result
                                         if (
                                             !e.relatedTarget?.closest(
                                                 '[role="option"]'
@@ -164,11 +173,7 @@ export default function MainSearchForm({
                                             }, 100);
                                         }
                                     }}
-                                    aria-label={
-                                        isSearchingDeparture
-                                            ? "Search departure city"
-                                            : `Selected departure city: ${departure.city}`
-                                    }
+                                    aria-label="Search departure city"
                                 />
                             ) : (
                                 <div className="h-12 bg-input-background dark:bg-input-background/5 rounded-md border-0 px-3 py-2 pl-10 flex items-center">
@@ -178,6 +183,7 @@ export default function MainSearchForm({
                                     </span>
                                 </div>
                             )}
+
                             <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         </div>
                     </PopoverTrigger>
@@ -212,6 +218,18 @@ export default function MainSearchForm({
                                 setIsSearchingDestination(true);
                                 setShowDestinationResults(true);
                             }}
+                            role={
+                                !isSearchingDestination ? "button" : undefined
+                            }
+                            tabIndex={!isSearchingDestination ? 0 : undefined}
+                            aria-label={
+                                !isSearchingDestination
+                                    ? `Selected destination city: ${
+                                          destination.city ||
+                                          t("operations.destination_search")
+                                      }`
+                                    : undefined
+                            }
                         >
                             {isSearchingDestination ? (
                                 <Input
@@ -229,7 +247,6 @@ export default function MainSearchForm({
                                     className="h-12 pl-10 bg-input-background border-0"
                                     autoFocus
                                     onBlur={(e) => {
-                                        // Only close if we're not clicking on a result
                                         if (
                                             !e.relatedTarget?.closest(
                                                 '[role="option"]'
@@ -246,11 +263,7 @@ export default function MainSearchForm({
                                             }, 100);
                                         }
                                     }}
-                                    aria-label={
-                                        isSearchingDeparture
-                                            ? "Search destination city"
-                                            : `Selected destination city: ${destination.city}`
-                                    }
+                                    aria-label="Search destination city"
                                 />
                             ) : (
                                 <div className="h-12 bg-input-background dark:bg-input-background/5 rounded-md border-0 px-3 py-2 pl-10 flex items-center">
@@ -260,6 +273,7 @@ export default function MainSearchForm({
                                     </span>
                                 </div>
                             )}
+
                             <Plane className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         </div>
                     </PopoverTrigger>

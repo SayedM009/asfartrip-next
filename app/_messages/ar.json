@@ -1,6 +1,7 @@
 {
     "Homepage": {
-        "title": "أسفار تربز",
+        "title": "AsfarTrip.com",
+        "description": "AsfarTrip.com هو وكالة سفر عبر الإنترنت تقدم خدمات الطيران والفنادق وتأجير السيارات والتأمين على السفر وحزم العطلات.",
         "home": "الرئيسية",
         "trips": "رحلات",
         "offers": "عروض",
@@ -35,6 +36,8 @@
     "CurrencySwitcher": {
         "title": "تغير العملة",
         "select_currency": "إختر العملة",
+        "cancel": "إلغاء",
+        "apply": "تطبيق",
         "currencies": {
             "us": "الدولار الأمريكى",
             "eu": "اليورو",

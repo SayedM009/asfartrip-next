@@ -1,19 +1,14 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { Button } from "../ui/button";
-import {
-    ArrowLeft,
-    ArrowRight,
-    ChevronLeft,
-    ChevronRight,
-    Star,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "../ui/utils";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { format, parseISO } from "date-fns";
+
 import useCheckLocal from "../../_hooks/useCheckLocal";
 import useDisplayShortDate from "@/app/_hooks/useDisplayShortDate";
+import { useCurrency } from "@/app/_hooks/useCurrency";
 
 const destinations = [
     {
@@ -26,7 +21,7 @@ const destinations = [
         date: "2025-09-12T00:00:00.000Z", // ISO format
         time: "1h 40m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "2",
@@ -39,7 +34,7 @@ const destinations = [
         date: "2025-09-15T00:00:00.000Z",
         time: "1h 50m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "3",
@@ -52,7 +47,7 @@ const destinations = [
         date: "2025-09-20T00:00:00.000Z",
         time: "4h 0m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "4",
@@ -65,7 +60,7 @@ const destinations = [
         date: "2025-09-25T00:00:00.000Z",
         time: "3h 30m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "5",
@@ -78,7 +73,7 @@ const destinations = [
         date: "2025-09-28T00:00:00.000Z",
         time: "5h 0m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "6",
@@ -91,7 +86,7 @@ const destinations = [
         date: "2025-10-02T00:00:00.000Z",
         time: "6h 0m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "7",
@@ -104,7 +99,7 @@ const destinations = [
         date: "2025-10-05T00:00:00.000Z",
         time: "6h 20m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "8",
@@ -117,7 +112,7 @@ const destinations = [
         date: "2025-09-10T00:00:00.000Z",
         time: "3h 0m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
 ];
 
@@ -167,6 +162,8 @@ export function FlightsSlider() {
             }
         }
     };
+
+    const { formatCurrency } = useCurrency();
 
     return (
         <div
@@ -255,6 +252,7 @@ export function FlightsSlider() {
                                         alt={`${card.from}, ${card.to}`}
                                         fill
                                         className="object-cover"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     />
 
                                     {/* Gradient Overlay */}
