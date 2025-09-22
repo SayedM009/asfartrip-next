@@ -74,7 +74,7 @@ function CurrencySwitcher({ hiddenOnMobile = false }) {
                 <Select value={currency} onValueChange={changeCurrency}>
                     <SelectTrigger
                         className="w-full cursor-pointer"
-                        dir={isRTL && "rtl"}
+                        dir={isRTL ? "rtl" : "ltr"}
                     >
                         <SelectValue
                             placeholder={`${selectedCurrency?.symbol} ${selectedCurrency?.name}`}
