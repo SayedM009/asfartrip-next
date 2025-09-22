@@ -31,7 +31,6 @@ export default function PassengersAndClass({
         switch (className) {
             case "economy":
                 return "Economy";
-
             case "business":
                 return "Business";
             case "first":
@@ -42,15 +41,38 @@ export default function PassengersAndClass({
     };
 
     const updatePassengers = (type, increment) => {
-        if (type == "adults" && !increment && passengers.adults === 1)
-            return null;
         setPassengers((prev) => {
+            const currentCount = prev[type];
+            let newCount;
+
+            if (increment) {
+                newCount = currentCount + 1;
+            } else {
+                newCount = Math.max(0, currentCount - 1);
+            }
+
+            // Ensure at least 1 adult and max 9 adults
+            if (type === "adults") {
+                if (newCount < 1) return prev;
+                if (newCount > 9) return prev;
+            }
+
+            // Set max limits for other passenger types
+            if (type === "children" && newCount > 8) return prev;
+            if (type === "infants" && newCount > 4) return prev;
+
+            // Limit total passengers to reasonable amount
+            const newTotal = Object.keys(prev).reduce((sum, key) => {
+                return sum + (key === type ? newCount : prev[key]);
+            }, 0);
+
+            if (newTotal > 15) return prev; // Max 15 total passengers
+
             const lastObj = {
                 ...prev,
-                [type]: increment
-                    ? prev[type] + 1
-                    : Math.max(0, prev[type] - 1),
+                [type]: newCount,
             };
+
             sessionStorage.setItem("flightPassengers", JSON.stringify(lastObj));
             return lastObj;
         });
@@ -60,6 +82,33 @@ export default function PassengersAndClass({
         setTravelClass(value);
         sessionStorage.setItem("travelClass", value);
     }
+
+    const passengerConfig = [
+        {
+            key: "adults",
+            label: "Adults",
+            icon: User,
+            description: "12+ years",
+            min: 1,
+            max: 9,
+        },
+        {
+            key: "children",
+            label: "Children",
+            icon: Users,
+            description: "2-11 years",
+            min: 0,
+            max: 8,
+        },
+        {
+            key: "infants",
+            label: "Infants",
+            icon: Baby,
+            description: "Under 2 years",
+            min: 0,
+            max: 4,
+        },
+    ];
 
     return (
         <>
@@ -115,13 +164,13 @@ export default function PassengersAndClass({
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent dir={dir}>
-                                        <SelectItem value="economy">
+                                        <SelectItem value="Economy">
                                             {t("ticket_class.economy")}
                                         </SelectItem>
-                                        <SelectItem value="business">
+                                        <SelectItem value="Business">
                                             {t("ticket_class.business")}
                                         </SelectItem>
-                                        <SelectItem value="first">
+                                        <SelectItem value="First">
                                             {t("ticket_class.first")}
                                         </SelectItem>
                                     </SelectContent>
@@ -130,31 +179,14 @@ export default function PassengersAndClass({
 
                             {/* Passenger Counts */}
                             <div className="space-y-3 ">
-                                {[
-                                    {
-                                        key: "adults",
-                                        label: "Adults",
-                                        icon: User,
-                                        description: "12+ years",
-                                    },
-                                    {
-                                        key: "children",
-                                        label: "Children",
-                                        icon: Users,
-                                        description: "2-11 years",
-                                    },
-                                    {
-                                        key: "infants",
-                                        label: "Infants",
-                                        icon: Baby,
-                                        description: "Under 2 years",
-                                    },
-                                ].map(
+                                {passengerConfig.map(
                                     ({
                                         key,
                                         label,
                                         icon: Icon,
                                         description,
+                                        min,
+                                        max,
                                     }) => (
                                         <div
                                             key={key}
@@ -184,7 +216,7 @@ export default function PassengersAndClass({
                                                         )
                                                     }
                                                     disabled={
-                                                        passengers[key] === 0
+                                                        passengers[key] <= min
                                                     }
                                                     className="h-8 w-8 cursor-pointer"
                                                 >
@@ -201,6 +233,9 @@ export default function PassengersAndClass({
                                                             key,
                                                             true
                                                         )
+                                                    }
+                                                    disabled={
+                                                        passengers[key] >= max
                                                     }
                                                     className="h-8 w-8 cursor-pointer"
                                                 >

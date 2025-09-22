@@ -12,6 +12,8 @@ import PassengersAndClass from "./PassengersAndClass";
 import { safeParse } from "@/app/_helpers/safeParse";
 import { toast } from "sonner";
 import { CheckBadgeIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "@/i18n/navigation";
+import { format, parseISO } from "date-fns";
 
 export function FlightSearchFormDesktop() {
     const [tripType, setTripType] = useState("roundtrip");
@@ -24,8 +26,9 @@ export function FlightSearchFormDesktop() {
         children: 0,
         infants: 0,
     });
-    const [travelClass, setTravelClass] = useState("economy");
+    const [travelClass, setTravelClass] = useState("Economy");
     const t = useTranslations("Flight");
+    const router = useRouter();
 
     // Avoid getting sessionStorage on server to skip an error
     useEffect(() => {
@@ -39,7 +42,7 @@ export function FlightSearchFormDesktop() {
                 to: null,
             })
         );
-        setTravelClass(sessionStorage.getItem("travelClass") || "economy");
+        setTravelClass(sessionStorage.getItem("travelClass") || "Economy");
         setPassengers(
             safeParse(sessionStorage.getItem("flightPassengers"), {
                 adults: 1,
@@ -49,7 +52,7 @@ export function FlightSearchFormDesktop() {
         );
     }, []);
 
-    function handleSearch() {
+    async function handleSearch() {
         if (departure && destination && departure?.city === destination?.city) {
             toast.error(t("errors.same_city", { city: departure?.city }), {
                 icon: <XCircleIcon className="text-red-500 text-sm" />,
@@ -93,7 +96,35 @@ export function FlightSearchFormDesktop() {
             icon: <CheckBadgeIcon className="text-green-500" />,
         });
 
-        // router.push("/flights/list");
+        let searchObject;
+        if (tripType === "oneway") {
+            searchObject = {
+                origin: departure.label_code,
+                destination: destination.label_code,
+                depart_date: format(departDate, "dd-MM-yyyy"),
+                ADT: passengers.adults,
+                CHD: passengers.children,
+                INF: passengers.infants,
+                class: travelClass,
+                type: "O",
+            };
+        } else if (tripType === "roundtrip") {
+            searchObject = {
+                origin: departure.label_code,
+                destination: destination.label_code,
+                depart_date: format(range.from, "dd-MM-yyyy"),
+                return_date: format(range.to, "dd-MM-yyyy"),
+                ADT: passengers.adults,
+                CHD: passengers.children,
+                INF: passengers.infants,
+                class: travelClass,
+                type: "R",
+            };
+        }
+
+        const params = new URLSearchParams();
+        params.set("searchObject", JSON.stringify(searchObject));
+        router.push(`/flights/search?${params.toString()}`);
     }
 
     return (

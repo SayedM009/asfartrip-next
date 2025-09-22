@@ -59,19 +59,21 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                 <Button
                     variant="ghost"
                     size="sm"
-                    className={` items-center hover:bg-accent font-bold sm:flex dark:text-gray-50  cursor-pointer ${
+                    className={` sm:items-center hover:bg-accent font-bold sm:flex dark:text-gray-50  cursor-pointer w-full sm:w-auto justify-start ${
                         hiddenOnMobile ? "hidden sm:flex" : "flex"
                     }`}
                 >
-                    <Globe className="svg" />
-                    <span>{selectedLanguage?.name.toUpperCase()}</span>
+                    <Globe className="size-4" />
+                    <span className="sm:hidden">
+                        {selectedLanguage?.name.toUpperCase()}
+                    </span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md bg-black border-0">
+            <DialogContent className="sm:max-w-md border-0">
                 <DialogHeader>
                     <DialogTitle className="flex items-center space-x-2">
-                        <Globe className="h-5 w-5 text-gray-50" />
-                        <span className="text-gray-50">{t("title")}</span>
+                        <Globe className="size-5" />
+                        <span>{t("title")}</span>
                     </DialogTitle>
                     <DialogDescription
                         className={`text-gray-400 ${isRTL && "text-right"}`}
@@ -95,7 +97,7 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                                 dir={isRTL && "rtl"}
                             >
                                 <SelectValue>
-                                    <div className="flex items-center space-x-2 uppercase">
+                                    <div className="flex items-center space-x-2 uppercase dark:text-white">
                                         <span>{selectedLanguage?.flag}</span>
                                         <span>{selectedLanguage?.name}</span>
                                     </div>

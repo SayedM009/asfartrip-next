@@ -1,12 +1,14 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { Button } from "../ui/button";
-import { ArrowRight, ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "../ui/utils";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { format, parseISO } from "date-fns";
+
 import useCheckLocal from "../../_hooks/useCheckLocal";
+import useDisplayShortDate from "@/app/_hooks/useDisplayShortDate";
+import { useCurrency } from "@/app/_hooks/useCurrency";
 
 const destinations = [
     {
@@ -15,11 +17,11 @@ const destinations = [
         to: "riyadh",
         backgroundColor:
             "bg-gradient-to-br from-orange-400 via-orange-500 to-red-500",
-        img: "/destinations/Dubai.jpg",
+        img: "/destinations/riyadh.jpg",
         date: "2025-09-12T00:00:00.000Z", // ISO format
         time: "1h 40m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "2",
@@ -28,11 +30,11 @@ const destinations = [
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
-        img: "/destinations/tailand.jpg",
+        img: "/destinations/salalah.jpg",
         date: "2025-09-15T00:00:00.000Z",
         time: "1h 50m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "3",
@@ -41,11 +43,11 @@ const destinations = [
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
-        img: "/destinations/istanbul.jpg",
+        img: "/destinations/trabzon.jpg",
         date: "2025-09-20T00:00:00.000Z",
         time: "4h 0m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "4",
@@ -54,24 +56,24 @@ const destinations = [
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
-        img: "/destinations/salalah.jpg",
+        img: "/destinations/tbilisi.webp",
         date: "2025-09-25T00:00:00.000Z",
         time: "3h 30m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "5",
         from: "dubai",
-        to: "sarajevo",
+        to: "saraievo",
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
-        img: "/destinations/malaysia.jpg",
+        img: "/destinations/saraievo.jpg",
         date: "2025-09-28T00:00:00.000Z",
         time: "5h 0m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "6",
@@ -80,11 +82,11 @@ const destinations = [
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
-        img: "/destinations/malaysia.jpg",
+        img: "/destinations/vienna.jpg",
         date: "2025-10-02T00:00:00.000Z",
         time: "6h 0m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "7",
@@ -93,11 +95,11 @@ const destinations = [
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
-        img: "/destinations/malaysia.jpg",
+        img: "/destinations/salzburg.jpg",
         date: "2025-10-05T00:00:00.000Z",
         time: "6h 20m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
     {
         id: "8",
@@ -110,7 +112,7 @@ const destinations = [
         date: "2025-09-10T00:00:00.000Z",
         time: "3h 0m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
+        price: Math.floor(Math.random() * 901) + 100,
     },
 ];
 
@@ -120,17 +122,13 @@ export function FlightsSlider() {
     const [canScrollRight, setCanScrollRight] = useState(true);
     const t = useTranslations("Flights_slider");
     const { isRTL } = useCheckLocal();
-    function formatDate(isoDate) {
-        if (!isoDate) return "";
-        return format(parseISO(isoDate), "dd MMM");
-    }
+    const displayShortDate = useDisplayShortDate();
 
     const scroll = (direction) => {
         if (scrollContainerRef.current) {
             const containerWidth = scrollContainerRef.current.clientWidth;
             const scrollAmount = containerWidth * 0.8;
 
-            // في RTL نستخدم نفس المنطق ولكن نحسب بناءً على الموضع الحالي
             const currentScroll = scrollContainerRef.current.scrollLeft;
             let newScrollPosition;
 
@@ -165,6 +163,8 @@ export function FlightsSlider() {
         }
     };
 
+    const { formatCurrency } = useCurrency();
+
     return (
         <div
             className="pb-8 px-4  lg:px-8 bg-background sm:mt-5"
@@ -176,7 +176,7 @@ export function FlightsSlider() {
                     <div>
                         <div className="flex items-center sm:mb-2 gap-2">
                             <Image
-                                src="/icons/airplane.gif"
+                                src="/icons/airplane-m.gif"
                                 alt="Destination dream trip"
                                 width={30}
                                 height={30}
@@ -252,6 +252,7 @@ export function FlightsSlider() {
                                         alt={`${card.from}, ${card.to}`}
                                         fill
                                         className="object-cover"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     />
 
                                     {/* Gradient Overlay */}
@@ -260,18 +261,31 @@ export function FlightsSlider() {
                                     {/* Content */}
                                     <div className=" z-10 h-full flex flex-col justify-end mt-3 ">
                                         <div className="text-white text-xl font-semibold capitalize bg-[#111] absolute w-full left-0 bottom-0 right-0 py-2 px-3">
-                                            <h3 className="flex items-center gap-2 text-md">
-                                                {card.from} <ArrowRight />{" "}
-                                                {card.to}
+                                            <h3 className="flex items-center gap-2 text-md sm:text-sm">
+                                                {t(`cities.${card.from}`)}{" "}
+                                                {isRTL ? (
+                                                    <ArrowLeft className="size-5" />
+                                                ) : (
+                                                    <ArrowRight className="size-5" />
+                                                )}{" "}
+                                                {t(`cities.${card.to}`)}
                                             </h3>
-                                            <div className="flex items-center justify-between text-sm font-normal text-gray-400">
-                                                <h4>{formatDate(card.date)}</h4>
+                                            <div className="flex items-center justify-between text-sm font-normal text-gray-400 sm:text-xs">
+                                                <h4>
+                                                    {displayShortDate(
+                                                        card.date
+                                                    )}
+                                                </h4>
                                                 <h4>{card.time}</h4>
                                             </div>
                                             <div className="flex items-center justify-between text-sm">
-                                                <h4>Start from {card.price}</h4>
+                                                <h4>
+                                                    {t("start_from")}{" "}
+                                                    {card.price}
+                                                </h4>
                                                 <h4 className="bg-gray-300 rounded-sm px-2 text-gray-900 text-xs">
-                                                    {card.isDirect && "Direct"}
+                                                    {card.isDirect &&
+                                                        t("direct")}
                                                 </h4>
                                             </div>
                                         </div>

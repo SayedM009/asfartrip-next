@@ -21,8 +21,12 @@ function ThemeSwitcher({ hiddenOnMobile = false }) {
             aria-label={t("ariaLabel")}
             title={t("title")}
         >
-            <SunIcon className={`${condition ? "block svg" : "hidden"} w-5 `} />
-            <MoonIcon className={`${condition ? "hidden" : "block svg"}`} />
+            <SunIcon
+                className={`${condition ? "block svg" : "hidden"} size-5 `}
+            />
+            <MoonIcon
+                className={`${condition ? "hidden" : "block svg"} size-5`}
+            />
             <span className="sm:hidden">{t("dark_mode")}</span>
         </Button>
     );

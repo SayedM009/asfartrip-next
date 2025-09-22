@@ -5,72 +5,80 @@ import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { cn } from "../ui/utils";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { format, parseISO } from "date-fns";
 import useCheckLocal from "../../_hooks/useCheckLocal";
+import { StarIcon } from "@heroicons/react/24/solid";
 
 const destinations = [
     {
         id: "1",
-        city: "dubai",
-        country: "uae",
+        title: "atlantis",
+        location: "dubai",
         backgroundColor:
             "bg-gradient-to-br from-orange-400 via-orange-500 to-red-500",
-        img: "/destinations/Dubai.jpg",
+        img: "/hotels/atlantis.jpg",
+        date: "2025-09-12T00:00:00.000Z", // ISO format
+        time: "1h 40m",
+        isDirect: Math.random() < 0.5,
+        price: Math.floor(Math.random() * 901) + 100 + " USD",
     },
     {
         id: "2",
-        city: "phuket",
-        country: "thailand",
-
+        title: "one",
+        location: "dubai",
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
-        img: "/destinations/tailand.jpg",
+        img: "/hotels/one.webp",
+        date: "2025-09-15T00:00:00.000Z",
+        time: "1h 50m",
+        isDirect: Math.random() < 0.5,
+        price: Math.floor(Math.random() * 901) + 100 + " USD",
     },
     {
         id: "3",
-        city: "istanbul",
-        country: "turkey",
-
+        title: "salalah",
+        location: "salalah",
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
-        img: "/destinations/istanbul.jpg",
+        img: "/hotels/salalah.webp",
+        date: "2025-09-20T00:00:00.000Z",
+        time: "4h 0m",
+        isDirect: Math.random() < 0.5,
+        price: Math.floor(Math.random() * 901) + 100 + " USD",
     },
     {
         id: "4",
-        city: "salalah",
-        country: "oman",
-
+        title: "mazagan",
+        location: "eljadida",
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
-        img: "/destinations/salalah.jpg",
-    },
-    {
-        id: "5",
-        city: "kuala_lumpur",
-        country: "malaysia",
-
-        backgroundColor:
-            "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
-        textColor: "text-white",
-        img: "/destinations/malaysia.jpg",
+        img: "/hotels/mazagan.jpg",
+        date: "2025-09-25T00:00:00.000Z",
+        time: "3h 30m",
+        isDirect: Math.random() < 0.5,
+        price: Math.floor(Math.random() * 901) + 100 + " USD",
     },
 ];
 
-export function DestinationSlider() {
+export function HotelsSlider() {
     const scrollContainerRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(true);
-    const t = useTranslations("Destination_slider");
+    const t = useTranslations("Hotels_slider");
     const { isRTL } = useCheckLocal();
+    function formatDate(isoDate) {
+        if (!isoDate) return "";
+        return format(parseISO(isoDate), "dd MMM");
+    }
 
     const scroll = (direction) => {
         if (scrollContainerRef.current) {
             const containerWidth = scrollContainerRef.current.clientWidth;
             const scrollAmount = containerWidth * 0.8;
 
-            // في RTL نستخدم نفس المنطق ولكن نحسب بناءً على الموضع الحالي
             const currentScroll = scrollContainerRef.current.scrollLeft;
             let newScrollPosition;
 
@@ -107,7 +115,7 @@ export function DestinationSlider() {
 
     return (
         <div
-            className="py-8 px-4  lg:px-8 bg-background sm:mt-5"
+            className="pb-8 px-4  lg:px-8 bg-background sm:mt-5"
             style={{ paddingRight: "0", paddingLeft: "0" }}
         >
             <div className="max-w-7xl mx-auto">
@@ -116,7 +124,7 @@ export function DestinationSlider() {
                     <div>
                         <div className="flex items-center sm:mb-2 gap-2">
                             <Image
-                                src="/icons/globe.gif"
+                                src="/icons/bed-m.gif"
                                 alt="Destination dream trip"
                                 width={30}
                                 height={30}
@@ -189,12 +197,9 @@ export function DestinationSlider() {
                                     {/* Background Image */}
                                     <Image
                                         src={card.img}
-                                        alt={`${card.city}, ${card.country}`}
+                                        alt={`${card.from}, ${card.to}`}
                                         fill
                                         className="object-cover"
-                                        priority
-                                        fetchPriority="high"
-                                        loading="eager"
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     />
 
@@ -202,11 +207,27 @@ export function DestinationSlider() {
                                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
 
                                     {/* Content */}
-                                    <div className="relative z-10 h-full flex flex-col justify-end mt-3">
-                                        <h3 className="text-white text-xl font-semibold capitalize">
-                                            {t(`cities.${card.city}`)},{" "}
-                                            {t(`countries.${card.country}`)}
-                                        </h3>
+                                    <div className=" z-10 h-full flex flex-col justify-end mt-3 ">
+                                        <div className="text-white text-xl font-semibold capitalize bg-[#111] absolute w-full left-0 bottom-0 right-0 py-2 px-3">
+                                            <h3 className="flex items-center gap-2 text-sm">
+                                                {t(`hotels.${card.title}`)}
+                                            </h3>
+                                            <div className="flex items-center justify-between text-sm font-normal text-gray-400">
+                                                {t(
+                                                    `locations.${card.location}`
+                                                )}
+                                                <span className="flex text-xs items-center gap-1">
+                                                    5
+                                                    <StarIcon className="size-3 text-white" />
+                                                </span>
+                                            </div>
+                                            {/* <div className="flex items-center justify-between text-sm">
+                                                <h4>Start from {card.price}</h4>
+                                                <h4 className="bg-gray-300 rounded-sm px-2 text-gray-900 text-xs">
+                                                    {card.isDirect && "Direct"}
+                                                </h4>
+                                            </div> */}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
