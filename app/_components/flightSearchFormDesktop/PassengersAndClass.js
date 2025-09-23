@@ -164,13 +164,13 @@ export default function PassengersAndClass({
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent dir={dir}>
-                                        <SelectItem value="economy">
+                                        <SelectItem value="Economy">
                                             {t("ticket_class.economy")}
                                         </SelectItem>
-                                        <SelectItem value="business">
+                                        <SelectItem value="Business">
                                             {t("ticket_class.business")}
                                         </SelectItem>
-                                        <SelectItem value="first">
+                                        <SelectItem value="First">
                                             {t("ticket_class.first")}
                                         </SelectItem>
                                     </SelectContent>

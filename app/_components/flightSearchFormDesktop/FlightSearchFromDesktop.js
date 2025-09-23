@@ -26,7 +26,7 @@ export function FlightSearchFormDesktop() {
         children: 0,
         infants: 0,
     });
-    const [travelClass, setTravelClass] = useState("economy");
+    const [travelClass, setTravelClass] = useState("Economy");
     const t = useTranslations("Flight");
     const router = useRouter();
 
@@ -42,7 +42,7 @@ export function FlightSearchFormDesktop() {
                 to: null,
             })
         );
-        setTravelClass(sessionStorage.getItem("travelClass") || "economy");
+        setTravelClass(sessionStorage.getItem("travelClass") || "Economy");
         setPassengers(
             safeParse(sessionStorage.getItem("flightPassengers"), {
                 adults: 1,
@@ -52,7 +52,7 @@ export function FlightSearchFormDesktop() {
         );
     }, []);
 
-    function handleSearch() {
+    async function handleSearch() {
         if (departure && destination && departure?.city === destination?.city) {
             toast.error(t("errors.same_city", { city: departure?.city }), {
                 icon: <XCircleIcon className="text-red-500 text-sm" />,

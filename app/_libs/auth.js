@@ -64,3 +64,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
     },
 });
+// app/_libs/authService.js
+export async function getApiToken() {
+    const username = process.env.TP_USERNAME;
+    const password = process.env.TP_PASSWORD;
+    const basicAuth = Buffer.from(`${username}:${password}`).toString("base64");
+
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login`,
+        {
+            method: "POST",
+            headers: {
+                Authorization: `Basic ${basicAuth}`,
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({
+                grant_type: "client_credentials",
+            }),
+            cache: "no-store",
+        }
+    );
+
+    if (!res.ok) throw new Error("Failed to login");
+
+    const data = await res.json();
+    return data.token; // 👈 حسب اسم الفيلد الراجع (token / api_token)
+}

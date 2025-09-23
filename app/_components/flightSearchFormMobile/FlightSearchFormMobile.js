@@ -14,6 +14,7 @@ import { useRouter } from "@/i18n/navigation";
 import { CheckBadgeIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import SwapButton from "../SwapButton";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
+import { format } from "date-fns";
 
 export function FlightSearchForm() {
     const [tripType, setTripType] = useState("roundtrip");
@@ -123,7 +124,35 @@ export function FlightSearchForm() {
             icon: <CheckBadgeIcon className="text-green-500" />,
         });
 
-        router.push("/flights/list");
+        let searchObject;
+        if (tripType === "oneway") {
+            searchObject = {
+                origin: departure.label_code,
+                destination: destination.label_code,
+                depart_date: format(departDate, "dd-MM-yyyy"),
+                ADT: passengers.adults,
+                CHD: passengers.children,
+                INF: passengers.infants,
+                class: travelClass,
+                type: "O",
+            };
+        } else if (tripType === "roundtrip") {
+            searchObject = {
+                origin: departure.label_code,
+                destination: destination.label_code,
+                depart_date: format(range.from, "dd-MM-yyyy"),
+                return_date: format(range.to, "dd-MM-yyyy"),
+                ADT: passengers.adults,
+                CHD: passengers.children,
+                INF: passengers.infants,
+                class: travelClass,
+                type: "R",
+            };
+        }
+
+        const params = new URLSearchParams();
+        params.set("searchObject", JSON.stringify(searchObject));
+        router.push(`/flights/search?${params.toString()}`);
     }
 
     return (

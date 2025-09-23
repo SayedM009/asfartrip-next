@@ -4,7 +4,7 @@ import LoginButton from "./loginButton/LoginButton";
 import Logo from "./Logo";
 import ThemeSwitcher from "./ThemeSwitcher";
 
-function Header() {
+async function Header() {
     return (
         <nav className="flex items-center justify-between border-b-1 pb-1">
             <Logo />
