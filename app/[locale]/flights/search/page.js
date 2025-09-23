@@ -1,4 +1,4 @@
-import Navbar from "@/app/_components/Navbar";
+import FlightSearchNavWrapper from "@/app/_components/flightSearchNavWrapper/FlightSearchNavWrapper";
 import { searchFlights } from "@/app/_libs/flightService";
 
 async function Page({ searchParams }) {
@@ -6,11 +6,10 @@ async function Page({ searchParams }) {
         ? JSON.parse(searchParams.searchObject)
         : {};
 
-    const results = await searchFlights(searchObject);
-    console.log(results);
+    const ticketResults = await searchFlights(searchObject);
     return (
         <>
-            <Navbar />
+            <FlightSearchNavWrapper tickets={ticketResults} />
             <section></section>
         </>
     );

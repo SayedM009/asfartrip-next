@@ -23,7 +23,7 @@ import { useState, useEffect } from "react";
 import useCheckLocal from "../_hooks/useCheckLocal";
 import { useCurrency } from "../_hooks/useCurrency";
 
-function CurrencySwitcher({ hiddenOnMobile = false }) {
+function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
     const [isOpen, setIsOpen] = useState(false);
     const t = useTranslations("CurrencySwitcher");
     const { isRTL } = useCheckLocal();
@@ -57,12 +57,13 @@ function CurrencySwitcher({ hiddenOnMobile = false }) {
                     variant="ghost"
                     size="sm"
                     className={`hover:bg-accent font-bold sm:flex dark:text-gray-50 justify-start gap-2 cursor-pointer ${
-                        hiddenOnMobile ? "hidden sm:flex" : "flex w-85"
+                        hiddenOnMobile ? "hidden sm:flex" : "flex "
                     }`}
                     aria-label={t("title")}
                 >
-                    <DollarSign className="size-4" />
-                    <span className="sm:hidden">{t("title")}</span>
+                    {/* <DollarSign className="size-4" /> */}
+                    {currency}
+                    {isLabel && <span>{t("title")}</span>}
                 </Button>
             </DialogTrigger>
 

@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import {
-    ArrowRightStartOnRectangleIcon,
     DocumentCheckIcon,
     DocumentTextIcon,
     ExclamationCircleIcon,
@@ -27,6 +26,7 @@ import ChevronBasedOnLanguage from "../ChevronBasedOnLanguage";
 import { useTheme } from "next-themes";
 import { DialogFooter } from "../ui/dialog";
 import SignOutButton from "../loginButton/SignOut";
+import { DollarSign } from "lucide-react";
 
 const HELPER_LINKS = [
     {
@@ -75,8 +75,8 @@ function MoreButton() {
                 className={cn(
                     " bg-background  pt-4 px-0",
                     "max-w-none w-full h-full rounded-none border-0  md:h-11/12 md:rounded",
-                    "data-[state=open]:animate-in data-[state=open]:slide-in-from-left",
-                    "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left"
+                    "open-slide-left",
+                    "close-slide-left"
                 )}
             >
                 <DialogHeader>
@@ -100,8 +100,11 @@ function MoreButton() {
                                 />
                             </div>
                             {/* Currency Switcher */}
-                            <div className="flex pb-2 pt-2 border-b-1 border-gray-300 dark:border-gray-100 w-full">
-                                <CurrencySwicther />
+                            <div className="flex items-center justify-between pb-2 pt-2 border-b-1 border-gray-300 dark:border-gray-100 w-full">
+                                <div className="flex items-center gap-2">
+                                    <DollarSign className="size-5" />
+                                    <CurrencySwicther isLabel={false} />
+                                </div>
                                 <span className="font-bold dark:text-gray-50">
                                     <ChevronBasedOnLanguage />
                                 </span>

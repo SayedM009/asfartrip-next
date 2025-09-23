@@ -16,6 +16,7 @@ export default function Dates({
     setDepartDate,
     range,
     setRange,
+    isLabel,
 }) {
     const c = useTranslations("Calender");
     const { dateLocale } = useCalendarLocale();
@@ -34,9 +35,12 @@ export default function Dates({
         <>
             {tripType === "roundtrip" ? (
                 <div className="flex-1">
-                    <label className="block mb-2 text-muted-foreground text-xs">
-                        {c("departure_date")} & {c("return_date")}
-                    </label>
+                    {isLabel && (
+                        <label className="block mb-2 text-muted-foreground text-xs">
+                            {c("departure_date")} & {c("return_date")}
+                        </label>
+                    )}
+
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button
@@ -80,6 +84,7 @@ export default function Dates({
                                         locale={dateLocale}
                                         numberOfMonths={2}
                                         startMonth={new Date()}
+                                        disabled={(date) => date < new Date()}
                                     />
                                 </div>
                             </div>
@@ -88,9 +93,12 @@ export default function Dates({
                 </div>
             ) : (
                 <div className="flex-1">
-                    <label className="block mb-2 text-muted-foreground text-xs">
-                        {c("departure_date")}
-                    </label>
+                    {isLabel && (
+                        <label className="block mb-2 text-muted-foreground text-xs">
+                            {c("departure_date")}
+                        </label>
+                    )}
+
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button
@@ -118,6 +126,7 @@ export default function Dates({
                                 initialFocus
                                 locale={dateLocale}
                                 startMonth={new Date()}
+                                disabled={(date) => date < new Date()}
                             />
                         </PopoverContent>
                     </Popover>

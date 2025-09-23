@@ -82,6 +82,7 @@ export default function MainSearchForm({
     setDeparture,
     destination,
     setDestination,
+    isLabel,
 }) {
     const [showDestinationResults, setShowDestinationResults] = useState(false);
     const [showDepartureResults, setShowDepartureResults] = useState(false);
@@ -120,9 +121,11 @@ export default function MainSearchForm({
             {" "}
             {/* From City */}
             <div className="flex-1">
-                <label className="block mb-2 text-muted-foreground text-sm">
-                    {t("from")}
-                </label>
+                {isLabel && (
+                    <label className="block mb-2 text-muted-foreground text-sm">
+                        {t("from")}
+                    </label>
+                )}
                 <Popover
                     open={showDepartureResults}
                     onOpenChange={setShowDepartureResults}
@@ -204,9 +207,11 @@ export default function MainSearchForm({
             </div>
             {/* To City */}
             <div className="flex-1">
-                <label className="block mb-2 text-muted-foreground text-sm">
-                    {t("to")}
-                </label>
+                {isLabel && (
+                    <label className="block mb-2 text-muted-foreground text-sm">
+                        {t("to")}
+                    </label>
+                )}
                 <Popover
                     open={showDestinationResults}
                     onOpenChange={setShowDestinationResults}

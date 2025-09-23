@@ -6,7 +6,7 @@ import ThemeSwitcher from "./ThemeSwitcher";
 
 async function Header() {
     return (
-        <nav className="flex items-center justify-between border-b-1 pb-1">
+        <nav className="flex items-center justify-between border-b-1 pb-3">
             <Logo />
             <div className="flex items-center gap-1 ">
                 <CurrencySwicther hiddenOnMobile={true} />

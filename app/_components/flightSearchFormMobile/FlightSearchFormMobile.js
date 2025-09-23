@@ -16,7 +16,7 @@ import SwapButton from "../SwapButton";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import { format } from "date-fns";
 
-export function FlightSearchForm() {
+export function FlightSearchForm({ closeModal }) {
     const [tripType, setTripType] = useState("roundtrip");
     const [departure, setDeparture] = useState("");
     const [destination, setDestination] = useState("");
@@ -133,7 +133,7 @@ export function FlightSearchForm() {
                 ADT: passengers.adults,
                 CHD: passengers.children,
                 INF: passengers.infants,
-                class: travelClass,
+                class: `${travelClass[0].toUpperCase()}${travelClass.slice(1)}`,
                 type: "O",
             };
         } else if (tripType === "roundtrip") {
@@ -145,14 +145,16 @@ export function FlightSearchForm() {
                 ADT: passengers.adults,
                 CHD: passengers.children,
                 INF: passengers.infants,
-                class: travelClass,
+                class: `${travelClass[0].toUpperCase()}${travelClass.slice(1)}`,
                 type: "R",
             };
         }
 
         const params = new URLSearchParams();
         params.set("searchObject", JSON.stringify(searchObject));
+        params.set("cities", JSON.stringify({ departure, destination }));
         router.push(`/flights/search?${params.toString()}`);
+        closeModal?.(false);
     }
 
     return (
@@ -298,7 +300,7 @@ export function FlightSearchForm() {
                             onClassChange={setTravelClass}
                         >
                             <div className="flex items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors">
-                                <div className="flex-1">
+                                <div className="flex-1 flex justify-start">
                                     <div className="text-sm  font-semibold capitalize">
                                         {t(
                                             `ticket_class.${getClassDisplayName(

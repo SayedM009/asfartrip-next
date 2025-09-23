@@ -42,7 +42,7 @@ export default async function RootLayout({ children, params }) {
                                 {children}
                             </main>
                             <Footer />
-                            <Toaster position="top-center" />
+                            <Toaster position="top-center" duration={1000} />
                         </ThemeProvider>
                     </NextIntlClientProvider>
                 </AuthProvider>

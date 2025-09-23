@@ -89,6 +89,7 @@ function DateRangeDialog({
                         numberOfMonths={12}
                         hideNavigation
                         locale={dateLocale}
+                        disabled={(date) => date < new Date()}
                     />
                 ) : (
                     <Calendar
@@ -101,6 +102,7 @@ function DateRangeDialog({
                         numberOfMonths={12}
                         hideNavigation
                         locale={dateLocale}
+                        disabled={(date) => date < new Date()}
                     />
                 )}
 

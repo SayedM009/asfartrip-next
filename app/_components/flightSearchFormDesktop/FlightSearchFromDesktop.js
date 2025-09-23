@@ -15,7 +15,7 @@ import { CheckBadgeIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "@/i18n/navigation";
 import { format, parseISO } from "date-fns";
 
-export function FlightSearchFormDesktop() {
+export function FlightSearchFormDesktop({ isLabel = true }) {
     const [tripType, setTripType] = useState("roundtrip");
     const [departure, setDeparture] = useState({});
     const [destination, setDestination] = useState({});
@@ -146,6 +146,7 @@ export function FlightSearchFormDesktop() {
                                     setDeparture={setDeparture}
                                     destination={destination}
                                     setDestination={setDestination}
+                                    isLabel={isLabel}
                                 />
                                 {/* Dates - Combined for Round Trip */}
                                 <Dates
@@ -154,6 +155,7 @@ export function FlightSearchFormDesktop() {
                                     setDepartDate={setDepartDate}
                                     range={range}
                                     setRange={setRange}
+                                    isLabel={isLabel}
                                 />
                                 {/* Passengers & Class */}
                                 <PassengersAndClass
@@ -161,6 +163,7 @@ export function FlightSearchFormDesktop() {
                                     setPassengers={setPassengers}
                                     travelClass={travelClass}
                                     setTravelClass={setTravelClass}
+                                    isLabel={isLabel}
                                 />
                                 {/* Search Button - Redesigned */}
                                 <div className="flex-shrink-0">

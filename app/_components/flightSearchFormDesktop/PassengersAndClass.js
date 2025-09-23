@@ -20,6 +20,7 @@ export default function PassengersAndClass({
     setPassengers,
     travelClass,
     setTravelClass,
+    isLabel,
 }) {
     const { locale, isRTL } = useCheckLocal();
     const dir = isRTL ? "rtl" : "ltr";
@@ -113,10 +114,12 @@ export default function PassengersAndClass({
     return (
         <>
             <div className="flex-1">
-                <label className="block mb-2 text-muted-foreground text-xs">
-                    {t("passengers.passengers")} &{" "}
-                    {t("passengers.travel_class")}
-                </label>
+                {isLabel && (
+                    <label className="block mb-2 text-muted-foreground text-xs">
+                        {t("passengers.passengers")} &{" "}
+                        {t("passengers.travel_class")}
+                    </label>
+                )}
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button
