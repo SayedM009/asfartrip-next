@@ -1,264 +1,181 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { FlightTicket } from "./FlightTicket";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import {
-    Filter,
-    SortDesc,
-    ArrowUpDown,
     SunIcon,
     PlaneIcon,
     ArrowRightCircleIcon,
+    ArrowLeft,
+    ArrowRight,
+    Sunrise,
+    SunMedium,
+    Sunset,
+    CloudSun,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { DisplayedCities } from "./MobileWrapper";
-
-// Sample flight data
-const sampleFlights = [
-    // Direct flight
-    {
-        TotalPrice: 450,
-        BasePrice: 350,
-        Taxes: 100,
-        SITECurrencyType: "AED",
-        API_Currency: "AED",
-        PlatingCarrier: "EK",
-        FareType: "Non Refundable",
-        Refundable: false,
-        segments: [
-            {
-                Carrier: "EK",
-                FlightNumber: "123",
-                Origin: "DXB",
-                Destination: "LHR",
-                OriginAirport: "Dubai International Airport",
-                DestinationAirport: "London Heathrow Airport",
-                DepartureTime: "2025-10-01T08:30:00+04:00",
-                ArrivalTime: "2025-10-01T13:45:00+01:00",
-                Duration: "07:15",
-                FlightTime: "435",
-                OriginTerminal: "3",
-                DestinationTerminal: "3",
-                CabinClass: "Economy",
-                Equipment: "A380",
-            },
-        ],
-        CabinLuggage: "7 Kilograms",
-        BaggageAllowance: ["NumberOfPieces 1"],
-    },
-
-    // 1 Stop flight (provided data)
-    {
-        TotalPrice: 840,
-        BasePrice: 350,
-        Taxes: 490,
-        SITECurrencyType: "AED",
-        API_Currency: "AED",
-        PlatingCarrier: "HR",
-        FareType: "Non Refundable",
-        Refundable: false,
-        segments: [
-            {
-                Carrier: "J2",
-                FlightNumber: "12",
-                Origin: "DXB",
-                Destination: "GYD",
-                OriginAirport: "Dubai international Airport",
-                DestinationAirport: "Heydar Aliyev international Airport",
-                DepartureTime: "2025-10-01T13:10:00+04:00",
-                ArrivalTime: "2025-10-01T16:10:00+04:00",
-                Duration: "03:00",
-                FlightTime: "180",
-                OriginTerminal: "1",
-                DestinationTerminal: "1",
-                CabinClass: "Economy",
-                Equipment: "320",
-            },
-            {
-                Carrier: "J2",
-                FlightNumber: "805",
-                Origin: "GYD",
-                Destination: "VKO",
-                OriginAirport: "Heydar Aliyev international Airport",
-                DestinationAirport: "Vnukovo Airport",
-                DepartureTime: "2025-10-01T20:30:00+04:00",
-                ArrivalTime: "2025-10-01T22:50:00+03:00",
-                Duration: "03:20",
-                FlightTime: "200",
-                OriginTerminal: "1",
-                DestinationTerminal: "A",
-                CabinClass: "Economy",
-                Equipment: "320",
-            },
-        ],
-        CabinLuggage: "7 Kilograms",
-        BaggageAllowance: ["NumberOfPieces 0"],
-    },
-
-    // 2 Stops flight
-    {
-        TotalPrice: 650,
-        BasePrice: 420,
-        Taxes: 230,
-        SITECurrencyType: "AED",
-        API_Currency: "AED",
-        PlatingCarrier: "TK",
-        FareType: "Refundable",
-        Refundable: true,
-        segments: [
-            {
-                Carrier: "TK",
-                FlightNumber: "763",
-                Origin: "DXB",
-                Destination: "IST",
-                OriginAirport: "Dubai International Airport",
-                DestinationAirport: "Istanbul Airport",
-                DepartureTime: "2025-10-01T02:15:00+04:00",
-                ArrivalTime: "2025-10-01T06:30:00+03:00",
-                Duration: "04:15",
-                FlightTime: "255",
-                OriginTerminal: "1",
-                DestinationTerminal: "I",
-                CabinClass: "Economy",
-                Equipment: "A330",
-            },
-            {
-                Carrier: "TK",
-                FlightNumber: "1985",
-                Origin: "IST",
-                Destination: "CDG",
-                OriginAirport: "Istanbul Airport",
-                DestinationAirport: "Charles de Gaulle Airport",
-                DepartureTime: "2025-10-01T09:45:00+03:00",
-                ArrivalTime: "2025-10-01T12:25:00+02:00",
-                Duration: "03:40",
-                FlightTime: "220",
-                OriginTerminal: "I",
-                DestinationTerminal: "1",
-                CabinClass: "Economy",
-                Equipment: "A321",
-            },
-            {
-                Carrier: "AF",
-                FlightNumber: "1234",
-                Origin: "CDG",
-                Destination: "JFK",
-                OriginAirport: "Charles de Gaulle Airport",
-                DestinationAirport: "John F. Kennedy International Airport",
-                DepartureTime: "2025-10-01T16:20:00+02:00",
-                ArrivalTime: "2025-10-01T19:45:00-04:00",
-                Duration: "08:25",
-                FlightTime: "505",
-                OriginTerminal: "2E",
-                DestinationTerminal: "1",
-                CabinClass: "Economy",
-                Equipment: "B777",
-            },
-        ],
-        CabinLuggage: "8 Kilograms",
-        BaggageAllowance: ["NumberOfPieces 2"],
-    },
-
-    // Another direct flight with different carrier
-    {
-        TotalPrice: 380,
-        BasePrice: 300,
-        Taxes: 80,
-        SITECurrencyType: "AED",
-        API_Currency: "AED",
-        PlatingCarrier: "FZ",
-        FareType: "Non Refundable",
-        Refundable: false,
-        segments: [
-            {
-                Carrier: "FZ",
-                FlightNumber: "576",
-                Origin: "DXB",
-                Destination: "BOM",
-                OriginAirport: "Dubai International Airport",
-                DestinationAirport: "Chhatrapati Shivaji International Airport",
-                DepartureTime: "2025-10-01T21:45:00+04:00",
-                ArrivalTime: "2025-10-02T02:15:00+05:30",
-                Duration: "03:00",
-                FlightTime: "180",
-                OriginTerminal: "2",
-                DestinationTerminal: "2",
-                CabinClass: "Economy",
-                Equipment: "B737",
-            },
-        ],
-        CabinLuggage: "7 Kilograms",
-        BaggageAllowance: ["NumberOfPieces 1"],
-    },
-];
+import { ArrowsRightLeftIcon } from "@heroicons/react/24/solid";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
+import { useSearchParams } from "next/navigation";
+import FlightFilters from "./FlightFilters";
+import Image from "next/image";
 
 export function FlightResults({ flights = [] }) {
-    const [selectedFlight, setSelectedFlight] = useState(null);
-    const [sortBy, setSortBy] = useState("price");
     const [filterBy, setFilterBy] = useState("all");
+    const [sortBy, setSortBy] = useState("price");
 
-    const handleSelectFlight = (flightIndex) => {
-        setSelectedFlight(`flight-${flightIndex}`);
-        // Here you would typically handle the flight selection logic
-        console.log("Selected flight:", flights[flightIndex]);
-    };
+    // Sub filters
+    const [selectedAirlines, setSelectedAirlines] = useState([]);
+    const [selectedTripTimes, setSelectedTripTimes] = useState([]);
 
-    const filteredAndSortedFlights = React.useMemo(() => {
+    // Unique airlines from flights
+    const airlines = Array.from(
+        new Set(flights.flatMap((f) => f.segments.map((s) => s.Carrier)))
+    );
+
+    // Trip time ranges
+    const tripTimes = [
+        {
+            id: "before6",
+            label: "Before 6:00",
+            icon: <CloudSun />,
+            start: 0,
+            end: 6,
+        },
+        {
+            id: "morning",
+            label: "06:00 - 12:00",
+            icon: <Sunrise />,
+            start: 6,
+            end: 12,
+        },
+        {
+            id: "afternoon",
+            label: "12:00 - 18:00",
+            icon: <SunMedium />,
+            start: 12,
+            end: 18,
+        },
+        {
+            id: "evening",
+            label: "After 18:00",
+            icon: <Sunset />,
+            start: 18,
+            end: 24,
+        },
+    ];
+
+    // State
+    // const [sortBy, setSortBy] = useState("price");
+    // const [filterBy, setFilterBy] = useState("all");
+
+    console.log(flights);
+    // Logic
+    // const filteredAndSortedFlights = React.useMemo(() => {
+    //     let filtered = [...flights];
+
+    //     // Apply filters
+    //     if (filterBy === "direct") {
+    //         filtered = filtered.filter(
+    //             (flight) => flight.segments.length === 1
+    //         );
+    //     } else if (filterBy === "oneStop") {
+    //         filtered = filtered.filter(
+    //             (flight) => flight.segments.length === 2
+    //         );
+    //     } else if (filterBy === "multipleStops") {
+    //         filtered = filtered.filter((flight) => flight.segments.length > 2);
+    //     }
+
+    //     // Apply sorting
+    //     filtered.sort((a, b) => {
+    //         switch (sortBy) {
+    //             case "price":
+    //                 return a.TotalPrice - b.TotalPrice;
+    //             case "duration":
+    //                 // Calculate total duration for sorting
+    //                 const aDuration =
+    //                     new Date(
+    //                         a.segments[a.segments.length - 1].ArrivalTime
+    //                     ).getTime() -
+    //                     new Date(a.segments[0].DepartureTime).getTime();
+    //                 const bDuration =
+    //                     new Date(
+    //                         b.segments[b.segments.length - 1].ArrivalTime
+    //                     ).getTime() -
+    //                     new Date(b.segments[0].DepartureTime).getTime();
+    //                 return aDuration - bDuration;
+    //             case "departure":
+    //                 return (
+    //                     new Date(a.segments[0].DepartureTime).getTime() -
+    //                     new Date(b.segments[0].DepartureTime).getTime()
+    //                 );
+    //             default:
+    //                 return 0;
+    //         }
+    //     });
+
+    //     return filtered;
+    // }, [flights, sortBy, filterBy]);
+
+    const filteredAndSortedFlights = useMemo(() => {
         let filtered = [...flights];
 
-        // Apply filters
+        // Main filter
         if (filterBy === "direct") {
-            filtered = filtered.filter(
-                (flight) => flight.segments.length === 1
-            );
-        } else if (filterBy === "oneStop") {
-            filtered = filtered.filter(
-                (flight) => flight.segments.length === 2
-            );
-        } else if (filterBy === "multipleStops") {
-            filtered = filtered.filter((flight) => flight.segments.length > 2);
+            filtered = filtered.filter((f) => f.segments.length === 1);
         }
 
-        // Apply sorting
+        // Airline filter
+        if (selectedAirlines.length > 0) {
+            filtered = filtered.filter((f) =>
+                f.segments.some((s) => selectedAirlines.includes(s.Carrier))
+            );
+        }
+
+        // Trip time filter
+        if (selectedTripTimes.length > 0) {
+            filtered = filtered.filter((f) => {
+                const depHour = new Date(
+                    f.segments[0].DepartureTime
+                ).getHours();
+                return selectedTripTimes.some((id) => {
+                    const range = tripTimes.find((t) => t.id === id);
+                    if (!range) return false;
+                    if (range.id === "before6") return depHour < 6;
+                    if (range.id === "evening") return depHour >= 18;
+                    return depHour >= range.start && depHour < range.end;
+                });
+            });
+        }
+
+        // Sorting
         filtered.sort((a, b) => {
             switch (sortBy) {
                 case "price":
                     return a.TotalPrice - b.TotalPrice;
                 case "duration":
-                    // Calculate total duration for sorting
                     const aDuration =
-                        new Date(
-                            a.segments[a.segments.length - 1].ArrivalTime
-                        ).getTime() -
-                        new Date(a.segments[0].DepartureTime).getTime();
+                        new Date(a.segments.at(-1).ArrivalTime) -
+                        new Date(a.segments[0].DepartureTime);
                     const bDuration =
-                        new Date(
-                            b.segments[b.segments.length - 1].ArrivalTime
-                        ).getTime() -
-                        new Date(b.segments[0].DepartureTime).getTime();
+                        new Date(b.segments.at(-1).ArrivalTime) -
+                        new Date(b.segments[0].DepartureTime);
                     return aDuration - bDuration;
-                case "departure":
-                    return (
-                        new Date(a.segments[0].DepartureTime).getTime() -
-                        new Date(b.segments[0].DepartureTime).getTime()
-                    );
                 default:
                     return 0;
             }
         });
 
         return filtered;
-    }, [flights, sortBy, filterBy]);
-
+    }, [
+        flights,
+        sortBy,
+        filterBy,
+        selectedAirlines,
+        selectedTripTimes,
+        tripTimes,
+    ]);
     const getFlightTypeStats = () => {
         const direct = flights.filter((f) => f.segments.length === 1).length;
         const oneStop = flights.filter((f) => f.segments.length === 2).length;
@@ -270,86 +187,240 @@ export function FlightResults({ flights = [] }) {
 
     const stats = getFlightTypeStats();
 
+    // Appearnce
     return (
         <div className=" mx-auto  space-y-6">
-            {/* Header */}
+            {/* Sort on Mobile */}
             <FlightTabs
                 filterBy={filterBy}
                 setFilterBy={setFilterBy}
                 filteredAndSortedFlights={filteredAndSortedFlights}
+                airlines={airlines}
+                selectedAirlines={selectedAirlines}
+                setSelectedAirlines={setSelectedAirlines}
+                tripTimes={tripTimes}
+                selectedTripTimes={selectedTripTimes}
+                setSelectedTripTimes={setSelectedTripTimes}
             />
-            {selectedFlight && (
-                <Card className="border-primary bg-primary/5">
-                    <CardHeader>
-                        <CardTitle className="text-sm">
-                            ✅ Flight Selected
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-muted-foreground">
-                            You&#39;ve selected flight {selectedFlight}.
-                            Continue to booking details.
-                        </p>
-                        <Button className="mt-3" size="sm">
-                            Continue to Booking
-                        </Button>
-                    </CardContent>
-                </Card>
+
+            <div>
+                {/* Filter the Flight Tickets */}
+                {/* <FlightFilters /> */}
+                {/* Listing Flight Tickets */}
+                <FlightTicketsList
+                    filteredAndSortedFlights={filteredAndSortedFlights}
+                    filterBy={filterBy}
+                />
+            </div>
+        </div>
+    );
+}
+
+export function FlightTabs({
+    filterBy,
+    setFilterBy,
+    airlines,
+    selectedAirlines,
+    setSelectedAirlines,
+    tripTimes,
+    selectedTripTimes,
+    setSelectedTripTimes,
+}) {
+    function handleValueChange(val) {
+        // normal tab switching
+        setFilterBy(val);
+    }
+
+    function clearSubFiltersFor(tab) {
+        if (tab === "airline" && setSelectedAirlines) setSelectedAirlines([]);
+        if (tab === "triptime" && setSelectedTripTimes)
+            setSelectedTripTimes([]);
+    }
+
+    const makePreemptiveHandler = (value) => (e) => {
+        if (filterBy === value) {
+            // toggle off
+            e.preventDefault();
+            setFilterBy(""); // empty string = no active tab
+            clearSubFiltersFor(value);
+        }
+    };
+
+    return (
+        <div>
+            <Tabs
+                // empty string = nothing selected, avoids Radix fallback
+                value={filterBy || ""}
+                onValueChange={handleValueChange}
+                className="w-full"
+            >
+                <TabsList className="grid grid-cols-3 w-full mt-3">
+                    <TabsTrigger
+                        value="triptime"
+                        onPointerDown={makePreemptiveHandler("triptime")}
+                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-primary"
+                    >
+                        <SunIcon className="size-5" />
+                        <span className="text-sm">Trip time</span>
+                    </TabsTrigger>
+
+                    <TabsTrigger
+                        value="airline"
+                        onPointerDown={makePreemptiveHandler("airline")}
+                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-primary"
+                    >
+                        <PlaneIcon className="size-5" />
+                        <span className="text-sm">Airlines</span>
+                    </TabsTrigger>
+
+                    <TabsTrigger
+                        value="direct"
+                        onPointerDown={makePreemptiveHandler("direct")}
+                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-primary"
+                    >
+                        <ArrowRightCircleIcon className="size-5" />
+                        <span className="text-sm">Direct</span>
+                    </TabsTrigger>
+                </TabsList>
+            </Tabs>
+
+            {/* Sub Tabs - Airlines */}
+            {filterBy === "airline" && (
+                <div className="flex gap-4 mt-3 overflow-x-scroll">
+                    {airlines.map((code) => (
+                        <button
+                            key={code}
+                            onClick={() =>
+                                setSelectedAirlines((prev) =>
+                                    prev.includes(code)
+                                        ? prev.filter((a) => a !== code)
+                                        : [...prev, code]
+                                )
+                            }
+                            className={`px-3 pt-2 pb-1 rounded-xl border text-sm flex items-center gap-2 flex-col min-w-20 ${
+                                selectedAirlines.includes(code) &&
+                                "bg-accent-100"
+                            }`}
+                        >
+                            <Image
+                                src={`https://images.kiwi.com/airlines/64x64/${code}.png`}
+                                alt={code}
+                                className="w-5 h-5"
+                                width={30}
+                                height={30}
+                            />
+                            <span className="text-xs">{code}</span>
+                        </button>
+                    ))}
+                </div>
+            )}
+
+            {/* Sub Tabs - Trip Times */}
+            {filterBy === "triptime" && (
+                <div className="flex gap-2 mt-3 overflow-x-auto">
+                    {tripTimes.map((t) => (
+                        <button
+                            key={t.id}
+                            onClick={() =>
+                                setSelectedTripTimes((prev) =>
+                                    prev.includes(t.id)
+                                        ? prev.filter((x) => x !== t.id)
+                                        : [...prev, t.id]
+                                )
+                            }
+                            className={`px-2 py-1 rounded-xl border text-xs flex flex-col items-center gap-2 ${
+                                selectedTripTimes.includes(t.id) &&
+                                "bg-accent-100 "
+                            }`}
+                        >
+                            <span>{t.icon}</span>
+                            <span className="text-[12px] whitespace-nowrap font-semibold">
+                                {t.label}
+                            </span>
+                        </button>
+                    ))}
+                </div>
             )}
         </div>
     );
 }
 
-function FlightTabs({ filterBy, setFilterBy, filteredAndSortedFlights }) {
+function DisplayedCities() {
+    const { isRTL } = useCheckLocal();
+    const params = useSearchParams();
+    const { departure: departureObj, destination: destinationObj } = JSON.parse(
+        params.get("cities")
+    );
+    const { type } = JSON.parse(params.get("searchObject"));
     return (
-        <Tabs value={filterBy} onValueChange={setFilterBy} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mt-3">
-                <TabsTrigger value="all">
-                    <SunIcon className="size-5" />
-                    <span className="text-sm">Trip time</span>
-                </TabsTrigger>
-                <TabsTrigger value="airline">
-                    <PlaneIcon className="size-5" />
-                    <span className="text-sm">Airlines</span>
-                </TabsTrigger>
-                <TabsTrigger value="direct">
-                    <ArrowRightCircleIcon className="size-5" />
-                    <span className="text-sm">Direct</span>
-                </TabsTrigger>
-            </TabsList>
+        <div>
+            <h1 className="text-lg font-semibold capitalize flex items-center gap-2">
+                {departureObj.city}
 
-            <div className="flex items-center justify-between gap-2 px-2 mt-3">
-                <DisplayedCities />
-                <p className="text-sm capitalize flex items-center gap-2 text-muted-foreground">
-                    {filteredAndSortedFlights.length} <span>flights found</span>
-                </p>
-            </div>
-
-            <TabsContent value={filterBy} className="space-y-4 mt-0">
-                {filteredAndSortedFlights.length === 0 ? (
-                    <Card>
-                        <CardContent className="flex items-center justify-center py-12">
-                            <div className="text-center">
-                                <div className="text-lg font-medium text-muted-foreground mb-2">
-                                    No flights found
-                                </div>
-                                <p className="text-sm text-muted-foreground">
-                                    Try adjusting your filters or search
-                                    criteria
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
+                {type === "O" ? (
+                    isRTL ? (
+                        <ArrowLeft className="size-5" />
+                    ) : (
+                        <ArrowRight className="size-5" />
+                    )
                 ) : (
-                    filteredAndSortedFlights.map((flight, index) => (
-                        <FlightTicket
-                            key={`${filterBy}-flight-${index}`}
-                            ticket={flight}
-                            onSelect={() => handleSelectFlight(index)}
-                        />
-                    ))
+                    <ArrowsRightLeftIcon className="size-5" />
                 )}
-            </TabsContent>
-        </Tabs>
+                {destinationObj.city}
+            </h1>{" "}
+        </div>
+    );
+}
+
+function TicketsCount({ filteredAndSortedFlights }) {
+    return (
+        <div className="flex items-center justify-between gap-2 px-2 my-3">
+            <DisplayedCities />
+            <p className="text-xs capitalize flex items-center gap-2  text-accent-500">
+                {filteredAndSortedFlights
+                    ? String(filteredAndSortedFlights?.length).padStart(2, 0)
+                    : 0}
+                <span>flights found</span>
+            </p>
+        </div>
+    );
+}
+
+export function FlightTicketsList({ filteredAndSortedFlights, filterBy }) {
+    return (
+        <>
+            {/* Tickets Count */}
+            <TicketsCount filteredAndSortedFlights={filteredAndSortedFlights} />
+            {/* Display Tickets List */}
+            {!filteredAndSortedFlights ||
+            filteredAndSortedFlights.length === 0 ? (
+                <NoFlightTickets />
+            ) : (
+                filteredAndSortedFlights.map((flight, index) => (
+                    <FlightTicket
+                        key={`${filterBy}-flight-${index}`}
+                        ticket={flight}
+                        onSelect={() => handleSelectFlight(index)}
+                    />
+                ))
+            )}
+        </>
+    );
+}
+
+export function NoFlightTickets() {
+    return (
+        <Card>
+            <CardContent className="flex items-center justify-center py-12">
+                <div className="text-center">
+                    <div className="text-lg font-medium text-muted-foreground mb-2">
+                        No flights found
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                        Try adjusting your filters or search criteria
+                    </p>
+                </div>
+            </CardContent>
+        </Card>
     );
 }

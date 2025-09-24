@@ -1,19 +1,14 @@
-import MobileWrapper from "@/app/_components/flightSearchNavWrapper/MobileWrapper";
-import { searchFlights } from "@/app/_libs/flightService";
-import { Suspense } from "react";
+import FlightSearch from "@/app/_components/flightSearchNavWrapper/FlightSearch";
+import FlightSearchNavWrapper from "@/app/_components/flightSearchNavWrapper/FlightSearchNavWrapper";
 
 async function Page({ searchParams }) {
-    const searchObject = searchParams.searchObject
+    const parsedSearchObject = searchParams
         ? JSON.parse(searchParams.searchObject)
         : {};
-
-    const results = await searchFlights(searchObject);
     return (
         <>
-            <Suspense fallback={<div>Loading....</div>}>
-                <MobileWrapper tickets={results} />
-            </Suspense>
-            <section></section>
+            <FlightSearchNavWrapper />
+            <FlightSearch parsedSearchObject={parsedSearchObject} />
         </>
     );
 }

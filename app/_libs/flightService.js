@@ -13,11 +13,11 @@ export async function searchFlights(params) {
     const requestData = {
         origin: params.origin,
         destination: params.destination,
-        depart_date: params.depart_date, // تأكد إنه بالشكل DD-MM-YYYY
+        depart_date: params.depart_date,
         ADT: params.ADT || 1,
         CHD: params.CHD || 0,
         INF: params.INF || 0,
-        class: params.class, // نفس الشكل اللي بيرجع نتائج
+        class: params.class,
         type: params.type || "O",
         api_token: token,
     };

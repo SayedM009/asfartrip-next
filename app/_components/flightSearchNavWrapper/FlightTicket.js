@@ -30,16 +30,7 @@ const getAirlineName = (code) => {
 };
 
 export function FlightTicket({ ticket, onSelect }) {
-    const {
-        TotalPrice,
-        BasePrice,
-        Taxes,
-        SITECurrencyType,
-        FareType,
-        Refundable,
-        segments,
-        CabinLuggage,
-    } = ticket;
+    const { TotalPrice, SITECurrencyType, segments, CabinLuggage } = ticket;
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
 
     const firstSegment = segments[0];

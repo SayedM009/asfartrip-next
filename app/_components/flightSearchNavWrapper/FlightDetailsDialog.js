@@ -3,26 +3,15 @@ import React from "react";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import {
-    Plane,
-    Clock,
-    MapPin,
-    Calendar,
-    Luggage,
-    CreditCard,
-    User,
-    AlertCircle,
-} from "lucide-react";
+import { Plane, Clock, Luggage, CreditCard, AlertCircle } from "lucide-react";
 import { format, parseISO, differenceInMinutes } from "date-fns";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 // Airline code to name mapping - you can expand this or connect to an API
 const getAirlineName = (code) => {
@@ -101,7 +90,7 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
             <DialogContent
                 className={cn(
                     "dialog-bg",
-                    "max-w-none w-full h-full overflow-auto rounded-none border-0  md:h-11/12 md:rounded",
+                    "max-w-none w-full h-full overflow-auto rounded-none border-0 sm:h-full md:rounded sm:right-0",
                     "open-slide-right",
                     "close-slide-right"
                 )}

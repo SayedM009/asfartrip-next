@@ -1,24 +1,10 @@
-import { FlightSearchFormDesktop } from "../flightSearchFormDesktop/FlightSearchFromDesktop";
-import Navbar from "@/app/_components/Navbar";
-import MobileWrapper from "./MobileWrapper";
+import DesktopHeaderWrapper from "./DesktopHeaderWrapper";
 import useIsDevice from "@/app/_hooks/useIsDevice";
+import MobileHeaderWrapper from "./MobileHeaderWrapper";
 
-function FlightSearchNavWrapper({ tickets }) {
+function FlightSearchNavWrapper() {
     const { mobile } = useIsDevice();
-    return (
-        <>{mobile ? <MobileWrapper tickets={tickets} /> : <DesktopWrapper />}</>
-    );
-}
-
-function DesktopWrapper() {
-    return (
-        <>
-            <Navbar />
-            <div className="mt-5">
-                <FlightSearchFormDesktop isLabel={false} />
-            </div>
-        </>
-    );
+    return <>{mobile ? <MobileHeaderWrapper /> : <DesktopHeaderWrapper />}</>;
 }
 
 export default FlightSearchNavWrapper;
