@@ -5,9 +5,11 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [new URL("https://lh3.googleusercontent.com/a/**")],
-    domains: ["lh3.googleusercontent.com"],
-    domains: ["github.com"],
+    domains: [
+      "lh3.googleusercontent.com",
+      "github.com",
+      "images.kiwi.com", // أضفت الموقع هنا
+    ],
   },
 };
 

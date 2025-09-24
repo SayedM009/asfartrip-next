@@ -9,7 +9,7 @@ async function Header() {
         <nav className="flex items-center justify-between border-b-1 pb-3">
             <Logo />
             <div className="flex items-center gap-1 ">
-                <CurrencySwicther hiddenOnMobile={true} />
+                <CurrencySwicther hiddenOnMobile={true} isLabel={false} />
                 <LanguageSwitcher hiddenOnMobile={true} />
                 <ThemeSwitcher hiddenOnMobile={true} />
                 <LoginButton />
