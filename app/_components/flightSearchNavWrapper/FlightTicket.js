@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FlightDetailsDialog } from "./FlightDetailsDialog";
-import { Plane, Clock, Luggage } from "lucide-react";
+import { Plane, Clock, Luggage, ArrowRight } from "lucide-react";
 import { format, parseISO, differenceInMinutes } from "date-fns";
 import Image from "next/image";
 
@@ -29,12 +29,27 @@ const getAirlineName = (code) => {
     return airlines[code] || code;
 };
 
-export function FlightTicket({ ticket, onSelect }) {
-    const { TotalPrice, SITECurrencyType, segments, CabinLuggage } = ticket;
+export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
+    const {
+        TotalPrice,
+        SITECurrencyType,
+        MultiLeg,
+        segments,
+        onward,
+        return: returnJourney,
+        CabinLuggage,
+    } = ticket;
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
 
-    const firstSegment = segments[0];
-    const lastSegment = segments[segments.length - 1];
+    // Determine if this is a round trip ticket
+    const isRoundTrip = MultiLeg === "true" && onward && returnJourney;
+
+    // Get segments for the display (use onward for round trip, segments for one-way)
+    const displaySegments = isRoundTrip ? onward.segments : segments;
+    const returnSegments = isRoundTrip ? returnJourney.segments : null;
+
+    const firstSegment = displaySegments[0];
+    const lastSegment = displaySegments[displaySegments.length - 1];
 
     // Helper functions
     const formatTime = (isoString) => {
@@ -45,9 +60,11 @@ export function FlightTicket({ ticket, onSelect }) {
         return format(parseISO(isoString), "EEE, MMM d");
     };
 
-    const calculateTotalDuration = () => {
-        const departure = parseISO(firstSegment.DepartureTime);
-        const arrival = parseISO(lastSegment.ArrivalTime);
+    const calculateTotalDuration = (segmentsArray = displaySegments) => {
+        const departure = parseISO(segmentsArray[0].DepartureTime);
+        const arrival = parseISO(
+            segmentsArray[segmentsArray.length - 1].ArrivalTime
+        );
         const totalMinutes = differenceInMinutes(arrival, departure);
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
@@ -63,13 +80,13 @@ export function FlightTicket({ ticket, onSelect }) {
         return `${hours}h ${minutes}m`;
     };
 
-    const calculateTotalLayoverTime = () => {
-        if (segments.length <= 1) return "";
+    const calculateTotalLayoverTime = (segmentsArray = displaySegments) => {
+        if (segmentsArray.length <= 1) return "";
 
         let totalLayoverMinutes = 0;
-        for (let i = 0; i < segments.length - 1; i++) {
-            const arrival = parseISO(segments[i].ArrivalTime);
-            const departure = parseISO(segments[i + 1].DepartureTime);
+        for (let i = 0; i < segmentsArray.length - 1; i++) {
+            const arrival = parseISO(segmentsArray[i].ArrivalTime);
+            const departure = parseISO(segmentsArray[i + 1].DepartureTime);
             totalLayoverMinutes += differenceInMinutes(departure, arrival);
         }
 
@@ -90,40 +107,43 @@ export function FlightTicket({ ticket, onSelect }) {
         return arrival.getDate() !== departure.getDate();
     };
 
-    const renderFlightPath = () => {
+    const renderSingleJourney = (segments, isReturn = false) => {
+        const firstSeg = segments[0];
+        const lastSeg = segments[segments.length - 1];
+
         if (segments.length === 1) {
             // Direct flight
             return (
-                <div className="flex items-center justify-between px-4 py-3">
+                <div className="flex items-center justify-between p-4 ">
                     {/* Departure */}
                     <div className="text-center min-w-0 flex-1">
                         <div className="text-xl font-bold text-foreground">
-                            {formatTime(firstSegment.DepartureTime)}
+                            {formatTime(firstSeg.DepartureTime)}
                         </div>
                         <div className="text-muted-foreground text-xs">
-                            {firstSegment.Origin}{" "}
-                            {formatDate(firstSegment.DepartureTime)}
+                            {firstSeg.Origin}{" "}
+                            {formatDate(firstSeg.DepartureTime)}
                         </div>
                     </div>
 
                     {/* Flight path */}
                     <div className="flex-1 mx-4 relative">
                         <div className="flex items-center justify-center mb-1">
-                            <div className="text-xs text-muted-foreground px-2 py-1 rounded-full">
-                                {calculateTotalDuration()}
+                            <div className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">
+                                {calculateTotalDuration(segments)}
                             </div>
                         </div>
                         <div className="relative">
                             <div className="h-0.5 bg-muted-foreground/30 w-full"></div>
                             <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-primary rounded-full"></div>
                             <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-primary rounded-full"></div>
-                            {/* <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
                                 <Plane className="h-4 w-4 text-primary" />
-                            </div> */}
+                            </div>
                         </div>
                         <div className="text-center mt-1">
                             <Badge variant="secondary" className="text-xs">
-                                Direct
+                                {isReturn ? "Return" : "Direct"}
                             </Badge>
                         </div>
                     </div>
@@ -131,19 +151,19 @@ export function FlightTicket({ ticket, onSelect }) {
                     {/* Arrival */}
                     <div className="text-center min-w-0 flex-1">
                         <div className="text-xl font-bold text-foreground">
-                            {formatTime(lastSegment.ArrivalTime)}
+                            {formatTime(lastSeg.ArrivalTime)}
                             {isNextDay(
-                                firstSegment.DepartureTime,
-                                lastSegment.ArrivalTime
+                                firstSeg.DepartureTime,
+                                lastSeg.ArrivalTime
                             ) && (
-                                <span className="text-xs text-destructive ml-1">
+                                <sup className="text-xs text-destructive ml-1">
                                     +1
-                                </span>
+                                </sup>
                             )}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                            {lastSegment.Destination}{" "}
-                            {formatDate(lastSegment.ArrivalTime)}
+                            {lastSeg.Destination}{" "}
+                            {formatDate(lastSeg.ArrivalTime)}
                         </div>
                     </div>
                 </div>
@@ -151,24 +171,24 @@ export function FlightTicket({ ticket, onSelect }) {
         } else {
             // Connecting flights
             return (
-                <div className="px-4 py-3">
+                <div className="p-4">
                     {/* Main route overview */}
                     <div className="flex items-center justify-between mb-4">
                         {/* Departure */}
                         <div className="text-center">
                             <div className="text-xl font-bold text-foreground">
-                                {formatTime(firstSegment.DepartureTime)}
+                                {formatTime(firstSeg.DepartureTime)}
                             </div>
                             <div className="text-xs text-muted-foreground">
-                                {firstSegment.Origin}{" "}
-                                {formatDate(firstSegment.DepartureTime)}
+                                {firstSeg.Origin}{" "}
+                                {formatDate(firstSeg.DepartureTime)}
                             </div>
                         </div>
 
                         {/* Journey overview */}
                         <div className="flex-1 mx-4 text-center">
                             <div className="text-xs text-muted-foreground mb-5">
-                                {calculateTotalDuration()}
+                                {calculateTotalDuration(segments)}
                             </div>
                             <div className="relative">
                                 <div className="h-0.5 bg-muted-foreground/30 w-full"></div>
@@ -201,7 +221,7 @@ export function FlightTicket({ ticket, onSelect }) {
                                 <Badge variant="outline" className="text-xs">
                                     {segments.length - 1}{" "}
                                     {segments.length === 2 ? "Stop" : "Stops"} •{" "}
-                                    {calculateTotalLayoverTime()}
+                                    {calculateTotalLayoverTime(segments)}
                                 </Badge>
                             </div>
                         </div>
@@ -209,10 +229,10 @@ export function FlightTicket({ ticket, onSelect }) {
                         {/* Arrival */}
                         <div className="text-center">
                             <div className="text-xl font-bold text-foreground">
-                                {formatTime(lastSegment.ArrivalTime)}
+                                {formatTime(lastSeg.ArrivalTime)}
                                 {isNextDay(
-                                    firstSegment.DepartureTime,
-                                    lastSegment.ArrivalTime
+                                    firstSeg.DepartureTime,
+                                    lastSeg.ArrivalTime
                                 ) && (
                                     <sup className="text-xs text-destructive ml-1">
                                         +1
@@ -220,13 +240,48 @@ export function FlightTicket({ ticket, onSelect }) {
                                 )}
                             </div>
                             <div className="text-xs text-muted-foreground">
-                                {lastSegment.Destination}{" "}
-                                {formatDate(lastSegment.ArrivalTime)}
+                                {lastSeg.Destination}{" "}
+                                {formatDate(lastSeg.ArrivalTime)}
                             </div>
                         </div>
                     </div>
                 </div>
             );
+        }
+    };
+
+    const renderFlightPath = () => {
+        if (isRoundTrip) {
+            return (
+                <div className="">
+                    {/* Outbound Journey */}
+                    <div>
+                        <div className="px-4 py-1">
+                            <div className="text-xs text-muted-foreground flex items-center gap-1">
+                                <Plane className="h-3 w-3" />
+                                Outbound
+                            </div>
+                        </div>
+                        {renderSingleJourney(onward.segments)}
+                    </div>
+
+                    {/* Divider */}
+                    <div className="border-t border-border/30"></div>
+
+                    {/* Return Journey */}
+                    <div>
+                        <div className="px-4 py-1">
+                            <div className="text-xs text-muted-foreground flex items-center gap-1">
+                                <ArrowRight className="h-3 w-3 rotate-180" />
+                                Return
+                            </div>
+                        </div>
+                        {renderSingleJourney(returnJourney.segments, true)}
+                    </div>
+                </div>
+            );
+        } else {
+            return renderSingleJourney(displaySegments);
         }
     };
 
@@ -247,10 +302,48 @@ export function FlightTicket({ ticket, onSelect }) {
     return (
         <>
             <Card
-                className="hover:shadow-lg transition-all duration-300  cursor-pointer sm:cursor-default py-2"
+                // className="hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary/20 hover:border-l-primary cursor-pointer sm:cursor-default"
+                className={`hover:shadow-lg transition-all duration-300 cursor-pointer sm:cursor-default py-0 mb-3
+    ${
+        isCheapest
+            ? "border-3 border-green-500"
+            : isFastest
+            ? "border-3 border-accent-400"
+            : "border border-transparent"
+    }
+    relative
+  `}
                 onClick={handleCardClick}
             >
                 <CardContent className="p-0">
+                    {isCheapest && (
+                        <div className="absolute right-[-2px] top-[-2px] z-10 ">
+                            <span className="bg-green-500 text-white text-[10px] font-semibold py-2 px-1 uppercase rounded-tr-lg">
+                                Cheapest
+                            </span>
+                        </div>
+                    )}
+
+                    {isFastest && (
+                        <div
+                            className={`absolute ${
+                                isCheapest
+                                    ? "left-[-2px]  top-[-2px]"
+                                    : "right-[-2px] top-[-2px]"
+                            } z-10`}
+                        >
+                            <span
+                                className={`bg-accent-400 text-white text-[10px] font-semibold py-2 px-1 uppercase ${
+                                    isFastest && isCheapest
+                                        ? "rounded-tl-lg"
+                                        : " rounded-tr-lg"
+                                }`}
+                            >
+                                Fastest
+                            </span>
+                        </div>
+                    )}
+
                     {/* Main flight path */}
                     {renderFlightPath()}
 
@@ -258,7 +351,7 @@ export function FlightTicket({ ticket, onSelect }) {
                     <div className="border-t border-border/50"></div>
 
                     {/* Footer with price and details */}
-                    <div className="px-4 py-3">
+                    <div className="p-4">
                         <div className="flex items-center justify-between">
                             {/* Left side - Airline and flight details */}
                             <div className="flex items-center gap-3">
@@ -269,12 +362,12 @@ export function FlightTicket({ ticket, onSelect }) {
                                         )}
                                         alt={firstSegment.Carrier}
                                         className="w-8 h-8 rounded"
-                                        width={30}
-                                        height={30}
                                         onError={(e) => {
                                             e.src =
                                                 "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzk0YTNiOCIvPgo8L3N2Zz4K";
                                         }}
+                                        width={30}
+                                        height={30}
                                     />
                                     <div>
                                         <div className="font-medium text-sm">
@@ -301,13 +394,17 @@ export function FlightTicket({ ticket, onSelect }) {
                             <div className="text-right">
                                 <div className="flex items-center gap-3">
                                     <div>
-                                        <div className="text-sm text-muted-foreground">
+                                        <div className="text-xs text-muted-foreground">
                                             Total Price
                                         </div>
                                         <div className="text-2xl font-bold  text-accent-500">
                                             {SITECurrencyType} {TotalPrice}
                                         </div>
-
+                                        <div className="text-xs text-muted-foreground">
+                                            {isRoundTrip
+                                                ? "Round trip"
+                                                : "One way"}
+                                        </div>
                                         {/* Desktop Select Button - under price */}
                                         <div className="hidden sm:block mt-2">
                                             <Button
@@ -322,6 +419,19 @@ export function FlightTicket({ ticket, onSelect }) {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Mobile flight details */}
+                        {/* <div className="sm:hidden flex items-center justify-between mt-3 pt-3 border-t border-border/50">
+                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                <div className="flex items-center gap-1">
+                                    <Luggage className="h-3 w-3" />
+                                    <span>{CabinLuggage}</span>
+                                </div>
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                                Tap for details
+                            </div>
+                        </div> */}
                     </div>
                 </CardContent>
             </Card>

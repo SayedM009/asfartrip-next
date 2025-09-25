@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { FlightTicket } from "./FlightTicket";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,6 +13,8 @@ import {
     SunMedium,
     Sunset,
     CloudSun,
+    Funnel,
+    SortDesc,
 } from "lucide-react";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/solid";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
@@ -20,116 +22,91 @@ import { useSearchParams } from "next/navigation";
 import FlightFilters from "./FlightFilters";
 import Image from "next/image";
 
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { DialogDescription } from "@radix-ui/react-dialog";
+import { cn } from "../ui/utils";
+
+const tripTimes = [
+    { id: "before6", label: "Before 6:00", icon: <CloudSun /> },
+    { id: "morning", label: "06:00 - 12:00", icon: <Sunrise /> },
+    { id: "afternoon", label: "12:00 - 18:00", icon: <SunMedium /> },
+    { id: "evening", label: "After 18:00", icon: <Sunset /> },
+];
+
 export function FlightResults({ flights = [] }) {
+    console.log(flights);
+
     const [filterBy, setFilterBy] = useState("all");
     const [sortBy, setSortBy] = useState("price");
-
-    // Sub filters
     const [selectedAirlines, setSelectedAirlines] = useState([]);
     const [selectedTripTimes, setSelectedTripTimes] = useState([]);
 
-    // Unique airlines from flights
-    const airlines = Array.from(
-        new Set(flights.flatMap((f) => f.segments.map((s) => s.Carrier)))
+    // === المنطق الجديد ===
+    const getOutboundSegments = useCallback((flight) => {
+        if (flight.MultiLeg === "true" && flight.onward)
+            return flight.onward.segments;
+        return flight.segments || [];
+    }, []);
+
+    const getReturnSegments = useCallback((flight) => {
+        if (flight.MultiLeg === "true" && flight.return)
+            return flight.return.segments;
+        return null;
+    }, []);
+
+    const getTotalDuration = useCallback(
+        (flight) => {
+            const outbound = getOutboundSegments(flight);
+            if (!outbound.length) return 0;
+            const outboundStart = new Date(outbound[0].DepartureTime).getTime();
+            const outboundEnd = new Date(outbound.at(-1).ArrivalTime).getTime();
+
+            const ret = getReturnSegments(flight);
+            if (ret?.length) {
+                const retStart = new Date(ret[0].DepartureTime).getTime();
+                const retEnd = new Date(ret.at(-1).ArrivalTime).getTime();
+                return outboundEnd - outboundStart + (retEnd - retStart);
+            }
+            return outboundEnd - outboundStart;
+        },
+        [getOutboundSegments, getReturnSegments]
     );
 
-    // Trip time ranges
-    const tripTimes = [
-        {
-            id: "before6",
-            label: "Before 6:00",
-            icon: <CloudSun />,
-            start: 0,
-            end: 6,
+    const getStopsCount = useCallback(
+        (flight) => {
+            const outboundStops = Math.max(
+                0,
+                getOutboundSegments(flight).length - 1
+            );
+            const returnStops = getReturnSegments(flight)
+                ? Math.max(0, getReturnSegments(flight).length - 1)
+                : 0;
+            return Math.max(outboundStops, returnStops);
         },
-        {
-            id: "morning",
-            label: "06:00 - 12:00",
-            icon: <Sunrise />,
-            start: 6,
-            end: 12,
-        },
-        {
-            id: "afternoon",
-            label: "12:00 - 18:00",
-            icon: <SunMedium />,
-            start: 12,
-            end: 18,
-        },
-        {
-            id: "evening",
-            label: "After 18:00",
-            icon: <Sunset />,
-            start: 18,
-            end: 24,
-        },
-    ];
+        [getOutboundSegments, getReturnSegments]
+    );
 
-    // State
-    // const [sortBy, setSortBy] = useState("price");
-    // const [filterBy, setFilterBy] = useState("all");
-
-    console.log(flights);
-    // Logic
-    // const filteredAndSortedFlights = React.useMemo(() => {
-    //     let filtered = [...flights];
-
-    //     // Apply filters
-    //     if (filterBy === "direct") {
-    //         filtered = filtered.filter(
-    //             (flight) => flight.segments.length === 1
-    //         );
-    //     } else if (filterBy === "oneStop") {
-    //         filtered = filtered.filter(
-    //             (flight) => flight.segments.length === 2
-    //         );
-    //     } else if (filterBy === "multipleStops") {
-    //         filtered = filtered.filter((flight) => flight.segments.length > 2);
-    //     }
-
-    //     // Apply sorting
-    //     filtered.sort((a, b) => {
-    //         switch (sortBy) {
-    //             case "price":
-    //                 return a.TotalPrice - b.TotalPrice;
-    //             case "duration":
-    //                 // Calculate total duration for sorting
-    //                 const aDuration =
-    //                     new Date(
-    //                         a.segments[a.segments.length - 1].ArrivalTime
-    //                     ).getTime() -
-    //                     new Date(a.segments[0].DepartureTime).getTime();
-    //                 const bDuration =
-    //                     new Date(
-    //                         b.segments[b.segments.length - 1].ArrivalTime
-    //                     ).getTime() -
-    //                     new Date(b.segments[0].DepartureTime).getTime();
-    //                 return aDuration - bDuration;
-    //             case "departure":
-    //                 return (
-    //                     new Date(a.segments[0].DepartureTime).getTime() -
-    //                     new Date(b.segments[0].DepartureTime).getTime()
-    //                 );
-    //             default:
-    //                 return 0;
-    //         }
-    //     });
-
-    //     return filtered;
-    // }, [flights, sortBy, filterBy]);
-
+    // === فلترة + ترتيب ===
     const filteredAndSortedFlights = useMemo(() => {
         let filtered = [...flights];
 
         // Main filter
         if (filterBy === "direct") {
-            filtered = filtered.filter((f) => f.segments.length === 1);
+            filtered = filtered.filter((f) => getStopsCount(f) === 0);
         }
 
         // Airline filter
         if (selectedAirlines.length > 0) {
             filtered = filtered.filter((f) =>
-                f.segments.some((s) => selectedAirlines.includes(s.Carrier))
+                getOutboundSegments(f).some((s) =>
+                    selectedAirlines.includes(s.Carrier)
+                )
             );
         }
 
@@ -137,14 +114,15 @@ export function FlightResults({ flights = [] }) {
         if (selectedTripTimes.length > 0) {
             filtered = filtered.filter((f) => {
                 const depHour = new Date(
-                    f.segments[0].DepartureTime
+                    getOutboundSegments(f)[0].DepartureTime
                 ).getHours();
                 return selectedTripTimes.some((id) => {
-                    const range = tripTimes.find((t) => t.id === id);
-                    if (!range) return false;
-                    if (range.id === "before6") return depHour < 6;
-                    if (range.id === "evening") return depHour >= 18;
-                    return depHour >= range.start && depHour < range.end;
+                    if (id === "before6") return depHour < 6;
+                    if (id === "evening") return depHour >= 18;
+                    if (id === "morning") return depHour >= 6 && depHour < 12;
+                    if (id === "afternoon")
+                        return depHour >= 12 && depHour < 18;
+                    return false;
                 });
             });
         }
@@ -155,13 +133,7 @@ export function FlightResults({ flights = [] }) {
                 case "price":
                     return a.TotalPrice - b.TotalPrice;
                 case "duration":
-                    const aDuration =
-                        new Date(a.segments.at(-1).ArrivalTime) -
-                        new Date(a.segments[0].DepartureTime);
-                    const bDuration =
-                        new Date(b.segments.at(-1).ArrivalTime) -
-                        new Date(b.segments[0].DepartureTime);
-                    return aDuration - bDuration;
+                    return getTotalDuration(a) - getTotalDuration(b);
                 default:
                     return 0;
             }
@@ -174,28 +146,55 @@ export function FlightResults({ flights = [] }) {
         filterBy,
         selectedAirlines,
         selectedTripTimes,
-        tripTimes,
+        getStopsCount,
+        getTotalDuration,
+        getOutboundSegments,
     ]);
-    const getFlightTypeStats = () => {
-        const direct = flights.filter((f) => f.segments.length === 1).length;
-        const oneStop = flights.filter((f) => f.segments.length === 2).length;
-        const multipleStops = flights.filter(
-            (f) => f.segments.length > 2
-        ).length;
-        return { direct, oneStop, multipleStops };
-    };
 
-    const stats = getFlightTypeStats();
+    const { cheapestIndex, fastestIndex } = React.useMemo(() => {
+        if (
+            !filteredAndSortedFlights ||
+            filteredAndSortedFlights.length === 0
+        ) {
+            return { cheapestIndex: -1, fastestIndex: -1 };
+        }
 
-    // Appearnce
+        let cheapestIdx = 0;
+        let fastestIdx = 0;
+        let cheapestPrice = filteredAndSortedFlights[0].TotalPrice ?? Infinity;
+        let fastestDur = getDurationMs(filteredAndSortedFlights[0]);
+
+        for (let i = 1; i < filteredAndSortedFlights.length; i++) {
+            const f = filteredAndSortedFlights[i];
+            const price = f.TotalPrice ?? Infinity;
+            const dur = getDurationMs(f);
+
+            if (price < cheapestPrice) {
+                cheapestPrice = price;
+                cheapestIdx = i;
+            }
+            if (dur < fastestDur) {
+                fastestDur = dur;
+                fastestIdx = i;
+            }
+        }
+
+        return { cheapestIndex: cheapestIdx, fastestIndex: fastestIdx };
+    }, [filteredAndSortedFlights]);
+
     return (
-        <div className=" mx-auto  space-y-6">
-            {/* Sort on Mobile */}
+        <div className="mx-auto space-y-2">
+            {/* Tabs / Filters */}
             <FlightTabs
                 filterBy={filterBy}
                 setFilterBy={setFilterBy}
-                filteredAndSortedFlights={filteredAndSortedFlights}
-                airlines={airlines}
+                airlines={Array.from(
+                    new Set(
+                        flights.flatMap((f) =>
+                            getOutboundSegments(f).map((s) => s.Carrier)
+                        )
+                    )
+                )}
                 selectedAirlines={selectedAirlines}
                 setSelectedAirlines={setSelectedAirlines}
                 tripTimes={tripTimes}
@@ -203,15 +202,20 @@ export function FlightResults({ flights = [] }) {
                 setSelectedTripTimes={setSelectedTripTimes}
             />
 
-            <div>
-                {/* Filter the Flight Tickets */}
-                {/* <FlightFilters /> */}
-                {/* Listing Flight Tickets */}
-                <FlightTicketsList
-                    filteredAndSortedFlights={filteredAndSortedFlights}
-                    filterBy={filterBy}
-                />
-            </div>
+            {/* Tickets list */}
+            <FlightTicketsList
+                filteredAndSortedFlights={filteredAndSortedFlights}
+                filterBy={filterBy}
+                cheapestIndex={cheapestIndex}
+                fastestIndex={fastestIndex}
+            />
+
+            {/* Floating sort (Cheapest / Fastest) */}
+            <FlowingSortFilter
+                flights={filteredAndSortedFlights}
+                setSortBy={setSortBy}
+                sortBy={sortBy}
+            />
         </div>
     );
 }
@@ -252,13 +256,13 @@ export function FlightTabs({
                 // empty string = nothing selected, avoids Radix fallback
                 value={filterBy || ""}
                 onValueChange={handleValueChange}
-                className="w-full"
+                className="w-full shadow border-2 rounded-full mt-3"
             >
-                <TabsList className="grid grid-cols-3 w-full mt-3">
+                <TabsList className="grid grid-cols-3 w-full ">
                     <TabsTrigger
                         value="triptime"
                         onPointerDown={makePreemptiveHandler("triptime")}
-                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-primary"
+                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-accent-500 rounded-full"
                     >
                         <SunIcon className="size-5" />
                         <span className="text-sm">Trip time</span>
@@ -267,7 +271,7 @@ export function FlightTabs({
                     <TabsTrigger
                         value="airline"
                         onPointerDown={makePreemptiveHandler("airline")}
-                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-primary"
+                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-accent-500 rounded-full"
                     >
                         <PlaneIcon className="size-5" />
                         <span className="text-sm">Airlines</span>
@@ -276,7 +280,7 @@ export function FlightTabs({
                     <TabsTrigger
                         value="direct"
                         onPointerDown={makePreemptiveHandler("direct")}
-                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-primary"
+                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-accent-500 rounded-full"
                     >
                         <ArrowRightCircleIcon className="size-5" />
                         <span className="text-sm">Direct</span>
@@ -386,7 +390,12 @@ function TicketsCount({ filteredAndSortedFlights }) {
     );
 }
 
-export function FlightTicketsList({ filteredAndSortedFlights, filterBy }) {
+export function FlightTicketsList({
+    filteredAndSortedFlights,
+    filterBy,
+    cheapestIndex,
+    fastestIndex,
+}) {
     return (
         <>
             {/* Tickets Count */}
@@ -401,6 +410,8 @@ export function FlightTicketsList({ filteredAndSortedFlights, filterBy }) {
                         key={`${filterBy}-flight-${index}`}
                         ticket={flight}
                         onSelect={() => handleSelectFlight(index)}
+                        isCheapest={index === cheapestIndex}
+                        isFastest={index === fastestIndex}
                     />
                 ))
             )}
@@ -422,5 +433,189 @@ export function NoFlightTickets() {
                 </div>
             </CardContent>
         </Card>
+    );
+}
+
+function FlowingSortFilter({ flights, setSortBy, sortBy }) {
+    return (
+        <section className="fixed bottom-3 left-50 translate-x-[-50%] bg-accent-50 shadow text-accent-500 px-3 py-2 rounded-full font-semibold flex items-center space-x-2">
+            <FlowingSortDialog
+                flights={flights}
+                setSortBy={setSortBy}
+                sortBy={sortBy}
+            />
+            <span>|</span>
+            <FlowingFilterDialog />
+        </section>
+    );
+}
+
+function FlowingSortDialog({ flights, setSortBy, sortBy }) {
+    const [open, setOpen] = useState(false);
+
+    // === Helpers ===
+    function getAllSegments(flight) {
+        if (!flight) return [];
+
+        // MultiLeg
+        if (flight.MultiLeg === "true" && Array.isArray(flight.legs)) {
+            return flight.legs.flatMap((leg) => leg.segments || []);
+        }
+
+        // OneWay / Return
+        const onward = flight?.onward?.segments || flight?.segments || [];
+        const ret = flight?.return?.segments || [];
+        return [...onward, ...ret];
+    }
+
+    const getDuration = useCallback((flight) => {
+        const segs = getAllSegments(flight);
+        if (!segs || segs.length === 0) return 0;
+
+        const first = segs[0];
+        const last = segs[segs.length - 1];
+        if (!first?.DepartureTime || !last?.ArrivalTime) return 0;
+
+        const dep = new Date(first.DepartureTime).getTime();
+        const arr = new Date(last.ArrivalTime).getTime();
+        return arr - dep;
+    }, []);
+
+    function formatDuration(ms) {
+        if (!ms || ms <= 0) return "0h 0m";
+        const minutes = Math.floor(ms / 60000);
+        const h = Math.floor(minutes / 60);
+        const m = minutes % 60;
+        return `${h}h ${m}m`;
+    }
+
+    // === Find Cheapest & Fastest ===
+    const cheapest = useMemo(() => {
+        if (!flights || flights.length === 0) return null;
+        return flights.reduce((min, f) =>
+            f.TotalPrice < min.TotalPrice ? f : min
+        );
+    }, [flights]);
+
+    const fastest = useMemo(() => {
+        if (!flights || flights.length === 0) return null;
+        return flights.reduce((min, f) =>
+            getDuration(f) < getDuration(min) ? f : min
+        );
+    }, [flights, getDuration]);
+
+    const handleSort = (type) => {
+        setSortBy(type);
+        setOpen(false);
+    };
+
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger className="flex-1" asChild>
+                <div className="flex items-center gap-2 cursor-pointer">
+                    <SortDesc className="size-5" />
+                    <span>Sort</span>
+                </div>
+            </DialogTrigger>
+
+            <DialogContent
+                className={cn(
+                    "max-w-none w-full h-[28vh] top-200 rounded-t-xl border-0 md:h-11/12 md:rounded",
+                    "open-slide-bottom close-slide-bottom",
+                    "pt-4 shadow"
+                )}
+            >
+                <DialogHeader>
+                    <DialogTitle className="flex justify-start">
+                        <h2 className="text-sm font-semibold text-accent-500">
+                            Sort By
+                        </h2>
+                    </DialogTitle>
+
+                    <DialogDescription className="space-y-4 mt-4">
+                        {/* Cheapest */}
+                        {cheapest && (
+                            <button
+                                onClick={() => handleSort("price")}
+                                className={`w-full flex justify-between items-center px-4 py-3 border rounded-xl uppercase
+                                    ${
+                                        sortBy === "price"
+                                            ? "bg-green-500 text-white"
+                                            : "bg-transparent text-green-500"
+                                    }`}
+                            >
+                                <div className="text-left">
+                                    <p className="font-semibold">Cheapest</p>
+                                    <p className="text-xs ">
+                                        {formatDuration(getDuration(cheapest))}
+                                    </p>
+                                </div>
+                                <div className="font-bold">
+                                    ${cheapest.TotalPrice}
+                                </div>
+                            </button>
+                        )}
+
+                        {/* Fastest */}
+                        {fastest && (
+                            <button
+                                onClick={() => handleSort("duration")}
+                                className={`w-full flex justify-between items-center px-4 py-3 border rounded-xl uppercase
+                                    ${
+                                        sortBy === "duration"
+                                            ? "bg-accent-400 text-white"
+                                            : "bg-transparent text-accent-500"
+                                    }`}
+                            >
+                                <div className="text-left">
+                                    <p className="font-semibold">Fastest</p>
+                                    <p className="text-xs ">
+                                        {formatDuration(getDuration(fastest))}
+                                    </p>
+                                </div>
+                                <div className="font-bold">
+                                    ${fastest.TotalPrice}
+                                </div>
+                            </button>
+                        )}
+                    </DialogDescription>
+                </DialogHeader>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
+function FlowingFilterDialog() {
+    return (
+        <div className="flex items-center gap-2">
+            <Funnel className="size-4" />
+            <span>Filter</span>
+        </div>
+    );
+}
+
+function getAllSegments(flight) {
+    if (!flight) return [];
+    if (flight.MultiLeg === "true" && Array.isArray(flight.legs)) {
+        return flight.legs.flatMap((leg) => leg.segments || []);
+    }
+    if (flight.MultiLeg === "true" && flight.onward && flight.return) {
+        return [
+            ...(flight.onward?.segments || []),
+            ...(flight.return?.segments || []),
+        ];
+    }
+    return flight.segments || [];
+}
+
+function getDurationMs(flight) {
+    const segs = getAllSegments(flight);
+    if (!segs.length) return Infinity; // لو ما فيش segments نخليها Infinity علشان ماتختارش كـ أسرع
+    const first = segs[0];
+    const last = segs[segs.length - 1];
+    if (!first?.DepartureTime || !last?.ArrivalTime) return Infinity;
+    return (
+        new Date(last.ArrivalTime).getTime() -
+        new Date(first.DepartureTime).getTime()
     );
 }
