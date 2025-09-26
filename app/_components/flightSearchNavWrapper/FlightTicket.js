@@ -303,7 +303,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
         <>
             <Card
                 // className="hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary/20 hover:border-l-primary cursor-pointer sm:cursor-default"
-                className={`hover:shadow-lg transition-all duration-300 cursor-pointer sm:cursor-default py-0 mb-3
+                className={`hover:shadow-lg transition-all duration-300  sm:cursor-default py-0 mb-3 dark:shadow-gray-600 
     ${
         isCheapest
             ? "border-3 border-green-500"
@@ -315,7 +315,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
   `}
                 onClick={handleCardClick}
             >
-                <CardContent className="p-0">
+                <CardContent className="p-0 cursor-pointer">
                     {isCheapest && (
                         <div className="absolute right-[-2px] top-[-2px] z-10 ">
                             <span className="bg-green-500 text-white text-[10px] font-semibold py-2 px-1 uppercase rounded-tr-lg">
@@ -382,12 +382,12 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                 </div>
 
                                 {/* Flight details */}
-                                <div className="hidden sm:flex items-center gap-4 text-xs text-muted-foreground">
+                                {/* <div className="hidden sm:flex items-center gap-4 text-xs text-muted-foreground">
                                     <div className="flex items-center gap-1">
                                         <Luggage className="h-3 w-3" />
                                         <span>{CabinLuggage}</span>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
 
                             {/* Right side - Price and select button */}
@@ -400,11 +400,11 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                         <div className="text-2xl font-bold  text-accent-500">
                                             {SITECurrencyType} {TotalPrice}
                                         </div>
-                                        <div className="text-xs text-muted-foreground">
+                                        {/* <div className="text-xs text-muted-foreground">
                                             {isRoundTrip
                                                 ? "Round trip"
                                                 : "One way"}
-                                        </div>
+                                        </div> */}
                                         {/* Desktop Select Button - under price */}
                                         <div className="hidden sm:block mt-2">
                                             <Button

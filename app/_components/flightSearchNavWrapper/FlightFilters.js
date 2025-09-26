@@ -1,6 +1,6 @@
 "use client";
-import { useState, useMemo } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { useState, useMemo, useCallback } from "react";
+import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import Image from "next/image";
@@ -11,25 +11,101 @@ export default function FlightFilters({
     flights,
     selectedFilters,
     setSelectedFilters,
+    setOpen,
 }) {
     const [showAllAirlines, setShowAllAirlines] = useState(false);
     const [showAllAirports, setShowAllAirports] = useState(false);
 
-    // === 1. Stops counts ===
+    // === Helper functions ===
+    const getOutboundSegments = useCallback((flight) => {
+        if (flight.MultiLeg === "true" && flight.onward)
+            return flight.onward.segments;
+        return flight.segments || [];
+    }, []);
+
+    const getReturnSegments = useCallback((flight) => {
+        if (flight.MultiLeg === "true" && flight.return)
+            return flight.return.segments;
+        return null;
+    }, []);
+
+    const getStops = useCallback(
+        (flight) => {
+            const outboundStops = Math.max(
+                0,
+                getOutboundSegments(flight).length - 1
+            );
+            const returnStops = getReturnSegments(flight)
+                ? Math.max(0, getReturnSegments(flight).length - 1)
+                : 0;
+            return Math.max(outboundStops, returnStops);
+        },
+        [getOutboundSegments, getReturnSegments]
+    );
+
+    const getTotalDuration = useCallback(
+        (flight) => {
+            const outbound = getOutboundSegments(flight);
+            if (!outbound.length) return 0;
+            const outboundStart = new Date(outbound[0].DepartureTime).getTime();
+            const outboundEnd = new Date(outbound.at(-1).ArrivalTime).getTime();
+
+            const ret = getReturnSegments(flight);
+            if (ret?.length) {
+                const retStart = new Date(ret[0].DepartureTime).getTime();
+                const retEnd = new Date(ret.at(-1).ArrivalTime).getTime();
+                return outboundEnd - outboundStart + (retEnd - retStart);
+            }
+            return outboundEnd - outboundStart;
+        },
+        [getOutboundSegments, getReturnSegments]
+    );
+
+    const getFlightDurationHours = useCallback(
+        (flight) => {
+            const durationMs = getTotalDuration(flight);
+            return durationMs / (1000 * 60 * 60); // Convert ms to hours
+        },
+        [getTotalDuration]
+    );
+
+    // === Price range calculation ===
+    const priceRange = useMemo(() => {
+        if (!flights || flights.length === 0) return { min: 0, max: 2000 };
+        const prices = flights.map((f) => f.TotalPrice || 0);
+        return {
+            min: Math.floor(Math.min(...prices)),
+            max: Math.ceil(Math.max(...prices)),
+        };
+    }, [flights]);
+
+    // === Duration range calculation ===
+    const durationRange = useMemo(() => {
+        if (!flights || flights.length === 0) return { min: 0, max: 48 };
+        const durations = flights.map((f) => getFlightDurationHours(f));
+        return {
+            min: Math.floor(Math.min(...durations)),
+            max: Math.ceil(Math.max(...durations)),
+        };
+    }, [flights, getFlightDurationHours]);
+
+    // === Stops counts ===
     const stopsCount = useMemo(() => {
         let nonStop = 0,
             oneStop = 0,
-            twoStops = 0;
+            twoStops = 0,
+            moreThanTwo = 0;
         flights.forEach((f) => {
             const stops = getStops(f);
             if (stops === 0) nonStop++;
             else if (stops === 1) oneStop++;
             else if (stops === 2) twoStops++;
+            else if (stops > 2) moreThanTwo++;
         });
-        return { nonStop, oneStop, twoStops };
-    }, [flights]);
+        return { nonStop, oneStop, twoStops, moreThanTwo };
+    }, [flights, getStops]);
 
-    // === 2. Fare type ===
+    // === Fare type ===
     const fareTypeCount = useMemo(() => {
         let refundable = 0,
             nonRefundable = 0;
@@ -40,154 +116,43 @@ export default function FlightFilters({
         return { refundable, nonRefundable };
     }, [flights]);
 
-    // === 4. Airlines ===
+    // === Airlines ===
     const airlines = useMemo(() => {
         const map = {};
         flights.forEach((f) => {
-            f.segments?.forEach((s) => {
-                map[s.Carrier] = (map[s.Carrier] || 0) + 1;
+            const segments = getOutboundSegments(f);
+            const returnSegments = getReturnSegments(f);
+            const allSegments = [...segments, ...(returnSegments || [])];
+
+            allSegments.forEach((s) => {
+                if (s.Carrier) {
+                    map[s.Carrier] = (map[s.Carrier] || 0) + 1;
+                }
             });
         });
-        return Object.entries(map); // [["EK",12],["QR",8]]
-    }, [flights]);
+        return Object.entries(map).sort((a, b) => b[1] - a[1]); // Sort by frequency
+    }, [flights, getOutboundSegments, getReturnSegments]);
 
-    // === 7. Stopover Airports ===
+    // === Stopover Airports ===
     const airports = useMemo(() => {
         const map = {};
         flights.forEach((f) => {
-            f.segments?.slice(1, -1).forEach((s) => {
-                map[s.Origin] = (map[s.Origin] || 0) + 1;
-            });
+            const segments = getOutboundSegments(f);
+            const returnSegments = getReturnSegments(f);
+            const allSegments = [...segments, ...(returnSegments || [])];
+
+            // Get intermediate airports (not first departure or last arrival)
+            for (let i = 1; i < allSegments.length; i++) {
+                const airport = allSegments[i].Origin;
+                if (airport) {
+                    map[airport] = (map[airport] || 0) + 1;
+                }
+            }
         });
-        return Object.entries(map); // [["DOH",6],["IST",4]]
-    }, [flights]);
+        return Object.entries(map).sort((a, b) => b[1] - a[1]); // Sort by frequency
+    }, [flights, getOutboundSegments, getReturnSegments]);
 
-    return (
-        <Card className="p-4 space-y-6">
-            <h2 className="font-bold text-lg">Filters</h2>
-            {/* 1. Number of stops */}
-            <Section title="Number of Stops">
-                <FilterCheckbox
-                    label={`Non-stop (${stopsCount.nonStop})`}
-                    checked={selectedFilters.stops?.includes(0)}
-                    onChange={() => toggleFilter("stops", 0)}
-                />
-                <FilterCheckbox
-                    label={`1 Stop (${stopsCount.oneStop})`}
-                    checked={selectedFilters.stops?.includes(1)}
-                    onChange={() => toggleFilter("stops", 1)}
-                />
-                <FilterCheckbox
-                    label={`2 Stops (${stopsCount.twoStops})`}
-                    checked={selectedFilters.stops?.includes(2)}
-                    onChange={() => toggleFilter("stops", 2)}
-                />
-            </Section>
-
-            {/* 2. Fare type */}
-            <Section title="Fare Type">
-                <FilterCheckbox
-                    label={`Refundable (${fareTypeCount.refundable})`}
-                    checked={selectedFilters.fare?.includes("refundable")}
-                    onChange={() => toggleFilter("fare", "refundable")}
-                />
-                <FilterCheckbox
-                    label={`Non-Refundable (${fareTypeCount.nonRefundable})`}
-                    checked={selectedFilters.fare?.includes("nonRefundable")}
-                    onChange={() => toggleFilter("fare", "nonRefundable")}
-                />
-            </Section>
-
-            {/* 3. Travel Time */}
-            <Section title="Travel Time">
-                {/* هنا تعمل checkboxes زي tripTimes بالظبط 
-            لو O (one way) = departure فقط 
-            لو R (round trip) = departure + return */}
-            </Section>
-
-            {/* 4. Airlines */}
-            <Section title="Airlines">
-                {(showAllAirlines ? airlines : airlines.slice(0, 5)).map(
-                    ([code, n]) => (
-                        <FilterCheckbox
-                            key={code}
-                            label={
-                                <span className="flex items-center gap-2">
-                                    <Image
-                                        src={`https://images.kiwi.com/airlines/64x64/${code}.png`}
-                                        alt={code}
-                                        width={20}
-                                        height={20}
-                                    />
-                                    {code} ({n})
-                                </span>
-                            }
-                            checked={selectedFilters.airlines?.includes(code)}
-                            onChange={() => toggleFilter("airlines", code)}
-                        />
-                    )
-                )}
-                {airlines.length > 5 && (
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setShowAllAirlines(!showAllAirlines)}
-                    >
-                        {showAllAirlines ? (
-                            <>
-                                Show Less <ChevronUp className="size-4" />
-                            </>
-                        ) : (
-                            <>
-                                Show More <ChevronDown className="size-4" />
-                            </>
-                        )}
-                    </Button>
-                )}
-            </Section>
-
-            {/* 5. Price Range */}
-            <Section title="Price Range">
-                <Slider
-                    min={0}
-                    max={2000}
-                    step={50}
-                    defaultValue={[200, 1500]}
-                    className="my-2"
-                />
-            </Section>
-
-            {/* 6. Duration */}
-            <Section title="Duration">
-                <Slider min={0} max={48} step={1} defaultValue={[0, 12]} />
-            </Section>
-
-            {/* 7. Stopover Airports */}
-            <Section title="Stopover Airports">
-                {(showAllAirports ? airports : airports.slice(0, 5)).map(
-                    ([code, n]) => (
-                        <FilterCheckbox
-                            key={code}
-                            label={`${code} (${n})`}
-                            checked={selectedFilters.airports?.includes(code)}
-                            onChange={() => toggleFilter("airports", code)}
-                        />
-                    )
-                )}
-                {airports.length > 5 && (
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setShowAllAirports(!showAllAirports)}
-                    >
-                        {showAllAirports ? "Show Less" : "Show More"}
-                    </Button>
-                )}
-            </Section>
-        </Card>
-    );
-
-    // Helpers
+    // Helper function to toggle filter
     function toggleFilter(key, value) {
         setSelectedFilters((prev) => {
             const arr = prev[key] || [];
@@ -199,28 +164,271 @@ export default function FlightFilters({
             };
         });
     }
+
+    // Helper function to update range filters
+    function updateRangeFilter(key, value) {
+        setSelectedFilters((prev) => ({
+            ...prev,
+            [key]: value,
+        }));
+    }
+
+    return (
+        <Card className="sm:p-4 space-y-1 border-0 shadow-none sm:shadow dark:shadow-gray-600">
+            <div className="flex items-center justify-between">
+                <h2 className="text-sm">Showing 117 result</h2>
+                <Button
+                    variant="ghost"
+                    onClick={() => {
+                        setSelectedFilters({
+                            stops: [],
+                            fare: [],
+                            airlines: [],
+                            priceRange: [priceRange.min, priceRange.max],
+                            duration: [durationRange.min, durationRange.max],
+                            airports: [],
+                        });
+                        setOpen(false);
+                    }}
+                    className="text-xs text-accent-500"
+                >
+                    Clear All
+                </Button>
+            </div>
+
+            {/* Stops */}
+            <Section title="Number of Stops">
+                {stopsCount.nonStop > 0 && (
+                    <FilterCheckbox
+                        label={`Non-stop (${stopsCount.nonStop})`}
+                        checked={selectedFilters.stops.includes(0)}
+                        onChange={() => toggleFilter("stops", 0)}
+                    />
+                )}
+                {stopsCount.oneStop > 0 && (
+                    <FilterCheckbox
+                        label={`1 Stop (${stopsCount.oneStop})`}
+                        checked={selectedFilters.stops.includes(1)}
+                        onChange={() => toggleFilter("stops", 1)}
+                    />
+                )}
+                {stopsCount.twoStops > 0 && (
+                    <FilterCheckbox
+                        label={`2 Stops (${stopsCount.twoStops})`}
+                        checked={selectedFilters.stops.includes(2)}
+                        onChange={() => toggleFilter("stops", 2)}
+                    />
+                )}
+                {stopsCount.moreThanTwo > 0 && (
+                    <FilterCheckbox
+                        label={`3+ Stops (${stopsCount.moreThanTwo})`}
+                        checked={selectedFilters.stops.includes(3)}
+                        onChange={() => toggleFilter("stops", 3)}
+                    />
+                )}
+            </Section>
+
+            {/* Fare Type */}
+            {(fareTypeCount.refundable > 0 ||
+                fareTypeCount.nonRefundable > 0) && (
+                <Section title="Fare Type">
+                    {fareTypeCount.refundable > 0 && (
+                        <FilterCheckbox
+                            label={`Refundable (${fareTypeCount.refundable})`}
+                            checked={selectedFilters.fare.includes(
+                                "refundable"
+                            )}
+                            onChange={() => toggleFilter("fare", "refundable")}
+                        />
+                    )}
+                    {fareTypeCount.nonRefundable > 0 && (
+                        <FilterCheckbox
+                            label={`Non-Refundable (${fareTypeCount.nonRefundable})`}
+                            checked={selectedFilters.fare.includes(
+                                "nonRefundable"
+                            )}
+                            onChange={() =>
+                                toggleFilter("fare", "nonRefundable")
+                            }
+                        />
+                    )}
+                </Section>
+            )}
+
+            {/* Airlines */}
+            {airlines.length > 0 && (
+                <Section title="Airlines">
+                    {(showAllAirlines ? airlines : airlines.slice(0, 5)).map(
+                        ([code, count]) => (
+                            <FilterCheckbox
+                                key={code}
+                                label={
+                                    <span className="flex items-center gap-2">
+                                        <Image
+                                            src={`https://images.kiwi.com/airlines/64x64/${code}.png`}
+                                            alt={code}
+                                            width={20}
+                                            height={20}
+                                            className="rounded"
+                                        />
+                                        <span>
+                                            {code} ({count})
+                                        </span>
+                                    </span>
+                                }
+                                checked={selectedFilters.airlines.includes(
+                                    code
+                                )}
+                                onChange={() => toggleFilter("airlines", code)}
+                            />
+                        )
+                    )}
+                    {airlines.length > 5 && (
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setShowAllAirlines(!showAllAirlines)}
+                            className="p-0 h-auto text-accent-500"
+                        >
+                            {showAllAirlines ? (
+                                <>
+                                    Show Less{" "}
+                                    <ChevronUp className="size-4 ml-1" />
+                                </>
+                            ) : (
+                                <>
+                                    Show More ({airlines.length - 5} more){" "}
+                                    <ChevronDown className="size-4 ml-1" />
+                                </>
+                            )}
+                        </Button>
+                    )}
+                </Section>
+            )}
+
+            {/* Price Range */}
+            <Section
+                title={`Price Range (${selectedFilters.priceRange[0]} - ${selectedFilters.priceRange[1]})`}
+            >
+                <div className="px-2">
+                    <Slider
+                        min={priceRange.min}
+                        max={priceRange.max}
+                        step={50}
+                        value={selectedFilters.priceRange}
+                        onValueChange={(val) =>
+                            updateRangeFilter("priceRange", val)
+                        }
+                        className="w-full duration-slider"
+                    />
+                    <div className="flex justify-between text-xs  mt-2 text-accent-500  font-semibold">
+                        <span>${priceRange.min}</span>
+                        <span>${priceRange.max}</span>
+                    </div>
+                </div>
+            </Section>
+
+            {/* Duration */}
+            <Section
+                title={`Duration (${selectedFilters.duration[0]}h - ${selectedFilters.duration[1]}h)`}
+            >
+                <div className="px-2">
+                    <Slider
+                        min={durationRange.min}
+                        max={durationRange.max}
+                        step={1}
+                        value={selectedFilters.duration}
+                        onValueChange={(val) =>
+                            updateRangeFilter("duration", val)
+                        }
+                        className="w-full duration-slider"
+                    />
+                    <div className="flex justify-between text-xs text-accent-500 mt-2 font-semibold">
+                        <span>{durationRange.min}h</span>
+                        <span>{durationRange.max}h</span>
+                    </div>
+                </div>
+            </Section>
+
+            {/* Stopover Airports */}
+            {airports.length > 0 && (
+                <Section title="Stopover Airports">
+                    {(showAllAirports ? airports : airports.slice(0, 5)).map(
+                        ([code, count]) => (
+                            <FilterCheckbox
+                                key={code}
+                                label={`${code} (${count})`}
+                                checked={selectedFilters.airports.includes(
+                                    code
+                                )}
+                                onChange={() => toggleFilter("airports", code)}
+                            />
+                        )
+                    )}
+                    {airports.length > 5 && (
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setShowAllAirports(!showAllAirports)}
+                            className="p-0 h-auto text-accent-500"
+                        >
+                            {showAllAirports ? (
+                                <>
+                                    Show Less{" "}
+                                    <ChevronUp className="size-4 ml-1" />
+                                </>
+                            ) : (
+                                <>
+                                    Show More ({airports.length - 5} more){" "}
+                                    <ChevronDown className="size-4 ml-1" />
+                                </>
+                            )}
+                        </Button>
+                    )}
+                </Section>
+            )}
+
+            {/* Clear All Filters Button */}
+            <div className="pt-4 border-t">
+                <Button
+                    variant="outline"
+                    onClick={() =>
+                        setSelectedFilters({
+                            stops: [],
+                            fare: [],
+                            airlines: [],
+                            priceRange: [priceRange.min, priceRange.max],
+                            duration: [durationRange.min, durationRange.max],
+                            airports: [],
+                        })
+                    }
+                    className="w-full"
+                >
+                    Clear All Filters
+                </Button>
+            </div>
+        </Card>
+    );
 }
 
 function Section({ title, children }) {
     return (
         <div>
-            <h3 className="font-semibold text-sm mb-2">{title}</h3>
-            <div className="space-y-2">{children}</div>
+            <h3 className="font-semibold text-sm mb-3 ">{title}</h3>
+            <div className="space-y-3">{children}</div>
         </div>
     );
 }
 
 function FilterCheckbox({ label, checked, onChange }) {
     return (
-        <label className="flex items-center gap-2 text-sm cursor-pointer">
-            <Checkbox checked={checked} onCheckedChange={onChange} />
-            <span>{label}</span>
+        <label className="flex items-center gap-3 text-sm cursor-pointer hover:bg-gray-50 p-1 rounded justify-between">
+            <Checkbox
+                checked={checked}
+                onCheckedChange={onChange}
+                className="data-[state=checked]:bg-accent-500 data-[state=checked]:border-accent-500 border-accent-500"
+            />
+            <span className="flex-1">{label}</span>
         </label>
     );
-}
-
-// === Helpers ===
-function getStops(flight) {
-    const segs = flight?.segments || [];
-    return Math.max(0, segs.length - 1);
 }

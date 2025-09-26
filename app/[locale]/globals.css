@@ -299,3 +299,20 @@
 html {
     font-size: var(--font-size);
 }
+
+.duration-slider [data-orientation="horizontal"] {
+    background-color: #f3f4f6; /* لون الخط الأساسي */
+}
+
+.duration-slider [data-orientation="horizontal"] .bg-primary {
+    background-color: #e86b1e !important; /* لون الجزء المحدد - أصفر */
+}
+
+.duration-slider [role="slider"] {
+    background-color: #e86b1e; /* لون المؤشر */
+    border: 2px solid white;
+}
+
+.duration-slider [role="slider"]:hover {
+    background-color: #e86b1e; /* لون المؤشر عند hover */
+}
