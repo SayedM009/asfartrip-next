@@ -2,8 +2,9 @@ import { searchFlights } from "@/app/_libs/flightService";
 import { FlightResults, NoFlightTickets } from "./FlightResults";
 
 export default async function FlightSearch({ parsedSearchObject }) {
-    const tickets = await searchFlights(parsedSearchObject);
-    if (!tickets.length)
+    // const tickets = await searchFlights(parsedSearchObject);
+    let tickets;
+    if (!tickets || !tickets.length)
         return (
             <div className="mt-5">
                 <NoFlightTickets />

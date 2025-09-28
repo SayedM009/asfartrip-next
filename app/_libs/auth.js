@@ -3,6 +3,8 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import CredentialsProvider from "@auth/core/providers/credentials";
 import { supabase } from "./supbase";
+import { cookies } from "next/headers";
+import { addYears } from "date-fns";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -64,8 +66,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
     },
 });
-// app/_libs/authService.js
-export async function getApiToken() {
+
+export async function loginWithExistsCredintials() {
     const username = process.env.TP_USERNAME;
     const password = process.env.TP_PASSWORD;
     const basicAuth = Buffer.from(`${username}:${password}`).toString("base64");
@@ -78,9 +80,7 @@ export async function getApiToken() {
                 Authorization: `Basic ${basicAuth}`,
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            body: new URLSearchParams({
-                grant_type: "client_credentials",
-            }),
+            body: new URLSearchParams({ grant_type: "client_credentials" }),
             cache: "no-store",
         }
     );
@@ -88,5 +88,17 @@ export async function getApiToken() {
     if (!res.ok) throw new Error("Failed to login");
 
     const data = await res.json();
-    return data.token; // 👈 حسب اسم الفيلد الراجع (token / api_token)
+    const token = data.token;
+
+    return token;
+}
+
+export async function getApiToken() {
+    const cookieStore = cookies();
+    return cookieStore.get("api_token")?.value;
+}
+
+export async function clearAPIToken() {
+    const cookieStore = cookies();
+    return (await cookieStore).delete("api_token");
 }

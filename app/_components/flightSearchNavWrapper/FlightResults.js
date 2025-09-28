@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/dialog";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { cn } from "../ui/utils";
+import { Button } from "@/components/ui/button";
 
 const tripTimes = [
     { id: "before6", label: "Before 6:00", icon: <CloudSun /> },
@@ -536,15 +537,28 @@ export function FlightTicketsList({
 
 export function NoFlightTickets() {
     return (
-        <Card>
+        <Card className="shadow-none border-0 ">
             <CardContent className="flex items-center justify-center py-12">
                 <div className="text-center">
-                    <div className="text-lg font-medium text-muted-foreground mb-2">
-                        No flights found
+                    <div className="relative flex justify-center">
+                        <Image
+                            src="/not-found/no-flights.webp"
+                            alt="no-flights"
+                            className="object-cover"
+                            width={500}
+                            height={500}
+                        />
                     </div>
+                    <h1 className="text-lg font-medium text-muted-foreground mb-2">
+                        Ops!.. there are no flights available for your selected
+                        dates
+                    </h1>
                     <p className="text-sm text-muted-foreground">
-                        Try adjusting your filters or search criteria
+                        Please try again with different dates
                     </p>
+                    <p>Dubai to Shohag (07 Oct 2025)</p>
+                    <p>1 Adult, Economy </p>
+                    <Button className="w-full sm:w-auto">Refresh</Button>
                 </div>
             </CardContent>
         </Card>

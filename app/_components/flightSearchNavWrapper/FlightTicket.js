@@ -114,7 +114,11 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
         if (segments.length === 1) {
             // Direct flight
             return (
-                <div className="flex items-center justify-between p-4 ">
+                <div
+                    className={`flex items-center justify-between p-4 ${
+                        (isCheapest || isFastest) && "pt-6"
+                    }`}
+                >
                     {/* Departure */}
                     <div className="text-center min-w-0 flex-1">
                         <div className="text-xl font-bold text-foreground">

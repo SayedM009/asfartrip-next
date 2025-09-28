@@ -402,7 +402,7 @@ export default function FlightFilters({
                             airports: [],
                         })
                     }
-                    className="w-full"
+                    className="w-full "
                 >
                     Clear All Filters
                 </Button>
