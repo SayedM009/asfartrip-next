@@ -104,7 +104,7 @@
             "jeddah": "جدة",
             "dubai": "دبي",
             "london": "لندن",
-            "abu_dhabi": "أبو ظبي",
+            "abu dhabi": "أبو ظبي",
             "kochi": "كوتشي",
             "kozhikode": "كوزيكود",
             "madrid": "مدريد",
@@ -128,7 +128,7 @@
             "casablanca": "الدار البيضاء",
             "tunis": "تونس",
             "algiers": "الجزائر",
-            "south_africa": "جنوب أفريقيا"
+            "south africa": "جنوب أفريقيا"
         },
         "ticket_class": {
             "economy": "الدرجة السياحية",
@@ -157,10 +157,16 @@
             "cancel": "إلغاء",
             "close": "إغلاق",
             "search": "بحث",
+            "refrech": "تحديث",
             "searching": "جاري البحث عن الرحلات...",
             "no_results": "لا توجد نتائج",
             "departure_search": "مطار المغادرة",
-            "destination_search": "مطار الوصول "
+            "destination_search": "مطار الوصول ",
+            "search_loading": "جارٍ البحث عن رحلة {tripType} إلى {destinationCity} ...",
+            "no_tickets_title": "عذرًا!.. لا توجد رحلات متاحة للتواريخ التي اخترتها",
+            "no_tickets_sub_title": "يرجى المحاولة مرة أخرى بتواريخ مختلفة",
+            "no_tickets_one_way": "{departure} إلى {destination}",
+            "no_tickets_round_trip": "{destination} إلى {departure}"
         },
         "errors": {
             "same_city": "لا يمكن اختيار نفس المدينة مرتين: {city}",

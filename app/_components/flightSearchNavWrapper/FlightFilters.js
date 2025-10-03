@@ -12,6 +12,7 @@ export default function FlightFilters({
     selectedFilters,
     setSelectedFilters,
     setOpen,
+    ticketsCount,
 }) {
     const [showAllAirlines, setShowAllAirlines] = useState(false);
     const [showAllAirports, setShowAllAirports] = useState(false);
@@ -176,7 +177,7 @@ export default function FlightFilters({
     return (
         <Card className="sm:p-4 space-y-1 border-0 shadow-none sm:shadow dark:shadow-gray-600">
             <div className="flex items-center justify-between">
-                <h2 className="text-sm">Showing 117 result</h2>
+                <h2 className="text-sm">Showing {flights.length} result</h2>
                 <Button
                     variant="ghost"
                     onClick={() => {
@@ -187,6 +188,7 @@ export default function FlightFilters({
                             priceRange: [priceRange.min, priceRange.max],
                             duration: [durationRange.min, durationRange.max],
                             airports: [],
+                            stopoverDuration: [0, 48],
                         });
                         setOpen(false);
                     }}
@@ -346,6 +348,28 @@ export default function FlightFilters({
                     <div className="flex justify-between text-xs text-accent-500 mt-2 font-semibold">
                         <span>{durationRange.min}h</span>
                         <span>{durationRange.max}h</span>
+                    </div>
+                </div>
+            </Section>
+
+            {/* Stopover Duration */}
+            <Section
+                title={`Stopover Duration (${selectedFilters.stopoverDuration[0]}h - ${selectedFilters.stopoverDuration[1]}h)`}
+            >
+                <div className="px-2">
+                    <Slider
+                        min={0}
+                        max={24} // أقصى مدة توقف بالساعات
+                        step={1}
+                        value={selectedFilters.stopoverDuration}
+                        onValueChange={(val) =>
+                            updateRangeFilter("stopoverDuration", val)
+                        }
+                        className="w-full duration-slider"
+                    />
+                    <div className="flex justify-between text-xs text-accent-500 mt-2 font-semibold">
+                        <span>{selectedFilters.stopoverDuration[0]}h</span>
+                        <span>{selectedFilters.stopoverDuration[1]}h</span>
                     </div>
                 </div>
             </Section>

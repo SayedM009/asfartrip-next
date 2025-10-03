@@ -106,7 +106,7 @@
             "jeddah": "jeddah",
             "dubai": "dubai",
             "london": "london",
-            "abu_dhabi": "Abu Dhabi",
+            "abu dhabi": "Abu Dhabi",
             "kochi": "kochi",
             "kozhikode": "kozhikode",
             "madrid": "madrid",
@@ -130,7 +130,7 @@
             "casablanca": "casablanca",
             "tunis": "tunis",
             "algiers": "algiers",
-            "south_africa": "south africa"
+            "south africa": "South africa"
         },
         "ticket_class": {
             "economy": "economy",
@@ -159,10 +159,16 @@
             "cancel": "Cancel",
             "close": "Close",
             "search": "Search",
+            "refrech": "refrech",
             "searching": "Searching flights...",
             "no_results": "There are no results",
             "departure_search": "Leaving from",
-            "destination_search": "Going to"
+            "destination_search": "Going to",
+            "search_loading": "Searching for {tripType} flight to {destinationCity} ...",
+            "no_tickets_title": "Ops!.. there are no flights available for your selected dates",
+            "no_tickets_sub_title": "Please try again with different dates",
+            "no_tickets_one_way": "{departure} to {destination}",
+            "no_tickets_round_trip": "{destination} to {departure}"
         },
 
         "errors": {

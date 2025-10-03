@@ -69,7 +69,7 @@ export default function MobileHeaderWrapper() {
             {/* Section in the middle */}
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger className="flex-1" asChild>
-                    <div className="bg-gray-100 min-h-12  rounded-lg flex-1 flex flex-col items-center border-1 pt-1 border-gray-400 dark:text-gray-950 px-3">
+                    <div className="bg-muted text-muted-foreground dark:text-gray-50 min-h-12  rounded-lg flex-1 flex flex-col items-center border-1 pt-1 border-gray-400 dark:border-gray-800  px-3">
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-semibold">
                                 {origin}
@@ -91,7 +91,7 @@ export default function MobileHeaderWrapper() {
                         </div>
                         <div className="flex items-center gap-1 text-accent-500">
                             <span className="text-xs">
-                                <span className="text-xs">
+                                <span className="text-xs whitespace-nowrap">
                                     {departDateObj
                                         ? format(departDateObj, "dd MMM")
                                         : "—"}
@@ -104,7 +104,7 @@ export default function MobileHeaderWrapper() {
                                 </span>
                             </span>
                             <span>|</span>
-                            <span className="text-xs">
+                            <span className="text-xs whitespace-nowrap">
                                 {totalPassengers} Passenger
                                 {totalPassengers > 1 ? "'s" : ""}
                             </span>

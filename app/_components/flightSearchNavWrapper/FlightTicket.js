@@ -307,7 +307,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
         <>
             <Card
                 // className="hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary/20 hover:border-l-primary cursor-pointer sm:cursor-default"
-                className={`hover:shadow-lg transition-all duration-300  sm:cursor-default py-0 mb-3 dark:shadow-gray-600 
+                className={`hover:shadow-lg transition-all duration-300  sm:cursor-default pt-3 pb-0  dark:shadow-gray-600 
     ${
         isCheapest
             ? "border-3 border-green-500"
@@ -384,14 +384,6 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                         </div>
                                     </div>
                                 </div>
-
-                                {/* Flight details */}
-                                {/* <div className="hidden sm:flex items-center gap-4 text-xs text-muted-foreground">
-                                    <div className="flex items-center gap-1">
-                                        <Luggage className="h-3 w-3" />
-                                        <span>{CabinLuggage}</span>
-                                    </div>
-                                </div> */}
                             </div>
 
                             {/* Right side - Price and select button */}
@@ -401,20 +393,16 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                         <div className="text-xs text-muted-foreground">
                                             Total Price
                                         </div>
-                                        <div className="text-2xl font-bold  text-accent-500">
+                                        <div className="text-2xl font-bold  text-accent-500 sm:text-gray-950">
                                             {SITECurrencyType} {TotalPrice}
                                         </div>
-                                        {/* <div className="text-xs text-muted-foreground">
-                                            {isRoundTrip
-                                                ? "Round trip"
-                                                : "One way"}
-                                        </div> */}
+
                                         {/* Desktop Select Button - under price */}
-                                        <div className="hidden sm:block mt-2">
+                                        <div className="hidden sm:block mt-2 ">
                                             <Button
                                                 onClick={handleSelectFlight}
-                                                size="sm"
-                                                className="w-full"
+                                                size="lg"
+                                                className=" btn-primary"
                                             >
                                                 Select Flight
                                             </Button>
@@ -423,19 +411,6 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                 </div>
                             </div>
                         </div>
-
-                        {/* Mobile flight details */}
-                        {/* <div className="sm:hidden flex items-center justify-between mt-3 pt-3 border-t border-border/50">
-                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                                <div className="flex items-center gap-1">
-                                    <Luggage className="h-3 w-3" />
-                                    <span>{CabinLuggage}</span>
-                                </div>
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                                Tap for details
-                            </div>
-                        </div> */}
                     </div>
                 </CardContent>
             </Card>

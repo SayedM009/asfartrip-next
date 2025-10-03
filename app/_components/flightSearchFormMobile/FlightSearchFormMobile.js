@@ -15,6 +15,7 @@ import { CheckBadgeIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import SwapButton from "../SwapButton";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 export function FlightSearchForm({ closeModal }) {
     const [tripType, setTripType] = useState("roundtrip");
@@ -133,7 +134,7 @@ export function FlightSearchForm({ closeModal }) {
                 ADT: passengers.adults,
                 CHD: passengers.children,
                 INF: passengers.infants,
-                class: `${travelClass[0].toUpperCase()}${travelClass.slice(1)}`,
+                class: travelClass,
                 type: "O",
             };
         } else if (tripType === "roundtrip") {
@@ -145,7 +146,7 @@ export function FlightSearchForm({ closeModal }) {
                 ADT: passengers.adults,
                 CHD: passengers.children,
                 INF: passengers.infants,
-                class: `${travelClass[0].toUpperCase()}${travelClass.slice(1)}`,
+                class: travelClass,
                 type: "R",
             };
         }
@@ -336,10 +337,7 @@ export function FlightSearchForm({ closeModal }) {
                         </PassengerClassModal>
 
                         {/* Search Button */}
-                        <Button
-                            className="w-full h-10 bg-accent-400 hover:bg-accent-700 text-white font-semibold rounded cursor-pointer transition-colors"
-                            onClick={handleSearch}
-                        >
+                        <Button className="btn-primary" onClick={handleSearch}>
                             {t("operations.search")}
                         </Button>
                     </CardContent>

@@ -26,7 +26,7 @@ const popularCities = [
 const destinationsByRegion = {
     asia: [
         { city: "dubai", label_code: "DXB", country: "UAE" },
-        { city: "abu_dhabi", label_code: "AUH", country: "UAE" },
+        { city: "abu dhabi", label_code: "AUH", country: "UAE" },
         { city: "sharjah", label_code: "SHJ", country: "UAE" },
         { city: "kochi", label_code: "COK", country: "INDIA" },
         { city: "kozhikode", label_code: "CCJ", country: "INDIA" },
@@ -42,7 +42,7 @@ const destinationsByRegion = {
     ],
     africa: [
         { city: "cairo", label_code: "CAI", country: "EGYPT" },
-        { city: "south_africa", label_code: "JNB", country: "SOUTH_AFRICA" }, // Johannesburg
+        { city: "south africa", label_code: "JNB", country: "SOUTH_AFRICA" },
         { city: "alexandria", label_code: "HBE", country: "EGYPT" },
         { city: "casablanca", label_code: "CMN", country: "MOROCCO" },
         { city: "tunis", label_code: "TUN", country: "TUNISIA" },

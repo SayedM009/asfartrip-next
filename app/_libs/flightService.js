@@ -1,12 +1,11 @@
 // app/_libs/flightService.js
-import qs from "qs";
 import { getApiToken, loginWithExistsCredintials } from "./auth";
 
 // app/_libs/flightService.js
 
 export async function searchFlights(params) {
-    let token = await getApiToken(); // جلب التوكن من الكوكي
-    if (!token) token = await loginWithExistsCredintials(); // لو مش موجود، سجل دخول وخد التوكن
+    let token = await getApiToken();
+    if (!token) token = await loginWithExistsCredintials();
 
     // تجهيز بيانات الـ payload
     const requestData = {
@@ -16,7 +15,7 @@ export async function searchFlights(params) {
         ADT: params.ADT || 1,
         CHD: params.CHD || 0,
         INF: params.INF || 0,
-        class: params.class,
+        class: `${params.class[0].toUpperCase()}${params.class.slice(1)}`,
         type: params.type || "O",
         api_token: token,
     };

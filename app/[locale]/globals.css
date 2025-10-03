@@ -316,3 +316,24 @@ html {
 .duration-slider [role="slider"]:hover {
     background-color: #e86b1e; /* لون المؤشر عند hover */
 }
+
+.btn-primary {
+    width: 100%;
+    height: 2.5rem;
+    background-color: var(--color-accent-500);
+    color: white;
+    font-weight: 600;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition-property: background-color;
+    transition-duration: 150ms;
+    letter-spacing: 1px;
+}
+@media (min-width: 640px) {
+    .btn-primary {
+        width: auto;
+    }
+}
+.btn-primary:hover {
+    background-color: var(--color-accent-600);
+}

@@ -124,6 +124,7 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
 
         const params = new URLSearchParams();
         params.set("searchObject", JSON.stringify(searchObject));
+        params.set("cities", JSON.stringify({ departure, destination }));
         router.push(`/flights/search?${params.toString()}`);
     }
 

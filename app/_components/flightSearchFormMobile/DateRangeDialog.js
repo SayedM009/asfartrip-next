@@ -106,11 +106,9 @@ function DateRangeDialog({
                     />
                 )}
 
-                <DialogFooter className=" w-full  sticky bottom-0">
+                <DialogFooter className="w-full sticky bottom-0">
                     <DialogClose asChild>
-                        <button className="w-full py-2 bg-accent-600 text-white rounded-lg cursor-pointer">
-                            {t("apply")}
-                        </button>
+                        <button className="btn-primary">{t("apply")}</button>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>

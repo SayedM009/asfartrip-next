@@ -76,7 +76,9 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                         <span>{t("title")}</span>
                     </DialogTitle>
                     <DialogDescription
-                        className={`text-gray-400 ${isRTL && "text-right"}`}
+                        className={`text-gray-400 ${
+                            isRTL ? "text-right" : "text-left"
+                        }`}
                     >
                         {t("sub_title")}
                     </DialogDescription>

@@ -16,7 +16,7 @@ import BottomAppWrapper from "../_components/bottomAppBar/BottomAppWrapper";
 // Returns an object ready to be used in Next.js generateMetadata.
 
 export async function generateMetadata({ params }) {
-    const locale = params.locale || "en";
+    const locale = (await params).locale || "en";
     const dict = await getDictionary(locale);
 
     return generateMetadataObj({
