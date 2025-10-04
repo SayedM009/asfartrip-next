@@ -190,7 +190,7 @@ export default function FlightFilters({
                             airports: [],
                             stopoverDuration: [0, 48],
                         });
-                        setOpen(false);
+                        setOpen?.(false);
                     }}
                     className="text-xs text-accent-500"
                 >
@@ -354,7 +354,7 @@ export default function FlightFilters({
 
             {/* Stopover Duration */}
             <Section
-                title={`Stopover Duration (${selectedFilters.stopoverDuration[0]}h - ${selectedFilters.stopoverDuration[1]}h)`}
+                title={`Stopover Duration (${selectedFilters?.stopoverDuration[0]}h - ${selectedFilters.stopoverDuration[1]}h)`}
             >
                 <div className="px-2">
                     <Slider

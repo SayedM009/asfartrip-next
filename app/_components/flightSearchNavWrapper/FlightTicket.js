@@ -177,7 +177,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
             return (
                 <div className="p-4">
                     {/* Main route overview */}
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between">
                         {/* Departure */}
                         <div className="text-center">
                             <div className="text-xl font-bold text-foreground">
@@ -355,7 +355,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                     <div className="border-t border-border/50"></div>
 
                     {/* Footer with price and details */}
-                    <div className="p-4">
+                    <div className="py-2 px-4">
                         <div className="flex items-center justify-between">
                             {/* Left side - Airline and flight details */}
                             <div className="flex items-center gap-3">
