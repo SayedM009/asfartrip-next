@@ -20,14 +20,15 @@ import {
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import { format } from "date-fns";
 import { cn } from "../ui/utils";
-import { useRouter } from "next/router";
-import { cloneElement } from "react";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import BackwardButton from "./BackwardButton";
+import { useTranslations } from "next-intl";
+import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 
 export default function MobileHeaderWrapper() {
+    const t = useTranslations("Flight");
     const [open, setOpen] = useState(false);
     const params = useSearchParams();
     const {
@@ -53,6 +54,8 @@ export default function MobileHeaderWrapper() {
     const returnDateObj = parseDateString(return_date);
     const totalPassengers = ADT + CHD + INF;
     const { isRTL } = useCheckLocal();
+    const formatDate = useDateFormatter();
+    const pattern = isRTL ? "dd MMMM" : "dd MMM";
     return (
         <div className="flex items-center justify-between space-x-4">
             {/* Backward Button */}
@@ -72,7 +75,7 @@ export default function MobileHeaderWrapper() {
                     <div className="bg-muted text-muted-foreground dark:text-gray-50 min-h-12  rounded-lg flex-1 flex flex-col items-center border-1 pt-1 border-gray-400 dark:border-gray-800  px-3">
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-semibold">
-                                {origin}
+                                {origin} {}
                             </span>{" "}
                             <span>
                                 {type === "O" ? (
@@ -93,24 +96,31 @@ export default function MobileHeaderWrapper() {
                             <span className="text-xs">
                                 <span className="text-xs whitespace-nowrap">
                                     {departDateObj
-                                        ? format(departDateObj, "dd MMM")
+                                        ? formatDate(departDateObj, {
+                                              pattern,
+                                          })
                                         : "—"}
                                     {returnDateObj
-                                        ? ` - ${format(
-                                              returnDateObj,
-                                              "dd MMM"
-                                          )}`
+                                        ? ` - ${formatDate(returnDateObj, {
+                                              pattern,
+                                          })}`
                                         : ""}
                                 </span>
                             </span>
                             <span>|</span>
                             <span className="text-xs whitespace-nowrap">
-                                {totalPassengers} Passenger
-                                {totalPassengers > 1 ? "'s" : ""}
+                                {totalPassengers}{" "}
+                                {totalPassengers > 1
+                                    ? t("passengers.passengers")
+                                    : t("passengers.passenger")}
                             </span>
                             <span>|</span>
                             <span className="text-xs capitalize">
-                                {tripClass}
+                                {t(
+                                    `ticket_class.${String(
+                                        tripClass
+                                    ).toLocaleLowerCase()}`
+                                )}
                             </span>
                             <span>
                                 <PencilLineIcon
@@ -124,16 +134,16 @@ export default function MobileHeaderWrapper() {
                 <DialogContent
                     className={cn(
                         "",
-                        "max-w-none w-full h-[50vh]  top-172 rounded-none border-0  md:h-11/12 md:rounded",
+                        "max-w-none w-full h-[45vh]  top-179 rounded-none border-0  md:h-11/12 md:rounded",
                         "open-slide-bottom",
                         "close-slide-bottom",
                         "pt-4"
                     )}
                 >
                     <DialogHeader>
-                        <DialogTitle className="flex justify-start">
-                            <h2 className="text-sm font-medium">
-                                Edit your search
+                        <DialogTitle className="flex justify-start" dir="ltr">
+                            <h2 className="text-sm font-medium text-accent-400">
+                                {t("operations.edit_your_search")}
                             </h2>
                         </DialogTitle>
                         <DialogDescription>

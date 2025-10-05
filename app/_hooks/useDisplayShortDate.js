@@ -3,6 +3,7 @@
 import { format, parseISO } from "date-fns";
 import { enUS, arSA } from "date-fns/locale";
 import { useLocale } from "next-intl";
+import { formatDisplayDate } from "../_helpers/formatDisplayDate";
 
 const locales = {
     en: enUS,
@@ -22,3 +23,14 @@ function useDisplayShortDate(pattern = "dd MMMM") {
 }
 
 export default useDisplayShortDate;
+
+export function useDateFormatter() {
+    const locale = useLocale();
+
+    return (date, options = {}) => {
+        return formatDisplayDate(date, {
+            ...options,
+            locale: options.locale || locale, // استخدم locale من الخيارات أو من Hook
+        });
+    };
+}

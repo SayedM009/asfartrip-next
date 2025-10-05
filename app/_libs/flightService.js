@@ -1,13 +1,15 @@
 // app/_libs/flightService.js
-import { getApiToken, loginWithExistsCredintials } from "./auth";
+import { loginWithExistsCredintials } from "./auth";
+import { getApiToken, setApiToken } from "./cookies";
 
-// app/_libs/flightService.js
+export async function searchFlights(params, retryCount = 0) {
+    const MAX_RETRIES = 1;
 
-export async function searchFlights(params) {
     let token = await getApiToken();
-    if (!token) token = await loginWithExistsCredintials();
-
-    // تجهيز بيانات الـ payload
+    if (!token) {
+        token = await loginWithExistsCredintials();
+        await setApiToken(token);
+    }
     const requestData = {
         origin: params.origin,
         destination: params.destination,
@@ -38,6 +40,16 @@ export async function searchFlights(params) {
             body: new URLSearchParams(requestData),
         }
     );
+
+    if (res.status === 401 && retryCount < MAX_RETRIES) {
+        console.log("Token expired or invalid, refreshing...");
+        await clearAPIToken();
+
+        const newToken = await loginWithExistsCredintials();
+        await setApiToken(newToken);
+
+        return searchFlights(params, retryCount + 1);
+    }
 
     if (!res.ok) {
         const errText = await res.text();

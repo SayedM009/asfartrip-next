@@ -6,16 +6,17 @@ import { Slider } from "@/components/ui/slider";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useTranslations } from "use-intl";
 
 export default function FlightFilters({
     flights,
     selectedFilters,
     setSelectedFilters,
     setOpen,
-    ticketsCount,
 }) {
     const [showAllAirlines, setShowAllAirlines] = useState(false);
     const [showAllAirports, setShowAllAirports] = useState(false);
+    const t = useTranslations("Flight");
 
     // === Helper functions ===
     const getOutboundSegments = useCallback((flight) => {
@@ -48,20 +49,25 @@ export default function FlightFilters({
         (flight) => {
             const outbound = getOutboundSegments(flight);
             if (!outbound.length) return 0;
+
             const outboundStart = new Date(outbound[0].DepartureTime).getTime();
             const outboundEnd = new Date(outbound.at(-1).ArrivalTime).getTime();
+            const outboundDuration = outboundEnd - outboundStart;
 
             const ret = getReturnSegments(flight);
             if (ret?.length) {
                 const retStart = new Date(ret[0].DepartureTime).getTime();
                 const retEnd = new Date(ret.at(-1).ArrivalTime).getTime();
-                return outboundEnd - outboundStart + (retEnd - retStart);
+                const returnDuration = retEnd - retStart;
+
+                // المهم: استخدم Math.max زي ما في FlightResults
+                return Math.max(outboundDuration, returnDuration);
             }
-            return outboundEnd - outboundStart;
+
+            return outboundDuration;
         },
         [getOutboundSegments, getReturnSegments]
     );
-
     const getFlightDurationHours = useCallback(
         (flight) => {
             const durationMs = getTotalDuration(flight);
@@ -174,56 +180,66 @@ export default function FlightFilters({
         }));
     }
 
+    const getDefaultFilters = useCallback(
+        () => ({
+            stops: [],
+            fare: [],
+            airlines: [],
+            priceRange: [priceRange.min, priceRange.max],
+            duration: [durationRange.min, durationRange.max],
+            airports: [],
+            stopoverDuration: [0, 24], // غيرها من 48 إلى 24 زي ما عندك في الـ Slider
+        }),
+        [priceRange, durationRange]
+    );
+
     return (
         <Card className="sm:p-4 space-y-1 border-0 shadow-none sm:shadow dark:shadow-gray-600">
             <div className="flex items-center justify-between">
-                <h2 className="text-sm">Showing {flights.length} result</h2>
+                <h2 className="text-sm">
+                    {" "}
+                    {t("filters.showing_result", { count: flights.length })}
+                </h2>
                 <Button
                     variant="ghost"
                     onClick={() => {
-                        setSelectedFilters({
-                            stops: [],
-                            fare: [],
-                            airlines: [],
-                            priceRange: [priceRange.min, priceRange.max],
-                            duration: [durationRange.min, durationRange.max],
-                            airports: [],
-                            stopoverDuration: [0, 48],
-                        });
+                        setSelectedFilters(getDefaultFilters());
                         setOpen?.(false);
                     }}
                     className="text-xs text-accent-500"
                 >
-                    Clear All
+                    {t("filters.clear_all")}
                 </Button>
             </div>
 
             {/* Stops */}
-            <Section title="Number of Stops">
+            <Section title={t(`filters.number_of_stop`)}>
                 {stopsCount.nonStop > 0 && (
                     <FilterCheckbox
-                        label={`Non-stop (${stopsCount.nonStop})`}
+                        label={`${t("filters.non_stop")} (${
+                            stopsCount.nonStop
+                        })`}
                         checked={selectedFilters.stops.includes(0)}
                         onChange={() => toggleFilter("stops", 0)}
                     />
                 )}
                 {stopsCount.oneStop > 0 && (
                     <FilterCheckbox
-                        label={`1 Stop (${stopsCount.oneStop})`}
+                        label={`1 ${t("stop")} (${stopsCount.oneStop})`}
                         checked={selectedFilters.stops.includes(1)}
                         onChange={() => toggleFilter("stops", 1)}
                     />
                 )}
                 {stopsCount.twoStops > 0 && (
                     <FilterCheckbox
-                        label={`2 Stops (${stopsCount.twoStops})`}
+                        label={`2 ${t("stop")} (${stopsCount.twoStops})`}
                         checked={selectedFilters.stops.includes(2)}
                         onChange={() => toggleFilter("stops", 2)}
                     />
                 )}
                 {stopsCount.moreThanTwo > 0 && (
                     <FilterCheckbox
-                        label={`3+ Stops (${stopsCount.moreThanTwo})`}
+                        label={`3+ ${t("stop")} (${stopsCount.moreThanTwo})`}
                         checked={selectedFilters.stops.includes(3)}
                         onChange={() => toggleFilter("stops", 3)}
                     />
@@ -233,10 +249,12 @@ export default function FlightFilters({
             {/* Fare Type */}
             {(fareTypeCount.refundable > 0 ||
                 fareTypeCount.nonRefundable > 0) && (
-                <Section title="Fare Type">
+                <Section title={t(`filters.type_fare`)}>
                     {fareTypeCount.refundable > 0 && (
                         <FilterCheckbox
-                            label={`Refundable (${fareTypeCount.refundable})`}
+                            label={`${t(`filters.refundable`)} (${
+                                fareTypeCount.refundable
+                            })`}
                             checked={selectedFilters.fare.includes(
                                 "refundable"
                             )}
@@ -245,7 +263,9 @@ export default function FlightFilters({
                     )}
                     {fareTypeCount.nonRefundable > 0 && (
                         <FilterCheckbox
-                            label={`Non-Refundable (${fareTypeCount.nonRefundable})`}
+                            label={`${t(`filters.non_Refundable`)} (${
+                                fareTypeCount.nonRefundable
+                            })`}
                             checked={selectedFilters.fare.includes(
                                 "nonRefundable"
                             )}
@@ -259,7 +279,7 @@ export default function FlightFilters({
 
             {/* Airlines */}
             {airlines.length > 0 && (
-                <Section title="Airlines">
+                <Section title={`${t("filters.air_lines")}`}>
                     {(showAllAirlines ? airlines : airlines.slice(0, 5)).map(
                         ([code, count]) => (
                             <FilterCheckbox
@@ -294,12 +314,14 @@ export default function FlightFilters({
                         >
                             {showAllAirlines ? (
                                 <>
-                                    Show Less{" "}
+                                    {t("filters.show_less")}{" "}
                                     <ChevronUp className="size-4 ml-1" />
                                 </>
                             ) : (
                                 <>
-                                    Show More ({airlines.length - 5} more){" "}
+                                    {t("filters.show_more", {
+                                        count: airlines.length - 5,
+                                    })}{" "}
                                     <ChevronDown className="size-4 ml-1" />
                                 </>
                             )}
@@ -309,9 +331,7 @@ export default function FlightFilters({
             )}
 
             {/* Price Range */}
-            <Section
-                title={`Price Range (${selectedFilters.priceRange[0]} - ${selectedFilters.priceRange[1]})`}
-            >
+            <Section title={`${t("filters.price_range")}`}>
                 <div className="px-2">
                     <Slider
                         min={priceRange.min}
@@ -324,16 +344,14 @@ export default function FlightFilters({
                         className="w-full duration-slider"
                     />
                     <div className="flex justify-between text-xs  mt-2 text-accent-500  font-semibold">
-                        <span>${priceRange.min}</span>
-                        <span>${priceRange.max}</span>
+                        <span>{priceRange.min}</span>
+                        <span>{priceRange.max}</span>
                     </div>
                 </div>
             </Section>
 
             {/* Duration */}
-            <Section
-                title={`Duration (${selectedFilters.duration[0]}h - ${selectedFilters.duration[1]}h)`}
-            >
+            <Section title={`${t("filters.duration")} `}>
                 <div className="px-2">
                     <Slider
                         min={durationRange.min}
@@ -353,13 +371,11 @@ export default function FlightFilters({
             </Section>
 
             {/* Stopover Duration */}
-            <Section
-                title={`Stopover Duration (${selectedFilters?.stopoverDuration[0]}h - ${selectedFilters.stopoverDuration[1]}h)`}
-            >
+            <Section title={`${t("filters.stopover_duration")} `}>
                 <div className="px-2">
                     <Slider
                         min={0}
-                        max={24} // أقصى مدة توقف بالساعات
+                        max={24}
                         step={1}
                         value={selectedFilters.stopoverDuration}
                         onValueChange={(val) =>
@@ -376,7 +392,7 @@ export default function FlightFilters({
 
             {/* Stopover Airports */}
             {airports.length > 0 && (
-                <Section title="Stopover Airports">
+                <Section title={`${t("filters.stopover_airports")}`}>
                     {(showAllAirports ? airports : airports.slice(0, 5)).map(
                         ([code, count]) => (
                             <FilterCheckbox
@@ -398,12 +414,14 @@ export default function FlightFilters({
                         >
                             {showAllAirports ? (
                                 <>
-                                    Show Less{" "}
+                                    {t("filters.show_less")}{" "}
                                     <ChevronUp className="size-4 ml-1" />
                                 </>
                             ) : (
                                 <>
-                                    Show More ({airports.length - 5} more){" "}
+                                    {t("filters.show_more", {
+                                        count: airlines.length - 5,
+                                    })}{" "}
                                     <ChevronDown className="size-4 ml-1" />
                                 </>
                             )}
@@ -416,19 +434,13 @@ export default function FlightFilters({
             <div className="pt-4 border-t">
                 <Button
                     variant="outline"
-                    onClick={() =>
-                        setSelectedFilters({
-                            stops: [],
-                            fare: [],
-                            airlines: [],
-                            priceRange: [priceRange.min, priceRange.max],
-                            duration: [durationRange.min, durationRange.max],
-                            airports: [],
-                        })
-                    }
-                    className="w-full "
+                    onClick={() => {
+                        setSelectedFilters(getDefaultFilters());
+                        setOpen?.(false);
+                    }}
+                    className="w-full"
                 >
-                    Clear All Filters
+                    {t("filters.clear_all")}
                 </Button>
             </div>
         </Card>

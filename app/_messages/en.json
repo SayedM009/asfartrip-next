@@ -99,6 +99,11 @@
         "destination": "Destination",
         "from": "From",
         "to": "To",
+        "h": "h",
+        "m": "m",
+        "stop": "Stop",
+        "total_price": "Total Price",
+        "select_flight": "Select Flight",
         "cities": {
             "cairo": "cairo",
             "manila": "manila",
@@ -144,6 +149,7 @@
             "title": "Passengers & Class",
             "subtitle": "Select number of passengers and travel class",
             "passengers": "Passengers",
+            "passenger": "Passenger",
             "travel_class": "Travel Class",
             "adults": "Adults",
             "adults_description": "12+ years",
@@ -168,7 +174,11 @@
             "no_tickets_title": "Ops!.. there are no flights available for your selected dates",
             "no_tickets_sub_title": "Please try again with different dates",
             "no_tickets_one_way": "{departure} to {destination}",
-            "no_tickets_round_trip": "{destination} to {departure}"
+            "no_tickets_round_trip": "{destination} to {departure}",
+            "no_filtered_tickets_title": "No avaiable flights",
+            "no_filtered_tickets_sub_title": "If you would like to see more results, please unselect some of the filters.",
+            "reset_filters": "Reset Filters",
+            "edit_your_search": "Edit your search"
         },
 
         "errors": {
@@ -177,6 +187,31 @@
             "destination_required": "Destination city is required",
             "departure_date_required": "Departure date is required",
             "return_date_required": "Return date is required"
+        },
+        "filters": {
+            "direct": "Direct",
+            "air_lines": "Airlines",
+            "trip_time": "Trip time",
+            "flights": "Flights",
+            "sort": "Sort",
+            "sort_by": "Sort by",
+            "cheapest": "Cheapest",
+            "filter": "Filters",
+            "fastest": "Fastest",
+            "return": "Return",
+            "showing_result": "Showing {count} result",
+            "clear_all": "Clear all",
+            "number_of_stop": "Number of Stops",
+            "non_stop": "Non-stop",
+            "type_fare": "Fare Type",
+            "refundable": "Refundable",
+            "non_Refundable": "Non-Refundable",
+            "show_more": "Show More ({count} more)",
+            "show_less": "Show less",
+            "price_range": "Price range",
+            "duration": "Duration",
+            "stopover_duration": "Stopover Duration",
+            "stopover_airports": "Stopover Airports"
         }
     },
     "Offers_slider": {

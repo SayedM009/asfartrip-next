@@ -97,6 +97,11 @@
         "destination": "الوجهة",
         "from": "من",
         "to": "إلى",
+        "h": "س",
+        "m": "د",
+        "stop": "توقف",
+        "total_price": "إجمالى المبلغ",
+        "select_flight": "إختر الرحلة",
         "cities": {
             "cairo": "القاهرة",
             "manila": "مانيلا",
@@ -142,6 +147,7 @@
             "title": "الركاب و الدرجة",
             "subtitle": "إختر عدد الركاب و درجة السفر",
             "passengers": "الركاب",
+            "passenger": "راكب",
             "travel_class": "درجة السفر",
             "adults": "البالغين",
             "adults_description": "12 سنة فما فوق",
@@ -166,7 +172,11 @@
             "no_tickets_title": "عذرًا!.. لا توجد رحلات متاحة للتواريخ التي اخترتها",
             "no_tickets_sub_title": "يرجى المحاولة مرة أخرى بتواريخ مختلفة",
             "no_tickets_one_way": "{departure} إلى {destination}",
-            "no_tickets_round_trip": "{destination} إلى {departure}"
+            "no_tickets_round_trip": "{destination} إلى {departure}",
+            "no_filtered_tickets_title": "لا توجد رحلات متاحة",
+            "no_filtered_tickets_sub_title": "إذا كنت ترغب في رؤية المزيد من النتائج، يرجى إلغاء تحديد بعض الفلاتر.",
+            "reset_filters": "إعادة تعيين الفلاتر",
+            "edit_your_search": "تعديل البحث"
         },
         "errors": {
             "same_city": "لا يمكن اختيار نفس المدينة مرتين: {city}",
@@ -174,6 +184,31 @@
             "destination_required": "حقل الوجهة مطلوب",
             "departure_date_required": "حقل تاريخ المغادرة مطلوب",
             "return_date_required": "حقل تاريخ العودة مطلوب"
+        },
+        "filters": {
+            "direct": "بدون توقف",
+            "air_lines": "خطوط الطيران",
+            "trip_time": "وقت الرحلة",
+            "flights": "رحلة",
+            "sort": "رتب حسب",
+            "sort_by": "رتب النتائج",
+            "cheapest": "الأرخص",
+            "filter": "تصفية النتائج",
+            "fastest": "الأسرع",
+            "return": "العودة",
+            "showing_result": "عرض {count} نتيجة",
+            "clear_all": "مسح الكل",
+            "number_of_stop": "عدد التوقفات",
+            "non_stop": "بدون توقف",
+            "type_fare": "نوع الباقة",
+            "refundable": "قابلة للاسترداد",
+            "non_Refundable": "غير قابلة للاسترداد",
+            "show_more": "عرض المزيد ({count} أكثر)",
+            "show_less": "عرض أقل",
+            "price_range": "نطاق السعر",
+            "duration": "مدة الرحلة",
+            "stopover_duration": "مدة التوقف الفرعية",
+            "stopover_airports": "مطارات التوقفات"
         }
     },
     "Offers_slider": {

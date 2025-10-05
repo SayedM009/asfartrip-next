@@ -85,20 +85,11 @@ export async function loginWithExistsCredintials() {
         }
     );
 
-    if (!res.ok) throw new Error("Failed to login");
+    if (!res.ok) {
+        console.error("Login failed:", res.status, res.statusText);
+        throw new Error("Failed to login");
+    }
 
     const data = await res.json();
-    const token = data.token;
-
-    return token;
-}
-
-export async function getApiToken() {
-    const cookieStore = cookies();
-    return cookieStore.get("api_token")?.value;
-}
-
-export async function clearAPIToken() {
-    const cookieStore = cookies();
-    return (await cookieStore).delete("api_token");
+    return data.token;
 }

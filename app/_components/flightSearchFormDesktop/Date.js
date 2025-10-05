@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
+import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 export default function Dates({
     tripType,
     departDate,
@@ -20,8 +21,9 @@ export default function Dates({
 }) {
     const c = useTranslations("Calender");
     const { dateLocale } = useCalendarLocale();
-    const { locale } = useCheckLocal();
-
+    const { isRTL } = useCheckLocal();
+    const formatDate = useDateFormatter();
+    const pattern = isRTL ? "EEEE d MMMM" : "EEE MMM d";
     function handleSelectDepartureDateWithSession(value) {
         setDepartDate(value);
         sessionStorage.setItem("departureDate", JSON.stringify(value));
@@ -49,10 +51,10 @@ export default function Dates({
                             >
                                 <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
                                 <span className="font-medium">
-                                    {formatDisplayDate(range?.from, locale) ||
+                                    {formatDate(range?.from, { pattern }) ||
                                         c("departure_date")}{" "}
                                     -{" "}
-                                    {formatDisplayDate(range?.to, locale) ||
+                                    {formatDate(range?.to, { pattern }) ||
                                         c("return_date")}
                                 </span>
                             </Button>
@@ -107,7 +109,7 @@ export default function Dates({
                             >
                                 <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
                                 <span className="font-medium">
-                                    {formatDisplayDate(departDate, locale) ||
+                                    {formatDate(departDate, { pattern }) ||
                                         c("departure_date")}
                                 </span>
                             </Button>

@@ -10,6 +10,7 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import { cn } from "../ui/utils";
 import FlightFilters from "./FlightFilters";
 import React, { useState, useMemo, useCallback } from "react";
+import { useTranslations } from "next-intl";
 export default function FloatingSortFilter({
     flights,
     setSortBy,
@@ -21,7 +22,7 @@ export default function FloatingSortFilter({
     return (
         <section
             className="md:hidden 
-        fixed bottom-3 left-50 translate-x-[-50%] sm:left-90 bg-accent-50 shadow text-accent-500 px-3 py-2 rounded-xl font-semibold flex items-center space-x-2"
+        fixed bottom-3 left-50 translate-x-[-50%] sm:left-90 bg-accent-50 shadow text-accent-500 px-3 py-2 rounded-xl font-semibold flex items-center space-x-2 whitespace-nowrap"
         >
             <FlowingSortDialog
                 flights={flights}
@@ -39,6 +40,7 @@ export default function FloatingSortFilter({
 }
 
 function FlowingSortDialog({ flights, setSortBy, sortBy }) {
+    const t = useTranslations("Flight");
     const [open, setOpen] = useState(false);
 
     function getAllSegments(flight) {
@@ -71,7 +73,7 @@ function FlowingSortDialog({ flights, setSortBy, sortBy }) {
         const minutes = Math.floor(ms / 60000);
         const h = Math.floor(minutes / 60);
         const m = minutes % 60;
-        return `${h}h ${m}m`;
+        return `${h}h ${m}m`.replace("h", t("h")).replace("m", t("m"));
     }
 
     const cheapest = useMemo(() => {
@@ -98,7 +100,7 @@ function FlowingSortDialog({ flights, setSortBy, sortBy }) {
             <DialogTrigger className="flex-1" asChild>
                 <div className="flex items-center gap-2 cursor-pointer">
                     <SortDesc className="size-5" />
-                    <span>Sort</span>
+                    <span>{t("filters.sort")}</span>
                 </div>
             </DialogTrigger>
 
@@ -110,9 +112,9 @@ function FlowingSortDialog({ flights, setSortBy, sortBy }) {
                 )}
             >
                 <DialogHeader>
-                    <DialogTitle className="flex justify-start">
+                    <DialogTitle className="flex justify-start" dir="ltr">
                         <h2 className="text-sm font-semibold text-accent-500">
-                            Sort By
+                            {t("filters.sort_by")}
                         </h2>
                     </DialogTitle>
 
@@ -128,7 +130,9 @@ function FlowingSortDialog({ flights, setSortBy, sortBy }) {
                                     }`}
                             >
                                 <div className="text-left">
-                                    <p className="font-semibold">Cheapest</p>
+                                    <p className="font-semibold">
+                                        {t("filters.cheapest")}
+                                    </p>
                                     <p className="text-xs ">
                                         {formatDuration(getDuration(cheapest))}
                                     </p>
@@ -149,14 +153,16 @@ function FlowingSortDialog({ flights, setSortBy, sortBy }) {
                                             : "bg-transparent text-accent-500"
                                     }`}
                             >
-                                <div className="text-left">
-                                    <p className="font-semibold">Fastest</p>
+                                <div className="">
+                                    <p className="font-semibold">
+                                        {t("filters.fastest")}
+                                    </p>
                                     <p className="text-xs ">
                                         {formatDuration(getDuration(fastest))}
                                     </p>
                                 </div>
                                 <div className="font-bold">
-                                    ${fastest.TotalPrice}
+                                    {fastest.TotalPrice}
                                 </div>
                             </button>
                         )}
@@ -169,13 +175,13 @@ function FlowingSortDialog({ flights, setSortBy, sortBy }) {
 
 function FlowingFilterDialog({ flights, selectedFilters, setSelectedFilters }) {
     const [open, setOpen] = useState(false);
-
+    const t = useTranslations("Flight");
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <div className="flex items-center gap-2 cursor-pointer">
                     <Funnel className="size-4" />
-                    <span>Filter</span>
+                    <span>{t("filters.filter")}</span>
                 </div>
             </DialogTrigger>
 
@@ -187,9 +193,9 @@ function FlowingFilterDialog({ flights, selectedFilters, setSelectedFilters }) {
                 )}
             >
                 <DialogHeader>
-                    <DialogTitle className="flex justify-start">
+                    <DialogTitle className="flex justify-start" dir="ltr">
                         <h2 className="text-sm font-semibold text-accent-500">
-                            Advanced Filters
+                            {t("filters.filter")}
                         </h2>
                     </DialogTitle>
                 </DialogHeader>

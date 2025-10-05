@@ -1,5 +1,5 @@
 "use client";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
     Dialog,
@@ -28,17 +28,23 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
     const [currentLanguage, setCurrentLanguage] = useState(locale);
     const pathname = usePathname();
     const router = useRouter();
+    const searchParams = useSearchParams();
     const t = useTranslations("Languageswitcher");
 
-    //   Handle switcher
     function handleSwitch(locale) {
         const nextLocale = locale;
         const segments = pathname.split("/");
         segments[1] = nextLocale;
         const newPath = segments.join("/");
-        router.push(newPath);
+        const currentParams = searchParams.toString();
+        const finalPath = currentParams
+            ? `${newPath}?${currentParams}`
+            : newPath;
+
+        router.push(finalPath);
         setIsOpen(false);
     }
+
     const languages = [
         { code: "en", name: "English", flag: "🇺🇸" },
         { code: "ar", name: "العربية", flag: "🇦🇪" },
@@ -53,13 +59,14 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
     const selectedLanguage = languages.find(
         (lang) => lang.code === currentLanguage
     );
+
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <Button
                     variant="ghost"
                     size="sm"
-                    className={` sm:items-center hover:bg-accent font-bold sm:flex dark:text-gray-50  cursor-pointer w-full sm:w-auto justify-start ${
+                    className={`sm:items-center hover:bg-accent font-bold sm:flex dark:text-gray-50 cursor-pointer w-full sm:w-auto justify-start ${
                         hiddenOnMobile ? "hidden sm:flex" : "flex"
                     }`}
                 >
@@ -84,7 +91,6 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                     </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-6">
-                    {/* Language Selection */}
                     <div>
                         <Label className="text-sm mb-3 block text-gray-50">
                             {t("select_language")}
@@ -92,11 +98,11 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                         <Select
                             value={currentLanguage}
                             onValueChange={(e) => setCurrentLanguage(e)}
-                            className={`${isRTL && "text-right"} `}
+                            className={`${isRTL && "text-right"}`}
                         >
                             <SelectTrigger
-                                className="w-full  cursor-pointer"
-                                dir={isRTL && "rtl"}
+                                className="w-full cursor-pointer"
+                                dir={isRTL ? "rtl" : "ltr"}
                             >
                                 <SelectValue>
                                     <div className="flex items-center space-x-2 uppercase dark:text-white">
@@ -110,7 +116,7 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                                     <SelectItem
                                         key={lang.code}
                                         value={lang.code}
-                                        dir={isRTL && "rtl"}
+                                        dir={isRTL ? "rtl" : "ltr"}
                                         className="cursor-pointer"
                                     >
                                         <div className="flex items-center space-x-2">

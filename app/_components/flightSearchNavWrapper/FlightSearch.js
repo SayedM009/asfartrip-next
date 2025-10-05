@@ -1,29 +1,17 @@
-// import { searchFlights } from "@/app/_libs/flightService";
-// import { FlightResults, NoFlightTickets } from "./FlightResults";
-
-// export default async function FlightSearch({ parsedSearchObject }) {
-//     const tickets = await searchFlights(parsedSearchObject);
-//     if (!tickets || !tickets.length)
-//         return (
-//             <div className="mt-5">
-//                 <NoFlightTickets />
-//             </div>
-//         );
-//     return <FlightResults flights={tickets} />;
-// }
-
 "use client";
 
 import { useState, useEffect } from "react";
 import { FlightResults, NoFlightTickets } from "./FlightResults";
 
 export default function FlightSearch({ parsedSearchObject }) {
-    const [tickets, setTickets] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [tickets, setTickets] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
             setLoading(true);
+            setError(false);
             try {
                 const res = await fetch("/api/search-flights", {
                     method: "POST",
@@ -32,9 +20,18 @@ export default function FlightSearch({ parsedSearchObject }) {
                 });
 
                 const data = await res.json();
+
+                if (data?.error) {
+                    console.warn("API Error:", data.error);
+                    setError(true);
+                    setTickets([]);
+                    return;
+                }
+
                 setTickets(data);
             } catch (err) {
                 console.error(err);
+                setError(true);
                 setTickets([]);
             } finally {
                 setLoading(false);
@@ -42,11 +39,11 @@ export default function FlightSearch({ parsedSearchObject }) {
         }
 
         fetchData();
-    }, [parsedSearchObject]); // كل مرة الباراميترات تتغير، يعمل بحث جديد
+    }, [parsedSearchObject]);
 
     if (loading) return <FlightSearchSkeleton />;
 
-    if (!tickets || !tickets.length)
+    if (error || !tickets?.length)
         return (
             <div className="mt-5">
                 <NoFlightTickets />

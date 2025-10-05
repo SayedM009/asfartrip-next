@@ -2,7 +2,6 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { FlightTicket } from "./FlightTicket";
 import { Card, CardContent } from "@/components/ui/card";
-
 import {
     ArrowLeft,
     ArrowRight,
@@ -13,19 +12,16 @@ import {
     Calendar,
 } from "lucide-react";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/solid";
-import useCheckLocal from "@/app/_hooks/useCheckLocal";
-import { useSearchParams } from "next/navigation";
-import FlightFilters from "./FlightFilters";
-import Image from "next/image";
-
 import { Button } from "@/components/ui/button";
 import { UserIcon } from "@heroicons/react/24/outline";
-import { formatDisplayDate } from "@/app/_helpers/formatDisplayDate";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
+import FlightFilters from "./FlightFilters";
+import Image from "next/image";
 import FlightTabs from "./FlightTabs";
 import FloatingSortFilter from "./FloatingSortFilter";
-import { format } from "date-fns";
-import { useLocale, useTranslations } from "next-intl";
 
 const tripTimes = [
     { id: "before6", label: "Before 6:00", icon: <CloudSun /> },
@@ -39,19 +35,16 @@ export function FlightResults({ flights = [] }) {
     const [sortBy, setSortBy] = useState("price");
     const [selectedAirlines, setSelectedAirlines] = useState([]);
     const [selectedTripTimes, setSelectedTripTimes] = useState([]);
-
-    // إضافة state للفلاتر المتقدمة
     const [selectedFilters, setSelectedFilters] = useState({
         stops: [],
         fare: [],
         airlines: [],
         priceRange: [0, 200000],
-        duration: [0, 96],
+        duration: [0, 200],
         airports: [],
-        stopoverDuration: [0, 48],
+        stopoverDuration: [0, 24],
     });
 
-    // === المنطق الجديد ===
     const getOutboundSegments = useCallback((flight) => {
         if (flight.MultiLeg === "true" && flight.onward)
             return flight.onward.segments;
@@ -68,20 +61,26 @@ export function FlightResults({ flights = [] }) {
         (flight) => {
             const outbound = getOutboundSegments(flight);
             if (!outbound.length) return 0;
+
             const outboundStart = new Date(outbound[0].DepartureTime).getTime();
             const outboundEnd = new Date(outbound.at(-1).ArrivalTime).getTime();
+            const outboundDuration = outboundEnd - outboundStart;
 
             const ret = getReturnSegments(flight);
             if (ret?.length) {
                 const retStart = new Date(ret[0].DepartureTime).getTime();
                 const retEnd = new Date(ret.at(-1).ArrivalTime).getTime();
-                return outboundEnd - outboundStart + (retEnd - retStart);
+                const returnDuration = retEnd - retStart;
+
+                // للذهاب والعودة: نرجع أطول مدة بين الذهاب والعودة
+                // بدلاً من جمعهم مع بعض
+                return Math.max(outboundDuration, returnDuration);
             }
-            return outboundEnd - outboundStart;
+
+            return outboundDuration;
         },
         [getOutboundSegments, getReturnSegments]
     );
-
     const getStopsCount = useCallback(
         (flight) => {
             const outboundStops = Math.max(
@@ -98,28 +97,41 @@ export function FlightResults({ flights = [] }) {
 
     const getStopoverDurationHours = useCallback(
         (flight) => {
-            const segments = getOutboundSegments(flight);
+            const outboundSegments = getOutboundSegments(flight);
             const returnSegments = getReturnSegments(flight);
-            const allSegments = [...segments, ...(returnSegments || [])];
 
-            let stopoverMs = 0;
+            let totalStopoverMs = 0;
 
-            for (let i = 1; i < allSegments.length; i++) {
-                const prevArrival = new Date(
-                    allSegments[i - 1].ArrivalTime
-                ).getTime();
-                const currDeparture = new Date(
-                    allSegments[i].DepartureTime
-                ).getTime();
-                stopoverMs += Math.max(0, currDeparture - prevArrival);
+            // احسب وقت التوقف في رحلة الذهاب فقط
+            if (outboundSegments && outboundSegments.length > 1) {
+                for (let i = 1; i < outboundSegments.length; i++) {
+                    const prevArrival = new Date(
+                        outboundSegments[i - 1].ArrivalTime
+                    ).getTime();
+                    const currDeparture = new Date(
+                        outboundSegments[i].DepartureTime
+                    ).getTime();
+                    totalStopoverMs += Math.max(0, currDeparture - prevArrival);
+                }
             }
 
-            return stopoverMs / (1000 * 60 * 60); // تحويل من ms إلى ساعات
+            // احسب وقت التوقف في رحلة العودة فقط
+            if (returnSegments && returnSegments.length > 1) {
+                for (let i = 1; i < returnSegments.length; i++) {
+                    const prevArrival = new Date(
+                        returnSegments[i - 1].ArrivalTime
+                    ).getTime();
+                    const currDeparture = new Date(
+                        returnSegments[i].DepartureTime
+                    ).getTime();
+                    totalStopoverMs += Math.max(0, currDeparture - prevArrival);
+                }
+            }
+
+            return totalStopoverMs / (1000 * 60 * 60); // تحويل من ms إلى ساعات
         },
         [getOutboundSegments, getReturnSegments]
     );
-
-    // Helper function to get flight duration in hours
     const getFlightDurationHours = useCallback(
         (flight) => {
             const durationMs = getTotalDuration(flight);
@@ -146,7 +158,6 @@ export function FlightResults({ flights = [] }) {
         [getOutboundSegments, getReturnSegments]
     );
 
-    // === فلترة + ترتيب محسّنة ===
     const filteredAndSortedFlights = useMemo(() => {
         let filtered = [...flights];
 
@@ -181,7 +192,6 @@ export function FlightResults({ flights = [] }) {
             });
         }
 
-        // Advanced Filters
         // Stops filter
         if (selectedFilters.stops.length > 0) {
             filtered = filtered.filter((f) =>
@@ -220,14 +230,22 @@ export function FlightResults({ flights = [] }) {
         // Price range filter
         if (selectedFilters.priceRange) {
             const [minPrice, maxPrice] = selectedFilters.priceRange;
+
+            filtered.forEach((f) => {});
+
             filtered = filtered.filter(
                 (f) => f.TotalPrice >= minPrice && f.TotalPrice <= maxPrice
             );
         }
 
-        // Duration filter
+        // Duration filter - الفلتر المشبوه!
         if (selectedFilters.duration) {
             const [minDuration, maxDuration] = selectedFilters.duration;
+
+            filtered.forEach((f, i) => {
+                const durationHours = getFlightDurationHours(f);
+            });
+
             filtered = filtered.filter((f) => {
                 const durationHours = getFlightDurationHours(f);
                 return (
@@ -239,6 +257,7 @@ export function FlightResults({ flights = [] }) {
         // Stopover Duration filter
         if (selectedFilters.stopoverDuration) {
             const [minStopover, maxStopover] = selectedFilters.stopoverDuration;
+
             filtered = filtered.filter((f) => {
                 const stopoverHours = getStopoverDurationHours(f);
                 return (
@@ -284,7 +303,7 @@ export function FlightResults({ flights = [] }) {
         getStopoverDurationHours,
     ]);
 
-    const { cheapestIndex, fastestIndex } = React.useMemo(() => {
+    const { cheapestIndex, fastestIndex } = useMemo(() => {
         if (
             !filteredAndSortedFlights ||
             filteredAndSortedFlights.length === 0
@@ -315,6 +334,22 @@ export function FlightResults({ flights = [] }) {
         return { cheapestIndex: cheapestIdx, fastestIndex: fastestIdx };
     }, [filteredAndSortedFlights]);
 
+    function resetFilters() {
+        setFilterBy("all");
+        setSortBy("price");
+        setSelectedAirlines([]);
+        setSelectedTripTimes([]);
+        setSelectedFilters({
+            stops: [],
+            fare: [],
+            airlines: [],
+            priceRange: [0, 200000],
+            duration: [0, 200],
+            airports: [],
+            stopoverDuration: [0, 24],
+        });
+    }
+
     return (
         <div className="mx-auto space-y-2">
             {/* Tabs / Filters */}
@@ -336,7 +371,6 @@ export function FlightResults({ flights = [] }) {
             />
 
             <div className="grid grid-cols-12 gap-4 sm:mt-5">
-                {/* Advanced Filters - يظهر في dialog عند الضغط على Filter */}
                 <div className="hidden md:block col-span-3">
                     <FlightFilters
                         flights={flights}
@@ -353,6 +387,7 @@ export function FlightResults({ flights = [] }) {
                             filterBy={filterBy}
                             cheapestIndex={cheapestIndex}
                             fastestIndex={fastestIndex}
+                            resetFilters={resetFilters}
                         />
                     </div>
                 </div>
@@ -398,14 +433,15 @@ function DisplayedCities() {
 }
 
 function TicketsCount({ filteredAndSortedFlights }) {
+    const t = useTranslations("Flight");
     return (
         <div className="flex items-center justify-between gap-2 px-2 my-0">
             <DisplayedCities />
-            <p className="text-xs capitalize flex items-center gap-2  text-accent-500">
+            <p className="text-xs capitalize flex items-center gap-1  text-accent-500">
                 {filteredAndSortedFlights
                     ? String(filteredAndSortedFlights?.length).padStart(2, 0)
                     : 0}
-                <span>flights found</span>
+                <span>{t("filters.flights")}</span>
             </p>
         </div>
     );
@@ -416,13 +452,14 @@ export function FlightTicketsList({
     filterBy,
     cheapestIndex,
     fastestIndex,
+    resetFilters,
 }) {
     return (
         <>
             <TicketsCount filteredAndSortedFlights={filteredAndSortedFlights} />
             {!filteredAndSortedFlights ||
             filteredAndSortedFlights.length === 0 ? (
-                <NoFlightTickets />
+                <NoFilteredFlightTickets resetFilters={resetFilters} />
             ) : (
                 filteredAndSortedFlights.map((flight, index) => (
                     <FlightTicket
@@ -490,17 +527,55 @@ export function NoFlightTickets() {
                             })}
                         </p>
                     )}
-                    <p className="text-sm text-muted-foreground mb-20 flex items-center gap-2 justify-center">
+                    <p className="text-sm text-muted-foreground mb-20 flex items-center gap-2 justify-center capitalize">
                         <UserIcon className="size-5 capitalize" />
                         {totalPassengers}{" "}
                         {totalPassengers > 1 && t(`passengers.passengers`)}{" "}
-                        {t(`ticket_class.${tripClass}`)}
+                        {t(
+                            `ticket_class.${String(
+                                tripClass
+                            ).toLocaleLowerCase()}`
+                        )}
                     </p>
                     <Button
                         className="btn-primary sm:w-80"
                         onClick={() => router.refresh()}
                     >
                         {t("operations.refrech")}
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
+function NoFilteredFlightTickets({ resetFilters }) {
+    const t = useTranslations("Flight");
+    return (
+        <Card className="shadow-none border-0 bg-transparent ">
+            <CardContent className="flex items-center justify-center py-12 flex-col">
+                <div className="text-center">
+                    <div className="relative flex justify-center">
+                        <Image
+                            src="/not-found/no-flights.webp"
+                            alt="no-flights"
+                            className="object-cover"
+                            width={500}
+                            height={500}
+                        />
+                    </div>
+                    <h1 className="text-xl   mb-2 mt-7 text-gray-950 font-semibold">
+                        {t(`operations.no_filtered_tickets_title`)}
+                    </h1>
+                    <p className="text-sm text-muted-foreground mb-20 ">
+                        {t(`operations.no_filtered_tickets_sub_title`)}
+                    </p>
+
+                    <Button
+                        className="btn-primary  capitalize"
+                        onClick={resetFilters}
+                    >
+                        {t(`operations.reset_filters`)}
                     </Button>
                 </div>
             </CardContent>

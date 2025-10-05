@@ -1,5 +1,6 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SunIcon, PlaneIcon, ArrowRightCircleIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export default function FlightTabs({
@@ -12,6 +13,7 @@ export default function FlightTabs({
     selectedTripTimes,
     setSelectedTripTimes,
 }) {
+    const t = useTranslations("Flight");
     function handleValueChange(val) {
         setFilterBy(val);
     }
@@ -44,7 +46,9 @@ export default function FlightTabs({
                         className="data-[state=active]:bg-accent-100 data-[state=active]:text-accent-500 rounded-full"
                     >
                         <SunIcon className="size-5" />
-                        <span className="text-sm">Trip time</span>
+                        <span className="text-sm">
+                            {t("filters.trip_time")}
+                        </span>
                     </TabsTrigger>
 
                     <TabsTrigger
@@ -53,7 +57,9 @@ export default function FlightTabs({
                         className="data-[state=active]:bg-accent-100 data-[state=active]:text-accent-500 rounded-full"
                     >
                         <PlaneIcon className="size-5" />
-                        <span className="text-sm">Airlines</span>
+                        <span className="text-sm">
+                            {t("filters.air_lines")}
+                        </span>
                     </TabsTrigger>
 
                     <TabsTrigger
@@ -62,7 +68,7 @@ export default function FlightTabs({
                         className="data-[state=active]:bg-accent-100 data-[state=active]:text-accent-500 rounded-full"
                     >
                         <ArrowRightCircleIcon className="size-5" />
-                        <span className="text-sm">Direct</span>
+                        <span className="text-sm">{t("filters.direct")}</span>
                     </TabsTrigger>
                 </TabsList>
             </Tabs>

@@ -1,5 +1,4 @@
 "use client";
-
 import { ArrowDownWideNarrow, Funnel } from "lucide-react";
 import { FlightResults } from "./FlightResults";
 
@@ -10,9 +9,6 @@ export default function MobileWrapper({ tickets }) {
                 <MobileFilters />
             </section>
             <section>
-                {/* {tickets.map((ticket, index) => (
-                    <FlightTicket key={index} ticket={ticket} />
-                ))} */}
                 <FlightResults flights={tickets} />
             </section>
         </>

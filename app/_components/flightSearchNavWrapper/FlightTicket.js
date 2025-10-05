@@ -6,6 +6,9 @@ import { FlightDetailsDialog } from "./FlightDetailsDialog";
 import { Plane, Clock, Luggage, ArrowRight } from "lucide-react";
 import { format, parseISO, differenceInMinutes } from "date-fns";
 import Image from "next/image";
+import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
+import { useTranslations } from "next-intl";
 
 // Airline code to name mapping
 const getAirlineName = (code) => {
@@ -37,9 +40,12 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
         segments,
         onward,
         return: returnJourney,
-        CabinLuggage,
     } = ticket;
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+    const { isRTL } = useCheckLocal();
+    const formatDate = useDateFormatter();
+    const t = useTranslations("Flight");
+    const pattern = isRTL ? "EEEE d MMMM " : "EEE, MMM d";
 
     // Determine if this is a round trip ticket
     const isRoundTrip = MultiLeg === "true" && onward && returnJourney;
@@ -56,10 +62,6 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
         return format(parseISO(isoString), "HH:mm");
     };
 
-    const formatDate = (isoString) => {
-        return format(parseISO(isoString), "EEE, MMM d");
-    };
-
     const calculateTotalDuration = (segmentsArray = displaySegments) => {
         const departure = parseISO(segmentsArray[0].DepartureTime);
         const arrival = parseISO(
@@ -68,7 +70,9 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
         const totalMinutes = differenceInMinutes(arrival, departure);
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
-        return `${hours}h ${minutes}m`;
+        return `${hours}h ${minutes}m`
+            .replace("h", t("h"))
+            .replace("m", t("m"));
     };
 
     const calculateLayoverTime = (arrivalTime, nextDepartureTime) => {
@@ -92,12 +96,12 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
 
         const hours = Math.floor(totalLayoverMinutes / 60);
         const minutes = totalLayoverMinutes % 60;
-        return `${hours}h ${minutes}m`;
+        return `${hours}h ${minutes}m`
+            .replace("h", t("h"))
+            .replace("m", t("m"));
     };
 
     const getAirlineLogo = (carrier) => {
-        // In a real app, you'd have a mapping of carrier codes to logo URLs
-        // For now, we'll use a placeholder approach
         return `https://images.kiwi.com/airlines/64x64/${carrier}.png`;
     };
 
@@ -115,18 +119,20 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
             // Direct flight
             return (
                 <div
-                    className={`flex items-center justify-between p-4 ${
+                    className={`flex items-center justify-between py-4 px-2 sm:px-4 ${
                         (isCheapest || isFastest) && "pt-6"
                     }`}
                 >
                     {/* Departure */}
-                    <div className="text-center min-w-0 flex-1">
+                    <div className="text-center min-w-0 ">
                         <div className="text-xl font-bold text-foreground">
                             {formatTime(firstSeg.DepartureTime)}
                         </div>
                         <div className="text-muted-foreground text-xs">
                             {firstSeg.Origin}{" "}
-                            {formatDate(firstSeg.DepartureTime)}
+                            {formatDate(firstSeg.DepartureTime, {
+                                pattern,
+                            })}
                         </div>
                     </div>
 
@@ -147,13 +153,15 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                         </div>
                         <div className="text-center mt-1">
                             <Badge variant="secondary" className="text-xs">
-                                {isReturn ? "Return" : "Direct"}
+                                {isReturn
+                                    ? t("filters.return")
+                                    : t("filters.direct")}
                             </Badge>
                         </div>
                     </div>
 
                     {/* Arrival */}
-                    <div className="text-center min-w-0 flex-1">
+                    <div className="text-center min-w-0 ">
                         <div className="text-xl font-bold text-foreground">
                             {formatTime(lastSeg.ArrivalTime)}
                             {isNextDay(
@@ -167,7 +175,9 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                         </div>
                         <div className="text-xs text-muted-foreground">
                             {lastSeg.Destination}{" "}
-                            {formatDate(lastSeg.ArrivalTime)}
+                            {formatDate(lastSeg.ArrivalTime, {
+                                pattern,
+                            })}
                         </div>
                     </div>
                 </div>
@@ -175,17 +185,21 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
         } else {
             // Connecting flights
             return (
-                <div className="p-4">
+                <div className="py-4 px-2 sm:px-4">
                     {/* Main route overview */}
                     <div className="flex items-center justify-between">
                         {/* Departure */}
                         <div className="text-center">
                             <div className="text-xl font-bold text-foreground">
-                                {formatTime(firstSeg.DepartureTime)}
+                                {formatTime(firstSeg.DepartureTime, {
+                                    pattern,
+                                })}
                             </div>
                             <div className="text-xs text-muted-foreground">
                                 {firstSeg.Origin}{" "}
-                                {formatDate(firstSeg.DepartureTime)}
+                                {formatDate(firstSeg.DepartureTime, {
+                                    pattern,
+                                })}
                             </div>
                         </div>
 
@@ -224,7 +238,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                             <div className="mt-3">
                                 <Badge variant="outline" className="text-xs">
                                     {segments.length - 1}{" "}
-                                    {segments.length === 2 ? "Stop" : "Stops"} •{" "}
+                                    {segments.length === 2 && t("stop")} •{" "}
                                     {calculateTotalLayoverTime(segments)}
                                 </Badge>
                             </div>
@@ -245,7 +259,9 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                             </div>
                             <div className="text-xs text-muted-foreground">
                                 {lastSeg.Destination}{" "}
-                                {formatDate(lastSeg.ArrivalTime)}
+                                {formatDate(lastSeg.ArrivalTime, {
+                                    pattern,
+                                })}
                             </div>
                         </div>
                     </div>
@@ -321,9 +337,17 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
             >
                 <CardContent className="p-0 cursor-pointer">
                     {isCheapest && (
-                        <div className="absolute right-[-2px] top-[-2px] z-10 ">
-                            <span className="bg-green-500 text-white text-[10px] font-semibold py-2 px-1 uppercase rounded-tr-lg">
-                                Cheapest
+                        <div
+                            className={`absolute ${
+                                isRTL ? "left-[-2px]" : "right-[-2px]"
+                            } top-[-2px] z-10 `}
+                        >
+                            <span
+                                className={`bg-green-500 text-white text-[10px] font-semibold p-2  uppercase ${
+                                    isRTL ? "rounded-tl-lg" : "rounded-tr-lg"
+                                }`}
+                            >
+                                {t("filters.cheapest")}
                             </span>
                         </div>
                     )}
@@ -332,18 +356,25 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                         <div
                             className={`absolute ${
                                 isCheapest
-                                    ? "left-[-2px]  top-[-2px]"
-                                    : "right-[-2px] top-[-2px]"
+                                    ? `left-[-2px]  top-[-2px]`
+                                    : `${
+                                          isRTL ? "left-[-2px]" : "right-[-2px]"
+                                      } top-[-2px]`
+                            }
                             } z-10`}
                         >
                             <span
-                                className={`bg-accent-400 text-white text-[10px] font-semibold py-2 px-1 uppercase ${
+                                className={`bg-accent-400 text-white text-[10px] font-semibold p-2  uppercase ${
                                     isFastest && isCheapest
                                         ? "rounded-tl-lg"
-                                        : " rounded-tr-lg"
+                                        : `${
+                                              isRTL
+                                                  ? "rounded-tl-lg"
+                                                  : "rounded-tr-lg"
+                                          }`
                                 }`}
                             >
-                                Fastest
+                                {t("filters.fastest")}
                             </span>
                         </div>
                     )}
@@ -372,6 +403,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                         }}
                                         width={30}
                                         height={30}
+                                        loading="lazy"
                                     />
                                     <div>
                                         <div className="font-medium text-sm">
@@ -380,7 +412,11 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                             )}
                                         </div>
                                         <div className="text-xs text-muted-foreground">
-                                            {firstSegment.CabinClass}
+                                            {t(
+                                                `ticket_class.${String(
+                                                    firstSegment.CabinClass
+                                                ).toLowerCase()}`
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -391,9 +427,9 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                 <div className="flex items-center gap-3">
                                     <div>
                                         <div className="text-xs text-muted-foreground">
-                                            Total Price
+                                            {t("total_price")}
                                         </div>
-                                        <div className="text-2xl font-bold  text-accent-500 sm:text-gray-950">
+                                        <div className="text-2xl font-bold  text-accent-500">
                                             {SITECurrencyType} {TotalPrice}
                                         </div>
 
@@ -404,7 +440,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                                 size="lg"
                                                 className=" btn-primary"
                                             >
-                                                Select Flight
+                                                {t("select_flight")}
                                             </Button>
                                         </div>
                                     </div>

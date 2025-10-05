@@ -9,12 +9,11 @@ import {
     DialogClose,
 } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
-import { formatDisplayDate } from "@/app/_helpers/formatDisplayDate";
-import useCalculateDaysBetween from "@/app/_hooks/useCalculateDaysBetween";
-
+import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 import { useTranslations } from "next-intl";
 import useCalendarLocale from "@/app/_hooks/useCalendarLocale";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
+import useCalculateDaysBetween from "@/app/_hooks/useCalculateDaysBetween";
 
 function DateRangeDialog({
     tripType,
@@ -24,8 +23,9 @@ function DateRangeDialog({
     onRangeDateChange,
 }) {
     const t = useTranslations("Calender");
-    const { locale } = useCheckLocal();
+    const { isRTL } = useCheckLocal();
     const { dateLocale } = useCalendarLocale();
+    const formatDate = useDateFormatter();
     const differenceInDays = useCalculateDaysBetween(range?.from, range?.to);
 
     function handleSelectDepartureDateWithSession(value) {
@@ -37,6 +37,8 @@ function DateRangeDialog({
         onRangeDateChange(value);
         sessionStorage.setItem("rangeDate", JSON.stringify(value));
     }
+
+    const pattern = isRTL ? "EEEE d MMMM" : "EEE MMM d";
     return (
         <Dialog>
             <DialogTrigger className="text-primary-800 w-full flex items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors ">
@@ -45,7 +47,9 @@ function DateRangeDialog({
                         <div>
                             <div className="font-semibold dark:text-gray-50">
                                 {range?.from
-                                    ? formatDisplayDate(range.from, locale)
+                                    ? formatDate(range.from, {
+                                          pattern,
+                                      })
                                     : t("departure_date")}
                             </div>
                         </div>
@@ -57,7 +61,9 @@ function DateRangeDialog({
                         <div className="text-right">
                             <div className="font-semibold dark:text-gray-50">
                                 {range?.to
-                                    ? formatDisplayDate(range.to, locale)
+                                    ? formatDate(range.from, {
+                                          pattern,
+                                      })
                                     : t("return_date")}
                             </div>
                         </div>
@@ -66,7 +72,9 @@ function DateRangeDialog({
                     <div>
                         <div className="font-semibold dark:text-gray-50">
                             {departDate
-                                ? formatDisplayDate(departDate, locale)
+                                ? formatDate(range.from, {
+                                      pattern,
+                                  })
                                 : t("departure_date")}
                         </div>
                     </div>
