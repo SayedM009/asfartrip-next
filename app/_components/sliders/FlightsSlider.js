@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 
 import useCheckLocal from "../../_hooks/useCheckLocal";
 import useDisplayShortDate from "@/app/_hooks/useDisplayShortDate";
-import { useCurrency } from "@/app/_hooks/useCurrency";
+import useCurrencyConverter from "@/app/_hooks/useCurrencyConverter";
 
 const destinations = [
     {
@@ -163,7 +163,7 @@ export function FlightsSlider() {
         }
     };
 
-    const { formatCurrency } = useCurrency();
+    const { formatPrice, isLoading } = useCurrencyConverter("AED");
 
     return (
         <div
@@ -176,11 +176,12 @@ export function FlightsSlider() {
                     <div>
                         <div className="flex items-center sm:mb-2 gap-2">
                             <Image
-                                src="/icons/airplane-m.gif"
+                                // src="/icons/airplane-m.gif"
+                                src="/icons/airplane.svg"
                                 alt="Destination dream trip"
                                 width={30}
                                 height={30}
-                                unoptimized
+                                // unoptimized
                                 priority
                                 fetchPriority="high"
                                 loading="eager"
@@ -281,7 +282,7 @@ export function FlightsSlider() {
                                             <div className="flex items-center justify-between text-sm">
                                                 <h4>
                                                     {t("start_from")}{" "}
-                                                    {card.price}
+                                                    {formatPrice(card.price)}
                                                 </h4>
                                                 <h4 className="bg-gray-300 rounded-sm px-2 text-gray-900 text-xs">
                                                     {card.isDirect &&

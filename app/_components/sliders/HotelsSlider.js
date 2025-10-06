@@ -124,11 +124,12 @@ export function HotelsSlider() {
                     <div>
                         <div className="flex items-center sm:mb-2 gap-2">
                             <Image
-                                src="/icons/bed-m.gif"
+                                // src="/icons/bed-m.gif"
+                                src="/icons/bed.svg"
                                 alt="Destination dream trip"
                                 width={30}
                                 height={30}
-                                unoptimized
+                                // unoptimized
                                 priority
                                 fetchPriority="high"
                                 loading="eager"

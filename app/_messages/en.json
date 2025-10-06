@@ -35,10 +35,13 @@
         "dark_mode": "Dark Mode"
     },
     "CurrencySwitcher": {
-        "title": "Change Currency",
-        "select_currency": "Select currency",
+        "title": "Currency",
+        "select_currency": "Select Currency",
         "cancel": "Cancel",
         "apply": "Apply",
+        "loading": "Loading...",
+        "exchange_rate": "Exchange Rate",
+        "error_fetching_rate": "Failed to fetch exchange rate",
         "currencies": {
             "us": "US Dollar",
             "eu": "Euro",
@@ -212,6 +215,33 @@
             "duration": "Duration",
             "stopover_duration": "Stopover Duration",
             "stopover_airports": "Stopover Airports"
+        },
+        "dialog": {
+            "flight_details": "Flight Details",
+            "guide": "Review complete flight information including itinerary, pricing, and booking conditions before continuing to checkout.",
+            "journey": "Journey",
+            "check_visa": "Connecting flights • Check visa requirements for connecting airports",
+            "flight_itinerary": "Flight Itinerary",
+            "layover": "Layover in {city}: {time}",
+            "layover_guide": "You will need to collect and re-check your baggage if required",
+            "price_breakdown": "Price Breakdown",
+            "flight_conditions": "Flight Conditions",
+            "base_price": "Base Price",
+            "taxes_fees": "Taxes & Fees",
+            "total_price": "Total Price",
+            "continue": "Continue to Booking",
+            "outbound_flight": "Outbound Flight",
+            "return_flight": "Return Flight",
+            "terminal": "Terminal",
+            "flight_time": "Flight time"
+        },
+        "baggage": {
+            "cabin_luggage": "Cabin Luggage",
+            "checked_baggage": "Checked Baggage",
+            "not_included": "Not included",
+            "Kilograms": "KG",
+            "pieces": "Pieces",
+            "recheck_baggage": "You will need to collect and re-check your baggage if required"
         }
     },
     "Offers_slider": {

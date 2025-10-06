@@ -14,9 +14,9 @@ function Logo() {
 
     const logoSrc = mounted
         ? theme === "light"
-            ? "/logo.webp"
+            ? "/Asfartrip-svg.svg"
             : "/lightLogo.webp"
-        : "/logo.webp";
+        : "/Asfartrip-svg.svg";
 
     return (
         <Link href="/">

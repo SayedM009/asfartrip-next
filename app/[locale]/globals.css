@@ -171,7 +171,7 @@
         @apply cursor-pointer  hover:bg-accent transition-colors py-1 px-1  md:px-3 rounded-md hover:text-accent-foreground;
     }
     .dialog-bg {
-        @apply bg-gradient-to-b from-primary-100 to-white pt-4;
+        @apply bg-gradient-to-b from-primary-100 to-white pt-4 dark:from-primary-900 dark:to-black;
     }
     .open-slide-right {
         @apply data-[state=open]:animate-in data-[state=open]:slide-in-from-right;

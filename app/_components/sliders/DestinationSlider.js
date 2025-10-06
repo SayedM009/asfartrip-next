@@ -116,11 +116,12 @@ export function DestinationSlider() {
                     <div>
                         <div className="flex items-center sm:mb-2 gap-2">
                             <Image
-                                src="/icons/globe.gif"
+                                // src="/icons/globe.gif"
+                                src="/icons/globe.svg"
                                 alt="Destination dream trip"
                                 width={30}
                                 height={30}
-                                unoptimized
+                                // unoptimized
                                 priority
                                 fetchPriority="high"
                                 loading="eager"

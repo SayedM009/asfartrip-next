@@ -34,16 +34,19 @@
         "dark_mode": "الوضع المظلم"
     },
     "CurrencySwitcher": {
-        "title": "تغير العملة",
-        "select_currency": "إختر العملة",
+        "title": "العملة",
+        "select_currency": "اختر العملة",
         "cancel": "إلغاء",
         "apply": "تطبيق",
+        "loading": "جاري التحميل...",
+        "exchange_rate": "سعر الصرف",
+        "error_fetching_rate": "فشل في جلب سعر الصرف",
         "currencies": {
-            "us": "الدولار الأمريكى",
-            "eu": "اليورو",
-            "gbp": "الجنية الإسترليني",
-            "chf": "الفرانك السويسري",
-            "ae": "الدرهم الإماراتي"
+            "us": "دولار أمريكي",
+            "eu": "يورو",
+            "gbp": "جنيه إسترليني",
+            "chf": "فرنك سويسري",
+            "ae": "درهم إماراتي"
         }
     },
     "Login": {
@@ -209,6 +212,34 @@
             "duration": "مدة الرحلة",
             "stopover_duration": "مدة التوقف الفرعية",
             "stopover_airports": "مطارات التوقفات"
+        },
+        "dialog": {
+            "flight_details": "تفاصيل الرحلة",
+            "guide": "راجع معلومات الرحلة الكاملة بما في ذلك خط السير، الأسعار، وشروط الحجز قبل المتابعة إلى الدفع.",
+            "journey": "الرحلة",
+            "check_visa": "رحلات الترانزيت • تحقق من متطلبات التأشيرة لمطارات الترانزيت",
+            "flight_itinerary": "خط سير الرحلة",
+            "layover": "توقف في {city}: لمدة {time}",
+            "layover_guide": "قد تحتاج إلى استلام أمتعتك وإعادة تسجيلها إذا لزم الأمر",
+            "price_breakdown": "تفاصيل السعر",
+            "flight_conditions": "شروط الرحلة",
+            "base_price": "السعر الأساسي",
+            "taxes_fees": "الضرائب والرسوم",
+            "total_price": "إجمالي السعر",
+            "pieces": "عدد القطع",
+            "continue": "المتابعة إلى الحجز",
+            "outbound_flight": "رحلة الذهاب",
+            "return_flight": "رحلة العودة",
+            "terminal": "المبنى",
+            "flight_time": "مدة الرحلة"
+        },
+        "baggage": {
+            "cabin_luggage": "أمتعة المقصورة",
+            "checked_baggage": "الأمتعة المسجلة",
+            "not_included": "غير متضمنة",
+            "Kilograms": "كيلو",
+            "pieces": "قطعة ",
+            "recheck_baggage": "قد تحتاج إلى استلام أمتعتك وإعادة تسجيلها إذا لزم الأمر"
         }
     },
     "Offers_slider": {

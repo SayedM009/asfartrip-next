@@ -6,6 +6,7 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
+    DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -13,6 +14,8 @@ import { Plane, Clock, Luggage, CreditCard, AlertCircle } from "lucide-react";
 import { format, parseISO, differenceInMinutes } from "date-fns";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 
 // Airline code to name mapping - you can expand this or connect to an API
 const getAirlineName = (code) => {
@@ -51,6 +54,9 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
         BaggageAllowance,
     } = ticket;
 
+    const t = useTranslations("Flight");
+
+    const formatDate = useDateFormatter();
     // Determine if this is a round trip ticket
     const isRoundTrip = MultiLeg === "true" && onward && returnJourney;
 
@@ -65,21 +71,15 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
         return format(parseISO(isoString), "HH:mm");
     };
 
-    const formatFullDate = (isoString) => {
-        return format(parseISO(isoString), "EEEE, MMMM d, yyyy");
-    };
-
-    const formatDate = (isoString) => {
-        return format(parseISO(isoString), "EEE, MMM d");
-    };
-
     const calculateLayoverTime = (arrivalTime, nextDepartureTime) => {
         const arrival = parseISO(arrivalTime);
         const departure = parseISO(nextDepartureTime);
         const layoverMinutes = differenceInMinutes(departure, arrival);
         const hours = Math.floor(layoverMinutes / 60);
         const minutes = layoverMinutes % 60;
-        return `${hours}h ${minutes}m`;
+        return `${hours}h ${minutes}m`
+            .replace("h", t("h"))
+            .replace("m", t("m"));
     };
 
     const calculateTotalDuration = (segmentsArray) => {
@@ -90,7 +90,9 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
         const totalMinutes = differenceInMinutes(arrival, departure);
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
-        return `${hours}h ${minutes}m`;
+        return `${hours}h ${minutes}m`
+            .replace("h", t("h"))
+            .replace("m", t("m"));
     };
 
     const getAirlineLogo = (carrier) => {
@@ -120,7 +122,12 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                                 {segment.FlightNumber}
                             </div>
                             <div className="text-sm text-muted-foreground">
-                                {segment.Equipment} • {segment.CabinClass}
+                                {segment.Equipment} •{" "}
+                                {t(
+                                    `ticket_class.${String(
+                                        segment.CabinClass
+                                    ).toLowerCase()}`
+                                )}
                             </div>
                         </div>
                     </div>
@@ -132,7 +139,9 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                                 {formatTime(segment.DepartureTime)}
                             </div>
                             <div className="text-sm text-muted-foreground">
-                                {formatDate(segment.DepartureTime)}
+                                {formatDate(segment.DepartureTime, {
+                                    pattern: "EEEE, d MMMM ",
+                                })}
                             </div>
                             <div className="font-medium">{segment.Origin}</div>
                             <div className="text-sm text-muted-foreground">
@@ -140,7 +149,8 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                             </div>
                             {segment.OriginTerminal && (
                                 <div className="text-sm text-muted-foreground">
-                                    Terminal {segment.OriginTerminal}
+                                    {t("dialog.terminal")}{" "}
+                                    {segment.OriginTerminal}
                                 </div>
                             )}
                         </div>
@@ -148,7 +158,7 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                         {/* Flight Duration */}
                         <div className="text-center flex flex-col justify-center">
                             <div className="text-sm text-muted-foreground mb-1">
-                                Flight time: {segment.Duration}
+                                {t("dialog.flight_time")}: {segment.Duration}
                             </div>
                             <div className="relative">
                                 <div className="h-0.5 bg-muted-foreground/30 w-full"></div>
@@ -166,7 +176,9 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                                 {formatTime(segment.ArrivalTime)}
                             </div>
                             <div className="text-sm text-muted-foreground">
-                                {formatDate(segment.ArrivalTime)}
+                                {formatDate(segment.ArrivalTime, {
+                                    pattern: "EEEE, d MMMM ",
+                                })}
                             </div>
                             <div className="font-medium">
                                 {segment.Destination}
@@ -176,7 +188,8 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                             </div>
                             {segment.DestinationTerminal && (
                                 <div className="text-sm text-muted-foreground">
-                                    Terminal {segment.DestinationTerminal}
+                                    {t("dialog.terminal")}{" "}
+                                    {segment.DestinationTerminal}
                                 </div>
                             )}
                         </div>
@@ -188,16 +201,17 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                             <div className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
                                 <Clock className="h-4 w-4" />
                                 <span className="font-medium">
-                                    Layover in {segment.Destination}:{" "}
-                                    {calculateLayoverTime(
-                                        segment.ArrivalTime,
-                                        segments[index + 1].DepartureTime
-                                    )}
+                                    {t(`dialog.layover`, {
+                                        city: segment.Destination,
+                                        time: calculateLayoverTime(
+                                            segment.ArrivalTime,
+                                            segments[index + 1].DepartureTime
+                                        ),
+                                    })}
                                 </span>
                             </div>
                             <div className="text-sm text-amber-700 dark:text-amber-300 mt-1">
-                                You will need to collect and re-check your
-                                baggage if required
+                                {t("baggage.recheck_baggage")}
                             </div>
                         </div>
                     )}
@@ -213,19 +227,16 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                     "dialog-bg",
                     "max-w-none  h-full overflow-auto rounded-none border-0  md:rounded sm:fixed sm:left-[87%]",
                     "open-slide-right",
-                    "close-slide-right"
+                    "close-slide-right",
+                    "overflow-x-hidden pb-0"
                 )}
             >
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
+                    <DialogTitle className="flex items-center gap-2" dir="ltr">
                         <Plane className="h-5 w-5" />
-                        Flight Details
+                        {t("dialog.flight_details")}
                     </DialogTitle>
-                    <DialogDescription>
-                        Review complete flight information including itinerary,
-                        pricing, and booking conditions before continuing to
-                        checkout.
-                    </DialogDescription>
+                    <DialogDescription>{t("dialog.guide")}</DialogDescription>
                 </DialogHeader>
 
                 <div className="space-y-6">
@@ -238,18 +249,24 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                                     {lastSegment.Destination}
                                     {isRoundTrip && (
                                         <span className="ml-2 text-sm font-normal">
-                                            Round Trip
+                                            {t("round_trip")}
                                         </span>
                                     )}
                                 </h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Departure:{" "}
-                                    {formatFullDate(firstSegment.DepartureTime)}
+                                    {t("departure")}:{" "}
+                                    {formatDate(firstSegment.DepartureTime, {
+                                        pattern: "EEEE, MMMM d, yyyy",
+                                    })}
                                     {isRoundTrip && returnSegments && (
                                         <span className="block">
-                                            Return:{" "}
-                                            {formatFullDate(
-                                                returnSegments[0].DepartureTime
+                                            {t("filters.return")}:{" "}
+                                            {formatDate(
+                                                returnSegments[0].DepartureTime,
+                                                {
+                                                    pattern:
+                                                        "EEEE, MMMM d, yyyy",
+                                                }
                                             )}
                                         </span>
                                     )}
@@ -262,7 +279,9 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                                 <div className="text-xs text-muted-foreground">
                                     {isRoundTrip
                                         ? "Total round trip"
-                                        : `Journey: ${calculateTotalDuration(
+                                        : `${t(
+                                              "dialog.journey"
+                                          )}: ${calculateTotalDuration(
                                               outboundSegments
                                           )}`}
                                 </div>
@@ -273,22 +292,23 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                             (returnSegments && returnSegments.length > 1)) && (
                             <div className="flex items-center gap-2 text-sm">
                                 <AlertCircle className="h-4 w-4 text-amber-500" />
-                                <span>
-                                    Connecting flights • Check visa requirements
-                                    for connecting airports
-                                </span>
+                                <span>{t("dialog.check_visa")}</span>
                             </div>
                         )}
                     </div>
 
                     {/* Detailed Flight Segments */}
                     <div className="space-y-6">
-                        <h4 className="font-semibold">Flight Itinerary</h4>
+                        <h4 className="font-semibold">
+                            {t("dialog.flight_itinerary")}
+                        </h4>
 
                         {/* Outbound Journey */}
                         {renderFlightSegments(
                             outboundSegments,
-                            isRoundTrip ? "Outbound Flight" : "Flight Details"
+                            isRoundTrip
+                                ? t("dialog.outbound_flight")
+                                : t("dialog.flight_details")
                         )}
 
                         {/* Return Journey (if round trip) */}
@@ -296,7 +316,7 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                             <div className="mt-8">
                                 {renderFlightSegments(
                                     returnSegments,
-                                    "Return Flight"
+                                    t("dialog.return_flight")
                                 )}
                             </div>
                         )}
@@ -306,23 +326,25 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Price Breakdown */}
                         <div className="space-y-3">
-                            <h4 className="font-semibold">Price Breakdown</h4>
+                            <h4 className="font-semibold">
+                                {t("dialog.price_breakdown")}
+                            </h4>
                             <div className="space-y-2 text-sm">
                                 <div className="flex justify-between">
-                                    <span>Base Price</span>
+                                    <span>{t("dialog.base_price")}</span>
                                     <span>
                                         {SITECurrencyType} {BasePrice}
                                     </span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span>Taxes & Fees</span>
+                                    <span>{t("dialog.taxes_fees")}</span>
                                     <span>
                                         {SITECurrencyType} {Taxes}
                                     </span>
                                 </div>
                                 <Separator />
                                 <div className="flex justify-between font-semibold">
-                                    <span>Total Price</span>
+                                    <span>{t("dialog.total_price")}</span>
                                     <span>
                                         {SITECurrencyType} {TotalPrice}
                                     </span>
@@ -332,17 +354,32 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
 
                         {/* Flight Conditions */}
                         <div className="space-y-3">
-                            <h4 className="font-semibold">Flight Conditions</h4>
+                            <h4 className="font-semibold">
+                                {t("dialog.flight_conditions")}
+                            </h4>
                             <div className="space-y-2">
                                 <div className="flex items-center gap-2 text-sm">
                                     <Luggage className="h-4 w-4" />
-                                    <span>Cabin Luggage: {CabinLuggage}</span>
+                                    <span>
+                                        {t("baggage.cabin_luggage")}:{" "}
+                                        {String(CabinLuggage).replace(
+                                            "Kilograms",
+                                            t("baggage.Kilograms")
+                                        )}
+                                    </span>
                                 </div>
                                 <div className="flex items-center gap-2 text-sm">
                                     <Luggage className="h-4 w-4" />
                                     <span>
-                                        Checked Baggage:{" "}
-                                        {BaggageAllowance[0] || "Not included"}
+                                        {t("baggage.checked_baggage")}:{" "}
+                                        {BaggageAllowance[0]
+                                            ? String(
+                                                  BaggageAllowance[0]
+                                              ).replace(
+                                                  "NumberOfPieces",
+                                                  t("baggage.pieces")
+                                              )
+                                            : t("baggage.not_included")}
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2 text-sm">
@@ -355,31 +392,39 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                                         }
                                     >
                                         {Refundable
-                                            ? "Refundable"
-                                            : "Non-refundable"}
+                                            ? t("filters.refundable")
+                                            : t("filters.non_Refundable")}
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                </div>
+                <DialogFooter className="sticky bottom-0 w-full p-3 bg-muted ">
                     {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
-                        <Button
-                            variant="outline"
-                            onClick={onClose}
-                            className="flex-1"
-                        >
-                            Back to Results
-                        </Button>
+                    <div className="flex flex-col items-center sm:flex-row gap-3 pt-4 border-t w-full">
+                        <div className="flex-1 flex items-center gap-10">
+                            <div className="flex justify-between font-semibold text-sm gap-2">
+                                <span>{t("dialog.total_price")}</span>
+                                <span>
+                                    {SITECurrencyType} {TotalPrice}
+                                </span>
+                            </div>
+                            <div className="flex justify-between font-semibold text-sm gap-2">
+                                <span>{t("dialog.total_price")}</span>
+                                <span>
+                                    {SITECurrencyType} {TotalPrice}
+                                </span>
+                            </div>
+                        </div>
                         <Button
                             onClick={onContinue}
                             className="btn-primary flex-1"
                         >
-                            Continue to Booking
+                            {t("dialog.continue")}
                         </Button>
                     </div>
-                </div>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );

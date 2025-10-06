@@ -2,14 +2,37 @@
 import { loginWithExistsCredintials } from "./auth";
 import { getApiToken, setApiToken } from "./cookies";
 
-export async function searchFlights(params, retryCount = 0) {
-    const MAX_RETRIES = 1;
+let cachedToken = null;
+let tokenExpiry = null;
 
+export async function getOrRefreshToken() {
+    // تحقق من الـ cache أولاً
+    if (cachedToken && tokenExpiry && Date.now() < tokenExpiry) {
+        return cachedToken;
+    }
+
+    // جرب تجيب من الـ cookie
     let token = await getApiToken();
+
+    // لو مش موجود، اعمل login
     if (!token) {
+        console.log("No token found, logging in...");
         token = await loginWithExistsCredintials();
         await setApiToken(token);
     }
+
+    // احفظ في الـ cache
+    cachedToken = token;
+    tokenExpiry = Date.now() + 9 * 60 * 1000; // 9 دقائق (أقل من الـ 10 دقائق بشوية)
+
+    return token;
+}
+
+export async function searchFlights(params, retryCount = 0) {
+    const MAX_RETRIES = 1;
+
+    let token = await getOrRefreshToken(); // ✅ استخدم الدالة الجديدة
+
     const requestData = {
         origin: params.origin,
         destination: params.destination,
@@ -43,10 +66,19 @@ export async function searchFlights(params, retryCount = 0) {
 
     if (res.status === 401 && retryCount < MAX_RETRIES) {
         console.log("Token expired or invalid, refreshing...");
+
+        // ✅ امسح الـ cache والـ cookie
+        cachedToken = null;
+        tokenExpiry = null;
         await clearAPIToken();
 
+        // اعمل login جديد
         const newToken = await loginWithExistsCredintials();
         await setApiToken(newToken);
+
+        // احفظ في الـ cache
+        cachedToken = newToken;
+        tokenExpiry = Date.now() + 9 * 60 * 1000;
 
         return searchFlights(params, retryCount + 1);
     }

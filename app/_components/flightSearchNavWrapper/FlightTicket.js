@@ -429,8 +429,13 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                         <div className="text-xs text-muted-foreground">
                                             {t("total_price")}
                                         </div>
-                                        <div className="text-2xl font-bold  text-accent-500">
-                                            {SITECurrencyType} {TotalPrice}
+                                        <div className=" font-bold  text-accent-500">
+                                            <span className="text-lg">
+                                                {SITECurrencyType}
+                                            </span>{" "}
+                                            <span className="text-2xl">
+                                                {TotalPrice}
+                                            </span>
                                         </div>
 
                                         {/* Desktop Select Button - under price */}

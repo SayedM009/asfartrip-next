@@ -11,28 +11,32 @@ const SERVICES = [
     {
         title: "Flights",
         subTitle: "Book Flights",
-        src: "/icons/airplane-m.gif",
+        // src: "/icons/airplane-m.gif",
+        src: "/icons/airplane.svg",
         path: "/flights",
         default: true,
     },
     {
         title: "Hotels",
         subTitle: "Perfect Stays",
-        src: "/icons/bed-m.gif",
+        // src: "/icons/bed-m.gif",
+        src: "/icons/bed.svg",
         path: "/hotels",
         default: false,
     },
     {
         title: "Insurance",
         subTitle: "Safe Trip",
-        src: "/icons/insurance-m.gif",
+        // src: "/icons/insurance-m.gif",
+        src: "/icons/insurance.svg",
         path: "/insurance",
         default: false,
     },
     {
         title: "Cars",
         subTitle: "Rent Vehicles",
-        src: "/icons/car-m.gif",
+        // src: "/icons/car-m.gif",
+        src: "/icons/car.svg",
         path: "/cars",
         default: false,
     },
@@ -62,7 +66,7 @@ function ServicesNavigation() {
                         alt={service.subTitle}
                         width={WIDTH}
                         height={HEIGHT}
-                        unoptimized
+                        // unoptimized
                         priority
                         fetchPriority="high"
                         loading="eager"
