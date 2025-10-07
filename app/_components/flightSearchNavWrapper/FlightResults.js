@@ -415,7 +415,7 @@ function DisplayedCities() {
     return (
         <div>
             <h1 className="text-lg font-semibold capitalize flex items-center gap-2">
-                {departureObj.city}
+                <span className="max-ch-10">{departureObj.city}</span>
 
                 {type === "O" ? (
                     isRTL ? (
@@ -426,7 +426,7 @@ function DisplayedCities() {
                 ) : (
                     <ArrowsRightLeftIcon className="size-5" />
                 )}
-                {destinationObj.city}
+                <span className="max-ch-10">{destinationObj.city}</span>
             </h1>
         </div>
     );
@@ -538,7 +538,7 @@ export function NoFlightTickets() {
                         )}
                     </p>
                     <Button
-                        className="btn-primary sm:w-80"
+                        className="btn-primary sm:w-80 capitalize"
                         onClick={() => router.refresh()}
                     >
                         {t("operations.refrech")}

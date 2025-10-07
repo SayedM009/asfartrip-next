@@ -19,7 +19,7 @@ import {
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import useCheckLocal from "../_hooks/useCheckLocal";
-import useCurrencyConverter from "../_hooks/useCurrencyConverter";
+import { useCurrency } from "../_context/CurrencyContext";
 
 function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,13 +27,13 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
     const t = useTranslations("CurrencySwitcher");
     const { isRTL } = useCheckLocal();
 
-    // استخدام الـ Hook الجديد
+    // ✅ استخدام Context بدلاً من Hook المنفصل
     const { currentCurrency, updateCurrency, isLoading, error, exchangeRate } =
-        useCurrencyConverter("AED");
+        useCurrency();
 
-    const handleApply = async () => {
-        if (tempCurrency) {
-            updateCurrency(tempCurrency);
+    const handleApply = () => {
+        if (tempCurrency && tempCurrency !== currentCurrency) {
+            updateCurrency(tempCurrency); // ✅ هيحدث كل الـ components تلقائياً
         }
         setIsOpen(false);
     };
@@ -102,11 +102,20 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
                     </SelectContent>
                 </Select>
 
-                {/* عرض سعر الصرف الحالي */}
-                {currentCurrency !== "AED" && exchangeRate !== 1 && (
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                        {t("exchange_rate")}: 1 AED = {exchangeRate.toFixed(4)}{" "}
-                        {currentCurrency}
+                {/* عرض سعر الصرف */}
+                {currentCurrency !== "AED" &&
+                    exchangeRate !== 1 &&
+                    !isLoading && (
+                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                            {t("exchange_rate")}: 1 AED ={" "}
+                            {exchangeRate.toFixed(4)} {currentCurrency}
+                        </div>
+                    )}
+
+                {/* عرض حالة التحميل */}
+                {isLoading && (
+                    <div className="text-sm text-blue-500 mt-2">
+                        {t("loading")}...
                     </div>
                 )}
 
@@ -134,7 +143,7 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
                         className="hover:cursor-pointer hover:bg-input-background/20"
                         disabled={isLoading}
                     >
-                        {isLoading ? t("loading") : t("apply")}
+                        {t("apply")}
                     </Button>
                 </div>
             </DialogContent>

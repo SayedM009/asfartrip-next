@@ -3,12 +3,12 @@ import React, { useState, useRef } from "react";
 import { Button } from "../ui/button";
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "../ui/utils";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 
+import Image from "next/image";
 import useCheckLocal from "../../_hooks/useCheckLocal";
 import useDisplayShortDate from "@/app/_hooks/useDisplayShortDate";
-import useCurrencyConverter from "@/app/_hooks/useCurrencyConverter";
+import { useCurrency } from "@/app/_context/CurrencyContext";
 
 const destinations = [
     {
@@ -163,7 +163,8 @@ export function FlightsSlider() {
         }
     };
 
-    const { formatPrice, isLoading } = useCurrencyConverter("AED");
+    // Convert Currency
+    const { formatPrice } = useCurrency();
 
     return (
         <div

@@ -10,12 +10,20 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Plane, Clock, Luggage, CreditCard, AlertCircle } from "lucide-react";
+import {
+    Plane,
+    Clock,
+    Luggage,
+    CreditCard,
+    AlertCircle,
+    Backpack,
+} from "lucide-react";
 import { format, parseISO, differenceInMinutes } from "date-fns";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
+import { useCurrency } from "@/app/_context/CurrencyContext";
 
 // Airline code to name mapping - you can expand this or connect to an API
 const getAirlineName = (code) => {
@@ -99,6 +107,9 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
         return `https://images.kiwi.com/airlines/64x64/${carrier}.png`;
     };
 
+    // Convert Currency
+    const { formatPrice } = useCurrency();
+
     const renderFlightSegments = (segments, title) => (
         <div className="space-y-4">
             <h5 className="font-medium text-primary">{title}</h5>
@@ -106,19 +117,20 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                 <div key={index} className="border rounded-lg p-4">
                     <div className="flex items-center gap-3 mb-4">
                         <Image
-                            src={getAirlineLogo(segment.Carrier)}
+                            src={`/airline_logo/${segment.Carrier}.png`}
                             alt={segment.Carrier}
                             className="w-8 h-8 rounded"
                             onError={(e) => {
-                                e.src =
-                                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzk0YTNiOCIvPgo8L3N2Zz4K";
+                                e.currentTarget.src = `https://images.kiwi.com/airlines/64x64/${segment.Carrier}.png`;
                             }}
+                            loading="lazy"
                             width={30}
                             height={30}
                         />
                         <div>
                             <div className="font-medium">
-                                {getAirlineName(segment.Carrier)}{" "}
+                                {t(`airlines.${firstSegment.Carrier}`) ||
+                                    firstSegment.Carrier}{" "}
                                 {segment.FlightNumber}
                             </div>
                             <div className="text-sm text-muted-foreground">
@@ -220,6 +232,30 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
         </div>
     );
 
+    // Format Baggage
+    function formatBaggage(baggage) {
+        if (!baggage) return t("baggage.not_included");
+
+        let text = String(baggage).trim();
+
+        text = text.replace("NumberOfPieces", t("baggage.pieces"));
+        text = text.replace("Kilograms", t("baggage.Kilograms"));
+
+        const match = text.match(/(\D+)\s*(\d+)/);
+        if (match) {
+            const [, word, number] = match;
+            return `${number} ${word.trim()}`;
+        }
+
+        const match2 = text.match(/(\d+)\s*(\D+)/);
+        if (match2) {
+            const [, number, word] = match2;
+            return `${number} ${word.trim()}`;
+        }
+
+        return text;
+    }
+
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent
@@ -274,7 +310,7 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                             </div>
                             <div className="text-right ">
                                 <div className="text-xs font-bold">
-                                    {SITECurrencyType} {TotalPrice}
+                                    {formatPrice(TotalPrice)}
                                 </div>
                                 <div className="text-xs text-muted-foreground">
                                     {isRoundTrip
@@ -332,22 +368,16 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                             <div className="space-y-2 text-sm">
                                 <div className="flex justify-between">
                                     <span>{t("dialog.base_price")}</span>
-                                    <span>
-                                        {SITECurrencyType} {BasePrice}
-                                    </span>
+                                    <span>{formatPrice(BasePrice)}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span>{t("dialog.taxes_fees")}</span>
-                                    <span>
-                                        {SITECurrencyType} {Taxes}
-                                    </span>
+                                    <span>{formatPrice(Taxes)}</span>
                                 </div>
                                 <Separator />
                                 <div className="flex justify-between font-semibold">
                                     <span>{t("dialog.total_price")}</span>
-                                    <span>
-                                        {SITECurrencyType} {TotalPrice}
-                                    </span>
+                                    <span>{formatPrice(TotalPrice)}</span>
                                 </div>
                             </div>
                         </div>
@@ -359,27 +389,17 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                             </h4>
                             <div className="space-y-2">
                                 <div className="flex items-center gap-2 text-sm">
-                                    <Luggage className="h-4 w-4" />
+                                    <Backpack className="h-4 w-4" />
                                     <span>
                                         {t("baggage.cabin_luggage")}:{" "}
-                                        {String(CabinLuggage).replace(
-                                            "Kilograms",
-                                            t("baggage.Kilograms")
-                                        )}
+                                        {formatBaggage(CabinLuggage)}
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2 text-sm">
                                     <Luggage className="h-4 w-4" />
                                     <span>
                                         {t("baggage.checked_baggage")}:{" "}
-                                        {BaggageAllowance[0]
-                                            ? String(
-                                                  BaggageAllowance[0]
-                                              ).replace(
-                                                  "NumberOfPieces",
-                                                  t("baggage.pieces")
-                                              )
-                                            : t("baggage.not_included")}
+                                        {formatBaggage(BaggageAllowance[0])}
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2 text-sm">
@@ -406,15 +426,7 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                         <div className="flex-1 flex items-center gap-10">
                             <div className="flex justify-between font-semibold text-sm gap-2">
                                 <span>{t("dialog.total_price")}</span>
-                                <span>
-                                    {SITECurrencyType} {TotalPrice}
-                                </span>
-                            </div>
-                            <div className="flex justify-between font-semibold text-sm gap-2">
-                                <span>{t("dialog.total_price")}</span>
-                                <span>
-                                    {SITECurrencyType} {TotalPrice}
-                                </span>
+                                <span>{formatPrice(TotalPrice)}</span>
                             </div>
                         </div>
                         <Button

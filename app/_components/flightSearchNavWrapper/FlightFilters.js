@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
@@ -7,6 +7,9 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useTranslations } from "use-intl";
+import { useCurrency } from "@/app/_context/CurrencyContext";
+
+const API = process.env.NEXT_PUBLIC_APP_API_BASE_URL;
 
 export default function FlightFilters({
     flights,
@@ -16,6 +19,8 @@ export default function FlightFilters({
 }) {
     const [showAllAirlines, setShowAllAirlines] = useState(false);
     const [showAllAirports, setShowAllAirports] = useState(false);
+    const [airportsWithNames, setAirportsWithNames] = useState([]);
+
     const t = useTranslations("Flight");
 
     // === Helper functions ===
@@ -193,6 +198,47 @@ export default function FlightFilters({
         [priceRange, durationRange]
     );
 
+    async function fetchAirportDisplayName(code) {
+        try {
+            const res = await fetch(`${API}/api/flight/airports?term=${code}`);
+            const data = await res.json();
+
+            // نأخذ أول عنصر
+            const airport = Array.isArray(data) ? data[0] : data;
+
+            if (!airport?.value) return code;
+
+            const match = airport.value.match(/\([A-Z]{3}\)$/);
+            const lastCode = match ? match[0] : `(${code})`;
+
+            // نحذف أي تكرارات للكود داخل الاسم
+            let cleanName = airport.value.replace(/\([A-Z]{3}\)/g, "").trim();
+
+            return `${cleanName} ${lastCode}`;
+        } catch (error) {
+            console.error(`Error fetching airport ${code}:`, error);
+            return code;
+        }
+    }
+
+    useEffect(() => {
+        async function fetchAirportNames() {
+            if (!airports.length) return;
+
+            const updatedAirports = await Promise.all(
+                airports.map(async ([code, count]) => {
+                    const name = await fetchAirportDisplayName(code);
+                    return { code, count, name };
+                })
+            );
+
+            setAirportsWithNames(updatedAirports);
+        }
+
+        fetchAirportNames();
+    }, [airports]);
+
+    const { formatPrice, convertPrice } = useCurrency();
     return (
         <Card className="sm:p-4 space-y-1 border-0 shadow-none sm:shadow dark:shadow-gray-600">
             <div className="flex items-center justify-between">
@@ -287,14 +333,19 @@ export default function FlightFilters({
                                 label={
                                     <span className="flex items-center gap-2">
                                         <Image
-                                            src={`https://images.kiwi.com/airlines/64x64/${code}.png`}
+                                            src={`/airline_logo/${code}.png`}
                                             alt={code}
                                             width={20}
                                             height={20}
+                                            loading="lazy"
                                             className="rounded"
+                                            onError={(e) => {
+                                                e.currentTarget.src = `https://images.kiwi.com/airlines/64x64/${code}.png`;
+                                            }}
                                         />
                                         <span>
-                                            {code} ({count})
+                                            {t(`airlines.${code}`) || code} (
+                                            {count})
                                         </span>
                                     </span>
                                 }
@@ -331,11 +382,11 @@ export default function FlightFilters({
             )}
 
             {/* Price Range */}
-            <Section title={`${t("filters.price_range")}`}>
+            <Section title={`${t("filters.price_range")} `}>
                 <div className="px-2">
                     <Slider
-                        min={priceRange.min}
-                        max={priceRange.max}
+                        min={convertPrice(priceRange.min)}
+                        max={convertPrice(priceRange.max)}
                         step={50}
                         value={selectedFilters.priceRange}
                         onValueChange={(val) =>
@@ -344,8 +395,8 @@ export default function FlightFilters({
                         className="w-full duration-slider"
                     />
                     <div className="flex justify-between text-xs  mt-2 text-accent-500  font-semibold">
-                        <span>{priceRange.min}</span>
-                        <span>{priceRange.max}</span>
+                        <span>{formatPrice(priceRange.min)}</span>
+                        <span>{formatPrice(priceRange.max)}</span>
                     </div>
                 </div>
             </Section>
@@ -393,18 +444,18 @@ export default function FlightFilters({
             {/* Stopover Airports */}
             {airports.length > 0 && (
                 <Section title={`${t("filters.stopover_airports")}`}>
-                    {(showAllAirports ? airports : airports.slice(0, 5)).map(
-                        ([code, count]) => (
-                            <FilterCheckbox
-                                key={code}
-                                label={`${code} (${count})`}
-                                checked={selectedFilters.airports.includes(
-                                    code
-                                )}
-                                onChange={() => toggleFilter("airports", code)}
-                            />
-                        )
-                    )}
+                    {(showAllAirports
+                        ? airportsWithNames
+                        : airportsWithNames.slice(0, 5)
+                    ).map(({ code, name, count }) => (
+                        <FilterCheckbox
+                            key={code}
+                            label={`${name} — ${count}`} // شيل الكود من هنا
+                            checked={selectedFilters.airports.includes(code)}
+                            onChange={() => toggleFilter("airports", code)}
+                        />
+                    ))}
+
                     {airports.length > 5 && (
                         <Button
                             variant="ghost"

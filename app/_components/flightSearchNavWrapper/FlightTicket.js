@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import { useTranslations } from "next-intl";
+import { useCurrency } from "@/app/_context/CurrencyContext";
 
 // Airline code to name mapping
 const getAirlineName = (code) => {
@@ -33,9 +34,12 @@ const getAirlineName = (code) => {
 };
 
 export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
+    // Convert Currency
+    const { formatPrice } = useCurrency();
+
     const {
         TotalPrice,
-        SITECurrencyType,
+
         MultiLeg,
         segments,
         onward,
@@ -392,24 +396,21 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                             <div className="flex items-center gap-3">
                                 <div className="flex items-center gap-2">
                                     <Image
-                                        src={getAirlineLogo(
-                                            firstSegment.Carrier
-                                        )}
+                                        src={`/airline_logo/${firstSegment.Carrier}.png`}
                                         alt={firstSegment.Carrier}
                                         className="w-8 h-8 rounded"
-                                        onError={(e) => {
-                                            e.src =
-                                                "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzk0YTNiOCIvPgo8L3N2Zz4K";
-                                        }}
                                         width={30}
                                         height={30}
                                         loading="lazy"
+                                        onError={(e) => {
+                                            e.currentTarget.src = `https://images.kiwi.com/airlines/64x64/${firstSegment.Carrier}.png`;
+                                        }}
                                     />
                                     <div>
                                         <div className="font-medium text-sm">
-                                            {getAirlineName(
-                                                firstSegment.Carrier
-                                            )}
+                                            {t(
+                                                `airlines.${firstSegment.Carrier}`
+                                            ) || firstSegment.Carrier}
                                         </div>
                                         <div className="text-xs text-muted-foreground">
                                             {t(
@@ -430,11 +431,11 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                             {t("total_price")}
                                         </div>
                                         <div className=" font-bold  text-accent-500">
-                                            <span className="text-lg">
+                                            {/* <span className="text-lg">
                                                 {SITECurrencyType}
-                                            </span>{" "}
+                                            </span>{" "} */}
                                             <span className="text-2xl">
-                                                {TotalPrice}
+                                                {formatPrice(TotalPrice)}
                                             </span>
                                         </div>
 

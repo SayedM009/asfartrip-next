@@ -337,3 +337,10 @@ html {
 .btn-primary:hover {
     background-color: var(--color-accent-600);
 }
+
+.max-ch-10 {
+    max-width: 10ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

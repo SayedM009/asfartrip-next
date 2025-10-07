@@ -3,8 +3,6 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import CredentialsProvider from "@auth/core/providers/credentials";
 import { supabase } from "./supbase";
-import { cookies } from "next/headers";
-import { addYears } from "date-fns";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [

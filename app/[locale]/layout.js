@@ -8,6 +8,7 @@ import { AuthProvider } from "./providers";
 import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "../_components/Footer";
 import "@/app/[locale]/globals.css";
+import { CurrencyProvider } from "../_context/CurrencyContext";
 
 export const metadata = rootLayoutMetadata;
 
@@ -32,19 +33,27 @@ export default async function RootLayout({ children, params }) {
                 }  `}
             >
                 <AuthProvider>
-                    <NextIntlClientProvider locale={locale} messages={messages}>
-                        <ThemeProvider
-                            attribute="class"
-                            enableSystem
-                            defaultTheme="system"
+                    <CurrencyProvider baseCurrency="AED">
+                        <NextIntlClientProvider
+                            locale={locale}
+                            messages={messages}
                         >
-                            <main className="container-custom min-h-screen ">
-                                {children}
-                            </main>
-                            <Footer />
-                            <Toaster position="top-center" duration={1000} />
-                        </ThemeProvider>
-                    </NextIntlClientProvider>
+                            <ThemeProvider
+                                attribute="class"
+                                enableSystem
+                                defaultTheme="system"
+                            >
+                                <main className="container-custom min-h-screen ">
+                                    {children}
+                                </main>
+                                <Footer />
+                                <Toaster
+                                    position="top-center"
+                                    duration={1000}
+                                />
+                            </ThemeProvider>
+                        </NextIntlClientProvider>
+                    </CurrencyProvider>
                 </AuthProvider>
             </body>
         </html>

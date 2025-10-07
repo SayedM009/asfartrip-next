@@ -30,11 +30,11 @@ export default function PassengersAndClass({
 
     const getClassDisplayName = (className) => {
         switch (className) {
-            case "economy":
+            case "Economy":
                 return "Economy";
-            case "business":
+            case "Business":
                 return "Business";
-            case "first":
+            case "First":
                 return "First";
             default:
                 return "Economy";
@@ -110,6 +110,8 @@ export default function PassengersAndClass({
             max: 4,
         },
     ];
+
+    console.log(travelClass);
 
     return (
         <>

@@ -72,7 +72,7 @@ function DateRangeDialog({
                     <div>
                         <div className="font-semibold dark:text-gray-50">
                             {departDate
-                                ? formatDate(range.from, {
+                                ? formatDate(departDate, {
                                       pattern,
                                   })
                                 : t("departure_date")}

@@ -1,94 +1,12 @@
-// app/_libs/flightService.js
-import { loginWithExistsCredintials } from "./auth";
-import { getApiToken, setApiToken } from "./cookies";
-
-let cachedToken = null;
-let tokenExpiry = null;
-
-export async function getOrRefreshToken() {
-    // تحقق من الـ cache أولاً
-    if (cachedToken && tokenExpiry && Date.now() < tokenExpiry) {
-        return cachedToken;
+// 1. Search airports
+const API = process.env.NEXT_PUBLIC_APP_API_BASE_URL;
+export async function searchAirports(value) {
+    if (!value) throw new Error("There is no value");
+    try {
+        const res = await fetch(`${API}/api/flight/airports?term=${value}`);
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error(error.message);
     }
-
-    // جرب تجيب من الـ cookie
-    let token = await getApiToken();
-
-    // لو مش موجود، اعمل login
-    if (!token) {
-        console.log("No token found, logging in...");
-        token = await loginWithExistsCredintials();
-        await setApiToken(token);
-    }
-
-    // احفظ في الـ cache
-    cachedToken = token;
-    tokenExpiry = Date.now() + 9 * 60 * 1000; // 9 دقائق (أقل من الـ 10 دقائق بشوية)
-
-    return token;
-}
-
-export async function searchFlights(params, retryCount = 0) {
-    const MAX_RETRIES = 1;
-
-    let token = await getOrRefreshToken(); // ✅ استخدم الدالة الجديدة
-
-    const requestData = {
-        origin: params.origin,
-        destination: params.destination,
-        depart_date: params.depart_date,
-        ADT: params.ADT || 1,
-        CHD: params.CHD || 0,
-        INF: params.INF || 0,
-        class: `${params.class[0].toUpperCase()}${params.class.slice(1)}`,
-        type: params.type || "O",
-        api_token: token,
-    };
-
-    if (params.type === "R" && params.return_date)
-        requestData.return_date = params.return_date;
-
-    const username = process.env.TP_USERNAME;
-    const password = process.env.TP_PASSWORD;
-    const basicAuth = Buffer.from(`${username}:${password}`).toString("base64");
-
-    const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/flight/search`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                Authorization: `Basic ${basicAuth}`,
-            },
-            body: new URLSearchParams(requestData),
-        }
-    );
-
-    if (res.status === 401 && retryCount < MAX_RETRIES) {
-        console.log("Token expired or invalid, refreshing...");
-
-        // ✅ امسح الـ cache والـ cookie
-        cachedToken = null;
-        tokenExpiry = null;
-        await clearAPIToken();
-
-        // اعمل login جديد
-        const newToken = await loginWithExistsCredintials();
-        await setApiToken(newToken);
-
-        // احفظ في الـ cache
-        cachedToken = newToken;
-        tokenExpiry = Date.now() + 9 * 60 * 1000;
-
-        return searchFlights(params, retryCount + 1);
-    }
-
-    if (!res.ok) {
-        const errText = await res.text();
-        console.error("Search error body:", requestData);
-        console.error("Search response:", errText);
-        throw new Error("Failed to search flights");
-    }
-
-    return await res.json();
 }

@@ -1,4 +1,4 @@
-import { searchAirports } from "@/app/_libs/api-services";
+import { searchAirports } from "@/app/_libs/flightService";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -106,7 +106,7 @@ function DestinationSearchDialog({
             }}
         >
             <DialogTrigger
-                className={`flex-1 flex flex-wrap justify-${dir} font-semibold capitalize`}
+                className={`flex-1 flex flex-wrap justify-${dir} font-semibold capitalize max-ch-20`}
             >
                 {destination?.city ?? "City"}
                 <span

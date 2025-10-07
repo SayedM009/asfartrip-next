@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, Plane } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { searchAirports } from "@/app/_libs/api-services";
+import { searchAirports } from "@/app/_libs/flightService";
 import SwapButton from "../SwapButton";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 
