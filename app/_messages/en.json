@@ -233,7 +233,8 @@
             "outbound_flight": "Outbound Flight",
             "return_flight": "Return Flight",
             "terminal": "Terminal",
-            "flight_time": "Flight time"
+            "flight_time": "Flight time",
+            "confiming": "Confiming"
         },
         "baggage": {
             "cabin_luggage": "Cabin Luggage",

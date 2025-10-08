@@ -231,7 +231,8 @@
             "outbound_flight": "رحلة الذهاب",
             "return_flight": "رحلة العودة",
             "terminal": "المبنى",
-            "flight_time": "مدة الرحلة"
+            "flight_time": "مدة الرحلة",
+            "checking": "التأكد من السعر"
         },
         "baggage": {
             "cabin_luggage": "أمتعة المقصورة",

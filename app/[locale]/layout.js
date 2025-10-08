@@ -20,6 +20,10 @@ export default async function RootLayout({ children, params }) {
     const { locale } = await params;
     const conditions = locale === "ar";
     const messages = await getMessages();
+    console.log(
+        await params,
+        "********************************************************************"
+    );
 
     return (
         <html

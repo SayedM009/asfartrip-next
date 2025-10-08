@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
     Dialog,
     DialogContent,
@@ -17,6 +17,7 @@ import {
     CreditCard,
     AlertCircle,
     Backpack,
+    Loader2,
 } from "lucide-react";
 import { format, parseISO, differenceInMinutes } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -24,30 +25,13 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 import { useCurrency } from "@/app/_context/CurrencyContext";
+import { useRouter } from "@/i18n/navigation";
 
-// Airline code to name mapping - you can expand this or connect to an API
-const getAirlineName = (code) => {
-    const airlines = {
-        EK: "Emirates",
-        FZ: "flydubai",
-        J2: "Azerbaijan Airlines",
-        TK: "Turkish Airlines",
-        AF: "Air France",
-        BA: "British Airways",
-        LH: "Lufthansa",
-        KL: "KLM",
-        QR: "Qatar Airways",
-        EY: "Etihad Airways",
-        SV: "Saudia",
-        MS: "EgyptAir",
-        RJ: "Royal Jordanian",
-        ME: "Middle East Airlines",
-        HR: "Hahn Air",
-    };
-    return airlines[code] || code;
-};
+export function FlightDetailsDialog({ ticket, isOpen, onClose }) {
+    const router = useRouter();
+    const [isChecking, setIsChecking] = useState(false);
+    const [pricingError, setPricingError] = useState(null);
 
-export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
     const {
         TotalPrice,
         BasePrice,
@@ -60,11 +44,14 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
         return: returnJourney,
         CabinLuggage,
         BaggageAllowance,
+        rawRequestBase64,
+        rawResponseBase64,
     } = ticket;
 
     const t = useTranslations("Flight");
-
     const formatDate = useDateFormatter();
+    const { formatPrice } = useCurrency();
+
     // Determine if this is a round trip ticket
     const isRoundTrip = MultiLeg === "true" && onward && returnJourney;
 
@@ -103,12 +90,128 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
             .replace("m", t("m"));
     };
 
-    const getAirlineLogo = (carrier) => {
-        return `https://images.kiwi.com/airlines/64x64/${carrier}.png`;
-    };
+    function formatBaggage(baggage) {
+        if (!baggage) return t("baggage.not_included");
 
-    // Convert Currency
-    const { formatPrice } = useCurrency();
+        let text = String(baggage).trim();
+        text = text.replace("NumberOfPieces", t("baggage.pieces"));
+        text = text.replace("Kilograms", t("baggage.Kilograms"));
+
+        const match = text.match(/(\D+)\s*(\d+)/);
+        if (match) {
+            const [, word, number] = match;
+            return `${number} ${word.trim()}`;
+        }
+
+        const match2 = text.match(/(\d+)\s*(\D+)/);
+        if (match2) {
+            const [, number, word] = match2;
+            return `${number} ${word.trim()}`;
+        }
+
+        return text;
+    }
+
+    /**
+     * Handle Continue button - Check air pricing
+     */
+    const handleContinue = async () => {
+        // Validate required fields
+        if (!rawRequestBase64 || !rawResponseBase64) {
+            setPricingError("Missing flight data. Please search again.");
+            return;
+        }
+
+        setIsChecking(true);
+        setPricingError(null);
+
+        try {
+            console.log("🔍 Checking air pricing...");
+
+            const response = await fetch("/api/air-pricing", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    request: rawRequestBase64,
+                    response: rawResponseBase64,
+                    originalPrice: TotalPrice, // optional: for price comparison
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Failed to check pricing");
+            }
+
+            console.log("📊 Pricing result:", data);
+
+            // Handle different statuses
+            switch (data.status) {
+                case "success":
+                    // Store session data and navigate to booking page
+                    console.log("✅ Price confirmed, proceeding to booking...");
+
+                    // Navigate to booking page with session_id
+                    router.push(
+                        `/flights/booking?session_id=${data.data.sessionId}&temp_id=${data.data.tempId}`
+                    );
+                    break;
+
+                case "price_changed":
+                    // Show price change notification
+                    console.log("⚠️ Price changed:", data.data);
+                    setPricingError(
+                        `Price has changed from ${formatPrice(
+                            data.data.oldPrice
+                        )} to ${formatPrice(
+                            data.data.newPrice
+                        )}. Please review and continue.`
+                    );
+
+                    // You can also show a confirmation dialog here
+                    // If user confirms, navigate with new price
+                    if (
+                        confirm(
+                            data.message +
+                                `\n\nNew Price: ${formatPrice(
+                                    data.data.totalPrice
+                                )}\n\nContinue?`
+                        )
+                    ) {
+                        router.push(
+                            `/booking?session_id=${data.data.sessionId}&temp_id=${data.data.tempId}`
+                        );
+                    }
+                    break;
+
+                case "not_available":
+                    // Redirect to not available page
+                    console.log("❌ Flight not available");
+                    router.push("/price-not-found");
+                    break;
+
+                case "error":
+                    throw new Error(data.error || "Pricing check failed");
+
+                default:
+                    console.warn("Unknown status:", data.status);
+                    setPricingError(
+                        data.message || "Unexpected response from server"
+                    );
+            }
+        } catch (error) {
+            console.error("❌ Pricing check error:", error);
+            setPricingError(
+                error.message ||
+                    "Failed to check flight availability. Please try again."
+            );
+        } finally {
+            setIsChecking(false);
+        }
+    };
 
     const renderFlightSegments = (segments, title) => (
         <div className="space-y-4">
@@ -129,8 +232,8 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                         />
                         <div>
                             <div className="font-medium">
-                                {t(`airlines.${firstSegment.Carrier}`) ||
-                                    firstSegment.Carrier}{" "}
+                                {t(`airlines.${segment.Carrier}`) ||
+                                    segment.Carrier}{" "}
                                 {segment.FlightNumber}
                             </div>
                             <div className="text-sm text-muted-foreground">
@@ -232,36 +335,12 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
         </div>
     );
 
-    // Format Baggage
-    function formatBaggage(baggage) {
-        if (!baggage) return t("baggage.not_included");
-
-        let text = String(baggage).trim();
-
-        text = text.replace("NumberOfPieces", t("baggage.pieces"));
-        text = text.replace("Kilograms", t("baggage.Kilograms"));
-
-        const match = text.match(/(\D+)\s*(\d+)/);
-        if (match) {
-            const [, word, number] = match;
-            return `${number} ${word.trim()}`;
-        }
-
-        const match2 = text.match(/(\d+)\s*(\D+)/);
-        if (match2) {
-            const [, number, word] = match2;
-            return `${number} ${word.trim()}`;
-        }
-
-        return text;
-    }
-
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent
                 className={cn(
                     "dialog-bg",
-                    "max-w-none  h-full overflow-auto rounded-none border-0  md:rounded sm:fixed sm:left-[87%]",
+                    "max-w-none h-full overflow-auto rounded-none border-0 md:rounded sm:fixed sm:left-[87%]",
                     "open-slide-right",
                     "close-slide-right",
                     "overflow-x-hidden pb-0"
@@ -308,7 +387,7 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                                     )}
                                 </p>
                             </div>
-                            <div className="text-right ">
+                            <div className="text-right">
                                 <div className="text-xs font-bold">
                                     {formatPrice(TotalPrice)}
                                 </div>
@@ -419,10 +498,20 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                             </div>
                         </div>
                     </div>
+
+                    {/* Error Message */}
+                    {pricingError && (
+                        <div className="p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg">
+                            <div className="flex items-start gap-2 text-red-800 dark:text-red-200">
+                                <AlertCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                                <p className="text-sm">{pricingError}</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
-                <DialogFooter className="sticky bottom-0 w-full p-3 bg-muted ">
-                    {/* Action Buttons */}
-                    <div className="flex flex-col items-center sm:flex-row gap-3 pt-4 border-t w-full">
+
+                <DialogFooter className="sticky bottom-0 w-full p-3 bg-white dark:bg-muted rounded-t-2xl">
+                    <div className="flex flex-col items-center sm:flex-row gap-3 pt-4 w-full">
                         <div className="flex-1 flex items-center gap-10">
                             <div className="flex justify-between font-semibold text-sm gap-2">
                                 <span>{t("dialog.total_price")}</span>
@@ -430,10 +519,18 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose, onContinue }) {
                             </div>
                         </div>
                         <Button
-                            onClick={onContinue}
+                            onClick={handleContinue}
                             className="btn-primary flex-1"
+                            disabled={isChecking}
                         >
-                            {t("dialog.continue")}
+                            {isChecking ? (
+                                <>
+                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                    {t("dialog.confiming")}
+                                </>
+                            ) : (
+                                t("dialog.continue")
+                            )}
                         </Button>
                     </div>
                 </DialogFooter>

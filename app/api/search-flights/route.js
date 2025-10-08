@@ -1,243 +1,219 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { loginWithExistsCredintials } from "@/app/_libs/auth";
+import {
+    getValidToken,
+    clearAPIToken,
+    setApiToken,
+} from "@/app/_libs/token-manager";
 
-const TOKEN_EXPIRY = 10 * 60;
+// Request timeout: 30 seconds
+const REQUEST_TIMEOUT = 30000;
 
+/**
+ * Makes flight search request with timeout
+ */
 async function makeFlightSearchRequest(requestData, basicAuth, apiUrl) {
-    return await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: `Basic ${basicAuth}`,
-        },
-        body: new URLSearchParams(requestData),
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                Authorization: `Basic ${basicAuth}`,
+            },
+            body: new URLSearchParams(requestData),
+            signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+        return response;
+    } catch (error) {
+        clearTimeout(timeoutId);
+
+        if (error.name === "AbortError") {
+            throw new Error("Request timeout - please try again");
+        }
+
+        throw error;
+    }
 }
 
-async function refreshToken(cookieStore) {
-    console.log("🔄 Refreshing token...");
+/**
+ * Prepares request data from params
+ */
+function prepareRequestData(params, token) {
+    const requestData = {
+        origin: params.origin,
+        destination: params.destination,
+        depart_date: params.depart_date,
+        ADT: params.ADT || 1,
+        CHD: params.CHD || 0,
+        INF: params.INF || 0,
+        class: `${params.class[0].toUpperCase()}${params.class.slice(1)}`,
+        type: params.type || "O",
+        api_token: token,
+    };
 
-    cookieStore.delete("api_token");
-
-    const token = await loginWithExistsCredintials();
-
-    if (!token) {
-        throw new Error("Failed to obtain authentication token");
+    // Add return date for round trips
+    if (params.type === "R" && params.return_date) {
+        requestData.return_date = params.return_date;
     }
 
-    cookieStore.set("api_token", token, {
-        path: "/",
-        httpOnly: true,
-        maxAge: TOKEN_EXPIRY,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-    });
+    return requestData;
+}
 
-    console.log("✅ Token refreshed");
-    return token;
+/**
+ * Validates search parameters
+ */
+function validateParams(params) {
+    const required = ["origin", "destination", "depart_date", "class"];
+    const missing = required.filter((field) => !params[field]);
+
+    if (missing.length > 0) {
+        throw new Error(`Missing required fields: ${missing.join(", ")}`);
+    }
+
+    return true;
 }
 
 export async function POST(req) {
+    const requestId = `REQ_${Date.now()}_${Math.random()
+        .toString(36)
+        .substr(2, 9)}`;
+
     try {
+        console.log(
+            `📥 [${new Date().toISOString()}] [${requestId}] Search request received`
+        );
+
+        // Parse and validate parameters
         const params = await req.json();
-        console.log("📥 Search request received");
+        validateParams(params);
 
-        const cookieStore = await cookies();
-        let token = cookieStore.get("api_token")?.value;
+        console.log(
+            `🔍 [${new Date().toISOString()}] [${requestId}] Params: ${
+                params.origin
+            } → ${params.destination}, ${params.depart_date}`
+        );
 
-        // لو مفيش token، اجيب واحد جديد
-        if (!token) {
-            console.log("🔐 No token found, getting new one...");
-            token = await refreshToken(cookieStore);
-        } else {
-            console.log("✅ Using existing token");
-        }
+        // Get valid token (will refresh if needed)
+        let token = await getValidToken();
 
-        // حضر الـ request data
-        const requestData = {
-            origin: params.origin,
-            destination: params.destination,
-            depart_date: params.depart_date,
-            ADT: params.ADT || 1,
-            CHD: params.CHD || 0,
-            INF: params.INF || 0,
-            class: `${params.class[0].toUpperCase()}${params.class.slice(1)}`,
-            type: params.type || "O",
-            api_token: token,
-        };
-
-        if (params.type === "R" && params.return_date) {
-            requestData.return_date = params.return_date;
-        }
-
+        // Prepare credentials and URL
         const username = process.env.TP_USERNAME;
         const password = process.env.TP_PASSWORD;
+
+        if (!username || !password) {
+            throw new Error("Missing API credentials configuration");
+        }
+
         const basicAuth = Buffer.from(`${username}:${password}`).toString(
             "base64"
         );
-
         const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/flight/search`;
 
-        console.log("🔍 Searching flights...");
+        // Prepare request data
+        let requestData = prepareRequestData(params, token);
 
-        // ابعت الـ request الأول
-        let res = await makeFlightSearchRequest(requestData, basicAuth, apiUrl);
+        // Make first request
+        let response = await makeFlightSearchRequest(
+            requestData,
+            basicAuth,
+            apiUrl
+        );
 
-        console.log("📡 Response status:", res.status);
+        // If authentication failed, try ONE more time with fresh token
+        if (response.status === 401 || response.status === 403) {
+            console.log(
+                `⚠️ [${new Date().toISOString()}] [${requestId}] Authentication failed, forcing token refresh...`
+            );
 
-        // ✅ لو فشل بسبب authentication، اعمل refresh وحاول تاني
-        if (res.status === 401 || res.status === 403) {
-            console.log("⚠️ Token invalid/expired, refreshing...");
+            // Force clear and get new token
+            await clearAPIToken();
+            const newToken = await loginWithExistsCredintials();
 
-            token = await refreshToken(cookieStore);
-            requestData.api_token = token;
+            if (!newToken) {
+                throw new Error("Failed to refresh authentication token");
+            }
 
-            console.log("🔍 Retrying search with new token...");
-            res = await makeFlightSearchRequest(requestData, basicAuth, apiUrl);
-            console.log("📡 Retry response status:", res.status);
-        }
+            await setApiToken(newToken);
 
-        // لو لسه فيه مشكلة
-        if (!res.ok) {
-            const errText = await res.text();
-            console.error("❌ API Error:", errText);
+            // Update request data with new token
+            requestData.api_token = newToken;
 
-            return NextResponse.json(
-                { error: errText || "Failed to search flights" },
-                { status: res.status }
+            console.log(
+                `🔄 [${new Date().toISOString()}] [${requestId}] Retrying with fresh token...`
+            );
+
+            // Retry ONCE
+            response = await makeFlightSearchRequest(
+                requestData,
+                basicAuth,
+                apiUrl
+            );
+
+            console.log(
+                `📡 [${new Date().toISOString()}] [${requestId}] Retry response status: ${
+                    response.status
+                }`
             );
         }
 
-        const data = await res.json();
-        console.log("✅ Search successful, returning results");
+        // Handle non-OK response
+        if (!response.ok) {
+            let errorMessage = "Failed to search flights";
+
+            try {
+                const errorText = await response.text();
+                console.error(
+                    `❌ [${new Date().toISOString()}] [${requestId}] API Error (${
+                        response.status
+                    }):`,
+                    errorText
+                );
+
+                // Try to parse error message
+                try {
+                    const errorJson = JSON.parse(errorText);
+                    errorMessage =
+                        errorJson.message || errorJson.error || errorMessage;
+                } catch {
+                    errorMessage = errorText || errorMessage;
+                }
+            } catch (e) {
+                console.error(
+                    `❌ [${new Date().toISOString()}] [${requestId}] Could not read error response`
+                );
+            }
+
+            return NextResponse.json(
+                {
+                    error: errorMessage,
+                    requestId: requestId,
+                    status: response.status,
+                },
+                { status: response.status }
+            );
+        }
+
+        // Parse successful response
+        const data = await response.json();
 
         return NextResponse.json(data);
-    } catch (err) {
-        console.error("❌ Critical Error:", err.message);
-        console.error(err);
+    } catch (error) {
+        console.error(
+            `❌ [${new Date().toISOString()}] [${requestId}] Critical error:`,
+            error.message
+        );
+        console.error(error);
 
         return NextResponse.json(
-            { error: err.message || "Internal server error" },
+            {
+                error: error.message || "Internal server error",
+                requestId: requestId,
+            },
             { status: 500 }
         );
     }
 }
-
-// import { NextResponse } from "next/server";
-// import { cookies } from "next/headers";
-// import { loginWithExistsCredintials } from "@/app/_libs/auth";
-
-// const TOKEN_EXPIRY = 10 * 60;
-
-// async function getOrRefreshToken() {
-//     const cookieStore = await cookies();
-//     let token = cookieStore.get("api_token")?.value;
-
-//     if (!token) {
-//         console.log("No token, logging in...");
-//         token = await loginWithExistsCredintials();
-
-//         cookieStore.set("api_token", token, {
-//             path: "/",
-//             httpOnly: true,
-//             maxAge: TOKEN_EXPIRY,
-//             secure: process.env.NODE_ENV === "production",
-//             sameSite: "lax",
-//         });
-//     }
-
-//     return token;
-// }
-
-// export async function POST(req) {
-//     try {
-//         const params = await req.json();
-
-//         // جيب الـ token
-//         let token = await getOrRefreshToken();
-
-//         // حضر الـ request data
-//         const requestData = {
-//             origin: params.origin,
-//             destination: params.destination,
-//             depart_date: params.depart_date,
-//             ADT: params.ADT || 1,
-//             CHD: params.CHD || 0,
-//             INF: params.INF || 0,
-//             class: `${params.class[0].toUpperCase()}${params.class.slice(1)}`,
-//             type: params.type || "O",
-//             api_token: token,
-//         };
-
-//         if (params.type === "R" && params.return_date) {
-//             requestData.return_date = params.return_date;
-//         }
-
-//         const username = process.env.TP_USERNAME;
-//         const password = process.env.TP_PASSWORD;
-//         const basicAuth = Buffer.from(`${username}:${password}`).toString(
-//             "base64"
-//         );
-
-//         // ابعت للـ External API
-//         let res = await fetch(
-//             `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/flight/search`,
-//             {
-//                 method: "POST",
-//                 headers: {
-//                     "Content-Type": "application/x-www-form-urlencoded",
-//                     Authorization: `Basic ${basicAuth}`,
-//                 },
-//                 body: new URLSearchParams(requestData),
-//             }
-//         );
-
-//         // لو Token expired
-//         if (res.status === 401) {
-//             console.log("Token expired, refreshing...");
-
-//             const cookieStore = await cookies();
-//             cookieStore.delete("api_token");
-
-//             // اعمل login جديد
-//             token = await loginWithExistsCredintials();
-//             cookieStore.set("api_token", token, {
-//                 path: "/",
-//                 httpOnly: true,
-//                 maxAge: TOKEN_EXPIRY,
-//                 secure: process.env.NODE_ENV === "production",
-//                 sameSite: "lax",
-//             });
-
-//             // حاول تاني بالـ token الجديد
-//             requestData.api_token = token;
-//             res = await fetch(
-//                 `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/flight/search`,
-//                 {
-//                     method: "POST",
-//                     headers: {
-//                         "Content-Type": "application/x-www-form-urlencoded",
-//                         Authorization: `Basic ${basicAuth}`,
-//                     },
-//                     body: new URLSearchParams(requestData),
-//                 }
-//             );
-//         }
-
-//         if (!res.ok) {
-//             const errText = await res.text();
-//             console.error("Search failed:", errText);
-//             throw new Error("Failed to search flights");
-//         }
-
-//         const data = await res.json();
-//         return NextResponse.json(data);
-//     } catch (err) {
-//         console.error("API Route Error:", err);
-//         return NextResponse.json(
-//             { error: err.message || "Failed to search" },
-//             { status: 500 }
-//         );
-//     }
-// }

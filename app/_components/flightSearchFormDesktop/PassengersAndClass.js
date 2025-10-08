@@ -111,8 +111,6 @@ export default function PassengersAndClass({
         },
     ];
 
-    console.log(travelClass);
-
     return (
         <>
             <div className="flex-1">

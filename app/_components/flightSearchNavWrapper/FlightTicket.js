@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FlightDetailsDialog } from "./FlightDetailsDialog";
-import { Plane, Clock, Luggage, ArrowRight } from "lucide-react";
+import { Plane, Luggage, ArrowRight, Backpack } from "lucide-react";
 import { format, parseISO, differenceInMinutes } from "date-fns";
 import Image from "next/image";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
@@ -11,39 +11,17 @@ import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import { useTranslations } from "next-intl";
 import { useCurrency } from "@/app/_context/CurrencyContext";
 
-// Airline code to name mapping
-const getAirlineName = (code) => {
-    const airlines = {
-        EK: "Emirates",
-        FZ: "flydubai",
-        J2: "Azerbaijan Airlines",
-        TK: "Turkish Airlines",
-        AF: "Air France",
-        BA: "British Airways",
-        LH: "Lufthansa",
-        KL: "KLM",
-        QR: "Qatar Airways",
-        EY: "Etihad Airways",
-        SV: "Saudia",
-        MS: "EgyptAir",
-        RJ: "Royal Jordanian",
-        ME: "Middle East Airlines",
-        HR: "Hahn Air",
-    };
-    return airlines[code] || code;
-};
-
 export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
     // Convert Currency
     const { formatPrice } = useCurrency();
 
     const {
         TotalPrice,
-
         MultiLeg,
         segments,
         onward,
         return: returnJourney,
+        CabinLuggage,
     } = ticket;
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
     const { isRTL } = useCheckLocal();
@@ -412,11 +390,14 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                                 `airlines.${firstSegment.Carrier}`
                                             ) || firstSegment.Carrier}
                                         </div>
-                                        <div className="text-xs text-muted-foreground">
+                                        <div className="text-xs text-muted-foreground capitalize flex items-center gap-2">
                                             {t(
                                                 `ticket_class.${String(
                                                     firstSegment.CabinClass
                                                 ).toLowerCase()}`
+                                            )}
+                                            {CabinLuggage && (
+                                                <Backpack className="size-4" />
                                             )}
                                         </div>
                                     </div>

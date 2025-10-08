@@ -9,16 +9,20 @@ import Image from "next/image";
 import useCheckLocal from "../../_hooks/useCheckLocal";
 import useDisplayShortDate from "@/app/_hooks/useDisplayShortDate";
 import { useCurrency } from "@/app/_context/CurrencyContext";
+import { useRouter } from "@/i18n/navigation";
+import { addDays, format } from "date-fns";
 
 const destinations = [
     {
         id: "1",
         from: "dubai",
+        fromCode: "DXB",
         to: "riyadh",
+        toCode: "RUH",
         backgroundColor:
             "bg-gradient-to-br from-orange-400 via-orange-500 to-red-500",
         img: "/destinations/riyadh.jpg",
-        date: "2025-09-12T00:00:00.000Z", // ISO format
+        date: "2025-09-12T00:00:00.000Z",
         time: "1h 40m",
         isDirect: Math.random() < 0.5,
         price: Math.floor(Math.random() * 901) + 100,
@@ -26,7 +30,9 @@ const destinations = [
     {
         id: "2",
         from: "dubai",
+        fromCode: "DXB",
         to: "salalah",
+        toCode: "SLL",
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
@@ -39,7 +45,9 @@ const destinations = [
     {
         id: "3",
         from: "dubai",
+        fromCode: "DXB",
         to: "trabzon",
+        toCode: "TZX",
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
@@ -52,7 +60,9 @@ const destinations = [
     {
         id: "4",
         from: "dubai",
+        fromCode: "DXB",
         to: "tbilisi",
+        toCode: "TBS",
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
@@ -65,7 +75,9 @@ const destinations = [
     {
         id: "5",
         from: "dubai",
+        fromCode: "DXB",
         to: "saraievo",
+        toCode: "SJJ",
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
@@ -78,7 +90,9 @@ const destinations = [
     {
         id: "6",
         from: "dubai",
+        fromCode: "DXB",
         to: "vienna",
+        toCode: "VIE",
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
@@ -91,7 +105,9 @@ const destinations = [
     {
         id: "7",
         from: "dubai",
+        fromCode: "DXB",
         to: "salzburg",
+        toCode: "SZG",
         backgroundColor:
             "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
         textColor: "text-white",
@@ -104,7 +120,9 @@ const destinations = [
     {
         id: "8",
         from: "dubai",
+        fromCode: "DXB",
         to: "cairo",
+        toCode: "CAI",
         backgroundColor:
             "bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-500",
         textColor: "text-white",
@@ -120,6 +138,7 @@ export function FlightsSlider() {
     const scrollContainerRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(true);
+    const router = useRouter();
     const t = useTranslations("Flights_slider");
     const { isRTL } = useCheckLocal();
     const displayShortDate = useDisplayShortDate();
@@ -166,6 +185,28 @@ export function FlightsSlider() {
     // Convert Currency
     const { formatPrice } = useCurrency();
 
+    function handleSlideClick(card) {
+        const searchObject = {
+            origin: card.fromCode,
+            destination: card.toCode,
+            depart_date: format(addDays(new Date(), 2), "dd-MM-yyyy"),
+            ADT: 1,
+            CHD: 0,
+            INF: 0,
+            class: "Economy",
+            type: "O",
+        };
+
+        const cities = {
+            departure: { city: card.from, label_code: card.from.toUpperCase() },
+            destination: { city: card.to, label_code: card.to.toUpperCase() },
+        };
+
+        const params = new URLSearchParams();
+        params.set("searchObject", JSON.stringify(searchObject));
+        params.set("cities", JSON.stringify(cities));
+        router.push(`/flights/search?${params.toString()}`);
+    }
     return (
         <div
             className="pb-8 px-4  lg:px-8 bg-background sm:mt-5"
@@ -241,6 +282,7 @@ export function FlightsSlider() {
                                 key={card.id}
                                 className="flex-shrink-0 w-[80vw] sm:w-72 lg:w-80"
                                 style={{ scrollSnapAlign: "start" }}
+                                onClick={() => handleSlideClick(card)} // 👈 أضف هذا
                             >
                                 <div
                                     className={cn(
