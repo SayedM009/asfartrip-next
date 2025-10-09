@@ -325,7 +325,11 @@ export function FlightsSlider() {
                                             <div className="flex items-center justify-between text-sm">
                                                 <h4>
                                                     {t("start_from")}{" "}
-                                                    {formatPrice(card.price)}
+                                                    <span className="text-accent-500">
+                                                        {formatPrice(
+                                                            card.price
+                                                        )}
+                                                    </span>
                                                 </h4>
                                                 <h4 className="bg-gray-300 rounded-sm px-2 text-gray-900 text-xs">
                                                     {card.isDirect &&

@@ -6,6 +6,7 @@ import {
     useEffect,
     useCallback,
 } from "react";
+import { useTheme } from "next-themes";
 
 // ============================================
 // Function API Exchange Rates
@@ -120,6 +121,7 @@ export function CurrencyProvider({ children, baseCurrency = "AED" }) {
     const [exchangeRate, setExchangeRate] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const { theme } = useTheme();
 
     // Get the saved currency in localStorage
     useEffect(() => {
@@ -172,6 +174,23 @@ export function CurrencyProvider({ children, baseCurrency = "AED" }) {
     );
 
     // Convert the price with currency
+    // const formatPrice = useCallback(
+    //     (price) => {
+    //         const converted = convertPrice(price);
+    //         const currencySymbols = {
+    //             USD: "$",
+    //             EUR: "€",
+    //             GBP: "£",
+    //             CHF: "CHF",
+    //             AED: "AED",
+    //         };
+    //         return `${
+    //             currencySymbols[currentCurrency] || currentCurrency
+    //         } ${converted}`;
+    //     },
+    //     [convertPrice, currentCurrency]
+    // );
+
     const formatPrice = useCallback(
         (price) => {
             const converted = convertPrice(price);
@@ -181,12 +200,43 @@ export function CurrencyProvider({ children, baseCurrency = "AED" }) {
                 GBP: "£",
                 CHF: "CHF",
                 AED: "AED",
+                SAR: "SAR",
             };
+
+            // لو العملة درهم إماراتي أو ريال سعودي، نعرض صورة بدل الرمز
+            const isImageCurrency =
+                currentCurrency === "AED" || currentCurrency === "SAR";
+
+            if (isImageCurrency) {
+                const iconSrc =
+                    currentCurrency === "AED"
+                        ? theme === "dark"
+                            ? "/currencies/uae.svg"
+                            : "/currencies/uae.svg"
+                        : theme === "dark"
+                        ? "/currencies/saudi.svg"
+                        : "/currencies/saudi.svg";
+
+                // نعيد JSX بدل النص
+                return (
+                    <span className="inline-flex items-center gap-1">
+                        <span>{converted}</span>
+                        <img
+                            src={iconSrc}
+                            alt={currentCurrency}
+                            width={15}
+                            height={15}
+                        />
+                    </span>
+                );
+            }
+
+            // باقي العملات
             return `${
                 currencySymbols[currentCurrency] || currentCurrency
             } ${converted}`;
         },
-        [convertPrice, currentCurrency]
+        [convertPrice, currentCurrency, theme]
     );
 
     // دالة لتحديث العملة (مع broadcast للـ components)

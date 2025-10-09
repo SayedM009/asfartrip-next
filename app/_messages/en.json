@@ -7,6 +7,14 @@
         "offers": "offers",
         "more": "more"
     },
+    "FlightPage": {
+        "title": "Book Cheap Flights Online | AsfarTrip",
+        "description": "Find and book cheap flight tickets with AsfarTrip. Compare airfares from top airlines, explore domestic and international routes, and enjoy secure online booking with exclusive deals.",
+        "Search": {
+            "title": "Compare Flight Prices & Book Cheap Air Tickets | AsfarTrip",
+            "description": "View the best flight deals from top airlines on AsfarTrip. Compare prices, flight times, and routes to book your perfect trip quickly and securely online."
+        }
+    },
     "Pages": {
         "about_us": "About Us",
         "contact_us": "Contact Us",
@@ -46,8 +54,16 @@
             "us": "US Dollar",
             "eu": "Euro",
             "gbp": "British Pound",
-            "chf": "Swiss Franc",
-            "ae": "UAE Dirham"
+            "ae": "UAE Dirham",
+            "sa": "Saudi Riyal",
+            "eg": "Egyptian Pound",
+            "qa": "Qatari Riyal",
+            "om": "Omani Rial",
+            "tr": "Turkish Lira",
+            "in": "Indian Rupee",
+            "pk": "Pakistani Rupee",
+            "ph": "Philippine Peso",
+            "id": "Indonesian Rupiah"
         }
     },
     "Login": {

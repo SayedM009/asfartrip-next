@@ -20,11 +20,10 @@ export async function generateMetadata({ params }) {
     const dict = await getDictionary(locale);
 
     return generateMetadataObj({
-        title: dict.Homepage.title,
-        description: dict.Homepage.description,
-        url: "https://www.asfartrip.com/",
+        title: dict.FlightPage.title,
+        description: dict.FlightPage.description,
+        url: "https://www.asfartrip.com/flights",
         locale: locale || "en",
-        image: "https://www.asfartrip.com/homepage/og-image.jpg",
     });
 }
 

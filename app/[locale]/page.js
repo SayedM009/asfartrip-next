@@ -24,7 +24,6 @@ export async function generateMetadata({ params }) {
         description: dict.Homepage.description,
         url: "https://www.asfartrip.com/",
         locale: locale || "en",
-        image: "https://www.asfartrip.com/homepage/og-image.jpg",
     });
 }
 

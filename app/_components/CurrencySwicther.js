@@ -20,6 +20,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import useCheckLocal from "../_hooks/useCheckLocal";
 import { useCurrency } from "../_context/CurrencyContext";
+import Image from "next/image";
 
 function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,13 +28,12 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
     const t = useTranslations("CurrencySwitcher");
     const { isRTL } = useCheckLocal();
 
-    // ✅ استخدام Context بدلاً من Hook المنفصل
     const { currentCurrency, updateCurrency, isLoading, error, exchangeRate } =
         useCurrency();
 
     const handleApply = () => {
         if (tempCurrency && tempCurrency !== currentCurrency) {
-            updateCurrency(tempCurrency); // ✅ هيحدث كل الـ components تلقائياً
+            updateCurrency(tempCurrency);
         }
         setIsOpen(false);
     };
@@ -46,11 +46,31 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
     };
 
     const currencies = [
-        { code: "USD", name: t("currencies.us"), symbol: "$" },
-        { code: "EUR", name: t("currencies.eu"), symbol: "€" },
-        { code: "GBP", name: t("currencies.gbp"), symbol: "£" },
-        { code: "CHF", name: t("currencies.chf"), symbol: "CHF" },
-        { code: "AED", name: t("currencies.ae"), symbol: "AED" },
+        { code: "AED", name: t("currencies.ae"), symbol: "/flags/uae.svg" },
+        { code: "USD", name: t("currencies.us"), symbol: "/flags/usa.svg" },
+        { code: "EUR", name: t("currencies.eu"), symbol: "/flags/europe.svg" },
+        { code: "GBP", name: t("currencies.gbp"), symbol: "/flags/uk.svg" },
+        { code: "SAR", name: t("currencies.sa"), symbol: "/flags/saudi.svg" },
+        { code: "EGP", name: t("currencies.eg"), symbol: "/flags/egypt.svg" },
+        { code: "QAR", name: t("currencies.qa"), symbol: "/flags/qatar.svg" },
+        { code: "OMR", name: t("currencies.om"), symbol: "/flags/oman.svg" },
+        { code: "TRY", name: t("currencies.tr"), symbol: "/flags/turkey.svg" },
+        { code: "INR", name: t("currencies.in"), symbol: "/flags/india.svg" },
+        {
+            code: "PKR",
+            name: t("currencies.pk"),
+            symbol: "/flags/pakistan.svg",
+        },
+        {
+            code: "PHP",
+            name: t("currencies.ph"),
+            symbol: "/flags/philippines.svg",
+        },
+        {
+            code: "IDR",
+            name: t("currencies.id"),
+            symbol: "/flags/indonesia.svg",
+        },
     ];
 
     const selectedCurrency = currencies.find(
@@ -64,7 +84,7 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
                     variant="ghost"
                     size="sm"
                     className={`hover:bg-accent font-bold sm:flex dark:text-gray-50 justify-start gap-2 cursor-pointer ${
-                        hiddenOnMobile ? "hidden sm:flex" : "flex "
+                        hiddenOnMobile ? "hidden sm:flex sm:w-10" : "flex"
                     }`}
                     aria-label={t("title")}
                 >
@@ -93,7 +113,14 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
                             {currencies.map((curr) => (
                                 <SelectItem key={curr.code} value={curr.code}>
                                     <div className="flex items-center space-x-2">
-                                        <span>{curr.symbol}</span>
+                                        {/* <span>{curr.symbol}</span> */}
+                                        <Image
+                                            src={curr.symbol}
+                                            alt={`${curr.name} currency + flag`}
+                                            width={20}
+                                            height={20}
+                                            loading="lazy"
+                                        />
                                         <span>{curr.name}</span>
                                     </div>
                                 </SelectItem>

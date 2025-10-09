@@ -21,6 +21,7 @@ import {
 import { Globe } from "lucide-react";
 import { useState } from "react";
 import useCheckLocal from "../_hooks/useCheckLocal";
+import Image from "next/image";
 
 function LanguageSwitcher({ hiddenOnMobile = false }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -46,8 +47,8 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
     }
 
     const languages = [
-        { code: "en", name: "English", flag: "🇺🇸" },
-        { code: "ar", name: "العربية", flag: "🇦🇪" },
+        { code: "en", name: "English", flag: "/flags/usa.svg" },
+        { code: "ar", name: "العربية", flag: "/flags/uae.svg" },
         // { code: "fr", name: "Français", flag: "🇫🇷" },
         // { code: "de", name: "Deutsch", flag: "🇩🇪" },
         // { code: "it", name: "Italiano", flag: "🇮🇹" },
@@ -69,8 +70,16 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                     className={`sm:items-center hover:bg-accent font-bold sm:flex dark:text-gray-50 cursor-pointer w-full sm:w-auto justify-start ${
                         hiddenOnMobile ? "hidden sm:flex" : "flex"
                     }`}
+                    aria-label={`Change language. Current: ${selectedLanguage?.name}`}
                 >
-                    <Globe className="size-4" />
+                    {/* <Globe className="size-4" /> */}
+                    <Image
+                        src={selectedLanguage?.flag}
+                        alt={`Selected Language is ${selectedLanguage?.name}`}
+                        width={25}
+                        height={25}
+                        loading="lazy"
+                    />
                     <span className="sm:hidden">
                         {selectedLanguage?.name.toUpperCase()}
                     </span>
@@ -106,7 +115,14 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                             >
                                 <SelectValue>
                                     <div className="flex items-center space-x-2 uppercase dark:text-white">
-                                        <span>{selectedLanguage?.flag}</span>
+                                        <Image
+                                            src={selectedLanguage?.flag}
+                                            alt={`Selected Language is ${selectedLanguage?.name}`}
+                                            width={25}
+                                            height={25}
+                                            loading="lazy"
+                                        />
+                                        {/* <span>{selectedLanguage?.flag}</span> */}
                                         <span>{selectedLanguage?.name}</span>
                                     </div>
                                 </SelectValue>
@@ -120,7 +136,14 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                                         className="cursor-pointer"
                                     >
                                         <div className="flex items-center space-x-2">
-                                            <span>{lang.flag}</span>
+                                            <Image
+                                                src={lang.flag}
+                                                alt={`Selected Language is ${selectedLanguage?.name}`}
+                                                width={25}
+                                                height={25}
+                                                loading="lazy"
+                                            />
+                                            {/* <span>{lang.flag}</span> */}
                                             <span>{lang.name}</span>
                                         </div>
                                     </SelectItem>

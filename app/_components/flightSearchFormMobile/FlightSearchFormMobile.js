@@ -300,7 +300,10 @@ export function FlightSearchForm({ closeModal }) {
                             onPassengersChange={setPassengers}
                             onClassChange={setTravelClass}
                         >
-                            <div className="flex items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors">
+                            <Button
+                                className="flex w-full items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors"
+                                variant="ghost"
+                            >
                                 <div className="flex-1 flex justify-start">
                                     <div className="text-sm  font-semibold capitalize">
                                         {t(
@@ -333,7 +336,7 @@ export function FlightSearchForm({ closeModal }) {
                                         </span>
                                     </div>
                                 </div>
-                            </div>
+                            </Button>
                         </PassengerClassModal>
 
                         {/* Search Button */}
