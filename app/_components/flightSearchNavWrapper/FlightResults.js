@@ -453,6 +453,7 @@ export function FlightTicketsList({
     cheapestIndex,
     fastestIndex,
     resetFilters,
+    searchObject,
 }) {
     return (
         <>
@@ -468,6 +469,7 @@ export function FlightTicketsList({
                         onSelect={() => handleSelectFlight(index)}
                         isCheapest={index === cheapestIndex}
                         isFastest={index === fastestIndex}
+                        searchObject={searchObject}
                     />
                 ))
             )}

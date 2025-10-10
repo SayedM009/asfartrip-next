@@ -7,6 +7,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogFooter,
+    DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -27,7 +28,12 @@ import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useRouter } from "@/i18n/navigation";
 
-export function FlightDetailsDialog({ ticket, isOpen, onClose }) {
+export function FlightDetailsDialog({
+    ticket,
+    isOpen,
+    onClose,
+    withContinue = true,
+}) {
     const router = useRouter();
     const [isChecking, setIsChecking] = useState(false);
     const [pricingError, setPricingError] = useState(null);
@@ -115,8 +121,8 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose }) {
     /**
      * Handle Continue button - Check air pricing
      */
+
     const handleContinue = async () => {
-        // Validate required fields
         if (!rawRequestBase64 || !rawResponseBase64) {
             setPricingError("Missing flight data. Please search again.");
             return;
@@ -128,86 +134,89 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose }) {
         try {
             console.log("🔍 Checking air pricing...");
 
-            const response = await fetch("/api/air-pricing", {
+            const pricingRes = await fetch("/api/flight/air-pricing", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     request: rawRequestBase64,
                     response: rawResponseBase64,
-                    originalPrice: TotalPrice, // optional: for price comparison
+                    originalPrice: TotalPrice,
                 }),
             });
 
-            const data = await response.json();
+            const pricingData = await pricingRes.json();
+            if (!pricingRes.ok)
+                throw new Error(pricingData.error || "Failed to check pricing");
 
-            if (!response.ok) {
-                throw new Error(data.error || "Failed to check pricing");
-            }
+            console.log("📊 Pricing result:", pricingData);
 
-            console.log("📊 Pricing result:", data);
+            switch (pricingData.status) {
+                case "success": {
+                    console.log("✅ Price confirmed, saving ticket...");
 
-            // Handle different statuses
-            switch (data.status) {
-                case "success":
-                    // Store session data and navigate to booking page
-                    console.log("✅ Price confirmed, proceeding to booking...");
+                    // 1️⃣ Save the ticket in temporary API
+                    const saveRes = await fetch("/api/flight/temp-flights", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ ticket }),
+                    });
 
-                    // Navigate to booking page with session_id
+                    const saveData = await saveRes.json();
+                    if (!saveRes.ok)
+                        throw new Error(
+                            saveData.error || "Failed to save ticket"
+                        );
+
+                    console.log(
+                        "💾 Ticket saved with temp_id:",
+                        saveData.temp_id
+                    );
+
+                    // 2️⃣ Redirect to booking page
                     router.push(
-                        `/flights/booking?session_id=${data.data.sessionId}&temp_id=${data.data.tempId}`
+                        `/flights/booking?session_id=${pricingData.data.sessionId}&temp_id=${saveData.temp_id}`
                     );
                     break;
+                }
 
                 case "price_changed":
-                    // Show price change notification
-                    console.log("⚠️ Price changed:", data.data);
+                    console.warn("⚠️ Price changed:", pricingData.data);
                     setPricingError(
                         `Price has changed from ${formatPrice(
-                            data.data.oldPrice
+                            pricingData.data.oldPrice
                         )} to ${formatPrice(
-                            data.data.newPrice
+                            pricingData.data.newPrice
                         )}. Please review and continue.`
                     );
 
-                    // You can also show a confirmation dialog here
-                    // If user confirms, navigate with new price
                     if (
                         confirm(
-                            data.message +
+                            pricingData.message +
                                 `\n\nNew Price: ${formatPrice(
-                                    data.data.totalPrice
+                                    pricingData.data.totalPrice
                                 )}\n\nContinue?`
                         )
                     ) {
+                        // Optional: You can re-run save + redirect here too if needed
                         router.push(
-                            `/booking?session_id=${data.data.sessionId}&temp_id=${data.data.tempId}`
+                            `/booking?session_id=${pricingData.data.sessionId}&temp_id=${pricingData.data.tempId}`
                         );
                     }
                     break;
 
                 case "not_available":
-                    // Redirect to not available page
                     console.log("❌ Flight not available");
                     router.push("/price-not-found");
                     break;
 
-                case "error":
-                    throw new Error(data.error || "Pricing check failed");
-
                 default:
-                    console.warn("Unknown status:", data.status);
-                    setPricingError(
-                        data.message || "Unexpected response from server"
+                    throw new Error(
+                        pricingData.message || "Unexpected response from server"
                     );
             }
-        } catch (error) {
-            console.error("❌ Pricing check error:", error);
-            setPricingError(
-                error.message ||
-                    "Failed to check flight availability. Please try again."
-            );
+        } catch (err) {
+            console.error("❌ Error:", err);
+            setPricingError(err.message || "An unexpected error occurred.");
         } finally {
             setIsChecking(false);
         }
@@ -337,13 +346,18 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose }) {
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
+            {!withContinue && (
+                <DialogTrigger asChild>
+                    <button>click me</button>
+                </DialogTrigger>
+            )}
             <DialogContent
                 className={cn(
                     "dialog-bg",
                     "max-w-none h-full overflow-auto rounded-none border-0 md:rounded sm:fixed sm:left-[87%]",
                     "open-slide-right",
                     "close-slide-right",
-                    "overflow-x-hidden pb-0"
+                    `overflow-x-hidden ${withContinue ? "pb-0" : "pb-4"}`
                 )}
             >
                 <DialogHeader>
@@ -388,7 +402,7 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose }) {
                                 </p>
                             </div>
                             <div className="text-right">
-                                <div className="text-xs font-bold">
+                                <div className="text-xs font-bold text-accent-400">
                                     {formatPrice(TotalPrice)}
                                 </div>
                                 <div className="text-xs text-muted-foreground">
@@ -456,7 +470,9 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose }) {
                                 <Separator />
                                 <div className="flex justify-between font-semibold">
                                     <span>{t("dialog.total_price")}</span>
-                                    <span>{formatPrice(TotalPrice)}</span>
+                                    <span className="text-accent-400">
+                                        {formatPrice(TotalPrice)}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -510,30 +526,34 @@ export function FlightDetailsDialog({ ticket, isOpen, onClose }) {
                     )}
                 </div>
 
-                <DialogFooter className="sticky bottom-0 w-full p-3 bg-white dark:bg-muted rounded-t-2xl">
-                    <div className="flex flex-col items-center sm:flex-row gap-3 pt-4 w-full">
-                        <div className="flex-1 flex items-center gap-10">
-                            <div className="flex justify-between font-semibold text-sm gap-2">
-                                <span>{t("dialog.total_price")}</span>
-                                <span>{formatPrice(TotalPrice)}</span>
+                {withContinue && (
+                    <DialogFooter className="sticky bottom-0 w-full p-3 bg-white dark:bg-muted rounded-t-2xl">
+                        <div className="flex flex-col items-center sm:flex-row gap-3 pt-4 w-full">
+                            <div className="flex-1 flex items-center gap-10">
+                                <div className="flex justify-between font-semibold text-sm gap-2">
+                                    <span>{t("dialog.total_price")}</span>
+                                    <span className="text-accent-400">
+                                        {formatPrice(TotalPrice)}
+                                    </span>
+                                </div>
                             </div>
+                            <Button
+                                onClick={handleContinue}
+                                className="btn-primary flex-1"
+                                disabled={isChecking}
+                            >
+                                {isChecking ? (
+                                    <>
+                                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                        {t("dialog.confiming")}
+                                    </>
+                                ) : (
+                                    t("dialog.continue")
+                                )}
+                            </Button>
                         </div>
-                        <Button
-                            onClick={handleContinue}
-                            className="btn-primary flex-1"
-                            disabled={isChecking}
-                        >
-                            {isChecking ? (
-                                <>
-                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                                    {t("dialog.confiming")}
-                                </>
-                            ) : (
-                                t("dialog.continue")
-                            )}
-                        </Button>
-                    </div>
-                </DialogFooter>
+                    </DialogFooter>
+                )}
             </DialogContent>
         </Dialog>
     );

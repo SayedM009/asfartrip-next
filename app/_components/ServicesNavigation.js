@@ -55,7 +55,7 @@ function ServicesNavigation() {
                     href={service.path}
                     className={`flex justify-start flex-col sm:min-w-40 items-center md:flex-row gap-2  md:w-fit md:text-black md:p-2 rounded-2xl ${
                         service.path == pathname
-                            ? "md:bg-accent-300"
+                            ? "md:bg-accent-400"
                             : service.path == "/flights" && pathname == "/"
                             ? "md:bg-accent-400"
                             : "md:bg-gradient-to-b to-gray-300 from-white"
@@ -72,7 +72,7 @@ function ServicesNavigation() {
                         loading="eager"
                         className={`${
                             service.path == pathname
-                                ? "bg-accent-300"
+                                ? "bg-accent-400"
                                 : service.path == "/flights" && pathname == "/"
                                 ? "bg-accent-400"
                                 : `bg-gradient-to-b ${

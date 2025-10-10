@@ -36,7 +36,7 @@ export default function FlightSearch({ parsedSearchObject }) {
                     parsedSearchObject
                 );
 
-                const response = await fetch("/api/search-flights", {
+                const response = await fetch("/api/flight/search-flights", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

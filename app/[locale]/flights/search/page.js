@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
     return generateMetadataObj({
         title: dict.FlightPage.Search.title,
         description: dict.FlightPage.Search.description,
-        url: "https://www.asfartrip.com/flights",
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}flights`,
         locale: locale || "en",
     });
 }
