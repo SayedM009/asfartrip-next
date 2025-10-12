@@ -27,12 +27,14 @@ import { useTranslations } from "next-intl";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useRouter } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 
 export function FlightDetailsDialog({
     ticket,
     isOpen,
     onClose,
     withContinue = true,
+    trigger = "",
 }) {
     const router = useRouter();
     const [isChecking, setIsChecking] = useState(false);
@@ -57,6 +59,8 @@ export function FlightDetailsDialog({
     const t = useTranslations("Flight");
     const formatDate = useDateFormatter();
     const { formatPrice } = useCurrency();
+    const searchParams = useSearchParams();
+    const searchInfo = searchParams.get("searchObject");
 
     // Determine if this is a round trip ticket
     const isRoundTrip = MultiLeg === "true" && onward && returnJourney;
@@ -158,7 +162,7 @@ export function FlightDetailsDialog({
                     const saveRes = await fetch("/api/flight/temp-flights", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ ticket }),
+                        body: JSON.stringify({ ticket, searchInfo }),
                     });
 
                     const saveData = await saveRes.json();
@@ -346,11 +350,16 @@ export function FlightDetailsDialog({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            {!withContinue && (
+            {!withContinue ? (
                 <DialogTrigger asChild>
-                    <button>click me</button>
+                    <Button
+                        variant="ghost"
+                        className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-1 text-sm"
+                    >
+                        {trigger.icon} {trigger.title}
+                    </Button>
                 </DialogTrigger>
-            )}
+            ) : null}
             <DialogContent
                 className={cn(
                     "dialog-bg",

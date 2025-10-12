@@ -15,7 +15,7 @@ import {
 import Logo from "../Logo";
 import EmailInput from "./EmailInput";
 
-export default function AuthDialog() {
+export default function AuthDialog({ primary }) {
     const t = useTranslations();
     const [open, setOpen] = useState(false);
     return (
@@ -24,7 +24,12 @@ export default function AuthDialog() {
                 <DialogTrigger asChild>
                     <Button
                         variant="outline"
-                        className="icons-hover-600 border-1 flex text-sm px-3 py-0 rounded border-gray-500"
+                        // className="icons-hover-600 border-1 flex text-sm px-3 py-0 rounded border-gray-500"
+                        className={cn(
+                            "icons-hover-600 border-1 flex text-sm px-3 py-0 rounded border-gray-500",
+                            primary &&
+                                "bg-accent-500 text-white border-0 hover:bg-accent-600 hover:text-white transition-colors dark:bg-accent-500 dark:hover:bg-accent-600"
+                        )}
                     >
                         {t("Login.title")}
                     </Button>

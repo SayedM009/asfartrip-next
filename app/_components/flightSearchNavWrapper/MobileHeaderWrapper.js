@@ -23,7 +23,7 @@ import { useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 import { cn } from "../ui/utils";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
-import BackwardButton from "./BackwardButton";
+import BackwardButton, { BackWardButtonWithDirections } from "./BackwardButton";
 import { useTranslations } from "next-intl";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 
@@ -59,15 +59,7 @@ export default function MobileHeaderWrapper() {
     return (
         <div className="flex items-center justify-between space-x-4">
             {/* Backward Button */}
-            <BackwardButton>
-                <Button className="p-0 bg-accent-100 ">
-                    {isRTL ? (
-                        <ChevronRight className="size-5  font-bold text-accent-700" />
-                    ) : (
-                        <ChevronLeft className="size-5  font-bold text-accent-700" />
-                    )}
-                </Button>
-            </BackwardButton>
+            <BackWardButtonWithDirections />
 
             {/* Section in the middle */}
             <Dialog open={open} onOpenChange={setOpen}>

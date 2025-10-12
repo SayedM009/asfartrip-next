@@ -1,16 +1,27 @@
+// app/api/flight/temp-flights/[id]/route.js
+import { tempFlightStorage } from "@/app/_libs/tempFlightStorage";
 import { NextResponse } from "next/server";
-import { getTempFlight } from "../route"; // بنستخدم الماب من نفس الملف
 
-export async function GET(_, { params }) {
-    const { id } = params;
-    const ticket = getTempFlight(id);
+export async function GET(req, { params }) {
+    try {
+        const { id } = params;
 
-    if (!ticket) {
-        return NextResponse.json(
-            { error: "Ticket not found or expired" },
-            { status: 404 }
-        );
+        console.log("🔍 Looking for ticket ID:", id);
+
+        const found = tempFlightStorage.get(id);
+
+        if (!found) {
+            console.log("❌ Ticket not found or expired");
+            return NextResponse.json(
+                { error: "Ticket not found or expired" },
+                { status: 404 }
+            );
+        }
+
+        console.log("✅ Ticket found:", id);
+        return NextResponse.json(found);
+    } catch (err) {
+        console.error("❌ Error fetching temp flight:", err);
+        return NextResponse.json({ error: err.message }, { status: 500 });
     }
-
-    return NextResponse.json({ ticket });
 }
