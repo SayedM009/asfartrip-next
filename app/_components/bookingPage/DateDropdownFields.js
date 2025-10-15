@@ -1,3 +1,5 @@
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
+import useIsDeviceClient from "@/app/_hooks/useIsDeviceClient";
 import {
     Select,
     SelectContent,
@@ -7,21 +9,22 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Label } from "@radix-ui/react-label";
+import { useTranslations } from "next-intl";
 import React, { useState, useEffect } from "react";
 
 const months = [
-    { value: "1", label: "January" },
-    { value: "2", label: "February" },
-    { value: "3", label: "March" },
-    { value: "4", label: "April" },
-    { value: "5", label: "May" },
-    { value: "6", label: "June" },
-    { value: "7", label: "July" },
-    { value: "8", label: "August" },
-    { value: "9", label: "September" },
-    { value: "10", label: "October" },
-    { value: "11", label: "November" },
-    { value: "12", label: "December" },
+    { value: "1", label: "january" },
+    { value: "2", label: "february" },
+    { value: "3", label: "march" },
+    { value: "4", label: "april" },
+    { value: "5", label: "may" },
+    { value: "6", label: "june" },
+    { value: "7", label: "july" },
+    { value: "8", label: "august" },
+    { value: "9", label: "september" },
+    { value: "10", label: "october" },
+    { value: "11", label: "november" },
+    { value: "12", label: "december" },
 ];
 
 export function DateDropdownFields({
@@ -37,12 +40,26 @@ export function DateDropdownFields({
     const [day, setDay] = useState("");
     const [month, setMonth] = useState("");
     const [year, setYear] = useState("");
-
+    const t = useTranslations("Months");
+    const d = useTranslations("Traveler");
+    const { isRTL } = useCheckLocal();
+    const condition = isRTL ? "rtl" : "ltr";
     useEffect(() => {
         if (value) {
-            setDay(value.getDate().toString());
-            setMonth((value.getMonth() + 1).toString());
-            setYear(value.getFullYear().toString());
+            // Convert string to Date if needed
+            const dateObj = typeof value === "string" ? new Date(value) : value;
+
+            // Check if valid date
+            if (dateObj instanceof Date && !isNaN(dateObj.getTime())) {
+                setDay(dateObj.getDate().toString());
+                setMonth((dateObj.getMonth() + 1).toString());
+                setYear(dateObj.getFullYear().toString());
+            }
+        } else {
+            // Clear fields if value is null/undefined
+            setDay("");
+            setMonth("");
+            setYear("");
         }
     }, [value]);
 
@@ -89,26 +106,28 @@ export function DateDropdownFields({
 
     return (
         <div className="space-y-2">
-            <Label className="flex items-center gap-2 rtl:justify-end">
+            <Label className="flex items-center gap-2 ">
                 {label} {required && <span className="text-red-500">*</span>}
             </Label>
             <div className="grid grid-cols-3 gap-2">
                 <div>
                     <Select value={day} onValueChange={handleDayChange}>
                         <SelectTrigger
+                            dir={condition}
                             className={cn(
-                                "py-6 w-full",
+                                "py-6 w-full cursor-pointer",
                                 error &&
                                     !day &&
                                     "border-red-500 focus:ring-red-500"
                             )}
                         >
-                            <SelectValue placeholder="Day" />
+                            <SelectValue placeholder={d("day")} />
                         </SelectTrigger>
                         <SelectContent
                             className="max-h-[200px]"
                             align="start"
                             side="bottom"
+                            dir={condition}
                         >
                             {days.map((d) => (
                                 <SelectItem key={d} value={d.toString()}>
@@ -121,23 +140,25 @@ export function DateDropdownFields({
                 <div>
                     <Select value={month} onValueChange={handleMonthChange}>
                         <SelectTrigger
+                            dir={condition}
                             className={cn(
-                                "py-6 w-full",
+                                "py-6 w-full cursor-pointer",
                                 error &&
                                     !month &&
                                     "border-red-500 focus:ring-red-500"
                             )}
                         >
-                            <SelectValue placeholder="Month" />
+                            <SelectValue placeholder={d("month")} />
                         </SelectTrigger>
                         <SelectContent
-                            className="max-h-[200px]"
-                            align="start"
+                            className="max-h-[200px] rtl:text-right"
+                            align="end"
                             side="bottom"
+                            dir={condition}
                         >
                             {months.map((m) => (
                                 <SelectItem key={m.value} value={m.value}>
-                                    {m.label}
+                                    {t(`${m.label}`)}
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -146,19 +167,21 @@ export function DateDropdownFields({
                 <div>
                     <Select value={year} onValueChange={handleYearChange}>
                         <SelectTrigger
+                            dir={condition}
                             className={cn(
-                                "py-6 w-full",
+                                "py-6 w-full cursor-pointer",
                                 error &&
                                     !year &&
                                     "border-red-500 focus:ring-red-500"
                             )}
                         >
-                            <SelectValue placeholder="Year" />
+                            <SelectValue placeholder={d("year")} />
                         </SelectTrigger>
                         <SelectContent
                             className="max-h-[200px]"
                             align="start"
                             side="bottom"
+                            dir={condition}
                         >
                             {years.map((y) => (
                                 <SelectItem key={y} value={y.toString()}>

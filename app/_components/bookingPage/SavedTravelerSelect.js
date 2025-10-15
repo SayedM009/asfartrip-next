@@ -1,6 +1,11 @@
+"use client";
 import React, { useState } from "react";
 import { Check, ChevronsUpDown, User } from "lucide-react";
-import { PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import {
     Command,
@@ -12,33 +17,43 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 
-// Mock saved travelers
+// Mock saved travelers with complete data
 const savedTravelers = [
     {
         id: "1",
         title: "mr",
         firstName: "AHMED",
         lastName: "MOHAMED",
-        dateOfBirth: new Date(1990, 5, 15),
+        dateOfBirth: new Date("1990-05-15"),
         passportNumber: "A12345678",
-        nationality: "AE",
-        passportExpiry: new Date(2028, 11, 31),
+        passportExpiry: new Date("2028-12-31"),
+        nationality: "AE", // United Arab Emirates
     },
     {
         id: "2",
         title: "mrs",
         firstName: "FATIMA",
         lastName: "SALEM",
-        dateOfBirth: new Date(1992, 8, 22),
+        dateOfBirth: new Date("1992-08-20"),
         passportNumber: "B98765432",
-        nationality: "AE",
-        passportExpiry: new Date(2027, 6, 15),
+        passportExpiry: new Date("2029-06-30"),
+        nationality: "SA", // Saudi Arabia
+    },
+    {
+        id: "3",
+        title: "miss",
+        firstName: "LAYLA",
+        lastName: "HASSAN",
+        dateOfBirth: new Date("1995-03-10"),
+        passportNumber: "C11223344",
+        passportExpiry: new Date("2027-09-15"),
+        nationality: "EG", // Egypt
     },
 ];
 
 export function SavedTravelerSelect({ onSelect }) {
     const [open, setOpen] = useState(false);
-    const [selectedId, setSelectedId] = useState();
+    const [selectedId, setSelectedId] = useState(null);
 
     const selectedTraveler = savedTravelers.find((t) => t.id === selectedId);
 
@@ -46,20 +61,29 @@ export function SavedTravelerSelect({ onSelect }) {
         const traveler = savedTravelers.find((t) => t.id === travelerId);
         if (traveler) {
             setSelectedId(travelerId);
-            onSelect?.(traveler);
+            // Send complete traveler data
+            onSelect?.({
+                title: traveler.title,
+                firstName: traveler.firstName,
+                lastName: traveler.lastName,
+                dateOfBirth: traveler.dateOfBirth,
+                passportNumber: traveler.passportNumber,
+                passportExpiry: traveler.passportExpiry,
+                nationality: traveler.nationality,
+            });
             setOpen(false);
         }
     };
 
     return (
-        <div className="space-y-2">
-            <PopoverTrigger open={open} onOpenChange={setOpen}>
+        <div className="space-y-2 w-full sm:w-fit">
+            <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                     <Button
                         variant="outline"
                         role="combobox"
                         aria-expanded={open}
-                        className="w-full justify-between h-12"
+                        className="w-full justify-between h-12 cursor-pointer"
                     >
                         {selectedTraveler ? (
                             <span className="flex items-center gap-2">
@@ -76,6 +100,7 @@ export function SavedTravelerSelect({ onSelect }) {
                         <ChevronsUpDown className="ltr:ml-2 rtl:mr-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                 </PopoverTrigger>
+
                 <PopoverContent className="w-[400px] p-0" align="start">
                     <Command>
                         <CommandInput placeholder="Search travelers..." />
@@ -91,6 +116,7 @@ export function SavedTravelerSelect({ onSelect }) {
                                         onSelect={() =>
                                             handleSelect(traveler.id)
                                         }
+                                        className="cursor-pointer"
                                     >
                                         <Check
                                             className={cn(
@@ -102,7 +128,8 @@ export function SavedTravelerSelect({ onSelect }) {
                                         />
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2">
-                                                <span>
+                                                <span className="font-medium capitalize">
+                                                    {traveler.title}{" "}
                                                     {traveler.firstName}{" "}
                                                     {traveler.lastName}
                                                 </span>
@@ -118,7 +145,7 @@ export function SavedTravelerSelect({ onSelect }) {
                         </CommandList>
                     </Command>
                 </PopoverContent>
-            </PopoverTrigger>
+            </Popover>
         </div>
     );
 }

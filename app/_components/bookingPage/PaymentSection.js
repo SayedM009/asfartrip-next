@@ -4,11 +4,15 @@ import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { BackWardButtonWithDirections } from "../flightSearchNavWrapper/BackwardButton";
+import { TopMobileSection } from "./BookingPage";
 
 export default function PaymentSection({
     totalAmount,
     currency,
     onConfirmPayment,
+    backTo,
+    ticket,
 }) {
     const [selectedMethod, setSelectedMethod] = useState("card");
     const [cardNumber, setCardNumber] = useState("");
@@ -78,11 +82,30 @@ export default function PaymentSection({
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 flex-1">
             {/* Payment Method Selection */}
             <div>
-                <h2 className="mb-4 rtl:text-right">Select Payment Method</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center gap-4 mb-4 ">
+                    <BackWardButtonWithDirections onClick={backTo} />
+                    <h2 className=" capitalize  font-semibold text-xl">
+                        Select Payment Method
+                    </h2>
+                    <div></div>
+                </div>
+                <TopMobileSection ticket={ticket}>
+                    <div className="flex items-center gap-4">
+                        <BackWardButtonWithDirections onClick={backTo} />
+                        <div>
+                            <h2 className="text-lg font-semibold capitalize ">
+                                Select Payment Method
+                            </h2>
+                            <div className="capitalize flex items-center gap-2 text-xs text-muted-foreground truncate">
+                                <span>Secured Payments</span>
+                            </div>
+                        </div>
+                    </div>
+                </TopMobileSection>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 sm:mt-auto">
                     {paymentMethods.map((method) => {
                         const Icon = method.icon;
                         const isSelected = selectedMethod === method.id;
@@ -91,7 +114,7 @@ export default function PaymentSection({
                                 key={method.id}
                                 onClick={() => setSelectedMethod(method.id)}
                                 className={cn(
-                                    "p-6 rounded-lg border-2 transition-all text-left rtl:text-right",
+                                    "p-2 rounded-lg border-2 transition-all text-left rtl:text-right",
                                     isSelected
                                         ? "border-blue-500 bg-blue-50 dark:bg-blue-950/50"
                                         : "border-gray-200 dark:border-gray-700 hover:border-blue-300"
@@ -100,7 +123,7 @@ export default function PaymentSection({
                                 <div className="flex items-start gap-4 rtl:flex-row-reverse">
                                     <div
                                         className={cn(
-                                            "p-3 rounded-lg shrink-0",
+                                            "p-2 rounded-lg shrink-0",
                                             method.color === "blue" &&
                                                 "bg-blue-100 dark:bg-blue-900",
                                             method.color === "green" &&
@@ -126,7 +149,7 @@ export default function PaymentSection({
                                         />
                                     </div>
                                     <div className="flex-1">
-                                        <div className="flex items-center gap-2 mb-1 rtl:flex-row-reverse rtl:justify-end">
+                                        <div className="flex items-center gap-2 mb-0 rtl:flex-row-reverse rtl:justify-end">
                                             <h4>{method.name}</h4>
                                             {isSelected && (
                                                 <Check className="w-5 h-5 text-blue-600" />

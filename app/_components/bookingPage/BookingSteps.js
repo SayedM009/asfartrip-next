@@ -1,14 +1,15 @@
 import React from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const steps = [
-    { number: 1, title: "Flight Selection" },
-    { number: 2, title: "Enter Traveler Information" },
-    { number: 3, title: "Payment" },
-];
+import { useTranslations } from "next-intl";
 
 export default function BookingSteps({ currentStep }) {
+    const t = useTranslations("Flight");
+    const steps = [
+        { number: 1, title: t("booking.flight_selection") },
+        { number: 2, title: t("booking.enter_traveler_information") },
+        { number: 3, title: t("booking.payment") },
+    ];
     return (
         <div className="hidden lg:block bg-transparent  border-b border-border">
             <div className="max-w-7xl mx-auto  py-4">
@@ -48,7 +49,7 @@ export default function BookingSteps({ currentStep }) {
                                     </div>
                                     {step.number < currentStep && (
                                         <div className="text-xs text-green-600 dark:text-green-500">
-                                            Completed
+                                            {t("booking.complated")}
                                         </div>
                                     )}
                                 </div>

@@ -10,6 +10,7 @@ import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import { useTranslations } from "next-intl";
 import { useCurrency } from "@/app/_context/CurrencyContext";
+import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 
 export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
     // Convert Currency
@@ -22,6 +23,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
         onward,
         return: returnJourney,
         CabinLuggage,
+        BaggageAllowance,
     } = ticket;
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
     const { isRTL } = useCheckLocal();
@@ -29,6 +31,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
     const t = useTranslations("Flight");
     const pattern = isRTL ? "EEEE d MMMM " : "EEE, MMM d";
 
+    const { formatBaggage } = useFormatBaggage();
     // Determine if this is a round trip ticket
     const isRoundTrip = MultiLeg === "true" && onward && returnJourney;
 
@@ -129,9 +132,6 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                             <div className="h-0.5 bg-muted-foreground/30 w-full"></div>
                             <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-primary rounded-full"></div>
                             <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-primary rounded-full"></div>
-                            <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                                <Plane className="h-4 w-4 text-primary" />
-                            </div>
                         </div>
                         <div className="text-center mt-1">
                             <Badge variant="secondary" className="text-xs">
@@ -398,6 +398,12 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                             )}
                                             {CabinLuggage && (
                                                 <Backpack className="size-4" />
+                                            )}
+                                            {formatBaggage(
+                                                BaggageAllowance[0]
+                                            ).toLocaleLowerCase() !=
+                                                "not included" && (
+                                                <Luggage className="size-4" />
                                             )}
                                         </div>
                                     </div>

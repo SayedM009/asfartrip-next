@@ -12,68 +12,133 @@ import { useTranslations } from "next-intl";
 import { searchAirports } from "@/app/_libs/flightService";
 import SwapButton from "../SwapButton";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
+import SpinnerMini from "../SpinnerMini";
 
 // Popular destinations data
-const popularDestinations = [
+const popularDestinationsGCC = [
     {
-        label_code: "NYC",
-        city: "New York",
-        country: "United States",
-        airport: "John F. Kennedy International",
+        label_code: "DXB",
+        city: "Dubai",
+        country: "United Arab Emirates",
+        airport: "Dubai International Airport",
     },
     {
-        label_code: "LON",
+        label_code: "AUH",
+        city: "Abu Dhabi",
+        country: "United Arab Emirates",
+        airport:
+            "Zayed International Airport (formerly Abu Dhabi International)",
+    },
+    {
+        label_code: "SHJ",
+        city: "Sharjah",
+        country: "United Arab Emirates",
+        airport: "Sharjah International Airport",
+    },
+    {
+        label_code: "DOH",
+        city: "Doha",
+        country: "Qatar",
+        airport: "Hamad International Airport",
+    },
+    {
+        label_code: "BAH",
+        city: "Manama",
+        country: "Bahrain",
+        airport: "Bahrain International Airport",
+    },
+    {
+        label_code: "RUH",
+        city: "Riyadh",
+        country: "Saudi Arabia",
+        airport: "King Khalid International Airport",
+    },
+    {
+        label_code: "JED",
+        city: "Jeddah",
+        country: "Saudi Arabia",
+        airport: "King Abdulaziz International Airport",
+    },
+    {
+        label_code: "DMM",
+        city: "Dammam",
+        country: "Saudi Arabia",
+        airport: "King Fahd International Airport",
+    },
+    {
+        label_code: "MCT",
+        city: "Muscat",
+        country: "Oman",
+        airport: "Muscat International Airport",
+    },
+    {
+        label_code: "KWI",
+        city: "Kuwait City",
+        country: "Kuwait",
+        airport: "Kuwait International Airport",
+    },
+];
+
+const popularInternationalDestinations = [
+    {
+        label_code: "CAI",
+        city: "Cairo",
+        country: "Egypt",
+        airport: "Cairo International Airport",
+    },
+    {
+        label_code: "IST",
+        city: "Istanbul",
+        country: "Turkey",
+        airport: "Istanbul Airport",
+    },
+    {
+        label_code: "BOM",
+        city: "Mumbai",
+        country: "India",
+        airport: "Chhatrapati Shivaji International Airport",
+    },
+    {
+        label_code: "LHR",
         city: "London",
         country: "United Kingdom",
         airport: "Heathrow Airport",
     },
     {
-        label_code: "PAR",
-        city: "Paris",
-        country: "France",
-        airport: "Charles de Gaulle Airport",
+        label_code: "MNL",
+        city: "Manila",
+        country: "Philippines",
+        airport: "Ninoy Aquino International Airport",
     },
     {
-        label_code: "TOK",
-        city: "Tokyo",
-        country: "Japan",
-        airport: "Narita International",
+        label_code: "LHE",
+        city: "Lahore",
+        country: "Pakistan",
+        airport: "Allama Iqbal International Airport",
     },
     {
-        label_code: "DXB",
-        city: "Dubai",
-        country: "United Arab Emirates",
-        airport: "Dubai International",
+        label_code: "CMB",
+        city: "Colombo",
+        country: "Sri Lanka",
+        airport: "Bandaranaike International Airport",
+    },
+    {
+        label_code: "KTM",
+        city: "Kathmandu",
+        country: "Nepal",
+        airport: "Tribhuvan International Airport",
+    },
+    {
+        label_code: "DAC",
+        city: "Dhaka",
+        country: "Bangladesh",
+        airport: "Hazrat Shahjalal International Airport",
     },
     {
         label_code: "SIN",
         city: "Singapore",
         country: "Singapore",
         airport: "Changi Airport",
-    },
-    {
-        label_code: "LAX",
-        city: "Los Angeles",
-        country: "United States",
-        airport: "Los Angeles International",
-    },
-    {
-        label_code: "BCN",
-        city: "Barcelona",
-        country: "Spain",
-        airport: "Barcelona-El Prat Airport",
-    },
-    {
-        label_code: "SYD",
-        city: "Sydney",
-        country: "Australia",
-        airport: "Sydney Kingsford Smith",
-    },
-    {
-        label_code: "HKG",
-        city: "Hong Kong",
-        country: "Hong Kong",
-        airport: "Hong Kong International",
     },
 ];
 
@@ -92,6 +157,7 @@ export default function MainSearchForm({
     const [destinationSearch, setDestinationSearch] = useState("");
     const [departureResults, setDepartureResults] = useState([]);
     const [destinationResults, setDestinationResults] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const t = useTranslations("Flight");
 
     const handleSearch = async (value, onSearch, onResults) => {
@@ -99,11 +165,14 @@ export default function MainSearchForm({
 
         if (value && value.length > 2) {
             try {
+                setIsLoading(true);
                 const data = await searchAirports(value);
                 onResults(data);
             } catch (error) {
                 console.error("Error searching destination airports:", error);
                 onResults([]);
+            } finally {
+                setIsLoading(false);
             }
         } else {
             onResults([]);
@@ -197,7 +266,9 @@ export default function MainSearchForm({
                         onSearch={setDepartureSearch}
                         onShowResults={setShowDepartureResults}
                         onIsSearching={setIsSearchingDeparture}
+                        popularDestinations={popularDestinationsGCC}
                         sessionKey="departure"
+                        isLoading={isLoading}
                     />
                 </Popover>
             </div>
@@ -289,7 +360,9 @@ export default function MainSearchForm({
                         onSearch={setDestinationSearch}
                         onShowResults={setShowDestinationResults}
                         onIsSearching={setIsSearchingDestination}
+                        popularDestinations={popularInternationalDestinations}
                         sessionKey="destination"
+                        isLoading={isLoading}
                     />
                 </Popover>
             </div>
@@ -304,7 +377,9 @@ function DestinationsContent({
     onSearch,
     onShowResults,
     onIsSearching,
+    popularDestinations = popularDestinationsGCC,
     sessionKey,
+    isLoading = false, // <--- نضيف prop جديد
 }) {
     const fillteredObj = search
         ? results
@@ -335,6 +410,7 @@ function DestinationsContent({
             })
         );
     };
+
     return (
         <PopoverContent
             className="w-80 p-0 mt-1"
@@ -344,7 +420,50 @@ function DestinationsContent({
         >
             <ScrollArea className="h-64 " dir={dir}>
                 <div className="p-1">
-                    {fillteredObj.length > 0 ? (
+                    {search ? (
+                        isLoading ? (
+                            <div className="p-4 text-center flex items-center justify-center h-56">
+                                <SpinnerMini />
+                            </div>
+                        ) : fillteredObj.length > 0 ? (
+                            fillteredObj.map((dest) => (
+                                <button
+                                    key={dest.label_code}
+                                    onClick={() => handleSelect(dest)}
+                                    className="w-full p-3 text-left hover:bg-muted rounded-md border-b last:border-0 cursor-pointer"
+                                    role="option"
+                                >
+                                    <div className="flex items-center justify-between ">
+                                        <div>
+                                            <div
+                                                className={`font-medium ${
+                                                    locale === "ar" &&
+                                                    "text-right"
+                                                }`}
+                                            >
+                                                {dest.city},{" "}
+                                                {dest.country.split("-").at(0)}
+                                            </div>
+                                            <div className="text-muted-foreground">
+                                                {dest.airport ||
+                                                    dest.country
+                                                        .split("-")
+                                                        .at(1)}
+                                            </div>
+                                        </div>
+                                        <div className="font-medium text-muted-foreground">
+                                            {dest.label_code}
+                                        </div>
+                                    </div>
+                                </button>
+                            ))
+                        ) : (
+                            <div className="p-4 text-center text-gray-500">
+                                {t("operations.no_results")}
+                            </div>
+                        )
+                    ) : (
+                        // لو المستخدم مش بيبحث، نعرض الوجهات الشعبية
                         fillteredObj.map((dest) => (
                             <button
                                 key={dest.label_code}
@@ -373,11 +492,7 @@ function DestinationsContent({
                                 </div>
                             </button>
                         ))
-                    ) : search ? (
-                        <div className="p-4 text-center text-gray-500">
-                            {t("operations.no_results")}
-                        </div>
-                    ) : null}
+                    )}
                 </div>
             </ScrollArea>
         </PopoverContent>

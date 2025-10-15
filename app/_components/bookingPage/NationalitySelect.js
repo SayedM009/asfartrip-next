@@ -15,6 +15,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import { useTranslations } from "use-intl";
 const countries = [
     { code: "AF", name: "Afghanistan", flag: "🇦🇫" },
     { code: "AL", name: "Albania", flag: "🇦🇱" },
@@ -89,7 +90,6 @@ const countries = [
     { code: "IR", name: "Iran", flag: "🇮🇷" },
     { code: "IQ", name: "Iraq", flag: "🇮🇶" },
     { code: "IE", name: "Ireland", flag: "🇮🇪" },
-    { code: "IL", name: "Israel", flag: "🇮🇱" },
     { code: "IT", name: "Italy", flag: "🇮🇹" },
     { code: "CI", name: "Ivory Coast", flag: "🇨🇮" },
     { code: "JM", name: "Jamaica", flag: "🇯🇲" },
@@ -194,7 +194,8 @@ const countries = [
 export function NationalitySelect({ value, onValueChange }) {
     const [open, setOpen] = useState(false);
     const selectedCountry = countries.find((country) => country.code === value);
-
+    const t = useTranslations("Traveler");
+    const c = useTranslations("Countries");
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -202,17 +203,17 @@ export function NationalitySelect({ value, onValueChange }) {
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-full justify-between h-12"
+                    className="w-full justify-between h-12 cursor-pointer"
                 >
                     {selectedCountry ? (
                         <span className="flex items-center gap-2">
                             <span className="text-lg">
                                 {selectedCountry.flag}
                             </span>
-                            <span>{selectedCountry.name}</span>
+                            <span>{c(`${selectedCountry.code}`)}</span>
                         </span>
                     ) : (
-                        "Select nationality..."
+                        t("select_nationality")
                     )}
                     <ChevronsUpDown className="ltr:ml-2 rtl:mr-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -220,14 +221,14 @@ export function NationalitySelect({ value, onValueChange }) {
 
             <PopoverContent className="w-[300px] p-0" align="start">
                 <Command>
-                    <CommandInput placeholder="Search nationality..." />
+                    <CommandInput placeholder={t("search_nationality")} />
                     <CommandList>
-                        <CommandEmpty>No nationality found.</CommandEmpty>
+                        <CommandEmpty>{t("no_nationality_found")}</CommandEmpty>
                         <CommandGroup>
                             {countries.map((country) => (
                                 <CommandItem
                                     key={country.code}
-                                    value={country.name}
+                                    value={c(`${country.code}`)}
                                     onSelect={() => {
                                         onValueChange?.(country.code);
                                         setOpen(false);
@@ -244,7 +245,7 @@ export function NationalitySelect({ value, onValueChange }) {
                                     <span className="text-lg ltr:mr-2 rtl:ml-2">
                                         {country.flag}
                                     </span>
-                                    <span>{country.name}</span>
+                                    <span>{c(`${country.code}`)}</span>
                                 </CommandItem>
                             ))}
                         </CommandGroup>

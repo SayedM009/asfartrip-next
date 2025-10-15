@@ -160,13 +160,13 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                         <Button
                             variant="outline"
                             onClick={() => setIsOpen(false)}
-                            className="hover:cursor-pointer hover:bg-input-background/90"
+                            className="hover:cursor-pointer hover:bg-input-background/90 py-5"
                         >
                             {t("cancel")}
                         </Button>
                         <Button
                             onClick={() => handleSwitch(currentLanguage)}
-                            className="hover:cursor-pointer hover:bg-input-background/20"
+                            className="hover:cursor-pointer bg-accent-500 hover:bg-accent-600 transition-colors"
                         >
                             {t("apply")}
                         </Button>

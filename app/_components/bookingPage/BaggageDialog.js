@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-
-import { Package, Plus, Minus, Check } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Package, Luggage, Backpack, Check } from "lucide-react";
 import {
     Dialog,
     DialogContent,
@@ -11,6 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useCurrency } from "@/app/_context/CurrencyContext";
+import useBookingStore from "@/app/_store/bookingStore";
+import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 
 const extraBaggageOptions = [
     { weight: "5 kg", price: 50, currency: "AED" },
@@ -25,11 +27,25 @@ export default function BaggageDialog({
     cabinLuggage,
     includedBaggage,
     trigger,
-    selectedBaggage,
-    onBaggageChange,
 }) {
     const [open, setOpen] = useState(false);
-    const [selectedExtra, setSelectedExtra] = useState(selectedBaggage ?? null);
+    const { formatPrice } = useCurrency();
+    const { formatBaggage } = useFormatBaggage();
+
+    // Get baggage selection from store
+    const selectedBaggage = useBookingStore(
+        (state) => state.addOns.selectedBaggage
+    );
+    const updateBaggage = useBookingStore((state) => state.updateBaggage);
+
+    const [selectedExtra, setSelectedExtra] = useState(selectedBaggage);
+
+    // Sync with store when dialog opens
+    useEffect(() => {
+        if (open) {
+            setSelectedExtra(selectedBaggage);
+        }
+    }, [open, selectedBaggage]);
 
     const selectExtra = (index) => {
         // Toggle selection - if clicking same option, deselect it
@@ -41,8 +57,8 @@ export default function BaggageDialog({
         selectedExtra !== null ? extraBaggageOptions[selectedExtra].price : 0;
 
     const handleSave = () => {
-        // Save baggage selections
-        onBaggageChange?.(selectedExtra, totalExtraCost);
+        // Save baggage selections to store
+        updateBaggage(selectedExtra, totalExtraCost);
         setOpen(false);
     };
 
@@ -52,19 +68,23 @@ export default function BaggageDialog({
                 {trigger || (
                     <Button
                         variant="outline"
-                        className="w-full justify-between h-14 px-5"
+                        className="w-full justify-between h-14 px-5 cursor-pointer"
                     >
                         <span className="flex items-center gap-3">
-                            <Package className="size-5 text-accent-600" />
+                            <Luggage className="size-5 text-accent-600" />
                             <span>
-                                {selectedExtra !== null
-                                    ? extraBaggageOptions[selectedExtra].weight
+                                {selectedBaggage !== null
+                                    ? extraBaggageOptions[selectedBaggage]
+                                          .weight
                                     : "Add Extra Baggage"}
                             </span>
                         </span>
-                        {selectedExtra !== null && (
-                            <span className="text-blue-600">
-                                +{totalExtraCost} AED
+                        {selectedBaggage !== null && (
+                            <span className="text-accent-600">
+                                +
+                                {formatPrice(
+                                    extraBaggageOptions[selectedBaggage].price
+                                )}
                             </span>
                         )}
                     </Button>
@@ -92,7 +112,7 @@ export default function BaggageDialog({
                             {cabinLuggage && (
                                 <div className="flex items-start gap-3 p-4 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800">
                                     <div className="bg-green-100 dark:bg-green-900 p-2 rounded shrink-0">
-                                        <Package className="w-5 h-5 text-green-600 dark:text-green-400" />
+                                        <Backpack className="w-5 h-5 text-green-600 dark:text-green-400" />
                                     </div>
                                     <div className="flex-1">
                                         <div className="text-sm mb-1 flex items-center gap-2">
@@ -108,7 +128,7 @@ export default function BaggageDialog({
                             {includedBaggage && includedBaggage.length > 0 && (
                                 <div className="flex items-start gap-3 p-4 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800">
                                     <div className="bg-green-100 dark:bg-green-900 p-2 rounded shrink-0">
-                                        <Package className="w-5 h-5 text-green-600 dark:text-green-400" />
+                                        <Luggage className="w-5 h-5 text-green-600 dark:text-green-400" />
                                     </div>
                                     <div className="flex-1">
                                         <div className="text-sm mb-1 flex items-center gap-2">
@@ -116,7 +136,8 @@ export default function BaggageDialog({
                                             <Check className="w-4 h-4 text-green-600" />
                                         </div>
                                         <div className="text-xs text-muted-foreground">
-                                            {includedBaggage.join(", ")}
+                                            {formatBaggage(includedBaggage)}
+                                            {/* {includedBaggage.join(", ")} */}
                                         </div>
                                     </div>
                                 </div>
@@ -133,9 +154,9 @@ export default function BaggageDialog({
                             {totalExtraCost > 0 && (
                                 <Badge
                                     variant="default"
-                                    className="bg-blue-600"
+                                    className="bg-accent-100 text-accent-500"
                                 >
-                                    +{totalExtraCost} AED
+                                    +{formatPrice(totalExtraCost)}
                                 </Badge>
                             )}
                         </div>
@@ -148,7 +169,7 @@ export default function BaggageDialog({
                                         key={index}
                                         onClick={() => selectExtra(index)}
                                         className={`
-                      flex items-center justify-between p-4 rounded-lg border-2 transition-all text-left
+                      flex items-center justify-between p-4 rounded-lg border-2 transition-all text-left cursor-pointer
                       ${
                           isSelected
                               ? "border-blue-500 bg-blue-50 dark:bg-blue-950"
@@ -181,7 +202,7 @@ export default function BaggageDialog({
                                             </div>
                                         </div>
                                         <div className="text-sm">
-                                            +{option.price} {option.currency}
+                                            +{formatPrice(option.price)}
                                         </div>
                                     </button>
                                 );
@@ -215,11 +236,16 @@ export default function BaggageDialog({
                     </Button>
                     <Button
                         onClick={handleSave}
-                        className="bg-blue-600 hover:bg-blue-700"
+                        className="bg-accent-100 cursor-pointer text-accent-500 hover:bg-accent-100"
                     >
-                        {totalExtraCost > 0
-                            ? `Add Baggage (+${totalExtraCost} AED)`
-                            : "Continue"}
+                        {totalExtraCost > 0 ? (
+                            <>
+                                <span>Add Baggage +</span>
+                                {formatPrice(totalExtraCost)}
+                            </>
+                        ) : (
+                            "Continue"
+                        )}
                     </Button>
                 </div>
             </DialogContent>

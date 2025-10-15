@@ -8,9 +8,10 @@ import {
 // Request timeout: 30 seconds
 const REQUEST_TIMEOUT = 30000;
 
-/**
- * Makes flight search request with timeout
- */
+// Simple in-memory cache
+const CACHE = new Map();
+const CACHE_TTL = 60 * 1000; // 1 دقيقة
+
 async function makeFlightSearchRequest(requestData, basicAuth, apiUrl) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
@@ -39,9 +40,6 @@ async function makeFlightSearchRequest(requestData, basicAuth, apiUrl) {
     }
 }
 
-/**
- * Prepares request data from params
- */
 function prepareRequestData(params, token) {
     const requestData = {
         origin: params.origin,
@@ -55,7 +53,6 @@ function prepareRequestData(params, token) {
         api_token: token,
     };
 
-    // Add return date for round trips
     if (params.type === "R" && params.return_date) {
         requestData.return_date = params.return_date;
     }
@@ -63,9 +60,6 @@ function prepareRequestData(params, token) {
     return requestData;
 }
 
-/**
- * Validates search parameters
- */
 function validateParams(params) {
     const required = ["origin", "destination", "depart_date", "class"];
     const missing = required.filter((field) => !params[field]);
@@ -83,24 +77,23 @@ export async function POST(req) {
         .substr(2, 9)}`;
 
     try {
-        console.log(
-            `📥 [${new Date().toISOString()}] [${requestId}] Search request received`
-        );
-
-        // Parse and validate parameters
         const params = await req.json();
         validateParams(params);
 
-        console.log(
-            `🔍 [${new Date().toISOString()}] [${requestId}] Params: ${
-                params.origin
-            } → ${params.destination}, ${params.depart_date}`
-        );
+        // Generate cache key based on search params
+        const cacheKey = JSON.stringify(params);
+        const cached = CACHE.get(cacheKey);
 
-        // Get valid token (will refresh if needed)
+        if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+            console.log(
+                `💾 [${new Date().toISOString()}] [${requestId}] Returning cached results`
+            );
+            return NextResponse.json(cached.data);
+        }
+
+        // Get valid token
         let token = await getValidToken();
 
-        // Prepare credentials and URL
         const username = process.env.TP_USERNAME;
         const password = process.env.TP_PASSWORD;
 
@@ -113,92 +106,51 @@ export async function POST(req) {
         );
         const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/flight/search`;
 
-        // Prepare request data
         let requestData = prepareRequestData(params, token);
 
-        // Make first request
         let response = await makeFlightSearchRequest(
             requestData,
             basicAuth,
             apiUrl
         );
 
-        // If authentication failed, try ONE more time with fresh token
         if (response.status === 401 || response.status === 403) {
-            console.log(
-                `⚠️ [${new Date().toISOString()}] [${requestId}] Authentication failed, forcing token refresh...`
-            );
-
-            // Force clear and get new token
             await clearAPIToken();
             const newToken = await loginWithExistsCredintials();
 
-            if (!newToken) {
+            if (!newToken)
                 throw new Error("Failed to refresh authentication token");
-            }
 
             await setApiToken(newToken);
-
-            // Update request data with new token
             requestData.api_token = newToken;
 
-            console.log(
-                `🔄 [${new Date().toISOString()}] [${requestId}] Retrying with fresh token...`
-            );
-
-            // Retry ONCE
             response = await makeFlightSearchRequest(
                 requestData,
                 basicAuth,
                 apiUrl
             );
-
-            console.log(
-                `📡 [${new Date().toISOString()}] [${requestId}] Retry response status: ${
-                    response.status
-                }`
-            );
         }
 
-        // Handle non-OK response
         if (!response.ok) {
+            const errorText = await response.text();
             let errorMessage = "Failed to search flights";
 
             try {
-                const errorText = await response.text();
-                console.error(
-                    `❌ [${new Date().toISOString()}] [${requestId}] API Error (${
-                        response.status
-                    }):`,
-                    errorText
-                );
-
-                // Try to parse error message
-                try {
-                    const errorJson = JSON.parse(errorText);
-                    errorMessage =
-                        errorJson.message || errorJson.error || errorMessage;
-                } catch {
-                    errorMessage = errorText || errorMessage;
-                }
-            } catch (e) {
-                console.error(
-                    `❌ [${new Date().toISOString()}] [${requestId}] Could not read error response`
-                );
-            }
+                const errorJson = JSON.parse(errorText);
+                errorMessage =
+                    errorJson.message || errorJson.error || errorMessage;
+            } catch {}
 
             return NextResponse.json(
-                {
-                    error: errorMessage,
-                    requestId: requestId,
-                    status: response.status,
-                },
+                { error: errorMessage, requestId, status: response.status },
                 { status: response.status }
             );
         }
 
-        // Parse successful response
         const data = await response.json();
+
+        // Save to cache
+        CACHE.set(cacheKey, { data, timestamp: Date.now() });
 
         return NextResponse.json(data);
     } catch (error) {
@@ -206,13 +158,8 @@ export async function POST(req) {
             `❌ [${new Date().toISOString()}] [${requestId}] Critical error:`,
             error.message
         );
-        console.error(error);
-
         return NextResponse.json(
-            {
-                error: error.message || "Internal server error",
-                requestId: requestId,
-            },
+            { error: error.message || "Internal server error", requestId },
             { status: 500 }
         );
     }

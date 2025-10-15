@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import { CheckCircle2, XCircle, Info, ArrowRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { ArrowRight, Info, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FlightDetailsDialog } from "../flightSearchNavWrapper/FlightDetailsDialog";
 import { useCurrency } from "@/app/_context/CurrencyContext";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
+import { cn } from "@/lib/utils";
 
 export default function FareSummarySidebar({
     totalPrice,
@@ -18,15 +24,14 @@ export default function FareSummarySidebar({
 }) {
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
     const { formatPrice } = useCurrency();
+    const { formatBaggage } = useFormatBaggage();
 
-    const isRefundable =
-        refundable === "true" ||
-        fareType?.toLowerCase()?.includes("refundable");
+    const { CabinLuggage, BaggageAllowance } = ticket;
 
     return (
         <div
             className="
-            rounded-2xl border border-border bg-white/80 dark:bg-gray-800/70 
+            rounded-2xl border border-border bg-white/80 dark:bg-gray-800/50 
             backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300
             p-6 space-y-6 sticky top-6
         "
@@ -34,7 +39,7 @@ export default function FareSummarySidebar({
             {/* Header */}
             <div className="flex items-center justify-between pb-4 border-b border-border">
                 <h3 className="text-xl font-semibold capitalize rtl:text-right text-primary-700 dark:text-primary-100">
-                    Price Details
+                    flight summary
                 </h3>
 
                 {segments && (
@@ -45,7 +50,7 @@ export default function FareSummarySidebar({
                         withContinue={false}
                         trigger={{
                             title: "Details",
-                            icon: <Info className="w-4 h-4" />,
+                            icon: <Ticket className="w-4 h-4" />,
                         }}
                     />
                 )}
@@ -58,25 +63,83 @@ export default function FareSummarySidebar({
                 </h4>
                 <div className="space-y-3">
                     <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">
-                            Personal item
-                        </span>
-                        <span className="text-gray-700 dark:text-gray-200">
-                            Check with airline
+                        <Tooltip>
+                            <TooltipTrigger className="text-sm">
+                                <span className="text-muted-foreground border-b-1 border-gray-600 dark:border-b-gray-400 border-dashed flex items-center gap-1">
+                                    <Info className="size-3" />
+                                    Personal item
+                                </span>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-[220px] text-xs leading-snug text-center">
+                                <p>
+                                    Baggage rules vary by airline. Please
+                                    confirm your allowance before traveling.
+                                </p>
+                            </TooltipContent>
+                        </Tooltip>
+                        <span className="text-green-600 font-semibold">
+                            Free
                         </span>
                     </div>
                     <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">
-                            Carry-on baggage
+                        <Tooltip>
+                            <TooltipTrigger className="text-sm">
+                                <span className="text-muted-foreground border-b-1 border-gray-600 dark:border-b-gray-400 border-dashed flex items-center gap-1">
+                                    <Info className="size-3" /> Carry-on baggage
+                                </span>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-[220px] text-xs leading-snug text-center">
+                                <p>
+                                    Baggage rules vary by airline. Please
+                                    confirm your allowance before traveling.
+                                </p>
+                            </TooltipContent>
+                        </Tooltip>
+
+                        <span
+                            className={cn(
+                                " font-semibold capitalize",
+                                `${
+                                    formatBaggage(
+                                        CabinLuggage
+                                    ).toLocaleLowerCase() != "not included"
+                                        ? "text-green-600"
+                                        : "text-red-500 "
+                                }`
+                            )}
+                        >
+                            {formatBaggage(CabinLuggage)}
                         </span>
-                        <span className="text-green-600 font-medium">Free</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">
-                            Checked baggage
-                        </span>
-                        <span className="text-red-500 font-medium">
-                            Not included
+                        <Tooltip>
+                            <TooltipTrigger className="text-sm">
+                                <span className="text-muted-foreground border-b-1 border-gray-600 dark:border-b-gray-400 border-dashed flex items-center gap-1">
+                                    <Info className="size-3" />
+                                    Checked baggage
+                                </span>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-[220px] text-xs leading-snug text-center">
+                                <p>
+                                    Baggage rules vary by airline. Please
+                                    confirm your allowance before traveling.
+                                </p>
+                            </TooltipContent>
+                        </Tooltip>
+
+                        <span
+                            className={cn(
+                                " font-semibold capitalize",
+                                `${
+                                    formatBaggage(
+                                        BaggageAllowance[0]
+                                    ).toLocaleLowerCase() != "not included"
+                                        ? "text-green-600"
+                                        : "text-red-500 "
+                                }`
+                            )}
+                        >
+                            {formatBaggage(BaggageAllowance[0])}
                         </span>
                     </div>
                 </div>
@@ -84,6 +147,9 @@ export default function FareSummarySidebar({
 
             {/* Fare Details */}
             <div className="space-y-4">
+                <h4 className="text-md font-semibold text-primary-600 dark:text-primary-200 rtl:text-right capitalize">
+                    price Details
+                </h4>
                 <div className="space-y-3">
                     <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">Base Fare</span>
@@ -112,7 +178,7 @@ export default function FareSummarySidebar({
                     <span
                         className="
                         text-2xl font-bold bg-gradient-to-r from-accent-500 to-accent-400 
-                        bg-clip-text text-transparent drop-shadow-sm
+                        bg-clip-text text-transparent 
                     "
                     >
                         {formatPrice(totalPrice)}
@@ -181,169 +247,3 @@ export default function FareSummarySidebar({
         </div>
     );
 }
-
-// import React, { useState } from "react";
-// import { CheckCircle2, XCircle, Info, ArrowRight } from "lucide-react";
-// import { Badge } from "@/components/ui/badge";
-// import { Button } from "@/components/ui/button";
-// import { FlightDetailsDialog } from "../flightSearchNavWrapper/FlightDetailsDialog";
-// import { useCurrency } from "@/app/_context/CurrencyContext";
-// // import { FlightDetailsDialogBooking } from "./FlightDetailsDialogBooking";
-
-// export default function FareSummarySidebar({
-//     totalPrice,
-//     basePrice,
-//     taxes,
-//     currency,
-//     fareType,
-//     refundable,
-//     holdBooking,
-//     segments,
-//     cabinLuggage,
-//     baggageAllowance,
-//     onProceedToPayment,
-//     ticket,
-// }) {
-//     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
-
-//     const { formatPrice } = useCurrency();
-
-//     const isRefundable =
-//         refundable === "true" || fareType.toLowerCase().includes("refundable");
-
-//     <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-1 text-sm">
-//         <Info className="w-4 h-4" />
-//         Details
-//     </button>;
-
-//     return (
-//         <div className="bg-white dark:bg-gray-800 rounded-lg border border-border p-6 shadow-sm sticky top-4 space-y-6">
-//             <div className="flex items-center justify-between pb-4 border-b border-border">
-//                 <h3 className="rtl:text-right capitalize font-semibold text-xl">
-//                     price details
-//                 </h3>
-//                 {segments && (
-//                     <FlightDetailsDialog
-//                         ticket={ticket}
-//                         isOpen={showDetailsDialog}
-//                         onClose={() => setShowDetailsDialog(!showDetailsDialog)}
-//                         withContinue={false}
-//                         trigger={{ title: "Details", icon: <Info /> }}
-//                     />
-//                 )}
-//             </div>
-
-//             <div className="pb-4 border-b border-border">
-//                 <h2 className="rtl:text-right capitalize font-semibold text-md mb-5">
-//                     Baggage
-//                 </h2>
-//                 <div className="space-y-4">
-//                     <div className="space-y-3">
-//                         <div className="flex justify-between text-sm rtl:flex-row-reverse">
-//                             <span className="text-muted-foreground">
-//                                 Personal item
-//                             </span>
-//                             <span className="">Check with airline</span>
-//                         </div>
-//                         <div className="flex justify-between text-sm rtl:flex-row-reverse">
-//                             <span className="text-muted-foreground">
-//                                 Carry-on baggage
-//                             </span>
-//                             <span className="">Free</span>
-//                         </div>
-//                         <div className="flex justify-between text-sm rtl:flex-row-reverse">
-//                             <span className="text-muted-foreground">
-//                                 Checked baggage
-//                             </span>
-//                             <span className="">Not included</span>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-
-//             <div className="space-y-4">
-//                 {/* Fare Details */}
-//                 <div className="space-y-3">
-//                     <div className="flex justify-between text-sm rtl:flex-row-reverse">
-//                         <span className="text-muted-foreground">Base Fare</span>
-//                         <span className="text-accent-500 font-semibold">
-//                             {/* {currency} {basePrice.toFixed(2)}  */}
-//                             {formatPrice(basePrice)}
-//                         </span>
-//                     </div>
-//                     <div className="flex justify-between text-sm rtl:flex-row-reverse">
-//                         <span className="text-muted-foreground">
-//                             Taxes & Fees
-//                         </span>
-//                         <span className="text-accent-500 font-semibold">
-//                             {/* {currency} {taxes.toFixed(2)} */}
-//                             {formatPrice(taxes)}
-//                         </span>
-//                     </div>
-//                 </div>
-
-//                 {/* Divider */}
-//                 <div className="border-t border-border"></div>
-
-//                 {/* Total */}
-//                 <div className="flex justify-between items-center rtl:flex-row-reverse font-semibold">
-//                     <span className="text-xl">Total Amount</span>
-//                     <span className="text-2xl text-accent-500 dark:text-accent-400 ">
-//                         {/* {currency} {totalPrice.toFixed(2)} */}
-//                         {formatPrice(totalPrice)}
-//                     </span>
-//                 </div>
-
-//                 {/* Badges */}
-//                 <div className="flex flex-wrap gap-2 pt-2">
-//                     <Badge
-//                         variant={isRefundable ? "default" : "secondary"}
-//                         className="flex items-center gap-1"
-//                     >
-//                         {isRefundable ? (
-//                             <>
-//                                 <CheckCircle2 className="w-3 h-3" />
-//                                 Refundable
-//                             </>
-//                         ) : (
-//                             <>
-//                                 <XCircle className="w-3 h-3" />
-//                                 Non-Refundable
-//                             </>
-//                         )}
-//                     </Badge>
-
-//                     {holdBooking === "YES" && (
-//                         <Badge
-//                             variant="outline"
-//                             className="bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800"
-//                         >
-//                             Hold Booking
-//                         </Badge>
-//                     )}
-//                 </div>
-
-//                 {/* Additional Info */}
-//                 <div className="pt-4 border-t border-border">
-//                     <div className="text-xs text-muted-foreground space-y-1.5">
-//                         <p>• Price may change due to availability</p>
-//                         <p>• Additional baggage fees may apply</p>
-//                         <p>• Seats subject to availability</p>
-//                     </div>
-//                 </div>
-//             </div>
-
-//             {/* Proceed to Payment Button */}
-//             {onProceedToPayment && (
-//                 <Button
-//                     onClick={onProceedToPayment}
-//                     className="btn-primary "
-//                     size="lg"
-//                 >
-//                     Proceed to Payment
-//                     <ArrowRight className="w-4 h-4 ltr:ml-2 rtl:mr-2" />
-//                 </Button>
-//             )}
-//         </div>
-//     );
-// }

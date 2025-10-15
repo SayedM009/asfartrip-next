@@ -28,6 +28,9 @@ import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useRouter } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
+import { Badge } from "@/components/ui/badge";
+import useBookingStore from "@/app/_store/bookingStore";
+import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 
 export function FlightDetailsDialog({
     ticket,
@@ -39,12 +42,12 @@ export function FlightDetailsDialog({
     const router = useRouter();
     const [isChecking, setIsChecking] = useState(false);
     const [pricingError, setPricingError] = useState(null);
+    const { formatBaggage } = useFormatBaggage();
 
     const {
         TotalPrice,
         BasePrice,
         Taxes,
-        SITECurrencyType,
         Refundable,
         MultiLeg,
         segments,
@@ -60,7 +63,13 @@ export function FlightDetailsDialog({
     const formatDate = useDateFormatter();
     const { formatPrice } = useCurrency();
     const searchParams = useSearchParams();
-    const searchInfo = searchParams.get("searchObject");
+    const searchInfo = JSON.parse(searchParams.get("searchObject"));
+    const departureCity = JSON.parse(sessionStorage.getItem("departure")).city;
+    const destinationCity = JSON.parse(
+        sessionStorage.getItem("destination")
+    ).city;
+
+    const { setTicket, setSearchInfo } = useBookingStore();
 
     // Determine if this is a round trip ticket
     const isRoundTrip = MultiLeg === "true" && onward && returnJourney;
@@ -100,28 +109,6 @@ export function FlightDetailsDialog({
             .replace("m", t("m"));
     };
 
-    function formatBaggage(baggage) {
-        if (!baggage) return t("baggage.not_included");
-
-        let text = String(baggage).trim();
-        text = text.replace("NumberOfPieces", t("baggage.pieces"));
-        text = text.replace("Kilograms", t("baggage.Kilograms"));
-
-        const match = text.match(/(\D+)\s*(\d+)/);
-        if (match) {
-            const [, word, number] = match;
-            return `${number} ${word.trim()}`;
-        }
-
-        const match2 = text.match(/(\d+)\s*(\D+)/);
-        if (match2) {
-            const [, number, word] = match2;
-            return `${number} ${word.trim()}`;
-        }
-
-        return text;
-    }
-
     /**
      * Handle Continue button - Check air pricing
      */
@@ -152,33 +139,15 @@ export function FlightDetailsDialog({
             if (!pricingRes.ok)
                 throw new Error(pricingData.error || "Failed to check pricing");
 
-            console.log("📊 Pricing result:", pricingData);
-
             switch (pricingData.status) {
                 case "success": {
-                    console.log("✅ Price confirmed, saving ticket...");
+                    // 1️. Save the ticket & SearchInfo in FlightStore
+                    setTicket(ticket);
+                    setSearchInfo(searchInfo);
 
-                    // 1️⃣ Save the ticket in temporary API
-                    const saveRes = await fetch("/api/flight/temp-flights", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ ticket, searchInfo }),
-                    });
-
-                    const saveData = await saveRes.json();
-                    if (!saveRes.ok)
-                        throw new Error(
-                            saveData.error || "Failed to save ticket"
-                        );
-
-                    console.log(
-                        "💾 Ticket saved with temp_id:",
-                        saveData.temp_id
-                    );
-
-                    // 2️⃣ Redirect to booking page
+                    // 2️. Redirect to booking page
                     router.push(
-                        `/flights/booking?session_id=${pricingData.data.sessionId}&temp_id=${saveData.temp_id}`
+                        `/flights/booking?session_id=${pricingData.data.sessionId}`
                     );
                     break;
                 }
@@ -230,96 +199,118 @@ export function FlightDetailsDialog({
         <div className="space-y-4">
             <h5 className="font-medium text-primary">{title}</h5>
             {segments.map((segment, index) => (
-                <div key={index} className="border rounded-lg p-4">
-                    <div className="flex items-center gap-3 mb-4">
-                        <Image
-                            src={`/airline_logo/${segment.Carrier}.png`}
-                            alt={segment.Carrier}
-                            className="w-8 h-8 rounded"
-                            onError={(e) => {
-                                e.currentTarget.src = `https://images.kiwi.com/airlines/64x64/${segment.Carrier}.png`;
-                            }}
-                            loading="lazy"
-                            width={30}
-                            height={30}
-                        />
-                        <div>
-                            <div className="font-medium">
-                                {t(`airlines.${segment.Carrier}`) ||
-                                    segment.Carrier}{" "}
-                                {segment.FlightNumber}
-                            </div>
-                            <div className="text-sm text-muted-foreground">
-                                {segment.Equipment} •{" "}
-                                {t(
-                                    `ticket_class.${String(
-                                        segment.CabinClass
-                                    ).toLowerCase()}`
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div key={index} className="border rounded-lg px-2 py-4 sm:p-4">
+                    <div className="flex gap-4">
                         {/* Departure */}
-                        <div>
-                            <div className="font-semibold text-lg">
-                                {formatTime(segment.DepartureTime)}
-                            </div>
-                            <div className="text-sm text-muted-foreground">
-                                {formatDate(segment.DepartureTime, {
-                                    pattern: "EEEE, d MMMM ",
-                                })}
-                            </div>
-                            <div className="font-medium">{segment.Origin}</div>
-                            <div className="text-sm text-muted-foreground">
-                                {segment.OriginAirport}
-                            </div>
-                            {segment.OriginTerminal && (
-                                <div className="text-sm text-muted-foreground">
-                                    {t("dialog.terminal")}{" "}
-                                    {segment.OriginTerminal}
+                        <div className="flex flex-col justify-between">
+                            <div>
+                                <div className="font-semibold text-lg">
+                                    {formatTime(segment.DepartureTime)}
                                 </div>
-                            )}
+                                <div className="text-xs sm:text-sm text-muted-foreground">
+                                    {formatDate(segment.DepartureTime, {
+                                        pattern: " d MMMM ",
+                                    })}
+                                </div>
+                            </div>
+                            <div className="text-sm text-muted-foreground mb-1">
+                                <Badge
+                                    variant="secondary"
+                                    className="w-full p-2"
+                                >
+                                    {String(
+                                        String(segment.Duration)
+                                            .split(":")
+                                            .join("h ") + "m"
+                                    )
+                                        .replace("h", t("h"))
+                                        .replace("m", t("m"))}
+                                </Badge>
+                            </div>
+                            <div>
+                                <div className="font-semibold text-lg">
+                                    {formatTime(segment.ArrivalTime)}
+                                </div>
+                                <div className="text-xs sm:text-sm text-muted-foreground">
+                                    {formatDate(segment.ArrivalTime, {
+                                        pattern: " d MMMM ",
+                                    })}
+                                </div>
+                            </div>
                         </div>
 
                         {/* Flight Duration */}
                         <div className="text-center flex flex-col justify-center">
-                            <div className="text-sm text-muted-foreground mb-1">
-                                {t("dialog.flight_time")}: {segment.Duration}
-                            </div>
                             <div className="relative">
-                                <div className="h-0.5 bg-muted-foreground/30 w-full"></div>
-                                <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-primary rounded-full"></div>
-                                <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-primary rounded-full"></div>
-                                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                                    <Plane className="h-3 w-3 text-primary" />
-                                </div>
+                                <div className="h-50 bg-muted-foreground/30 w-0.5"></div>
+                                <div className="absolute left-0 top-0 transform -translate-x-0.5 w-2 h-2 bg-primary rounded-full"></div>
+                                <div className="absolute left-0 bottom-0 transform -translate-x-0.5 w-2 h-2 bg-primary rounded-full"></div>
                             </div>
                         </div>
 
                         {/* Arrival */}
-                        <div className="text-right md:text-left">
-                            <div className="font-semibold text-lg">
-                                {formatTime(segment.ArrivalTime)}
-                            </div>
-                            <div className="text-sm text-muted-foreground">
-                                {formatDate(segment.ArrivalTime, {
-                                    pattern: "EEEE, d MMMM ",
-                                })}
-                            </div>
-                            <div className="font-medium">
-                                {segment.Destination}
-                            </div>
-                            <div className="text-sm text-muted-foreground">
-                                {segment.DestinationAirport}
-                            </div>
-                            {segment.DestinationTerminal && (
-                                <div className="text-sm text-muted-foreground">
-                                    {t("dialog.terminal")}{" "}
-                                    {segment.DestinationTerminal}
+                        <div className="flex flex-col justify-between relative ">
+                            <div>
+                                <div className="font-medium flex items-center gap-2">
+                                    {segment.Origin}
+                                    <span>
+                                        {segment.OriginTerminal && (
+                                            <div className="text-sm text-muted-foreground">
+                                                {t("dialog.terminal")}{" "}
+                                                {segment.OriginTerminal}
+                                            </div>
+                                        )}
+                                    </span>
                                 </div>
-                            )}
+                                <div className="text-sm text-muted-foreground">
+                                    {segment.OriginAirport}
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-3 mb-4">
+                                <Image
+                                    src={`/airline_logo/${segment.Carrier}.png`}
+                                    alt={segment.Carrier}
+                                    className="w-8 h-8 sm:w-12 sm:h-12 rounded"
+                                    onError={(e) => {
+                                        e.currentTarget.src = `https://images.kiwi.com/airlines/64x64/${segment.Carrier}.png`;
+                                    }}
+                                    loading="lazy"
+                                    width={50}
+                                    height={50}
+                                />
+                                <div>
+                                    <div className="font-medium">
+                                        {t(`airlines.${segment.Carrier}`) ||
+                                            segment.Carrier}{" "}
+                                        {segment.FlightNumber}
+                                    </div>
+                                    <div className="text-sm text-muted-foreground capitalize">
+                                        {segment.Equipment} •{" "}
+                                        {t(
+                                            `ticket_class.${String(
+                                                segment.CabinClass
+                                            ).toLowerCase()}`
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div className="font-medium flex items-center gap-2">
+                                    {/* <div className="absolute left-[-9%] sm:left-[-9.5%] rtl:right-[-9%] rtl:sm:right-[-9.5%] bottom-6 transform -translate-y-1/2 w-2 h-2 bg-primary rounded-full"></div> */}
+                                    {segment.Destination}
+                                    <span>
+                                        {segment.DestinationTerminal && (
+                                            <div className="text-sm text-muted-foreground">
+                                                {t("dialog.terminal")}{" "}
+                                                {segment.DestinationTerminal}
+                                            </div>
+                                        )}
+                                    </span>
+                                </div>
+                                <div className="text-sm text-muted-foreground">
+                                    {segment.DestinationAirport}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -383,8 +374,10 @@ export function FlightDetailsDialog({
                         <div className="flex items-start justify-between mb-4">
                             <div>
                                 <h3 className="font-semibold">
-                                    {firstSegment.Origin} →{" "}
-                                    {lastSegment.Destination}
+                                    {departureCity || firstSegment.Origin} →{" "}
+                                    {destinationCity || lastSegment.Destination}
+                                    {/* {firstSegment.Origin} →{" "}
+                                    {lastSegment.Destination} */}
                                     {isRoundTrip && (
                                         <span className="ml-2 text-sm font-normal">
                                             {t("round_trip")}
@@ -394,7 +387,7 @@ export function FlightDetailsDialog({
                                 <p className="text-sm text-muted-foreground">
                                     {t("departure")}:{" "}
                                     {formatDate(firstSegment.DepartureTime, {
-                                        pattern: "EEEE, MMMM d, yyyy",
+                                        pattern: "EEEE, d MMMM , yyyy",
                                     })}
                                     {isRoundTrip && returnSegments && (
                                         <span className="block">
@@ -411,10 +404,10 @@ export function FlightDetailsDialog({
                                 </p>
                             </div>
                             <div className="text-right">
-                                <div className="text-xs font-bold text-accent-400">
+                                <div className="text-sm font-bold text-accent-400">
                                     {formatPrice(TotalPrice)}
                                 </div>
-                                <div className="text-xs text-muted-foreground">
+                                <div className="text-sm text-muted-foreground">
                                     {isRoundTrip
                                         ? "Total round trip"
                                         : `${t(
@@ -428,7 +421,7 @@ export function FlightDetailsDialog({
 
                         {(outboundSegments.length > 1 ||
                             (returnSegments && returnSegments.length > 1)) && (
-                            <div className="flex items-center gap-2 text-sm">
+                            <div className="flex items-center gap-2 text-xs">
                                 <AlertCircle className="h-4 w-4 text-amber-500" />
                                 <span>{t("dialog.check_visa")}</span>
                             </div>
@@ -554,7 +547,7 @@ export function FlightDetailsDialog({
                                 {isChecking ? (
                                     <>
                                         <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                                        {t("dialog.confiming")}
+                                        {t("dialog.checking")}
                                     </>
                                 ) : (
                                     t("dialog.continue")
