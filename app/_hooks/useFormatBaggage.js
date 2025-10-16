@@ -21,8 +21,8 @@ export function useFormatBaggage() {
 
         // 🟦 استبدال المصطلحات بالترجمة
         text = text
-            .replace(/NumberOfPieces/i, "piece")
-            .replace(/Kilograms/i, "kg");
+            .replace(/NumberOfPieces/i, t("baggage.piece"))
+            .replace(/Kilograms/i, t("baggage.Kilograms"));
 
         // 🟩 نبحث عن رقم + كلمة أو كلمة + رقم
         const match =
@@ -39,9 +39,11 @@ export function useFormatBaggage() {
                 word = match[1].trim();
             }
 
-            // 🟨 في حالة "piece" → نضيف s لو العدد > 1
             if (word.toLowerCase().startsWith("piece")) {
-                word = Number(number) > 1 ? "pieces" : "piece";
+                word =
+                    Number(number) > 1
+                        ? t("baggage.piecs")
+                        : t("baggage.piece");
             }
 
             return `${number} ${word}`;

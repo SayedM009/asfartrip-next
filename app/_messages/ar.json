@@ -1090,7 +1090,16 @@
             "base_fare": " السعر الأساسي ",
             "taxes_and_fees": "الضرائب والرسوم",
             "total_fare": "إجمالي السعر",
-            "proceed_to_payment": "المتابعة إلى الدفع"
+            "proceed_to_payment": "المتابعة إلى الدفع",
+            "free": "مجانا",
+            "baggage_helper": "تختلف قواعد الأمتعة حسب شركة الطيران. يرجى تأكيد مخصصاتك قبل السفر.",
+            "price_details": "تفاصيل السعر"
+        },
+        "insurance": {
+            "title": " تأمين السفر",
+            "description": " احصل على راحة البال أثناء رحلتك مع تغطية تأمين السفر الشاملة لدينا.",
+            "no_insurance": "لا، شكراً. لا أرغب في إضافة تأمين السفر إلى حجزي.",
+            "free": "مجانا"
         }
     },
     "Traveler": {
@@ -1110,22 +1119,31 @@
         "select_nationality": "إختيار الجنسية",
         "search_nationality": "إبحث عن الجنسية",
         "no_nationality_found": "لم يتم العثور على جنسية",
+        "search_country": "إبحث عن الدولة",
+        "no_country_found": "لم يتم العثور على دولة",
         "phone_number": "رقم الهاتف",
         "email": "البريد الإلكتروني",
         "first_name_placeholder": "زيد",
         "last_name_placeholder": "القرشي",
+        "full_name_placeholder": "أدخل الاسم الكامل",
         "name_text_helper": "الرجاء إدخال الاسم كما هو مذكور في جواز السفر",
         "save_traveler_information": "حفظ معلومات المسافر",
-        "email_helper": "سنقوم بالتواصل معك عبر هذا البريد إذا لزم الأمر",
+        "email_helper": "سنستخدم هذا البريد الإلكتروني لإرسال تأكيد الحجز الخاص بك",
         "phone_helper": "سنستخدم هذا الرقم للتواصل معك إذا لزم الأمر",
         "some_one_else": "هذا الحجز لشخص آخر",
+        "some_one_else_helper": "إذا كنت تحجز لشخص آخر، يرجى التأكد من إدخال معلوماته بشكل صحيح.",
         "edit": "تعديل",
         "adult": "بالغ",
         "child": "طفل",
         "infant": "رضيع",
         "day": "يوم",
         "month": "شهر",
-        "year": "سنة"
+        "year": "سنة",
+        "contact_information": "معلومات الإتصال",
+        "valid_mobile_number": " الرجاء إدخال رقم هاتف محمول صالح.",
+        "valid_email": " الرجاء إدخال بريد إلكتروني صالح.",
+        "saved_travelers": "المسافرون المحفوظون",
+        "no_saved_travelers": "لا يوجد مسافرون محفوظون"
     },
     "Offers_slider": {
         "title": "عروض مميزة",

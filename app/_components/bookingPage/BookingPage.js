@@ -20,8 +20,9 @@ import ChevronBasedOnLanguage from "../ChevronBasedOnLanguage";
 import useFlightTicket from "@/app/_store/ticketStore";
 import useBookingStore from "@/app/_store/bookingStore";
 import { useTranslations } from "next-intl";
+import { InsuranceSelection } from "./InsuranceSelection";
 
-export default function BookingPage({ isLogged }) {
+export default function BookingPage({ isLogged, cart }) {
     const [currentStep, setCurrentStep] = useState(2);
     const [initialized, setInitialized] = useState(false);
     const contactInfoRef = useRef(null);
@@ -29,6 +30,16 @@ export default function BookingPage({ isLogged }) {
     const { formatPrice } = useCurrency();
 
     const t = useTranslations("Flight");
+
+    const {
+        setCart,
+        selectedInsurance,
+        setSelectedInsurance,
+        getInsuranceTotal,
+        getTotalPassengers,
+        insurancePlans,
+        setInsurancePlans,
+    } = useBookingStore();
 
     // Get data from ticketStore
     const ticketFromStore = useFlightTicket((state) => state.ticket);
@@ -66,6 +77,40 @@ export default function BookingPage({ isLogged }) {
         setSearchInfo,
     ]);
 
+    // تحديد التأمين الافتراضي عند التحميل
+    useEffect(() => {
+        if (insurancePlans?.length > 0 && !selectedInsurance) {
+            // Set "No Insurance" as default
+            const noInsuranceOption = {
+                quote_id: 0,
+                scheme_id: 0,
+                name: "No Insurance",
+                premium: 0,
+            };
+            setSelectedInsurance(noInsuranceOption);
+        }
+    }, [insurancePlans, selectedInsurance, setSelectedInsurance]);
+
+    useEffect(() => {
+        if (cart) {
+            setCart(cart.CartData);
+            if (cart.Premium) {
+                setInsurancePlans(cart.Premium);
+                console.log("Insurance plans from cart:", cart.Premium);
+            }
+        }
+    }, [cart, setCart, setInsurancePlans]);
+
+    // معالجة تغيير التأمين
+    const handleInsuranceChange = (insurance) => {
+        setSelectedInsurance(insurance);
+        console.log("Selected insurance:", insurance);
+    };
+
+    // حساب إجمالي التأمين
+    const insuranceTotal = getInsuranceTotal();
+    const totalPassengers = getTotalPassengers();
+
     // Use booking store data (which is synced from ticket store)
     const bookingData = bookingTicket;
     const searchParams = bookingSearch;
@@ -79,10 +124,10 @@ export default function BookingPage({ isLogged }) {
     // Ticket Expired or not Found
     if (!segments || segments.length === 0) return <TicketExpired />;
 
-    const totalPassengers =
-        (searchParams?.ADT || 1) +
-        (searchParams?.CHD || 0) +
-        (searchParams?.INF || 0);
+    // const totalPassengers =
+    //     (searchParams?.ADT || 1) +
+    //     (searchParams?.CHD || 0) +
+    //     (searchParams?.INF || 0);
 
     const dynamicTotal = getTotalPrice();
     const addOnsTotal = getAddOnsTotal();
@@ -154,6 +199,7 @@ export default function BookingPage({ isLogged }) {
                                 totalPrice={dynamicTotal}
                                 basePrice={bookingData.BasePrice}
                                 taxes={bookingData.Taxes + addOnsTotal}
+                                insuranceTotal={insuranceTotal}
                                 currency={bookingData.SITECurrencyType}
                                 fareType={bookingData.FareType}
                                 refundable={bookingData.Refundable}
@@ -187,7 +233,14 @@ export default function BookingPage({ isLogged }) {
                         {t("booking.enter_traveler_information")}
                     </h1>
                     <div className="capitalize flex items-center gap-2 text-xs text-muted-foreground truncate">
-                        <span>{searchParams.class}</span> |{" "}
+                        <span>
+                            {t(
+                                `ticket_class.${String(
+                                    searchParams.class
+                                ).toLocaleLowerCase()}`
+                            )}
+                        </span>{" "}
+                        |{" "}
                         <div className="flex items-center gap-2">
                             {searchParams.origin}{" "}
                             <ChevronBasedOnLanguage icon="arrow" size="3" />
@@ -266,6 +319,15 @@ export default function BookingPage({ isLogged }) {
                                 }}
                             />
                         </section>
+
+                        <section>
+                            <InsuranceSelection
+                                options={insurancePlans}
+                                selectedInsurance={selectedInsurance}
+                                onInsuranceChange={handleInsuranceChange}
+                                totalPassengers={totalPassengers}
+                            />
+                        </section>
                     </div>
 
                     {/* Fare Summary Sidebar - Desktop Only */}
@@ -275,6 +337,7 @@ export default function BookingPage({ isLogged }) {
                             totalPrice={dynamicTotal}
                             basePrice={bookingData.BasePrice}
                             taxes={bookingData.Taxes + addOnsTotal}
+                            insuranceTotal={insuranceTotal}
                             currency={bookingData.SITECurrencyType}
                             fareType={bookingData.FareType}
                             refundable={bookingData.Refundable}
@@ -285,6 +348,8 @@ export default function BookingPage({ isLogged }) {
                     </div>
                 </div>
             </div>
+
+            {/* <InsuranceSelection options={insurancePlans} /> */}
 
             {/* Sticky Bottom Bar - Mobile Only */}
             <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-border shadow-lg z-50">
@@ -303,7 +368,7 @@ export default function BookingPage({ isLogged }) {
                         size="lg"
                     >
                         {t("booking.proceed_to_payment")}
-                        <ArrowRight className="w-4 h-4 ltr:ml-2 rtl:mr-2" />
+                        <ChevronBasedOnLanguage size="5" />
                     </Button>
                 </div>
             </div>
@@ -332,6 +397,7 @@ function TicketExpired() {
 
 export function TopMobileSection({ ticket, children }) {
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+    const f = useTranslations("Flight");
     return (
         <div className="lg:hidden fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-border shadow-lg z-50">
             <div className="p-4">
@@ -347,7 +413,7 @@ export function TopMobileSection({ ticket, children }) {
                                 }
                                 withContinue={false}
                                 trigger={{
-                                    title: "Details",
+                                    title: f("booking.details"),
                                     icon: <Ticket className="w-4 h-4" />,
                                 }}
                             />

@@ -69,7 +69,8 @@ export function FlightDetailsDialog({
         sessionStorage.getItem("destination")
     ).city;
 
-    const { setTicket, setSearchInfo } = useBookingStore();
+    const { setTicket, setSearchInfo, setSessionId, setTempId } =
+        useBookingStore();
 
     // Determine if this is a round trip ticket
     const isRoundTrip = MultiLeg === "true" && onward && returnJourney;
@@ -144,10 +145,12 @@ export function FlightDetailsDialog({
                     // 1️. Save the ticket & SearchInfo in FlightStore
                     setTicket(ticket);
                     setSearchInfo(searchInfo);
+                    setSessionId(pricingData.data.sessionId);
+                    setTempId(pricingData.data.tempId);
 
                     // 2️. Redirect to booking page
                     router.push(
-                        `/flights/booking?session_id=${pricingData.data.sessionId}`
+                        `/flights/booking?session_id=${pricingData.data.sessionId}&temp_id=${pricingData.data.tempId}`
                     );
                     break;
                 }

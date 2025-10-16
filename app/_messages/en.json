@@ -1072,6 +1072,7 @@
             "ZY": "Sky Airlines"
         },
         "booking": {
+            "free": "Free",
             "flight_selection": "Flight Selection",
             "complated": "Completed",
             "enter_traveler_information": "Enter Traveler Information",
@@ -1092,7 +1093,15 @@
             "base_fare": "Base Fare",
             "taxes_and_fees": "Taxes & Fees",
             "total_fare": "Total Fare",
-            "proceed_to_payment": "Proceed to Payment"
+            "proceed_to_payment": "Proceed to Payment",
+            "baggage_helper": "Baggage rules vary by airline. Please confirm your allowance before traveling.",
+            "price_details": "Price Details"
+        },
+        "insurance": {
+            "title": "Travel Insurance",
+            "description": "Protect your trip with comprehensive travel insurance",
+            "no_insurance": "No Insurance",
+            "free": "Free"
         }
     },
     "Traveler": {
@@ -1111,22 +1120,31 @@
         "select_nationality": "Select Nationality",
         "search_nationality": "Search Nationality",
         "no_nationality_found": "No Nationality Found.",
+        "search_country": "Search Country",
+        "no_country_found": "No Country Found.",
         "phone_number": "Phone Number",
         "email": "Email",
         "first_name_placeholder": "John",
         "last_name_placeholder": "Doe",
+        "full_name_placeholder": "Enter full name",
         "name_text_helper": "As shown on passport",
         "save_traveler_information": "Save traveler information",
         "email_helper": "Booking confirmation will be sent to this email address",
         "phone_helper": "We'll contact you on this number if needed",
         "some_one_else": "Someone else",
+        "some_one_else_helper": "The person making the booking",
         "edit": "Edit",
         "adult": "Adult",
         "child": "Child",
         "infant": "Infant",
         "day": "Day",
         "month": "Month",
-        "year": "Year"
+        "year": "Year",
+        "contact_information": "Contact Information",
+        "valid_mobile_number": "Please enter a valid phone number (minimum 7 digits)",
+        "valid_email": "Please enter a valid email address.",
+        "saved_travelers": "Select from saved travelers",
+        "no_saved_travelers": "No saved travelers found."
     },
     "Offers_slider": {
         "title": "special offers",

@@ -7,6 +7,14 @@ const useBookingStore = create(
             // Flight ticket & search info (from ticketStore)
             ticket: {},
             searchInfo: {},
+            sessionId: "",
+            tempId: "",
+            paymentMethod: "Payment Gateway",
+            specialRequest: "",
+            couponCode: "",
+            cart: {},
+            selectedInsurance: null,
+            insurancePlans: [],
 
             // Travelers data - array of traveler objects
             travelers: [],
@@ -94,6 +102,46 @@ const useBookingStore = create(
                 }
             },
 
+            setSessionId: (newSessionId) =>
+                set(() => ({
+                    sessionId: newSessionId,
+                })),
+
+            setTempId: (newTempId) =>
+                set(() => ({
+                    tempId: newTempId,
+                })),
+
+            setPaymentMethod: (paymentMethod) =>
+                set(() => ({
+                    paymentMethod: paymentMethod,
+                })),
+
+            setSpecialRequest: (request) =>
+                set(() => ({
+                    specialRequest: request,
+                })),
+
+            setCouponCode: (couponCode) =>
+                set(() => ({
+                    couponCode: couponCode,
+                })),
+
+            setCart: (newCart) =>
+                set(() => ({
+                    cart: newCart,
+                })),
+
+            setSelectedInsurance: (insurance) => {
+                console.log("Setting selected insurance:", insurance);
+                set(() => ({ selectedInsurance: insurance }));
+            },
+
+            setInsurancePlans: (plans) => {
+                console.log("Setting insurance plans:", plans);
+                set(() => ({ insurancePlans: plans || [] }));
+            },
+
             // Update specific traveler
             updateTraveler: (travelerNumber, data) =>
                 set((state) => ({
@@ -143,7 +191,26 @@ const useBookingStore = create(
                 const basePrice = state.ticket?.TotalPrice || 0;
                 const addOnsTotal =
                     state.addOns.baggagePrice + state.addOns.mealPrice;
-                return basePrice + addOnsTotal;
+                const insuranceTotal = get().getInsuranceTotal();
+                return basePrice + addOnsTotal + insuranceTotal;
+            },
+
+            getTotalPassengers: () => {
+                const state = get();
+                const searchInfo = state.searchInfo || {};
+                return (
+                    (searchInfo.ADT || 1) +
+                    (searchInfo.CHD || 0) +
+                    (searchInfo.INF || 0)
+                );
+            },
+
+            getInsuranceTotal: () => {
+                const state = get();
+                if (!state.selectedInsurance?.premium) return 0;
+                return (
+                    state.selectedInsurance.premium * get().getTotalPassengers()
+                );
             },
 
             // Get add-ons total
@@ -211,7 +278,8 @@ const useBookingStore = create(
                 contactInfo: state.contactInfo,
                 addOns: state.addOns,
                 searchInfo: state.searchInfo,
-                // Don't persist ticket as it comes from ticketStore
+                selectedInsurance: state.selectedInsurance,
+                insurancePlans: state.insurancePlans, // إضافة insurancePlans للحفظ
             }),
         }
     )

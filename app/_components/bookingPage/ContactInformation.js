@@ -11,9 +11,11 @@ import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import useBookingStore from "@/app/_store/bookingStore";
+import { useTranslations } from "next-intl";
 
 const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
     const [showValidation, setShowValidation] = useState(false);
+    const t = useTranslations("Traveler");
 
     // Get contact info from store
     const contactInfo = useBookingStore((state) => state.contactInfo);
@@ -63,16 +65,18 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
             )}
         >
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-border">
-                <div className="flex items-center gap-2 rtl:flex-row-reverse">
-                    <Mail className="size-5 text-accent-600" />
-                    <h3>Contact Information</h3>
+                <div className="flex items-center gap-2 ">
+                    <div className="bg-accent-100 dark:bg-accent-900/30 p-2 rounded-lg">
+                        <Mail className="w-5 h-5 text-accent-600 dark:text-accent-400" />
+                    </div>
+                    <h3>{t("contact_information")}</h3>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 rtl:flex-row-reverse">
                     <Label
                         htmlFor="bookingForOther"
                         className="text-xs cursor-pointer whitespace-nowrap"
                     >
-                        Someone else
+                        {t("some_one_else")}
                     </Label>
                     <Switch
                         id="bookingForOther"
@@ -81,6 +85,7 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                             handleFieldChange("bookingForSomeoneElse", checked)
                         }
                         className="bg-accent-500"
+                        dir="ltr"
                     />
                 </div>
             </div>
@@ -89,7 +94,7 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                 {contactInfo.bookingForSomeoneElse && (
                     <div>
                         <Label htmlFor="bookerName">
-                            Your Full Name{" "}
+                            {t("full_name")}{" "}
                             <span className="text-red-500">*</span>
                         </Label>
                         <Input
@@ -98,7 +103,7 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                             onChange={(e) =>
                                 handleFieldChange("bookerName", e.target.value)
                             }
-                            placeholder="Enter your full name"
+                            placeholder={t("full_name_placeholder")}
                             className={cn(
                                 "mt-2 h-12",
                                 showValidation &&
@@ -107,7 +112,7 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                             )}
                         />
                         <p className="text-xs text-muted-foreground mt-1">
-                            The person making the booking
+                            {t("some_one_else_helper")}
                         </p>
                     </div>
                 )}
@@ -115,7 +120,7 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                 {/* Email */}
                 <div>
                     <Label htmlFor="email">
-                        Email Address <span className="text-red-500">*</span>
+                        {t("email")} <span className="text-red-500">*</span>
                     </Label>
                     <Input
                         id="email"
@@ -124,7 +129,7 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                         onChange={(e) =>
                             handleFieldChange("email", e.target.value)
                         }
-                        placeholder="your.email@example.com"
+                        placeholder="email@example.com"
                         className={cn(
                             "mt-2 h-12",
                             showValidation &&
@@ -141,7 +146,7 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                             contactInfo.email
                         ) && (
                             <p className="text-xs text-red-500 mt-1">
-                                Please enter a valid email address
+                                {t("valid_email")}
                             </p>
                         )}
                     {(!showValidation ||
@@ -150,7 +155,7 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                             contactInfo.email
                         )) && (
                         <p className="text-xs text-muted-foreground mt-1">
-                            Booking confirmation will be sent to this email
+                            {t("email_helper")}
                         </p>
                     )}
                 </div>
@@ -158,7 +163,8 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                 {/* Phone */}
                 <div>
                     <Label htmlFor="phone">
-                        Mobile Number <span className="text-red-500">*</span>
+                        {t("phone_number")}{" "}
+                        <span className="text-red-500">*</span>
                     </Label>
                     <div className="flex gap-2 mt-2">
                         <CountryCodeSelect
@@ -180,7 +186,7 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                                 showValidation &&
                                     (!contactInfo.phone ||
                                         contactInfo.phone.trim().length < 7) &&
-                                    "border-red-500 placeholder:text-red-400"
+                                    "border-red-500 placeholder:text-red-400 rtl:text-right"
                             )}
                         />
                     </div>
@@ -188,15 +194,14 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                         contactInfo.phone &&
                         contactInfo.phone.trim().length < 7 && (
                             <p className="text-xs text-red-500 mt-1">
-                                Please enter a valid phone number (minimum 7
-                                digits)
+                                {t("valid_mobile_number")}
                             </p>
                         )}
                     {(!showValidation ||
                         !contactInfo.phone ||
                         contactInfo.phone.trim().length >= 7) && (
                         <p className="text-xs text-muted-foreground mt-1">
-                            We&apos;ll contact you on this number if needed
+                            {t("phone_helper")}
                         </p>
                     )}
                 </div>

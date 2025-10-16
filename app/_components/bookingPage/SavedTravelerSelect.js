@@ -16,6 +16,7 @@ import {
     CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 // Mock saved travelers with complete data
 const savedTravelers = [
@@ -54,7 +55,7 @@ const savedTravelers = [
 export function SavedTravelerSelect({ onSelect }) {
     const [open, setOpen] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
-
+    const t = useTranslations("Traveler");
     const selectedTraveler = savedTravelers.find((t) => t.id === selectedId);
 
     const handleSelect = (travelerId) => {
@@ -94,7 +95,7 @@ export function SavedTravelerSelect({ onSelect }) {
                         ) : (
                             <span className="flex items-center gap-2 text-muted-foreground">
                                 <User className="w-4 h-4" />
-                                Select from saved travelers
+                                {t("saved_travelers")}
                             </span>
                         )}
                         <ChevronsUpDown className="ltr:ml-2 rtl:mr-2 h-4 w-4 shrink-0 opacity-50" />
@@ -106,7 +107,7 @@ export function SavedTravelerSelect({ onSelect }) {
                         <CommandInput placeholder="Search travelers..." />
                         <CommandList>
                             <CommandEmpty>
-                                No saved travelers found.
+                                {t("no_saved_travelers")}
                             </CommandEmpty>
                             <CommandGroup>
                                 {savedTravelers.map((traveler) => (

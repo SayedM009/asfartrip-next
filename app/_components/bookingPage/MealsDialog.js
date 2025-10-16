@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 const availableMeals = [
     { id: "none", name: "No Meal", description: "Skip meal service", price: 0 },
@@ -53,6 +54,7 @@ export default function MealsDialog({
 
     const [open, setOpen] = useState(false);
 
+    const f = useTranslations("Flight");
     const selectedMealData = availableMeals.find((m) => m.id === selectedMeal);
     const totalCost = selectedMealData?.price || 0;
 
@@ -69,11 +71,13 @@ export default function MealsDialog({
                     className="w-full justify-between h-14 px-5"
                 >
                     <span className="flex items-center gap-3">
-                        <UtensilsCrossed className="size-5 text-accent-600" />
+                        <div className="bg-accent-100 dark:bg-accent-900/30 p-2 rounded-lg">
+                            <UtensilsCrossed className="size-5 text-accent-600" />
+                        </div>
                         <span>
                             {selectedMeal !== "none"
                                 ? selectedMealData?.name
-                                : "Add Meal"}
+                                : f("booking.add_meal")}
                         </span>
                     </span>
                     {totalCost > 0 && (

@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { useCurrency } from "@/app/_context/CurrencyContext";
 import useBookingStore from "@/app/_store/bookingStore";
 import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
+import { useTranslations } from "use-intl";
 
 const extraBaggageOptions = [
     { weight: "5 kg", price: 50, currency: "AED" },
@@ -31,6 +32,7 @@ export default function BaggageDialog({
     const [open, setOpen] = useState(false);
     const { formatPrice } = useCurrency();
     const { formatBaggage } = useFormatBaggage();
+    const f = useTranslations("Flight");
 
     // Get baggage selection from store
     const selectedBaggage = useBookingStore(
@@ -71,12 +73,14 @@ export default function BaggageDialog({
                         className="w-full justify-between h-14 px-5 cursor-pointer"
                     >
                         <span className="flex items-center gap-3">
-                            <Luggage className="size-5 text-accent-600" />
+                            <div className="bg-accent-100 dark:bg-accent-900/30 p-2 rounded-lg">
+                                <Luggage className="size-5 text-accent-600" />
+                            </div>
                             <span>
                                 {selectedBaggage !== null
                                     ? extraBaggageOptions[selectedBaggage]
                                           .weight
-                                    : "Add Extra Baggage"}
+                                    : f("booking.extra_baggage")}
                             </span>
                         </span>
                         {selectedBaggage !== null && (

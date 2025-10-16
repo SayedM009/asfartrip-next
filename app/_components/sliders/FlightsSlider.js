@@ -224,9 +224,9 @@ export function FlightsSlider() {
                                 width={30}
                                 height={30}
                                 // unoptimized
-                                priority
-                                fetchPriority="high"
-                                loading="eager"
+                                // priority
+                                // fetchPriority="high"
+                                loading="lazy"
                             />
                             <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
                                 {t("title")}
@@ -297,6 +297,7 @@ export function FlightsSlider() {
                                         fill
                                         className="object-cover"
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        loading="lazy"
                                     />
 
                                     {/* Gradient Overlay */}

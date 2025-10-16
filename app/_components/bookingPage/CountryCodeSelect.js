@@ -15,6 +15,7 @@ import {
     CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 const countryCodes = [
     { code: "+971", country: "AE", name: "UAE", flag: "🇦🇪" },
@@ -133,7 +134,8 @@ const countryCodes = [
 
 export function CountryCodeSelect({ value, onValueChange }) {
     const [open, setOpen] = useState(false);
-
+    const c = useTranslations("Countries");
+    const t = useTranslations("Traveler");
     const selectedCode = countryCodes.find((item) => item.code === value);
 
     return (
@@ -160,9 +162,9 @@ export function CountryCodeSelect({ value, onValueChange }) {
             </PopoverTrigger>
             <PopoverContent className="w-[280px] p-0" align="start">
                 <Command>
-                    <CommandInput placeholder="Search country..." />
+                    <CommandInput placeholder={t("search_country")} />
                     <CommandList>
-                        <CommandEmpty>No country found.</CommandEmpty>
+                        <CommandEmpty>{t("no_country_found")}</CommandEmpty>
                         <CommandGroup>
                             {countryCodes.map((item) => (
                                 <CommandItem
@@ -184,7 +186,9 @@ export function CountryCodeSelect({ value, onValueChange }) {
                                     <span className="text-base ltr:mr-2 rtl:ml-2">
                                         {item.flag}
                                     </span>
-                                    <span className="flex-1">{item.name}</span>
+                                    <span className="flex-1">
+                                        {c(`${item.country}`)}
+                                    </span>
                                     <span className="text-xs text-muted-foreground">
                                         {item.code}
                                     </span>

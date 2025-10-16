@@ -10,11 +10,14 @@ import {
 } from "@/components/ui/tooltip";
 import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "use-intl";
+import ChevronBasedOnLanguage from "../ChevronBasedOnLanguage";
 
 export default function FareSummarySidebar({
     totalPrice,
     basePrice,
     taxes,
+    insuranceTotal, // prop جديد
     fareType,
     refundable,
     holdBooking,
@@ -25,8 +28,8 @@ export default function FareSummarySidebar({
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
     const { formatPrice } = useCurrency();
     const { formatBaggage } = useFormatBaggage();
-
     const { CabinLuggage, BaggageAllowance } = ticket;
+    const f = useTranslations("Flight");
 
     return (
         <div
@@ -39,7 +42,7 @@ export default function FareSummarySidebar({
             {/* Header */}
             <div className="flex items-center justify-between pb-4 border-b border-border">
                 <h3 className="text-xl font-semibold capitalize rtl:text-right text-primary-700 dark:text-primary-100">
-                    flight summary
+                    {f("booking.flight_summary")}
                 </h3>
 
                 {segments && (
@@ -49,7 +52,7 @@ export default function FareSummarySidebar({
                         onClose={() => setShowDetailsDialog(!showDetailsDialog)}
                         withContinue={false}
                         trigger={{
-                            title: "Details",
+                            title: f("booking.details"),
                             icon: <Ticket className="w-4 h-4" />,
                         }}
                     />
@@ -59,7 +62,7 @@ export default function FareSummarySidebar({
             {/* Baggage Info */}
             <div className="pb-4 border-b border-border space-y-4">
                 <h4 className="text-md font-semibold text-primary-600 dark:text-primary-200 rtl:text-right">
-                    Baggage
+                    {f("booking.baggage")}
                 </h4>
                 <div className="space-y-3">
                     <div className="flex justify-between text-sm">
@@ -67,32 +70,27 @@ export default function FareSummarySidebar({
                             <TooltipTrigger className="text-sm">
                                 <span className="text-muted-foreground border-b-1 border-gray-600 dark:border-b-gray-400 border-dashed flex items-center gap-1">
                                     <Info className="size-3" />
-                                    Personal item
+                                    {f("booking.personal_item")}
                                 </span>
                             </TooltipTrigger>
                             <TooltipContent className="max-w-[220px] text-xs leading-snug text-center">
-                                <p>
-                                    Baggage rules vary by airline. Please
-                                    confirm your allowance before traveling.
-                                </p>
+                                <p>{f("booking.baggage_helper")}</p>
                             </TooltipContent>
                         </Tooltip>
                         <span className="text-green-600 font-semibold">
-                            Free
+                            {f("booking.free")}
                         </span>
                     </div>
                     <div className="flex justify-between text-sm">
                         <Tooltip>
                             <TooltipTrigger className="text-sm">
                                 <span className="text-muted-foreground border-b-1 border-gray-600 dark:border-b-gray-400 border-dashed flex items-center gap-1">
-                                    <Info className="size-3" /> Carry-on baggage
+                                    <Info className="size-3" />{" "}
+                                    {f("booking.cabin_baggage")}
                                 </span>
                             </TooltipTrigger>
                             <TooltipContent className="max-w-[220px] text-xs leading-snug text-center">
-                                <p>
-                                    Baggage rules vary by airline. Please
-                                    confirm your allowance before traveling.
-                                </p>
+                                <p>{f("booking.baggage_helper")}</p>
                             </TooltipContent>
                         </Tooltip>
 
@@ -116,14 +114,11 @@ export default function FareSummarySidebar({
                             <TooltipTrigger className="text-sm">
                                 <span className="text-muted-foreground border-b-1 border-gray-600 dark:border-b-gray-400 border-dashed flex items-center gap-1">
                                     <Info className="size-3" />
-                                    Checked baggage
+                                    {f("booking.checked_baggage")}
                                 </span>
                             </TooltipTrigger>
                             <TooltipContent className="max-w-[220px] text-xs leading-snug text-center">
-                                <p>
-                                    Baggage rules vary by airline. Please
-                                    confirm your allowance before traveling.
-                                </p>
+                                <p>{f("booking.baggage_helper")}</p>
                             </TooltipContent>
                         </Tooltip>
 
@@ -148,23 +143,37 @@ export default function FareSummarySidebar({
             {/* Fare Details */}
             <div className="space-y-4">
                 <h4 className="text-md font-semibold text-primary-600 dark:text-primary-200 rtl:text-right capitalize">
-                    price Details
+                    {f("booking.price_details")}
                 </h4>
                 <div className="space-y-3">
                     <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Base Fare</span>
+                        <span className="text-muted-foreground">
+                            {f("booking.base_fare")}
+                        </span>
                         <span className="font-semibold text-primary-700 dark:text-primary-200">
                             {formatPrice(basePrice)}
                         </span>
                     </div>
                     <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">
-                            Taxes & Fees
+                            {f("booking.taxes_and_fees")}
                         </span>
                         <span className="font-semibold text-primary-700 dark:text-primary-200">
                             {formatPrice(taxes)}
                         </span>
                     </div>
+
+                    {/* Insurance Row - الجديد */}
+                    {insuranceTotal > 0 && (
+                        <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">
+                                {f("insurance.title")}
+                            </span>
+                            <span className="font-semibold text-green-600 dark:text-green-400">
+                                +{formatPrice(insuranceTotal)}
+                            </span>
+                        </div>
+                    )}
                 </div>
 
                 {/* Divider */}
@@ -173,14 +182,9 @@ export default function FareSummarySidebar({
                 {/* Total */}
                 <div className="flex justify-between items-center font-semibold">
                     <span className="text-lg text-primary-700 dark:text-primary-200">
-                        Total Amount
+                        {f("booking.total_fare")}
                     </span>
-                    <span
-                        className="
-                        text-2xl font-bold bg-gradient-to-r from-accent-500 to-accent-400 
-                        bg-clip-text text-transparent 
-                    "
-                    >
+                    <span className="text-2xl font-bold bg-gradient-to-r from-accent-500 to-accent-400 bg-clip-text text-transparent">
                         {formatPrice(totalPrice)}
                     </span>
                 </div>
@@ -240,8 +244,9 @@ export default function FareSummarySidebar({
                     transition-all duration-300 cursor-pointer rounded-sm
                         "
                 >
-                    Proceed to Payment
-                    <ArrowRight className="w-5 h-5 ltr:ml-2 rtl:mr-2" />
+                    {f("booking.proceed_to_payment")}
+                    <ChevronBasedOnLanguage size="5" />
+                    {/* <ArrowRight className="w-5 h-5 ltr:ml-2 rtl:mr-2" /> */}
                 </Button>
             )}
         </div>
