@@ -93,9 +93,11 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
                 </Button>
             </DialogTrigger>
 
-            <DialogContent dir={isRTL ? "rtl" : "ltr"}>
+            <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{t("select_currency")}</DialogTitle>
+                    <DialogTitle className="rtl:text-right ">
+                        {t("select_currency")}
+                    </DialogTitle>
                 </DialogHeader>
 
                 <Select value={tempCurrency} onValueChange={setTempCurrency}>

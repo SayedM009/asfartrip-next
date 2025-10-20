@@ -62,7 +62,6 @@ const countryCodes = [
     { code: "+98", country: "IR", name: "Iran", flag: "🇮🇷" },
     { code: "+964", country: "IQ", name: "Iraq", flag: "🇮🇶" },
     { code: "+353", country: "IE", name: "Ireland", flag: "🇮🇪" },
-    { code: "+972", country: "IL", name: "Israel", flag: "🇮🇱" },
     { code: "+39", country: "IT", name: "Italy", flag: "🇮🇹" },
     { code: "+81", country: "JP", name: "Japan", flag: "🇯🇵" },
     { code: "+962", country: "JO", name: "Jordan", flag: "🇯🇴" },

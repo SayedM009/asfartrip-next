@@ -31,6 +31,7 @@ import { useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import useBookingStore from "@/app/_store/bookingStore";
 import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
+import ChevronBasedOnLanguage from "../ChevronBasedOnLanguage";
 
 export function FlightDetailsDialog({
     ticket,
@@ -64,13 +65,24 @@ export function FlightDetailsDialog({
     const { formatPrice } = useCurrency();
     const searchParams = useSearchParams();
     const searchInfo = JSON.parse(searchParams.get("searchObject"));
-    const departureCity = JSON.parse(sessionStorage.getItem("departure")).city;
-    const destinationCity = JSON.parse(
-        sessionStorage.getItem("destination")
-    ).city;
 
-    const { setTicket, setSearchInfo, setSessionId, setTempId } =
-        useBookingStore();
+    const { departure, destination } =
+        JSON.parse(searchParams.get("cities")) || {};
+
+    const departureCity =
+        departure?.city || JSON.parse(sessionStorage.getItem("departure")).city;
+    const destinationCity =
+        destination?.city ||
+        JSON.parse(sessionStorage.getItem("destination")).city;
+
+    const {
+        setTicket,
+        setSearchInfo,
+        setSessionId,
+        setTempId,
+        clearBookingData,
+        setSearchURL,
+    } = useBookingStore();
 
     // Determine if this is a round trip ticket
     const isRoundTrip = MultiLeg === "true" && onward && returnJourney;
@@ -142,13 +154,30 @@ export function FlightDetailsDialog({
 
             switch (pricingData.status) {
                 case "success": {
-                    // 1️. Save the ticket & SearchInfo in FlightStore
+                    // 1️. Save the ticket & SearchInfo in bookingStore
                     setTicket(ticket);
                     setSearchInfo(searchInfo);
                     setSessionId(pricingData.data.sessionId);
                     setTempId(pricingData.data.tempId);
+                    setSearchURL(window.location.href);
+                    clearBookingData();
 
-                    // 2️. Redirect to booking page
+                    // 2. Save Departure & Destination in Case of there are no Objects in Session Storage
+                    if (
+                        !JSON.parse(sessionStorage.getItem("departure")) ||
+                        !JSON.parse(sessionStorage.getItem("destination"))
+                    ) {
+                        sessionStorage.setItem(
+                            "departure",
+                            JSON.stringify(departure)
+                        );
+                        sessionStorage.setItem(
+                            "destination",
+                            JSON.stringify(destination)
+                        );
+                    }
+
+                    // 3. Redirect to booking page
                     router.push(
                         `/flights/booking?session_id=${pricingData.data.sessionId}&temp_id=${pricingData.data.tempId}`
                     );
@@ -364,7 +393,7 @@ export function FlightDetailsDialog({
                 )}
             >
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2" dir="ltr">
+                    <DialogTitle className="flex items-center gap-2">
                         <Plane className="h-5 w-5" />
                         {t("dialog.flight_details")}
                     </DialogTitle>
@@ -376,11 +405,15 @@ export function FlightDetailsDialog({
                     <div className="bg-muted/50 rounded-lg p-4">
                         <div className="flex items-start justify-between mb-4">
                             <div>
-                                <h3 className="font-semibold">
-                                    {departureCity || firstSegment.Origin} →{" "}
-                                    {destinationCity || lastSegment.Destination}
-                                    {/* {firstSegment.Origin} →{" "}
-                                    {lastSegment.Destination} */}
+                                <h3 className="font-semibold flex items-center capitalize gap-2">
+                                    <span>
+                                        {departureCity || firstSegment.Origin}
+                                    </span>
+                                    <ChevronBasedOnLanguage icon="arrow" />
+                                    <span>
+                                        {destinationCity ||
+                                            lastSegment.Destination}
+                                    </span>
                                     {isRoundTrip && (
                                         <span className="ml-2 text-sm font-normal">
                                             {t("round_trip")}

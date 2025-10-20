@@ -1,28 +1,35 @@
+// app/api/flight/save-passengers/route.js
+
+// app/api/flight/save-passengers/route.js
 import { NextResponse } from "next/server";
 import {
     clearAPIToken,
     loginWithExistsCredintials,
 } from "@/app/_libs/token-manager";
 
-// Request timeout: 30 seconds
-const REQUEST_TIMEOUT = 30000;
+const REQUEST_TIMEOUT = 30000; // 30 seconds timeout
 
-// Simple in-memory cache
-const CACHE = new Map();
-const CACHE_TTL = 60 * 1000; // 1 minute
-
-async function makeFlightSearchRequest(requestData, basicAuth, apiUrl) {
+async function makeSavePassengersRequest(requestData, basicAuth, apiUrl) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
     try {
+        const formData = new URLSearchParams();
+        for (const [key, value] of Object.entries(requestData)) {
+            if (key === "TravelerDetails") {
+                formData.append(key, JSON.stringify(value));
+            } else {
+                formData.append(key, value);
+            }
+        }
+
         const response = await fetch(apiUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
                 Authorization: `Basic ${basicAuth}`,
             },
-            body: new URLSearchParams(requestData),
+            body: formData.toString(),
             signal: controller.signal,
         });
 
@@ -30,106 +37,63 @@ async function makeFlightSearchRequest(requestData, basicAuth, apiUrl) {
         return response;
     } catch (error) {
         clearTimeout(timeoutId);
-
         if (error.name === "AbortError") {
             throw new Error("Request timeout - please try again");
         }
-
         throw error;
     }
 }
 
-function prepareRequestData(params, token) {
-    const requestData = {
-        origin: params.origin,
-        destination: params.destination,
-        depart_date: params.depart_date,
-        ADT: params.ADT || 1,
-        CHD: params.CHD || 0,
-        INF: params.INF || 0,
-        class: `${params.class[0].toUpperCase()}${params.class.slice(1)}`,
-        type: params.type || "O",
-        api_token: token,
-    };
-
-    if (params.type === "R" && params.return_date) {
-        requestData.return_date = params.return_date;
-    }
-
-    return requestData;
-}
-
-function validateParams(params) {
-    const required = ["origin", "destination", "depart_date", "class"];
+function validateSavePassengersParams(params) {
+    const required = ["session_id", "temp_id", "amount", "TravelerDetails"];
     const missing = required.filter((field) => !params[field]);
-
     if (missing.length > 0) {
         throw new Error(`Missing required fields: ${missing.join(", ")}`);
     }
-
     return true;
 }
 
 export async function POST(req) {
-    const requestId = `REQ_${Date.now()}_${Math.random()
+    const requestId = `SAVE_PASSENGERS_${Date.now()}_${Math.random()
         .toString(36)
         .substr(2, 9)}`;
 
     try {
         const params = await req.json();
-        validateParams(params);
+        validateSavePassengersParams(params);
 
-        // Generate cache key based on search params
-        const cacheKey = JSON.stringify(params);
-        const cached = CACHE.get(cacheKey);
-
-        if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-            console.log(
-                `💾 [${new Date().toISOString()}] [${requestId}] Returning cached results`
-            );
-            return NextResponse.json(cached.data);
-        }
-
-        // Always get a fresh token for each search to avoid reuse issues
-        console.log(
-            `🔐 [${new Date().toISOString()}] [${requestId}] Getting fresh token...`
-        );
         let token = await loginWithExistsCredintials();
 
         const username = process.env.TP_USERNAME;
         const password = process.env.TP_PASSWORD;
-
         if (!username || !password) {
             throw new Error("Missing API credentials configuration");
         }
-
         const basicAuth = Buffer.from(`${username}:${password}`).toString(
             "base64"
         );
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/flight/search`;
 
-        let requestData = prepareRequestData(params, token);
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/flight/save`;
 
-        let response = await makeFlightSearchRequest(
+        let requestData = {
+            ...params,
+            api_token: token,
+        };
+
+        let response = await makeSavePassengersRequest(
             requestData,
             basicAuth,
             apiUrl
         );
 
-        // Keep retry logic as fallback, though unlikely with fresh token
         if (response.status === 401 || response.status === 403) {
-            console.log(
-                `⚠️ [${new Date().toISOString()}] [${requestId}] Auth failed, retrying with new token...`
-            );
-            await clearAPIToken(); // Clean up if any old cookies
+            await clearAPIToken();
             const newToken = await loginWithExistsCredintials();
-
             if (!newToken) {
                 throw new Error("Failed to obtain new authentication token");
             }
-
             requestData.api_token = newToken;
-            response = await makeFlightSearchRequest(
+            response = await makeSavePassengersRequest(
                 requestData,
                 basicAuth,
                 apiUrl
@@ -138,20 +102,17 @@ export async function POST(req) {
 
         if (!response.ok) {
             const errorText = await response.text();
-            let errorMessage = "Failed to search flights";
-
+            let errorMessage = "Failed to save passengers";
             try {
                 const errorJson = JSON.parse(errorText);
                 errorMessage =
                     errorJson.message || errorJson.error || errorMessage;
             } catch {}
-
             console.error(
                 `❌ [${new Date().toISOString()}] [${requestId}] API error: ${
                     response.status
                 } - ${errorMessage}`
             );
-
             return NextResponse.json(
                 { error: errorMessage, requestId, status: response.status },
                 { status: response.status }
@@ -159,14 +120,10 @@ export async function POST(req) {
         }
 
         const data = await response.json();
-
-        // Save to cache
-        CACHE.set(cacheKey, { data, timestamp: Date.now() });
-
         console.log(
-            `✅ [${new Date().toISOString()}] [${requestId}] Flight search successful`
+            `✅ [${new Date().toISOString()}] [${requestId}] Passengers saved successfully`
         );
-
+        console.log(data);
         return NextResponse.json(data);
     } catch (error) {
         console.error(

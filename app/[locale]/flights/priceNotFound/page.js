@@ -1,144 +1,148 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useRouter } from "@/i18n/navigation";
-import { AlertCircle, Search, Home, RefreshCcw } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { Button } from "@/app/_components/ui/button";
+import {
+    AlertTriangle,
+    Search,
+    Home,
+    Clock,
+    Calendar,
+    MapPin,
+} from "lucide-react";
 
 export default function PriceNotFoundPage() {
-    const router = useRouter();
-    const t = useTranslations("Flight");
+    const handleSearchAgain = () => {
+        window.history.back();
+    };
+
+    const handleGoHome = () => {
+        window.location.href = "/";
+    };
 
     return (
-        <div className="flex items-center justify-center ">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center px-4 py-12">
             <div className="max-w-2xl w-full">
-                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-6 text-center">
-                    {/* Icon */}
-                    <div className="flex justify-center mb-6">
-                        <div className="relative">
-                            <div className="absolute inset-0 bg-red-500/20 rounded-full blur-xl"></div>
-                            <div className="relative bg-red-100 dark:bg-red-900/30 rounded-full p-6">
-                                <AlertCircle className="h-16 w-16 text-red-600 dark:text-red-400" />
+                {/* Main Container */}
+                <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
+                    {/* Icon and Title Section */}
+                    <div className="px-6 py-10 md:px-10 md:py-12 text-center border-b border-gray-100 dark:border-gray-800">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-100 dark:bg-orange-900/20 mb-6">
+                            <AlertTriangle className="w-8 h-8 text-orange-600 dark:text-orange-500" />
+                        </div>
+
+                        <h1 className="text-gray-900 dark:text-white mb-3">
+                            Flight No Longer Available
+                        </h1>
+
+                        <p className="text-gray-600 dark:text-gray-400">
+                            This flight is no longer available for booking.
+                            Prices and availability update in real-time.
+                        </p>
+                    </div>
+
+                    {/* Content Section */}
+                    <div className="px-6 py-8 md:px-10 md:py-10">
+                        {/* Suggestions */}
+                        <div className="space-y-4 mb-8">
+                            <h2 className="text-gray-900 dark:text-white">
+                                Here&apos;s what you can do:
+                            </h2>
+
+                            <div className="space-y-3">
+                                <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                                    <Search className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
+                                    <div>
+                                        <p className="text-gray-900 dark:text-white">
+                                            Search for similar flights
+                                        </p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                            Other options may be available for
+                                            your route
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                                    <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
+                                    <div>
+                                        <p className="text-gray-900 dark:text-white">
+                                            Adjust your travel dates
+                                        </p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                            Flexible dates often have more
+                                            availability
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                                    <MapPin className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
+                                    <div>
+                                        <p className="text-gray-900 dark:text-white">
+                                            Try nearby airports
+                                        </p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                            Alternative airports may offer
+                                            better options
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Title */}
-                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                        Flight No Longer Available
-                    </h1>
-
-                    {/* Description */}
-                    <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-lg mx-auto">
-                        Unfortunately, this flight is no longer available for
-                        booking. Flight prices and availability change rapidly.
-                    </p>
-
-                    {/* Info Box */}
-                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 mb-8 text-left">
-                        <h3 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-                            <RefreshCcw className="h-5 w-5 text-blue-600" />
-                            What You Can Do:
-                        </h3>
-                        <ul className="space-y-3 text-gray-700 dark:text-gray-300">
-                            <li className="flex items-start gap-3">
-                                <span className="text-blue-600 dark:text-blue-400 mt-1">
-                                    •
-                                </span>
-                                <span>
-                                    <strong>Search again</strong> - Similar
-                                    flights may still be available
-                                </span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-blue-600 dark:text-blue-400 mt-1">
-                                    •
-                                </span>
-                                <span>
-                                    <strong>Try flexible dates</strong> -
-                                    Adjusting your travel dates by a day or two
-                                    might reveal more options
-                                </span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-blue-600 dark:text-blue-400 mt-1">
-                                    •
-                                </span>
-                                <span>
-                                    <strong>
-                                        Consider alternative airports
-                                    </strong>{" "}
-                                    - Check nearby departure or arrival airports
-                                </span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <span className="text-blue-600 dark:text-blue-400 mt-1">
-                                    •
-                                </span>
-                                <span>
-                                    <strong>Book quickly</strong> - When you
-                                    find a suitable flight, complete your
-                                    booking promptly
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* Why This Happens */}
-                    <details className="mb-8 text-left">
-                        <summary className="cursor-pointer text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-medium">
-                            Why did this happen?
-                        </summary>
-                        <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg text-sm text-gray-600 dark:text-gray-400 space-y-2">
-                            <p>
-                                Flight availability and prices are updated in
-                                real-time by airlines. Common reasons include:
-                            </p>
-                            <ul className="list-disc list-inside space-y-1 ml-2">
-                                <li>
-                                    The last seat at this price was just booked
-                                </li>
-                                <li>The airline adjusted their pricing</li>
-                                <li>The flight schedule was modified</li>
-                                <li>
-                                    Seats were held too long without booking
-                                </li>
-                            </ul>
+                        {/* Why This Happens */}
+                        <div className="mb-8 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-100 dark:border-blue-900/30">
+                            <div className="flex items-start gap-3">
+                                <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
+                                <div>
+                                    <p className="text-sm text-gray-900 dark:text-white mb-2">
+                                        <strong>Why did this happen?</strong>
+                                    </p>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                                        Flight prices and availability change
+                                        constantly. This fare may have been
+                                        booked by another customer, or the
+                                        airline adjusted their pricing.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </details>
 
-                    {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Button
-                            onClick={() => router.back()}
-                            size="lg"
-                            className="btn-primary"
-                        >
-                            <Search className="h-5 w-5 mr-2" />
-                            Search Again
-                        </Button>
+                        {/* Action Buttons */}
+                        <div className="flex flex-col sm:flex-row gap-3">
+                            <Button
+                                onClick={handleSearchAgain}
+                                size="lg"
+                                className="btn-primary flex-1"
+                            >
+                                <Search className="w-5 h-5 mr-2" />
+                                Search Again
+                            </Button>
 
-                        <Button
-                            onClick={() => router.push("/")}
-                            variant="outline"
-                            size="lg"
-                            className="px-8"
-                        >
-                            <Home className="h-5 w-5 mr-2" />
-                            Go to Home
-                        </Button>
+                            <Button
+                                onClick={handleGoHome}
+                                variant="outline"
+                                size="lg"
+                                className="flex-1 sm:flex-none sm:px-8"
+                            >
+                                <Home className="w-5 h-5 mr-2" />
+                                Back to Home
+                            </Button>
+                        </div>
+
+                        {/* Support Link */}
+                        <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800 text-center">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                Need assistance?{" "}
+                                <a
+                                    href="mailto:support@example.com"
+                                    className="text-blue-600 dark:text-blue-400 hover:underline"
+                                >
+                                    Contact Support
+                                </a>
+                            </p>
+                        </div>
                     </div>
-
-                    {/* Additional Help */}
-                    <p className="mt-8 text-sm text-gray-500 dark:text-gray-400">
-                        Need help? Contact our support team at{" "}
-                        <a
-                            href="mailto:support@example.com"
-                            className="text-blue-600 dark:text-blue-400 hover:underline"
-                        >
-                            support@example.com
-                        </a>
-                    </p>
                 </div>
             </div>
         </div>

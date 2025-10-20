@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { CreditCard, Wallet, Bitcoin, Check } from "lucide-react";
+import { CreditCard, Wallet, Bitcoin, Check, Loader2 } from "lucide-react";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { BackWardButtonWithDirections } from "../flightSearchNavWrapper/BackwardButton";
 import { TopMobileSection } from "./BookingPage";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { useCurrency } from "@/app/_context/CurrencyContext";
 
 export default function PaymentSection({
     totalAmount,
@@ -13,12 +16,15 @@ export default function PaymentSection({
     onConfirmPayment,
     backTo,
     ticket,
+    loading,
 }) {
     const [selectedMethod, setSelectedMethod] = useState("card");
     const [cardNumber, setCardNumber] = useState("");
     const [cardName, setCardName] = useState("");
     const [expiryDate, setExpiryDate] = useState("");
     const [cvv, setCvv] = useState("");
+    const { formatPrice } = useCurrency();
+    const p = useTranslations("Payment");
 
     const paymentMethods = [
         {
@@ -34,6 +40,7 @@ export default function PaymentSection({
             icon: Wallet,
             description: "Split into 4 payments",
             color: "green",
+            img: "/currencies/tabby.svg",
         },
         {
             id: "tamara",
@@ -41,6 +48,10 @@ export default function PaymentSection({
             icon: Wallet,
             description: "Buy now, pay later",
             color: "purple",
+            img: "/currencies/tamara.jpg",
+            class: "rounded-full",
+            width: 30,
+            height: 30,
         },
         {
             id: "crypto",
@@ -88,7 +99,7 @@ export default function PaymentSection({
                 <div className="flex items-center gap-4 mb-4 ">
                     <BackWardButtonWithDirections onClick={backTo} />
                     <h2 className=" capitalize  font-semibold text-xl">
-                        Select Payment Method
+                        {p("select_payment_method")}
                     </h2>
                     <div></div>
                 </div>
@@ -97,10 +108,10 @@ export default function PaymentSection({
                         <BackWardButtonWithDirections onClick={backTo} />
                         <div>
                             <h2 className="text-lg font-semibold capitalize ">
-                                Select Payment Method
+                                {p("select_payment_method")}
                             </h2>
                             <div className="capitalize flex items-center gap-2 text-xs text-muted-foreground truncate">
-                                <span>Secured Payments</span>
+                                <span>{p("secured_payments")}</span>
                             </div>
                         </div>
                     </div>
@@ -116,11 +127,11 @@ export default function PaymentSection({
                                 className={cn(
                                     "p-2 rounded-lg border-2 transition-all text-left rtl:text-right",
                                     isSelected
-                                        ? "border-blue-500 bg-blue-50 dark:bg-blue-950/50"
+                                        ? "border-accent-500 bg-accent-50 dark:bg-blue-950/50"
                                         : "border-gray-200 dark:border-gray-700 hover:border-blue-300"
                                 )}
                             >
-                                <div className="flex items-start gap-4 rtl:flex-row-reverse">
+                                <div className="flex items-center gap-4 ">
                                     <div
                                         className={cn(
                                             "p-2 rounded-lg shrink-0",
@@ -134,29 +145,69 @@ export default function PaymentSection({
                                                 "bg-orange-100 dark:bg-orange-900"
                                         )}
                                     >
-                                        <Icon
-                                            className={cn(
-                                                "w-6 h-6",
-                                                method.color === "blue" &&
-                                                    "text-blue-600 dark:text-blue-400",
-                                                method.color === "green" &&
-                                                    "text-green-600 dark:text-green-400",
-                                                method.color === "purple" &&
-                                                    "text-purple-600 dark:text-purple-400",
-                                                method.color === "orange" &&
-                                                    "text-orange-600 dark:text-orange-400"
-                                            )}
-                                        />
+                                        {method.img ? (
+                                            <Image
+                                                src={method.img}
+                                                alt={` payment with ${method.id}`}
+                                                className={method.class}
+                                                width={method.width || 40}
+                                                height={method.height || 40}
+                                                quality={100}
+                                            />
+                                        ) : (
+                                            <Icon
+                                                className={cn(
+                                                    "w-6 h-6",
+                                                    method.color === "blue" &&
+                                                        "text-blue-600 dark:text-blue-400",
+                                                    method.color === "green" &&
+                                                        "text-green-600 dark:text-green-400",
+                                                    method.color === "purple" &&
+                                                        "text-purple-600 dark:text-purple-400",
+                                                    method.color === "orange" &&
+                                                        "text-orange-600 dark:text-orange-400"
+                                                )}
+                                            />
+                                        )}
                                     </div>
                                     <div className="flex-1">
-                                        <div className="flex items-center gap-2 mb-0 rtl:flex-row-reverse rtl:justify-end">
-                                            <h4>{method.name}</h4>
+                                        <div className="flex items-center gap-2 mb-0 ">
+                                            <h4 className="font-semibold">
+                                                {p(`${method.id}`)}
+                                            </h4>
                                             {isSelected && (
-                                                <Check className="w-5 h-5 text-blue-600" />
+                                                <Check className="w-5 h-5 text-accent-600" />
                                             )}
                                         </div>
                                         <p className="text-sm text-muted-foreground">
-                                            {method.description}
+                                            {method.id === "card" ? (
+                                                <div className="flex items-center gap-2">
+                                                    <Image
+                                                        src="/currencies/visa.svg"
+                                                        alt="card payment with visa"
+                                                        width={30}
+                                                        height={30}
+                                                        quality={100}
+                                                    />
+                                                    <Image
+                                                        src="/currencies/mastercard.svg"
+                                                        alt="card payment with mastercard"
+                                                        width={30}
+                                                        height={30}
+                                                        quality={100}
+                                                    />
+                                                    <Image
+                                                        src="/currencies/ziina.jpg"
+                                                        alt="card payment with ziina"
+                                                        className="rounded-full"
+                                                        width={20}
+                                                        height={20}
+                                                        quality={100}
+                                                    />
+                                                </div>
+                                            ) : (
+                                                p(`${method.id}_description`)
+                                            )}
                                         </p>
                                     </div>
                                 </div>
@@ -167,7 +218,7 @@ export default function PaymentSection({
             </div>
 
             {/* Payment Details Form */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg border border-border p-6">
+            {/* <div className="bg-white dark:bg-gray-800 rounded-lg border border-border p-6">
                 <h3 className="mb-6 pb-4 border-b border-border rtl:text-right">
                     Payment Details
                 </h3>
@@ -270,15 +321,27 @@ export default function PaymentSection({
                         </div>
                     </div>
                 )}
-            </div>
+            </div> */}
 
             {/* Confirm Payment Button */}
             <Button
                 onClick={onConfirmPayment}
-                className="w-full bg-blue-600 hover:bg-blue-700 h-14 text-lg"
+                className="py-7 text-lg font-semibold
+                    bg-gradient-to-r from-primary-700 to-accent-400
+                    hover:from-primary-600 hover:to-accent-500
+                    text-white shadow-md hover:shadow-lg
+                     duration-300 cursor-pointer rounded-sm w-full transition-colors gap-4"
                 size="lg"
+                disabled={loading} // أضف prop للتحميل
             >
-                Confirm Payment • {currency} {totalAmount.toFixed(2)}
+                <span>
+                    {loading ? (
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    ) : (
+                        p("pay_now")
+                    )}
+                </span>
+                {formatPrice(totalAmount)}
             </Button>
         </div>
     );

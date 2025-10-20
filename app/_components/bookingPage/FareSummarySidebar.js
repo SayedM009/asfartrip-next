@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowRight, Info, Ticket } from "lucide-react";
+import { ArrowRight, Info, Loader2, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FlightDetailsDialog } from "../flightSearchNavWrapper/FlightDetailsDialog";
 import { useCurrency } from "@/app/_context/CurrencyContext";
@@ -12,24 +12,26 @@ import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "use-intl";
 import ChevronBasedOnLanguage from "../ChevronBasedOnLanguage";
+import useBookingStore from "@/app/_store/bookingStore";
 
 export default function FareSummarySidebar({
     totalPrice,
     basePrice,
     taxes,
     insuranceTotal, // prop جديد
-    fareType,
-    refundable,
-    holdBooking,
     segments,
     onProceedToPayment,
     ticket,
+    loading,
 }) {
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
     const { formatPrice } = useCurrency();
     const { formatBaggage } = useFormatBaggage();
     const { CabinLuggage, BaggageAllowance } = ticket;
     const f = useTranslations("Flight");
+
+    const { baggagePrice, mealPrice, selectedBaggage, selectedMeal } =
+        useBookingStore((state) => state.addOns);
 
     return (
         <div
@@ -163,7 +165,31 @@ export default function FareSummarySidebar({
                         </span>
                     </div>
 
-                    {/* Insurance Row - الجديد */}
+                    {/* Baggage Row   */}
+                    {baggagePrice > 0 && (
+                        <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">
+                                {f("booking.extra_baggage_summary")}
+                            </span>
+                            <span className="font-semibold text-green-600 dark:text-green-400">
+                                +{formatPrice(baggagePrice)}
+                            </span>
+                        </div>
+                    )}
+
+                    {/* Meals Row   */}
+                    {mealPrice > 0 && (
+                        <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">
+                                {f("booking.meals")}
+                            </span>
+                            <span className="font-semibold text-green-600 dark:text-green-400">
+                                +{formatPrice(mealPrice)}
+                            </span>
+                        </div>
+                    )}
+
+                    {/* Insurance Row  */}
                     {insuranceTotal > 0 && (
                         <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">
@@ -241,12 +267,16 @@ export default function FareSummarySidebar({
                     bg-gradient-to-r from-accent-500 to-accent-400
                     hover:from-accent-600 hover:to-accent-500
                     text-white shadow-md hover:shadow-lg
-                    transition-all duration-300 cursor-pointer rounded-sm
+                    transition-all duration-300 cursor-pointer rounded-sm rtl:flex-row-reverse ltr:flex-row-reverse
                         "
+                    disabled={loading}
                 >
+                    {loading ? (
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    ) : (
+                        <ChevronBasedOnLanguage size="5" />
+                    )}
                     {f("booking.proceed_to_payment")}
-                    <ChevronBasedOnLanguage size="5" />
-                    {/* <ArrowRight className="w-5 h-5 ltr:ml-2 rtl:mr-2" /> */}
                 </Button>
             )}
         </div>

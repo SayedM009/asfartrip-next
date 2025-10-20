@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { format, parseISO } from "date-fns";
 import useCheckLocal from "../../_hooks/useCheckLocal";
 import { StarIcon } from "@heroicons/react/24/solid";
+import Bed from "../SVG/Bed";
 
 const destinations = [
     {
@@ -123,7 +124,8 @@ export function HotelsSlider() {
                 <div className="flex items-center justify-between mb-2 sm:mb-6">
                     <div>
                         <div className="flex items-center sm:mb-2 gap-2">
-                            <Image
+                            <Bed width={36} height={36} />
+                            {/* <Image
                                 // src="/icons/bed-m.gif"
                                 src="/icons/bed.svg"
                                 alt="Destination dream trip"
@@ -133,7 +135,7 @@ export function HotelsSlider() {
                                 // priority
                                 // fetchPriority="high"
                                 loading="lazy"
-                            />
+                            /> */}
                             <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
                                 {t("title")}
                             </h2>

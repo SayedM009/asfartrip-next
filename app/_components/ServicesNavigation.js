@@ -3,6 +3,8 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import Airplane from "./SVG/Airplane";
+import Bed from "./SVG/Bed";
 
 const WIDTH = 60;
 const HEIGHT = 60;
@@ -82,6 +84,8 @@ function ServicesNavigation() {
                                   }`
                         } rounded-lg p-2.5 md:p-0 aspect-square`}
                     />
+
+                    {/* <Bed /> */}
 
                     <div className=" mt-1 flex flex-col ">
                         <span className="font-semibold">

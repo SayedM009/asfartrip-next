@@ -11,6 +11,7 @@ import useDisplayShortDate from "@/app/_hooks/useDisplayShortDate";
 import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useRouter } from "@/i18n/navigation";
 import { addDays, format } from "date-fns";
+import Airplane from "../SVG/Airplane";
 
 const destinations = [
     {
@@ -217,7 +218,8 @@ export function FlightsSlider() {
                 <div className="flex items-center justify-between mb-2 sm:mb-6">
                     <div>
                         <div className="flex items-center sm:mb-2 gap-2">
-                            <Image
+                            <Airplane width={36} height={36} />
+                            {/* <Image
                                 // src="/icons/airplane-m.gif"
                                 src="/icons/airplane.svg"
                                 alt="Destination dream trip"
@@ -227,7 +229,7 @@ export function FlightsSlider() {
                                 // priority
                                 // fetchPriority="high"
                                 loading="lazy"
-                            />
+                            /> */}
                             <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
                                 {t("title")}
                             </h2>

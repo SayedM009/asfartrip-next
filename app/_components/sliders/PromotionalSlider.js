@@ -136,10 +136,10 @@ export function PromotionalSlider() {
                         <div className="flex items-center sm:mb-2 gap-2">
                             <Image
                                 // src="/icons/fire.gif"
-                                src="/icons/fire.svg"
+                                src="/icons/gift.svg"
                                 alt="offers"
-                                width={30}
-                                height={30}
+                                width={22}
+                                height={22}
                                 // unoptimized
                                 priority
                                 fetchPriority="high"

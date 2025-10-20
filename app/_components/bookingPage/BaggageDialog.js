@@ -16,12 +16,12 @@ import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 import { useTranslations } from "use-intl";
 
 const extraBaggageOptions = [
-    { weight: "5 kg", price: 50, currency: "AED" },
-    { weight: "10 kg", price: 95, currency: "AED" },
-    { weight: "15 kg", price: 140, currency: "AED" },
-    { weight: "20 kg", price: 180, currency: "AED" },
-    { weight: "25 kg", price: 220, currency: "AED" },
-    { weight: "30 kg", price: 260, currency: "AED" },
+    { weight: "5 Kilograms", price: 50, currency: "AED" },
+    { weight: "10 Kilograms", price: 95, currency: "AED" },
+    { weight: "15 Kilograms", price: 140, currency: "AED" },
+    { weight: "20 Kilograms", price: 180, currency: "AED" },
+    { weight: "25 Kilograms", price: 220, currency: "AED" },
+    { weight: "30 Kilograms", price: 260, currency: "AED" },
 ];
 
 export default function BaggageDialog({
@@ -78,8 +78,10 @@ export default function BaggageDialog({
                             </div>
                             <span>
                                 {selectedBaggage !== null
-                                    ? extraBaggageOptions[selectedBaggage]
-                                          .weight
+                                    ? formatBaggage(
+                                          extraBaggageOptions[selectedBaggage]
+                                              .weight
+                                      )
                                     : f("booking.extra_baggage")}
                             </span>
                         </span>
@@ -94,15 +96,14 @@ export default function BaggageDialog({
                     </Button>
                 )}
             </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[100vh] sm:max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-2xl max-h-[100vh] sm:max-h-[90vh] overflow-y-auto rounded-none sm:rounded">
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2 rtl:flex-row-reverse rtl:justify-end">
+                    <DialogTitle className="flex items-center gap-2  rtl:justify-start">
                         <Package className="w-5 h-5" />
-                        Baggage Information
+                        {f("booking.baggage_information")}
                     </DialogTitle>
                     <DialogDescription className="rtl:text-right">
-                        View included baggage and add extra baggage to your
-                        booking
+                        {f("booking.baggage_subtitle")}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -110,7 +111,7 @@ export default function BaggageDialog({
                     {/* Included Baggage */}
                     <div>
                         <h4 className="mb-4 rtl:text-right">
-                            Included Baggage
+                            {f("booking.included_baggage")}
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {cabinLuggage && (
@@ -120,11 +121,11 @@ export default function BaggageDialog({
                                     </div>
                                     <div className="flex-1">
                                         <div className="text-sm mb-1 flex items-center gap-2">
-                                            Cabin Baggage
+                                            {f("booking.cabin_baggage")}
                                             <Check className="w-4 h-4 text-green-600" />
                                         </div>
                                         <div className="text-xs text-muted-foreground">
-                                            {cabinLuggage}
+                                            {formatBaggage(cabinLuggage)}
                                         </div>
                                     </div>
                                 </div>
@@ -136,12 +137,11 @@ export default function BaggageDialog({
                                     </div>
                                     <div className="flex-1">
                                         <div className="text-sm mb-1 flex items-center gap-2">
-                                            Check-in Baggage
+                                            {f("booking.checked_baggage")}
                                             <Check className="w-4 h-4 text-green-600" />
                                         </div>
                                         <div className="text-xs text-muted-foreground">
                                             {formatBaggage(includedBaggage)}
-                                            {/* {includedBaggage.join(", ")} */}
                                         </div>
                                     </div>
                                 </div>
@@ -151,9 +151,9 @@ export default function BaggageDialog({
 
                     {/* Extra Baggage Options */}
                     <div>
-                        <div className="flex items-center justify-between mb-4 rtl:flex-row-reverse">
+                        <div className="flex items-center justify-between mb-4">
                             <h4 className="rtl:text-right">
-                                Add Extra Baggage
+                                {f("booking.extra_baggage")}
                             </h4>
                             {totalExtraCost > 0 && (
                                 <Badge
@@ -176,18 +176,18 @@ export default function BaggageDialog({
                       flex items-center justify-between p-4 rounded-lg border-2 transition-all text-left cursor-pointer
                       ${
                           isSelected
-                              ? "border-blue-500 bg-blue-50 dark:bg-blue-950"
+                              ? "border-accent-500 bg-blue-50 dark:bg-primary-900"
                               : "border-border bg-white dark:bg-gray-800 hover:border-blue-300"
                       }
                     `}
                                     >
-                                        <div className="flex items-center gap-3 rtl:flex-row-reverse rtl:justify-end">
+                                        <div className="flex items-center gap-3 ">
                                             <div
                                                 className={`
                         w-5 h-5 rounded border-2 flex items-center justify-center transition-all shrink-0
                         ${
                             isSelected
-                                ? "border-blue-500 bg-blue-500"
+                                ? "border-accent-500 bg-accent-500"
                                 : "border-gray-300 dark:border-gray-600"
                         }
                       `}
@@ -198,10 +198,14 @@ export default function BaggageDialog({
                                             </div>
                                             <div className="rtl:text-right">
                                                 <div className="text-sm">
-                                                    {option.weight}
+                                                    {formatBaggage(
+                                                        option.weight
+                                                    )}
                                                 </div>
                                                 <div className="text-xs text-muted-foreground">
-                                                    Extra baggage
+                                                    {f(
+                                                        "booking.extra_baggage_summary"
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -217,26 +221,21 @@ export default function BaggageDialog({
                     {/* Important Info */}
                     <div className="p-4 bg-amber-50 dark:bg-amber-950 rounded-md border border-amber-200 dark:border-amber-800">
                         <h5 className="text-amber-900 dark:text-amber-100 mb-2 text-sm rtl:text-right">
-                            Important Information
+                            {f("booking.important_information")}
                         </h5>
                         <ul className="text-xs text-amber-800 dark:text-amber-200 space-y-1 list-disc list-inside rtl:list-inside rtl:text-right">
-                            <li>Extra baggage must be added before check-in</li>
-                            <li>Prices are per person, per segment</li>
-                            <li>
-                                Oversized baggage may incur additional fees at
-                                the airport
-                            </li>
-                            <li>
-                                Baggage allowance varies by airline and route
-                            </li>
+                            <li>{f("booking.important_information_one")}</li>
+                            <li>{f("booking.important_information_two")}</li>
+                            <li>{f("booking.important_information_three")}</li>
+                            <li>{f("booking.important_information_four")}</li>
                         </ul>
                     </div>
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-3 justify-end pt-4 border-t">
+                <div className="flex gap-3 justify-end pt-4 border-t rtl:flex-row-reverse rtl:justify-start">
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Cancel
+                        {f("booking.cancel")}
                     </Button>
                     <Button
                         onClick={handleSave}
@@ -244,11 +243,11 @@ export default function BaggageDialog({
                     >
                         {totalExtraCost > 0 ? (
                             <>
-                                <span>Add Baggage +</span>
+                                <span>{f("booking.add_baggage")}</span>
                                 {formatPrice(totalExtraCost)}
                             </>
                         ) : (
-                            "Continue"
+                            f("booking.continue")
                         )}
                     </Button>
                 </div>

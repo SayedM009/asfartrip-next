@@ -69,7 +69,9 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                     <div className="bg-accent-100 dark:bg-accent-900/30 p-2 rounded-lg">
                         <Mail className="w-5 h-5 text-accent-600 dark:text-accent-400" />
                     </div>
-                    <h3>{t("contact_information")}</h3>
+                    <h3 className="font-semibold">
+                        {t("contact_information")}
+                    </h3>
                 </div>
                 <div className="flex items-center gap-2 rtl:flex-row-reverse">
                     <Label
@@ -176,10 +178,23 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                         <Input
                             id="phone"
                             type="tel"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
                             value={contactInfo.phone || ""}
-                            onChange={(e) =>
-                                handleFieldChange("phone", e.target.value)
-                            }
+                            onChange={(e) => {
+                                // السماح فقط بالأرقام
+                                let numericOnly = e.target.value.replace(
+                                    /[^0-9]/g,
+                                    ""
+                                );
+
+                                // تحديد الطول الأقصى (مثلاً 12 رقم)
+                                if (numericOnly.length > 12) {
+                                    numericOnly = numericOnly.slice(0, 12);
+                                }
+
+                                handleFieldChange("phone", numericOnly);
+                            }}
                             placeholder="50 123 4567"
                             className={cn(
                                 "flex-1 h-12",

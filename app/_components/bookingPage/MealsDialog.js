@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import useBookingStore from "@/app/_store/bookingStore";
 
 const availableMeals = [
     { id: "none", name: "No Meal", description: "Skip meal service", price: 0 },
@@ -57,9 +58,11 @@ export default function MealsDialog({
     const f = useTranslations("Flight");
     const selectedMealData = availableMeals.find((m) => m.id === selectedMeal);
     const totalCost = selectedMealData?.price || 0;
+    const updateMeal = useBookingStore((state) => state.updateMeal);
 
     const handleSave = () => {
         onMealChange?.(selectedMeal, totalCost);
+        updateMeal(selectedMeal, totalCost);
         setOpen(false);
     };
 
@@ -85,7 +88,7 @@ export default function MealsDialog({
                     )}
                 </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] sm:max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-2xl h-full sm:max-h-[90vh] overflow-y-auto rounded-none sm:rounded">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2 rtl:flex-row-reverse rtl:justify-end">
                         <UtensilsCrossed className="w-5 h-5" />

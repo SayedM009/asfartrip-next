@@ -42,7 +42,7 @@ export function useFormatBaggage() {
             if (word.toLowerCase().startsWith("piece")) {
                 word =
                     Number(number) > 1
-                        ? t("baggage.piecs")
+                        ? t("baggage.pieces")
                         : t("baggage.piece");
             }
 

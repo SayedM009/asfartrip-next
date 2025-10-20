@@ -274,12 +274,25 @@ const TravelerInformationSection = forwardRef(
                                     <Input
                                         id={`firstName-${travelerNumber}`}
                                         value={traveler.firstName || ""}
-                                        onChange={(e) =>
+                                        onChange={(e) => {
+                                            let englishOnly =
+                                                e.target.value.replace(
+                                                    /[^A-Za-z]/g,
+                                                    ""
+                                                );
+
+                                            if (englishOnly.length > 30) {
+                                                englishOnly = englishOnly.slice(
+                                                    0,
+                                                    30
+                                                );
+                                            }
+
                                             handleFieldChange(
                                                 "firstName",
-                                                e.target.value.toUpperCase()
-                                            )
-                                        }
+                                                englishOnly.toUpperCase()
+                                            );
+                                        }}
                                         placeholder={t(
                                             "first_name_placeholder"
                                         )}
@@ -305,12 +318,25 @@ const TravelerInformationSection = forwardRef(
                                     <Input
                                         id={`lastName-${travelerNumber}`}
                                         value={traveler.lastName || ""}
-                                        onChange={(e) =>
+                                        onChange={(e) => {
+                                            let englishOnly =
+                                                e.target.value.replace(
+                                                    /[^A-Za-z]/g,
+                                                    ""
+                                                );
+
+                                            if (englishOnly.length > 30) {
+                                                englishOnly = englishOnly.slice(
+                                                    0,
+                                                    30
+                                                );
+                                            }
+
                                             handleFieldChange(
                                                 "lastName",
-                                                e.target.value.toUpperCase()
-                                            )
-                                        }
+                                                englishOnly.toUpperCase()
+                                            );
+                                        }}
                                         placeholder={t("last_name_placeholder")}
                                         className={cn(
                                             "h-12 mt-2",
@@ -377,12 +403,18 @@ const TravelerInformationSection = forwardRef(
                                             value={
                                                 traveler.passportNumber || ""
                                             }
-                                            onChange={(e) =>
+                                            onChange={(e) => {
+                                                // يقبل فقط الحروف A-Z والأرقام 0-9
+                                                const validValue =
+                                                    e.target.value.replace(
+                                                        /[^A-Za-z0-9]/g,
+                                                        ""
+                                                    );
                                                 handleFieldChange(
                                                     "passportNumber",
-                                                    e.target.value.toUpperCase()
-                                                )
-                                            }
+                                                    validValue.toUpperCase()
+                                                );
+                                            }}
                                             placeholder="A12345678"
                                             className={cn(
                                                 "h-12 font-mono mt-2",

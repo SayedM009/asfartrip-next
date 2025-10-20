@@ -6,6 +6,7 @@ import { cn } from "../ui/utils";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import useCheckLocal from "../../_hooks/useCheckLocal";
+import Airpaloon from "../SVG/Airpaloon";
 
 const destinations = [
     {
@@ -115,7 +116,8 @@ export function DestinationSlider() {
                 <div className="flex items-center justify-between mb-2 sm:mb-6">
                     <div>
                         <div className="flex items-center sm:mb-2 gap-2">
-                            <Image
+                            <Airpaloon width={36} height={36} />
+                            {/* <Image
                                 // src="/icons/globe.gif"
                                 src="/icons/globe.svg"
                                 alt="Destination dream trip"
@@ -125,7 +127,7 @@ export function DestinationSlider() {
                                 priority
                                 fetchPriority="high"
                                 loading="eager"
-                            />
+                            /> */}
                             <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
                                 {t("title")}
                             </h2>
