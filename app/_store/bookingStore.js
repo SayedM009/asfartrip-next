@@ -23,17 +23,32 @@ const useBookingStore = create(
                 phone: "",
             },
             addOns: {
-                selectedBaggage: null,
+                selectedBaggage: {
+                    outbound: [],
+                    inbound: [],
+                },
                 baggagePrice: 0,
                 selectedMeal: "none",
                 mealPrice: 0,
             },
+
             userId: 0,
             bookingReference: "",
             gateway: null,
             isDataModified: false,
             searchURL: "",
+            baggageData: {
+                outward: null,
+                return: null,
+            },
 
+            setBaggageData: (newData) =>
+                set((state) => ({
+                    baggageData: {
+                        ...state.baggageData,
+                        ...newData,
+                    },
+                })),
             setSearchURL: (URL) => set({ searchURL: URL }),
             setDataModified: (value) => set({ isDataModified: value }),
             setTicket: (newTicket) => set({ ticket: newTicket }),
@@ -124,15 +139,16 @@ const useBookingStore = create(
                     contactInfo: { ...state.contactInfo, ...data },
                     isDataModified: true,
                 })),
-            updateBaggage: (selectedBaggage, price) =>
+            updateBaggage: (selectedBaggage, totalPrice) =>
                 set((state) => ({
                     addOns: {
                         ...state.addOns,
-                        selectedBaggage,
-                        baggagePrice: price,
+                        selectedBaggage: selectedBaggage,
+                        baggagePrice: totalPrice,
                     },
                     isDataModified: true,
                 })),
+
             updateMeal: (selectedMeal, price) =>
                 set((state) => ({
                     addOns: { ...state.addOns, selectedMeal, mealPrice: price },
@@ -451,6 +467,7 @@ const useBookingStore = create(
                 gateway: state.gateway,
                 isDataModified: state.isDataModified,
                 searchURL: state.searchURL,
+                baggageData: state.baggageData,
             }),
         }
     )

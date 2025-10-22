@@ -82,6 +82,7 @@ export function FlightDetailsDialog({
         setTempId,
         clearBookingData,
         setSearchURL,
+        setBaggageData,
     } = useBookingStore();
 
     // Determine if this is a round trip ticket
@@ -160,6 +161,12 @@ export function FlightDetailsDialog({
                     setSessionId(pricingData.data.sessionId);
                     setTempId(pricingData.data.tempId);
                     setSearchURL(window.location.href);
+                    // setBaggageData({
+                    //     outward:
+                    //         pricingData.data.baggageData.outwardLuggageOptions,
+                    //     return: pricingData.data.baggageData
+                    //         .returnLuggageOptions,
+                    // });
                     clearBookingData();
 
                     // 2. Save Departure & Destination in Case of there are no Objects in Session Storage
@@ -393,7 +400,7 @@ export function FlightDetailsDialog({
                 )}
             >
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
+                    <DialogTitle className="flex  gap-2">
                         <Plane className="h-5 w-5" />
                         {t("dialog.flight_details")}
                     </DialogTitle>

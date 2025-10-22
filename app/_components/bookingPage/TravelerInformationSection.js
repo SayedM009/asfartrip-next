@@ -277,7 +277,7 @@ const TravelerInformationSection = forwardRef(
                                         onChange={(e) => {
                                             let englishOnly =
                                                 e.target.value.replace(
-                                                    /[^A-Za-z]/g,
+                                                    /[^A-Za-z ]/g,
                                                     ""
                                                 );
 
@@ -321,7 +321,7 @@ const TravelerInformationSection = forwardRef(
                                         onChange={(e) => {
                                             let englishOnly =
                                                 e.target.value.replace(
-                                                    /[^A-Za-z]/g,
+                                                    /[^A-Za-z ]/g,
                                                     ""
                                                 );
 

@@ -102,9 +102,21 @@ const ContactInformation = forwardRef(({ onValidationChange }, ref) => {
                         <Input
                             id="bookerName"
                             value={contactInfo.bookerName || ""}
-                            onChange={(e) =>
-                                handleFieldChange("bookerName", e.target.value)
-                            }
+                            onChange={(e) => {
+                                let englishOnly = e.target.value.replace(
+                                    /[^A-Za-z ]/g,
+                                    ""
+                                );
+
+                                if (englishOnly.length > 30) {
+                                    englishOnly = englishOnly.slice(0, 30);
+                                }
+
+                                handleFieldChange(
+                                    "bookerName",
+                                    englishOnly.toUpperCase()
+                                );
+                            }}
                             placeholder={t("full_name_placeholder")}
                             className={cn(
                                 "mt-2 h-12",

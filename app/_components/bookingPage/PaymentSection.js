@@ -5,10 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { BackWardButtonWithDirections } from "../flightSearchNavWrapper/BackwardButton";
-import { TopMobileSection } from "./BookingPage";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useCurrency } from "@/app/_context/CurrencyContext";
+import TopMobileSection from "./TopMobileSection";
 
 export default function PaymentSection({
     totalAmount,
@@ -136,7 +136,7 @@ export default function PaymentSection({
                                         className={cn(
                                             "p-2 rounded-lg shrink-0",
                                             method.color === "blue" &&
-                                                "bg-blue-100 dark:bg-blue-900",
+                                                "bg-accent-100 dark:bg-accent-900",
                                             method.color === "green" &&
                                                 "bg-green-100 dark:bg-green-900",
                                             method.color === "purple" &&
@@ -159,7 +159,7 @@ export default function PaymentSection({
                                                 className={cn(
                                                     "w-6 h-6",
                                                     method.color === "blue" &&
-                                                        "text-blue-600 dark:text-blue-400",
+                                                        "text-accent-600 dark:text-accent-400",
                                                     method.color === "green" &&
                                                         "text-green-600 dark:text-green-400",
                                                     method.color === "purple" &&
@@ -341,7 +341,7 @@ export default function PaymentSection({
                         p("pay_now")
                     )}
                 </span>
-                {formatPrice(totalAmount)}
+                {formatPrice(totalAmount, "white")}
             </Button>
         </div>
     );

@@ -1108,7 +1108,10 @@
             "important_information_one": "Extra baggage must be added before check-in",
             "important_information_two": "Prices are per person, per segment",
             "important_information_three": "Oversized baggage may incur additional fees at the airport",
-            "important_information_four": "Baggage allowance varies by airline and route"
+            "important_information_four": "Baggage allowance varies by airline and route",
+            "outbound_baggage": "Outbound Baggage",
+            "inbound_baggage": "Inbound Baggage",
+            "no_baggage": "No Baggage"
         },
         "insurance": {
             "title": "Travel Insurance",
@@ -1527,5 +1530,10 @@
         "ZA": "South Africa",
         "ZM": "Zambia",
         "ZW": "Zimbabwe"
+    },
+    "Timeout": {
+        "title": "Session Expired",
+        "message": "Please check the latest flights to continue ",
+        "button": "Back to Search Results"
     }
 }

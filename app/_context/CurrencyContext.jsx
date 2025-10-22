@@ -173,7 +173,6 @@ export function CurrencyProvider({ children, baseCurrency = "AED" }) {
         [exchangeRate]
     );
 
-    // Convert the price with currency
     // const formatPrice = useCallback(
     //     (price) => {
     //         const converted = convertPrice(price);
@@ -183,16 +182,46 @@ export function CurrencyProvider({ children, baseCurrency = "AED" }) {
     //             GBP: "£",
     //             CHF: "CHF",
     //             AED: "AED",
+    //             SAR: "SAR",
     //         };
+
+    //         const isImageCurrency =
+    //             currentCurrency === "AED" || currentCurrency === "SAR";
+
+    //         if (isImageCurrency) {
+    //             const iconSrc =
+    //                 currentCurrency === "AED"
+    //                     ? theme === "dark"
+    //                         ? "/currencies/uae.svg"
+    //                         : "/currencies/uae.svg"
+    //                     : theme === "dark"
+    //                     ? "/currencies/saudi.svg"
+    //                     : "/currencies/saudi.svg";
+
+    //             // نعيد JSX بدل النص
+    //             return (
+    //                 <span className="inline-flex items-center gap-1">
+    //                     <span>{converted}</span>
+    //                     <img
+    //                         src={iconSrc}
+    //                         alt={currentCurrency}
+    //                         width={15}
+    //                         height={15}
+    //                     />
+    //                 </span>
+    //             );
+    //         }
+
+    //         // باقي العملات
     //         return `${
     //             currencySymbols[currentCurrency] || currentCurrency
     //         } ${converted}`;
     //     },
-    //     [convertPrice, currentCurrency]
+    //     [convertPrice, currentCurrency, theme]
     // );
 
     const formatPrice = useCallback(
-        (price) => {
+        (price, color = "orange", size = 15) => {
             const converted = convertPrice(price);
             const currencySymbols = {
                 USD: "$",
@@ -203,43 +232,34 @@ export function CurrencyProvider({ children, baseCurrency = "AED" }) {
                 SAR: "SAR",
             };
 
-            // لو العملة درهم إماراتي أو ريال سعودي، نعرض صورة بدل الرمز
             const isImageCurrency =
                 currentCurrency === "AED" || currentCurrency === "SAR";
 
             if (isImageCurrency) {
-                const iconSrc =
-                    currentCurrency === "AED"
-                        ? theme === "dark"
-                            ? "/currencies/uae.svg"
-                            : "/currencies/uae.svg"
-                        : theme === "dark"
-                        ? "/currencies/saudi.svg"
-                        : "/currencies/saudi.svg";
+                const iconSrc = `/currencies/${color}/${
+                    currentCurrency === "AED" ? "uae.svg" : "saudi.svg"
+                }`;
 
-                // نعيد JSX بدل النص
                 return (
                     <span className="inline-flex items-center gap-1">
                         <span>{converted}</span>
                         <img
                             src={iconSrc}
                             alt={currentCurrency}
-                            width={15}
-                            height={15}
+                            width={size}
+                            height={size}
                         />
                     </span>
                 );
             }
 
-            // باقي العملات
             return `${
                 currencySymbols[currentCurrency] || currentCurrency
             } ${converted}`;
         },
-        [convertPrice, currentCurrency, theme]
+        [convertPrice, currentCurrency]
     );
 
-    // دالة لتحديث العملة (مع broadcast للـ components)
     const updateCurrency = useCallback((newCurrency) => {
         console.log(`🔄 Currency changed: ${newCurrency}`);
         setCurrentCurrency(newCurrency);

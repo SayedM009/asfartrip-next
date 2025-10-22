@@ -395,8 +395,12 @@ export default function FlightFilters({
                         className="w-full duration-slider"
                     />
                     <div className="flex justify-between text-xs  mt-2 text-accent-500  font-semibold">
-                        <span>{formatPrice(priceRange.min)}</span>
-                        <span>{formatPrice(priceRange.max)}</span>
+                        <span>
+                            {formatPrice(priceRange.min, undefined, 12)}
+                        </span>
+                        <span>
+                            {formatPrice(priceRange.max, undefined, 12)}
+                        </span>
                     </div>
                 </div>
             </Section>

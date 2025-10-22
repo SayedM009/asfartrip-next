@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { FlightResults, NoFlightTickets } from "./FlightResults";
+import TimeoutPopup from "../TimeoutPopup";
 
 export default function FlightSearch({ parsedSearchObject }) {
     const [tickets, setTickets] = useState([]);
@@ -216,7 +217,15 @@ export default function FlightSearch({ parsedSearchObject }) {
 
     // Show results
     if (tickets.length > 0) {
-        return <FlightResults flights={tickets} />;
+        return (
+            <>
+                <FlightResults flights={tickets} />
+                <TimeoutPopup
+                    timeoutMinutes={10}
+                    redirectLink={window.location.href}
+                />
+            </>
+        );
     }
 
     // Fallback: show empty state (shouldn't reach here normally)
