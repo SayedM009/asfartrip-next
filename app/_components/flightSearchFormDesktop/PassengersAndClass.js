@@ -132,7 +132,7 @@ export default function PassengersAndClass({
                                     {totalPassengers}{" "}
                                     {t("passengers.passengers")}
                                     {totalPassengers !== 1 && locale !== "ar"
-                                        ? "s"
+                                        ? ""
                                         : ""}
                                     |{" "}
                                     {t(

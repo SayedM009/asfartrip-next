@@ -93,7 +93,7 @@ export async function loginWithExistsCredintials() {
     }
 
     const data = await res.json();
-    return data.token;
+    return data.token || data.api_token || data.access_token;
 }
 
 /**

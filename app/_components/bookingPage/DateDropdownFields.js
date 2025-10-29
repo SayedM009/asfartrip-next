@@ -44,19 +44,17 @@ export function DateDropdownFields({
     const d = useTranslations("Traveler");
     const { isRTL } = useCheckLocal();
     const condition = isRTL ? "rtl" : "ltr";
+
     useEffect(() => {
         if (value) {
-            // Convert string to Date if needed
             const dateObj = typeof value === "string" ? new Date(value) : value;
 
-            // Check if valid date
             if (dateObj instanceof Date && !isNaN(dateObj.getTime())) {
                 setDay(dateObj.getDate().toString());
                 setMonth((dateObj.getMonth() + 1).toString());
                 setYear(dateObj.getFullYear().toString());
             }
         } else {
-            // Clear fields if value is null/undefined
             setDay("");
             setMonth("");
             setYear("");
@@ -91,18 +89,45 @@ export function DateDropdownFields({
         handleDateChange(day, month, val);
     };
 
-    // Generate years based on minDate and maxDate
-    const currentYear = new Date().getFullYear();
-    const startYear = maxDate ? maxDate.getFullYear() : currentYear + 15;
-    const endYear = minDate ? minDate.getFullYear() : 1924;
+    // ✅ توليد السنوات بناءً على minDate و maxDate
+    const getYearsRange = () => {
+        const currentYear = new Date().getFullYear();
+        let startYear, endYear;
 
-    const years = [];
-    for (let i = startYear; i >= endYear; i--) {
-        years.push(i);
-    }
+        if (maxDate) {
+            startYear = maxDate.getFullYear();
+        } else {
+            startYear = currentYear + 15;
+        }
 
-    // Generate days (1-31)
-    const days = Array.from({ length: 31 }, (_, i) => i + 1);
+        if (minDate) {
+            endYear = minDate.getFullYear();
+        } else {
+            endYear = 1924;
+        }
+
+        const years = [];
+        for (let i = startYear; i >= endYear; i--) {
+            years.push(i);
+        }
+        return years;
+    };
+
+    const years = getYearsRange();
+
+    // ✅ توليد الأيام (1-31) مع مراعاة عدد أيام الشهر
+    const getDaysInMonth = (monthVal, yearVal) => {
+        if (!monthVal || !yearVal) return 31;
+        const daysInMonth = new Date(
+            parseInt(yearVal),
+            parseInt(monthVal),
+            0
+        ).getDate();
+        return daysInMonth;
+    };
+
+    const daysCount = month && year ? getDaysInMonth(month, year) : 31;
+    const days = Array.from({ length: daysCount }, (_, i) => i + 1);
 
     return (
         <div className="space-y-2">
@@ -129,9 +154,12 @@ export function DateDropdownFields({
                             side="bottom"
                             dir={condition}
                         >
-                            {days.map((d) => (
-                                <SelectItem key={d} value={d.toString()}>
-                                    {String(d).padStart(2, "0")}
+                            {days.map((dayNum) => (
+                                <SelectItem
+                                    key={dayNum}
+                                    value={dayNum.toString()}
+                                >
+                                    {String(dayNum).padStart(2, "0")}
                                 </SelectItem>
                             ))}
                         </SelectContent>

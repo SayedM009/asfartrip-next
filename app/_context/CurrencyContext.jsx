@@ -7,6 +7,7 @@ import {
     useCallback,
 } from "react";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 // ============================================
 // Function API Exchange Rates
@@ -220,8 +221,48 @@ export function CurrencyProvider({ children, baseCurrency = "AED" }) {
     //     [convertPrice, currentCurrency, theme]
     // );
 
+    // const formatPrice = useCallback(
+    //     (price, color = "orange", size = 15) => {
+    //         const converted = convertPrice(price);
+    //         const currencySymbols = {
+    //             USD: "$",
+    //             EUR: "€",
+    //             GBP: "£",
+    //             CHF: "CHF",
+    //             AED: "AED",
+    //             SAR: "SAR",
+    //         };
+
+    //         const isImageCurrency =
+    //             currentCurrency === "AED" || currentCurrency === "SAR";
+
+    //         if (isImageCurrency) {
+    //             const iconSrc = `/currencies/${color}/${
+    //                 currentCurrency === "AED" ? "uae.svg" : "saudi.svg"
+    //             }`;
+
+    //             return (
+    //                 <span className="inline-flex items-center gap-1">
+    //                     <span>{converted}</span>
+    //                     <img
+    //                         src={iconSrc}
+    //                         alt={currentCurrency}
+    //                         width={size}
+    //                         height={size}
+    //                     />
+    //                 </span>
+    //             );
+    //         }
+
+    //         return `${
+    //             currencySymbols[currentCurrency] || currentCurrency
+    //         } ${converted}`;
+    //     },
+    //     [convertPrice, currentCurrency]
+    // );
+
     const formatPrice = useCallback(
-        (price, color = "orange", size = 15) => {
+        (price, color = "orange", size = 15, className = "") => {
             const converted = convertPrice(price);
             const currencySymbols = {
                 USD: "$",
@@ -235,27 +276,31 @@ export function CurrencyProvider({ children, baseCurrency = "AED" }) {
             const isImageCurrency =
                 currentCurrency === "AED" || currentCurrency === "SAR";
 
-            if (isImageCurrency) {
-                const iconSrc = `/currencies/${color}/${
-                    currentCurrency === "AED" ? "uae.svg" : "saudi.svg"
-                }`;
+            const iconSrc = `/currencies/${color}/${
+                currentCurrency === "AED" ? "uae.svg" : "saudi.svg"
+            }`;
 
-                return (
-                    <span className="inline-flex items-center gap-1">
-                        <span>{converted}</span>
-                        <img
+            return (
+                <span
+                    className={`inline-flex items-center gap-1 font-semibold ${className}`}
+                >
+                    <span>{converted.toLocaleString()}</span>
+                    {isImageCurrency ? (
+                        <Image
                             src={iconSrc}
                             alt={currentCurrency}
                             width={size}
                             height={size}
+                            className="inline-block"
                         />
-                    </span>
-                );
-            }
-
-            return `${
-                currencySymbols[currentCurrency] || currentCurrency
-            } ${converted}`;
+                    ) : (
+                        <span className="ml-1 text-sm font-medium">
+                            {currencySymbols[currentCurrency] ||
+                                currentCurrency}
+                        </span>
+                    )}
+                </span>
+            );
         },
         [convertPrice, currentCurrency]
     );

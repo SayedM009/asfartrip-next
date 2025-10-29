@@ -12,6 +12,7 @@ import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useRouter } from "@/i18n/navigation";
 import { addDays, format } from "date-fns";
 import Airplane from "../SVG/Airplane";
+import AnimatedPrice from "../AnimatedPrice";
 
 const destinations = [
     {
@@ -218,18 +219,13 @@ export function FlightsSlider() {
                 <div className="flex items-center justify-between mb-2 sm:mb-6">
                     <div>
                         <div className="flex items-center sm:mb-2 gap-2">
-                            <Airplane width={36} height={36} />
-                            {/* <Image
-                                // src="/icons/airplane-m.gif"
-                                src="/icons/airplane.svg"
-                                alt="Destination dream trip"
-                                width={30}
-                                height={30}
-                                // unoptimized
-                                // priority
-                                // fetchPriority="high"
+                            <Airplane
+                                width={36}
+                                height={36}
                                 loading="lazy"
-                            /> */}
+                                priority
+                            />
+
                             <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
                                 {t("title")}
                             </h2>
@@ -329,9 +325,13 @@ export function FlightsSlider() {
                                                 <h4>
                                                     {t("start_from")}{" "}
                                                     <span className="text-accent-500">
-                                                        {formatPrice(
-                                                            card.price
-                                                        )}
+                                                        <AnimatedPrice
+                                                            basePrice={
+                                                                card.price
+                                                            }
+                                                            duration={1}
+                                                            size={13}
+                                                        />
                                                     </span>
                                                 </h4>
                                                 <h4 className="bg-gray-300 rounded-sm px-2 text-gray-900 text-xs">

@@ -47,6 +47,7 @@ const TravelerInformationSection = forwardRef(
         const [showValidation, setShowValidation] = useState(false);
         const [accordionValue, setAccordionValue] = useState("");
         const [isLocked, setIsLocked] = useState(false);
+        const [dateError, setDateError] = useState("");
 
         // Initialize accordion state based on completion
         useEffect(() => {
@@ -61,10 +62,67 @@ const TravelerInformationSection = forwardRef(
             }
         }, [traveler?.isCompleted]);
 
+        // ✅ دالة لحساب العمر
+        const calculateAge = (dateOfBirth) => {
+            if (!dateOfBirth) return null;
+            const today = new Date();
+            const birthDate = new Date(dateOfBirth);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+
+            if (
+                monthDiff < 0 ||
+                (monthDiff === 0 && today.getDate() < birthDate.getDate())
+            ) {
+                age--;
+            }
+
+            return age;
+        };
+
+        // ✅ دالة للتحقق من صحة العمر بناءً على نوع المسافر
+        const validateAge = (dateOfBirth, type) => {
+            const age = calculateAge(dateOfBirth);
+
+            if (age === null) return { valid: false, message: "" };
+
+            if (type === "Adult") {
+                if (age < 12) {
+                    return {
+                        valid: false,
+                        message:
+                            t("age_must_be_12_or_above") ||
+                            "Adult must be 12 years or older",
+                    };
+                }
+            } else if (type === "Child") {
+                if (age < 2 || age >= 12) {
+                    return {
+                        valid: false,
+                        message:
+                            t("age_must_be_between_2_and_12") ||
+                            "Child must be between 2 and 11 years old",
+                    };
+                }
+            } else if (type === "Infant") {
+                if (age >= 2) {
+                    return {
+                        valid: false,
+                        message:
+                            t("age_must_be_under_2") ||
+                            "Infant must be under 2 years old",
+                    };
+                }
+            }
+
+            return { valid: true, message: "" };
+        };
+
         // Check if all fields are valid
         const checkAllFieldsValid = () => {
             if (!traveler) return false;
-            return !!(
+
+            const hasAllFields = !!(
                 traveler.title &&
                 traveler.firstName &&
                 traveler.lastName &&
@@ -73,9 +131,34 @@ const TravelerInformationSection = forwardRef(
                 traveler.passportExpiry &&
                 traveler.nationality
             );
+
+            if (!hasAllFields) return false;
+
+            // ✅ التحقق من صحة العمر
+            const ageValidation = validateAge(
+                traveler.dateOfBirth,
+                travelerType
+            );
+            if (!ageValidation.valid) {
+                setDateError(ageValidation.message);
+                return false;
+            }
+
+            setDateError("");
+            return true;
         };
 
         const handleFieldChange = (field, value) => {
+            // ✅ إذا كان الحقل هو تاريخ الميلاد، تحقق من العمر
+            if (field === "dateOfBirth" && value) {
+                const ageValidation = validateAge(value, travelerType);
+                if (!ageValidation.valid) {
+                    setDateError(ageValidation.message);
+                } else {
+                    setDateError("");
+                }
+            }
+
             updateTraveler(travelerNumber, { [field]: value });
         };
 
@@ -93,6 +176,7 @@ const TravelerInformationSection = forwardRef(
                     : new Date(savedTraveler.passportExpiry)
                 : null;
 
+            // ✅ تحديث جميع البيانات بما فيها الـ Title
             updateTraveler(travelerNumber, {
                 title: savedTraveler.title || "",
                 firstName: savedTraveler.firstName || "",
@@ -102,6 +186,16 @@ const TravelerInformationSection = forwardRef(
                 passportExpiry: passportExpiry,
                 nationality: savedTraveler.nationality || "",
             });
+
+            // ✅ التحقق من العمر بعد الاختيار
+            if (dateOfBirth) {
+                const ageValidation = validateAge(dateOfBirth, travelerType);
+                if (!ageValidation.valid) {
+                    setDateError(ageValidation.message);
+                } else {
+                    setDateError("");
+                }
+            }
         };
 
         const handleSave = () => {
@@ -143,6 +237,82 @@ const TravelerInformationSection = forwardRef(
             },
             getData: () => traveler,
         }));
+
+        const getTitleOptions = () => {
+            if (travelerType === "Adult") {
+                return [
+                    { value: "Mr", gender: "Male" },
+                    { value: "Mrs", gender: "Female" },
+                    { value: "Ms", gender: "Female" },
+                ];
+            }
+
+            if (travelerType === "Child") {
+                return [
+                    { value: "Mr", gender: "Male" },
+                    { value: "Miss", gender: "Female" },
+                ];
+            }
+
+            if (travelerType === "Infant") {
+                return [
+                    { value: "Master", gender: "Male" },
+                    { value: "Miss", gender: "Female" },
+                ];
+            }
+
+            return [];
+        };
+
+        const handleTitleChange = (val) => {
+            const selected = getTitleOptions().find((x) => x.value === val);
+            handleFieldChange("title", selected?.value || "");
+            handleFieldChange("gender", selected?.gender || "");
+        };
+
+        // ✅ حساب الحد الأقصى والأدنى لتاريخ الميلاد بناءً على نوع المسافر
+        const getDateLimits = () => {
+            const today = new Date();
+            let minDate, maxDate;
+
+            if (travelerType === "Adult") {
+                // البالغ: 12 سنة فما فوق
+                maxDate = new Date(
+                    today.getFullYear() - 12,
+                    today.getMonth(),
+                    today.getDate()
+                );
+                minDate = new Date(
+                    today.getFullYear() - 100,
+                    today.getMonth(),
+                    today.getDate()
+                );
+            } else if (travelerType === "Child") {
+                // الطفل: من 2 إلى أقل من 12 سنة
+                maxDate = new Date(
+                    today.getFullYear() - 2,
+                    today.getMonth(),
+                    today.getDate()
+                );
+                minDate = new Date(
+                    today.getFullYear() - 12,
+                    today.getMonth(),
+                    today.getDate()
+                );
+            } else if (travelerType === "Infant") {
+                // الرضيع: أقل من 2 سنة
+                maxDate = today;
+                minDate = new Date(
+                    today.getFullYear() - 2,
+                    today.getMonth(),
+                    today.getDate()
+                );
+            }
+
+            return { minDate, maxDate };
+        };
+
+        const { minDate, maxDate } = getDateLimits();
 
         if (!traveler) return null;
 
@@ -232,19 +402,12 @@ const TravelerInformationSection = forwardRef(
                                     <span className="text-red-500">*</span>
                                 </Label>
                                 <div className="flex gap-3">
-                                    {[
-                                        { value: "mr", label: "mr" },
-                                        { value: "mrs", label: "mrs" },
-                                        { value: "miss", label: "miss" },
-                                    ].map((option) => (
+                                    {getTitleOptions().map((option) => (
                                         <button
                                             key={option.value}
                                             type="button"
                                             onClick={() =>
-                                                handleFieldChange(
-                                                    "title",
-                                                    option.value
-                                                )
+                                                handleTitleChange(option.value)
                                             }
                                             className={cn(
                                                 "flex-1 px-6 py-3 rounded-lg border-2 transition-all cursor-pointer",
@@ -256,7 +419,11 @@ const TravelerInformationSection = forwardRef(
                                                     : "border-gray-200 dark:border-gray-700 hover:border-accent-400 hover:bg-accent-50 dark:hover:bg-accent-900/30 dark:hover:text-accent-500"
                                             )}
                                         >
-                                            {t(`${option.label}`)}
+                                            {t(
+                                                `${String(
+                                                    option.value
+                                                ).toLocaleLowerCase()}`
+                                            )}
                                         </button>
                                     ))}
                                 </div>
@@ -352,17 +519,27 @@ const TravelerInformationSection = forwardRef(
                             </div>
 
                             {/* Date of Birth */}
-                            <DateDropdownFields
-                                label={t("date_of_birth")}
-                                value={traveler.dateOfBirth}
-                                onChange={(date) =>
-                                    handleFieldChange("dateOfBirth", date)
-                                }
-                                maxDate={new Date()}
-                                required
-                                error={showValidation && !traveler.dateOfBirth}
-                                id={`dob-${travelerNumber}`}
-                            />
+                            <div className="space-y-2">
+                                <DateDropdownFields
+                                    label={t("date_of_birth")}
+                                    value={traveler.dateOfBirth}
+                                    onChange={(date) =>
+                                        handleFieldChange("dateOfBirth", date)
+                                    }
+                                    maxDate={maxDate}
+                                    minDate={minDate}
+                                    required
+                                    error={
+                                        showValidation && !traveler.dateOfBirth
+                                    }
+                                    id={`dob-${travelerNumber}`}
+                                />
+                                {dateError && (
+                                    <p className="text-sm text-red-500 font-medium">
+                                        {dateError}
+                                    </p>
+                                )}
+                            </div>
 
                             {/* Passport Details */}
                             <div
@@ -404,7 +581,6 @@ const TravelerInformationSection = forwardRef(
                                                 traveler.passportNumber || ""
                                             }
                                             onChange={(e) => {
-                                                // يقبل فقط الحروف A-Z والأرقام 0-9
                                                 const validValue =
                                                     e.target.value.replace(
                                                         /[^A-Za-z0-9]/g,

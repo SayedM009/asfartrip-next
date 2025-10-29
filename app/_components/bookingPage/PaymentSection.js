@@ -9,23 +9,20 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useCurrency } from "@/app/_context/CurrencyContext";
 import TopMobileSection from "./TopMobileSection";
+import useBookingStore from "@/app/_store/bookingStore";
+import TimeoutPopup from "../TimeoutPopup";
+import LoyaltyPointsBanner from "../loyaltyPoints/LoyaltyPointsBanner";
+import FareSummaryDialog from "./FareSummaryDialog";
 
-export default function PaymentSection({
-    totalAmount,
-    currency,
-    onConfirmPayment,
-    backTo,
-    ticket,
-    loading,
-}) {
+export default function PaymentSection({ onConfirmPayment, backTo, loading }) {
     const [selectedMethod, setSelectedMethod] = useState("card");
     const [cardNumber, setCardNumber] = useState("");
     const [cardName, setCardName] = useState("");
     const [expiryDate, setExpiryDate] = useState("");
     const [cvv, setCvv] = useState("");
-    const { formatPrice } = useCurrency();
-    const p = useTranslations("Payment");
 
+    const { ticket, searchURL } = useBookingStore();
+    const p = useTranslations("Payment");
     const paymentMethods = [
         {
             id: "card",
@@ -93,7 +90,7 @@ export default function PaymentSection({
     };
 
     return (
-        <div className="space-y-6 flex-1">
+        <div className="space-y-6 flex-1 mt-1">
             {/* Payment Method Selection */}
             <div>
                 <div className="flex items-center gap-4 mb-4 ">
@@ -116,7 +113,8 @@ export default function PaymentSection({
                         </div>
                     </div>
                 </TopMobileSection>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 sm:mt-auto">
+                <LoyaltyPointsBanner />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 sm:mt-auto">
                     {paymentMethods.map((method) => {
                         const Icon = method.icon;
                         const isSelected = selectedMethod === method.id;
@@ -324,25 +322,51 @@ export default function PaymentSection({
             </div> */}
 
             {/* Confirm Payment Button */}
-            <Button
-                onClick={onConfirmPayment}
-                className="py-7 text-lg font-semibold
+            <PaymentButton
+                onConfirmPayment={onConfirmPayment}
+                loading={loading}
+                hiddenOnMobile={true}
+            />
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-border shadow-lg z-50">
+                <div className="p-3">
+                    <FareSummaryDialog />
+                    <PaymentButton
+                        onConfirmPayment={onConfirmPayment}
+                        loading={loading}
+                    />
+                </div>
+            </div>
+            <TimeoutPopup timeoutMinutes={12} redirectLink={searchURL} />
+        </div>
+    );
+}
+
+function PaymentButton({ onConfirmPayment, loading, hiddenOnMobile = false }) {
+    const { getTotalPrice } = useBookingStore();
+    const totalAmount = getTotalPrice();
+    const { formatPrice } = useCurrency();
+    const p = useTranslations("Payment");
+    return (
+        <Button
+            onClick={onConfirmPayment}
+            className={`py-5 sm:py-7 sm:text-lg font-semibold
                     bg-gradient-to-r from-primary-700 to-accent-400
                     hover:from-primary-600 hover:to-accent-500
                     text-white shadow-md hover:shadow-lg
-                     duration-300 cursor-pointer rounded-sm w-full transition-colors gap-4"
-                size="lg"
-                disabled={loading} // أضف prop للتحميل
-            >
-                <span>
-                    {loading ? (
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    ) : (
-                        p("pay_now")
-                    )}
-                </span>
-                {formatPrice(totalAmount, "white")}
-            </Button>
-        </div>
+                     duration-300 cursor-pointer rounded-sm w-full transition-colors gap-4 ${
+                         hiddenOnMobile && "hidden sm:flex "
+                     }`}
+            size="lg"
+            disabled={loading} // أضف prop للتحميل
+        >
+            <span>
+                {loading ? (
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                ) : (
+                    p("pay_now")
+                )}
+            </span>
+            {formatPrice(totalAmount, "white")}
+        </Button>
     );
 }

@@ -13,7 +13,7 @@ import { safeParse } from "@/app/_helpers/safeParse";
 import { toast } from "sonner";
 import { CheckBadgeIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "@/i18n/navigation";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 
 export function FlightSearchFormDesktop({ isLabel = true }) {
     const [tripType, setTripType] = useState("roundtrip");

@@ -1122,9 +1122,11 @@
     },
     "Traveler": {
         "title": "Title",
-        "mr": "Mr.",
-        "mrs": "Mrs.",
-        "miss": "Miss.",
+        "mr": "Mr",
+        "mrs": "Mrs",
+        "miss": "Miss",
+        "ms": "Ms",
+        "master": "Master",
         "full_name": "Full Name",
         "first_name": "First Name",
         "last_name": "Last Name",
@@ -1160,7 +1162,10 @@
         "valid_mobile_number": "Please enter a valid phone number (minimum 7 digits)",
         "valid_email": "Please enter a valid email address.",
         "saved_travelers": "Select from saved travelers",
-        "no_saved_travelers": "No saved travelers found."
+        "no_saved_travelers": "No saved travelers found.",
+        "age_must_be_12_or_above": "Adult must be 12 years or older",
+        "age_must_be_between_2_and_12": "Child must be between 2 and 11 years old",
+        "age_must_be_under_2": "Infant must be under 2 years old"
     },
     "Payment": {
         "title": "Payment Method",

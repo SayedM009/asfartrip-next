@@ -22,33 +22,43 @@ import { useTranslations } from "next-intl";
 const savedTravelers = [
     {
         id: "1",
-        title: "mr",
+        title: "Mr",
         firstName: "AHMED",
         lastName: "MOHAMED",
         dateOfBirth: new Date("1990-05-15"),
         passportNumber: "A12345678",
         passportExpiry: new Date("2028-12-31"),
-        nationality: "AE", // United Arab Emirates
+        nationality: "AE",
     },
     {
         id: "2",
-        title: "mrs",
+        title: "Mrs",
         firstName: "FATIMA",
         lastName: "SALEM",
         dateOfBirth: new Date("1992-08-20"),
         passportNumber: "B98765432",
         passportExpiry: new Date("2029-06-30"),
-        nationality: "SA", // Saudi Arabia
+        nationality: "SA",
     },
     {
         id: "3",
-        title: "miss",
+        title: "Miss",
         firstName: "LAYLA",
         lastName: "HASSAN",
-        dateOfBirth: new Date("1995-03-10"),
+        dateOfBirth: new Date("2015-03-10"),
         passportNumber: "C11223344",
         passportExpiry: new Date("2027-09-15"),
-        nationality: "EG", // Egypt
+        nationality: "EG",
+    },
+    {
+        id: "4",
+        title: "Master",
+        firstName: "OMAR",
+        lastName: "KHALID",
+        dateOfBirth: new Date("2023-06-15"),
+        passportNumber: "D55667788",
+        passportExpiry: new Date("2028-06-15"),
+        nationality: "AE",
     },
 ];
 
@@ -62,7 +72,7 @@ export function SavedTravelerSelect({ onSelect }) {
         const traveler = savedTravelers.find((t) => t.id === travelerId);
         if (traveler) {
             setSelectedId(travelerId);
-            // Send complete traveler data
+
             onSelect?.({
                 title: traveler.title,
                 firstName: traveler.firstName,
@@ -89,6 +99,7 @@ export function SavedTravelerSelect({ onSelect }) {
                         {selectedTraveler ? (
                             <span className="flex items-center gap-2">
                                 <User className="w-4 h-4" />
+                                {selectedTraveler.title}{" "}
                                 {selectedTraveler.firstName}{" "}
                                 {selectedTraveler.lastName}
                             </span>
@@ -129,7 +140,7 @@ export function SavedTravelerSelect({ onSelect }) {
                                         />
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2">
-                                                <span className="font-medium capitalize">
+                                                <span className="font-medium">
                                                     {traveler.title}{" "}
                                                     {traveler.firstName}{" "}
                                                     {traveler.lastName}

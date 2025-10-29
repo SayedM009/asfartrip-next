@@ -7,8 +7,8 @@ import { getMessages } from "next-intl/server";
 import { AuthProvider } from "./providers";
 import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "../_components/Footer";
-import "@/app/[locale]/globals.css";
 import { CurrencyProvider } from "../_context/CurrencyContext";
+import "@/app/[locale]/globals.css";
 
 export const metadata = rootLayoutMetadata;
 
@@ -20,10 +20,6 @@ export default async function RootLayout({ children, params }) {
     const { locale } = await params;
     const conditions = locale === "ar";
     const messages = await getMessages();
-    console.log(
-        await params,
-        "********************************************************************"
-    );
 
     return (
         <html
@@ -34,7 +30,7 @@ export default async function RootLayout({ children, params }) {
             <body
                 className={`${
                     conditions ? ibm.className : ibmSans.className
-                }  `}
+                }  bg-gradient-to-b from-accent-50 to-white dark:from-black dark:to-black`}
             >
                 <AuthProvider>
                     <CurrencyProvider baseCurrency="AED">

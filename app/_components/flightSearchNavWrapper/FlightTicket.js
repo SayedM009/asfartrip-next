@@ -11,6 +11,7 @@ import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import { useTranslations } from "next-intl";
 import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
+import LoyaltyPoints from "../loyaltyPoints/LoyaltyPoints";
 
 export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
     // Convert Currency
@@ -410,33 +411,28 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                 </div>
                             </div>
 
-                            {/* Right side - Price and select button */}
-                            <div className="text-right">
-                                <div className="flex items-center gap-3">
-                                    <div>
-                                        <div className="text-xs text-muted-foreground">
-                                            {t("total_price")}
-                                        </div>
-                                        <div className=" font-bold  text-accent-500">
-                                            {/* <span className="text-lg">
-                                                {SITECurrencyType}
-                                            </span>{" "} */}
-                                            <span className="text-2xl">
-                                                {formatPrice(TotalPrice)}
-                                            </span>
-                                        </div>
+                            <div className="flex flex-col items-end sm:items-center gap-1">
+                                {/* Earned Points */}
+                                <LoyaltyPoints />
+                                <div className="text-xs text-muted-foreground">
+                                    {t("total_price")}
+                                </div>
 
-                                        {/* Desktop Select Button - under price */}
-                                        <div className="hidden sm:block mt-2 ">
-                                            <Button
-                                                onClick={handleSelectFlight}
-                                                size="lg"
-                                                className=" btn-primary"
-                                            >
-                                                {t("select_flight")}
-                                            </Button>
-                                        </div>
-                                    </div>
+                                <div className=" font-bold  text-accent-500">
+                                    <span className="text-2xl">
+                                        {formatPrice(TotalPrice)}
+                                    </span>
+                                </div>
+
+                                {/* Desktop Select Button - under price */}
+                                <div className="hidden sm:block  ">
+                                    <Button
+                                        onClick={handleSelectFlight}
+                                        size="lg"
+                                        className=" btn-primary"
+                                    >
+                                        {t("select_flight")}
+                                    </Button>
                                 </div>
                             </div>
                         </div>

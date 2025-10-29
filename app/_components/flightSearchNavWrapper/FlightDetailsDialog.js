@@ -32,6 +32,7 @@ import { Badge } from "@/components/ui/badge";
 import useBookingStore from "@/app/_store/bookingStore";
 import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 import ChevronBasedOnLanguage from "../ChevronBasedOnLanguage";
+import LoyaltyPoints from "../loyaltyPoints/LoyaltyPoints";
 
 export function FlightDetailsDialog({
     ticket,
@@ -157,16 +158,17 @@ export function FlightDetailsDialog({
                 case "success": {
                     // 1️. Save the ticket & SearchInfo in bookingStore
                     setTicket(ticket);
+                    console.log(searchInfo);
                     setSearchInfo(searchInfo);
                     setSessionId(pricingData.data.sessionId);
                     setTempId(pricingData.data.tempId);
                     setSearchURL(window.location.href);
-                    // setBaggageData({
-                    //     outward:
-                    //         pricingData.data.baggageData.outwardLuggageOptions,
-                    //     return: pricingData.data.baggageData
-                    //         .returnLuggageOptions,
-                    // });
+                    setBaggageData({
+                        outward:
+                            pricingData.data.baggageData.outwardLuggageOptions,
+                        return: pricingData.data.baggageData
+                            .returnLuggageOptions,
+                    });
                     clearBookingData();
 
                     // 2. Save Departure & Destination in Case of there are no Objects in Session Storage
@@ -448,7 +450,7 @@ export function FlightDetailsDialog({
                             </div>
                             <div className="text-right">
                                 <div className="text-sm font-bold text-accent-400">
-                                    {formatPrice(TotalPrice)}
+                                    {formatPrice(TotalPrice, undefined, 12)}
                                 </div>
                                 <div className="text-sm text-muted-foreground">
                                     {isRoundTrip
@@ -506,17 +508,21 @@ export function FlightDetailsDialog({
                             <div className="space-y-2 text-sm">
                                 <div className="flex justify-between">
                                     <span>{t("dialog.base_price")}</span>
-                                    <span>{formatPrice(BasePrice)}</span>
+                                    <span>
+                                        {formatPrice(BasePrice, undefined, 12)}
+                                    </span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span>{t("dialog.taxes_fees")}</span>
-                                    <span>{formatPrice(Taxes)}</span>
+                                    <span>
+                                        {formatPrice(Taxes, undefined, 12)}
+                                    </span>
                                 </div>
                                 <Separator />
                                 <div className="flex justify-between font-semibold">
                                     <span>{t("dialog.total_price")}</span>
                                     <span className="text-accent-400">
-                                        {formatPrice(TotalPrice)}
+                                        {formatPrice(TotalPrice, undefined, 12)}
                                     </span>
                                 </div>
                             </div>
@@ -574,10 +580,13 @@ export function FlightDetailsDialog({
                 {withContinue && (
                     <DialogFooter className="sticky bottom-0 w-full p-3 bg-white dark:bg-muted rounded-t-2xl">
                         <div className="flex flex-col items-center sm:flex-row gap-3 pt-4 w-full">
-                            <div className="flex-1 flex items-center gap-10">
-                                <div className="flex justify-between font-semibold text-sm gap-2">
-                                    <span>{t("dialog.total_price")}</span>
-                                    <span className="text-accent-400">
+                            <div className="flex-1 w-full flex items-center justify-between sm:items-start sm:flex-col ">
+                                <LoyaltyPoints />
+                                <div className="flex justify-between items-center font-semibold  gap-2">
+                                    <span className="text-xs">
+                                        {t("dialog.total_price")}
+                                    </span>
+                                    <span className="text-accent-400 text-lg">
                                         {formatPrice(TotalPrice)}
                                     </span>
                                 </div>

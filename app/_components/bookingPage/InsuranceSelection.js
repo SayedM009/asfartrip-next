@@ -1,32 +1,50 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { Shield, CheckCircle2, Circle } from "lucide-react";
 import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useTranslations } from "next-intl";
+import useBookingStore from "@/app/_store/bookingStore";
 
-export function InsuranceSelection({
-    options,
-    selectedInsurance,
-    onInsuranceChange,
-    totalPassengers = 1,
-}) {
+export function InsuranceSelection() {
+    const {
+        insurancePlans,
+        selectedInsurance,
+        getTotalPassengers,
+        setSelectedInsurance,
+    } = useBookingStore();
+
+    const options = insurancePlans;
+    const onInsuranceChange = setSelectedInsurance;
+    const totalPassengers = getTotalPassengers() || 1;
+
     const { formatPrice } = useCurrency();
     const f = useTranslations("Flight");
 
     // Add "No Insurance" option at the beginning
-    const allOptions = [
-        {
-            quote_id: 0,
-            scheme_id: 0,
-            name: f("insurance.no_insurance"),
-            premium: 0,
-        },
-        ...(options || []),
-    ];
+    const allOptions = useMemo(
+        () => [
+            {
+                quote_id: 0,
+                scheme_id: 0,
+                name: f("insurance.no_insurance"),
+                premium: 0,
+            },
+            ...(options || []),
+        ],
+        [options, f]
+    );
 
     const getTotalPrice = (premium) => {
         return premium * totalPassengers;
     };
 
+    useEffect(() => {
+        if (
+            insurancePlans?.length > 0 &&
+            selectedInsurance?.scheme_id == null
+        ) {
+            setSelectedInsurance(allOptions[0]);
+        }
+    }, [insurancePlans, selectedInsurance, setSelectedInsurance, allOptions]);
     // If there are no options
     if (options.length <= 0) return null;
 
@@ -52,8 +70,9 @@ export function InsuranceSelection({
                 {allOptions.map((option) => {
                     const isSelected =
                         selectedInsurance?.scheme_id === option.scheme_id;
-                    const totalPrice = getTotalPrice(option.premium);
-
+                    {
+                        console.log(option);
+                    }
                     return (
                         <div key={option.scheme_id || option.quote_id}>
                             <button
@@ -84,7 +103,7 @@ export function InsuranceSelection({
                                                 : "text-accent-900 dark:text-accent-100"
                                         } rtl:text-right truncate`}
                                     >
-                                        {option.name}
+                                        {String(option.name).split("-")[1]}
                                     </span>
                                 </div>
 
@@ -99,14 +118,17 @@ export function InsuranceSelection({
                                                         : "text-gray-900 dark:text-gray-100"
                                                 }`}
                                             >
-                                                {formatPrice(totalPrice)}{" "}
+                                                {formatPrice(option.premium)}{" "}
                                             </div>
                                             {totalPassengers > 1 && (
-                                                <div className="text-xs text-muted-foreground">
+                                                <div className="text-xs text-muted-foreground flex items-center gap-2">
+                                                    {totalPassengers} x
                                                     {formatPrice(
-                                                        option.premium
+                                                        option.premium /
+                                                            totalPassengers,
+                                                        undefined,
+                                                        11
                                                     )}{" "}
-                                                    {totalPassengers}
                                                 </div>
                                             )}
                                         </>

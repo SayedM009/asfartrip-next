@@ -9,21 +9,13 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import {
-    ArrowLeft,
-    ArrowRight,
-    ChevronLeft,
-    ChevronRight,
-    PencilLineIcon,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, PencilLineIcon } from "lucide-react";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { format } from "date-fns";
 import { cn } from "../ui/utils";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
-import BackwardButton, { BackWardButtonWithDirections } from "./BackwardButton";
+import { BackWardButtonWithDirections } from "./BackwardButton";
 import { useTranslations } from "next-intl";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 
@@ -133,7 +125,7 @@ export default function MobileHeaderWrapper() {
                     )}
                 >
                     <DialogHeader>
-                        <DialogTitle className="flex justify-start" dir="ltr">
+                        <DialogTitle className="flex justify-start">
                             <h2 className="text-sm font-medium text-accent-400">
                                 {t("operations.edit_your_search")}
                             </h2>
