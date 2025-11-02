@@ -21,6 +21,7 @@ import { useState } from "react";
 import useCheckLocal from "../_hooks/useCheckLocal";
 import { useCurrency } from "../_context/CurrencyContext";
 import Image from "next/image";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -98,6 +99,13 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
                     <DialogTitle className="rtl:text-right ">
                         {t("select_currency")}
                     </DialogTitle>
+                    <DialogDescription
+                        className={`text-gray-400 text-sm ${
+                            isRTL ? "text-right" : "text-left"
+                        }`}
+                    >
+                        {t("sub_title")}
+                    </DialogDescription>
                 </DialogHeader>
 
                 <Select value={tempCurrency} onValueChange={setTempCurrency}>

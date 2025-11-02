@@ -1,5 +1,5 @@
 import { routing } from "@/i18n/routing";
-import { ibm, ibmSans } from "@/app/_libs/fonts";
+import { cairo, ibmSans } from "@/app/_libs/fonts";
 import { ThemeProvider } from "next-themes";
 import { rootLayoutMetadata } from "@/app/_libs/metadata";
 import { NextIntlClientProvider } from "next-intl";
@@ -29,8 +29,8 @@ export default async function RootLayout({ children, params }) {
         >
             <body
                 className={`${
-                    conditions ? ibm.className : ibmSans.className
-                }  bg-gradient-to-b from-accent-50 to-white dark:from-black dark:to-black`}
+                    conditions ? cairo.className : ibmSans.className
+                }  `}
             >
                 <AuthProvider>
                     <CurrencyProvider baseCurrency="AED">

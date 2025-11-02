@@ -24,7 +24,7 @@ export default function FareSummaryDialog() {
             <DialogTrigger className="w-full">
                 <div className="flex items-center justify-between gap-4 mb-3 w-full">
                     <div className="flex flex-col gap-1">
-                        <LoyaltyPoints />
+                        <LoyaltyPoints price={dynamicTotal} />
                         <PayInInstallments />
                     </div>
                     <div className="flex flex-col justify-start ">
@@ -38,7 +38,7 @@ export default function FareSummaryDialog() {
                     </div>
                 </div>
             </DialogTrigger>
-            <DialogContent className="w-full max-w-none min-h-[50vh] open-slide-bottom close-slide-bottom top-165 py-10">
+            <DialogContent className="w-full max-w-none h-[90vh] overflow-y-auto fixed top-150 open-slide-bottom close-slide-bottom py-10">
                 <DialogHeader>
                     <DialogTitle></DialogTitle>
                     <DialogDescription>

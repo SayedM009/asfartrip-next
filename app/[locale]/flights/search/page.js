@@ -24,6 +24,7 @@ async function Page({ searchParams }) {
     const parsedSearchObject = searchParams
         ? JSON.parse(searchParams.searchObject)
         : {};
+
     return (
         <>
             <FlightSearchNavWrapper />

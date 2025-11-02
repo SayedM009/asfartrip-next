@@ -1,5 +1,6 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
+import { signIn } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +16,7 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { sendOtp, verifyOtp } from "@/app/_libs/api-services";
+import { sendOtp, resendOtp } from "@/app/_libs/api-services";
 import { validateEmail } from "@/app/_helpers/validateEmail";
 import FireIcon from "../SVG/FireIcon";
 import Points from "../SVG/PointsIcons";
@@ -29,6 +30,7 @@ export default function EmailInput({ parentSetOpen }) {
     const [email, setEmail] = useState({ email: "", error: "" });
     const [otpOpen, setOtpOpen] = useState(false);
     const t = useTranslations("Login");
+
     function handleEmailChange(e) {
         setEmail({ ...email, email: e.target.value, error: "" });
     }
@@ -87,15 +89,45 @@ function CredentialActions({
 }) {
     const [otp, setOtp] = useState({ OTP: "", error: "" });
     const [isPending, startTransition] = useTransition();
+    const [isVerifying, setIsVerifying] = useState(false);
+    const [isResending, setIsResending] = useState(false);
+    const [countdown, setCountdown] = useState(0);
     const t = useTranslations("Login");
     const OTPLENGTH = 6;
+    const RESEND_COOLDOWN = 30; // 30 seconds
+
+    // Timer for resend cooldown
+    useEffect(() => {
+        let timer;
+        if (countdown > 0) {
+            timer = setTimeout(() => {
+                setCountdown(countdown - 1);
+            }, 1000);
+        }
+        return () => clearTimeout(timer);
+    }, [countdown]);
+
+    // Reset countdown when dialog closes
+    useEffect(() => {
+        if (!otpOpen) {
+            setCountdown(0);
+        }
+    }, [otpOpen]);
 
     async function handleSendOTP() {
-        setOtpOpen(true);
-        // if (!validateEmail(email.email)) return;
-        // const action = await sendOtp(email.email);
-        // if (!action.errorStatus) setOtpOpen(true);
-        // else setEmail({ ...email, error: action.error });
+        if (!validateEmail(email.email)) {
+            setEmail({ ...email, error: t("invalid_email") });
+            return;
+        }
+
+        const action = await sendOtp(email.email);
+
+        if (!action.errorStatus) {
+            setOtpOpen(true);
+            setCountdown(RESEND_COOLDOWN); // Start countdown
+        } else {
+            setEmail({ ...email, error: action.error });
+        }
     }
 
     function handleSendOTPWithTransition() {
@@ -112,18 +144,54 @@ function CredentialActions({
 
     async function handleVerifyOTP() {
         if (!otp.OTP || otp.OTP.length < OTPLENGTH) {
-            setOtp({ ...otp, error: "Please enter an OTP" });
+            setOtp({ ...otp, error: t("empty_otp") || "Please enter OTP" });
             return;
         }
 
-        const verify = await verifyOtp(email.email, otp.OTP);
-        if (!verify?.errorStatus) {
-            setOtpOpen(false);
-            parentSetOpen(false);
-        } else {
-            setOtp({ ...otp, error: verify.error || "Verification failed" });
+        setIsVerifying(true);
+
+        try {
+            const result = await signIn("credentials", {
+                email: email.email,
+                otp: otp.OTP,
+                redirect: false,
+            });
+
+            if (result?.error) {
+                setOtp({ ...otp, error: result.error || t("invalid_otp") });
+            } else if (result?.ok) {
+                setOtpOpen(false);
+                parentSetOpen(false);
+            }
+        } catch (error) {
+            setOtp({
+                ...otp,
+                error: t("verification_failed") || "Verification failed",
+            });
+        } finally {
+            setIsVerifying(false);
         }
     }
+
+    async function handleResendOTP() {
+        if (countdown > 0) return; // Prevent resend if countdown is active
+
+        setIsResending(true);
+        setOtp({ OTP: "", error: "" });
+
+        const action = await resendOtp(email.email);
+
+        if (action.errorStatus) {
+            setOtp({ ...otp, error: action.error });
+        } else {
+            setOtp({ ...otp, error: "" });
+            setCountdown(RESEND_COOLDOWN); // Restart countdown
+        }
+
+        setIsResending(false);
+    }
+
+    const canResend = countdown === 0 && !isResending;
 
     return (
         <>
@@ -153,9 +221,9 @@ function CredentialActions({
                         <DialogDescription className="mt-4">
                             <div className="text-center mb-4">
                                 {t("short_message")}
-                                <strong>{email.email}</strong>
+                                <strong> {email.email}</strong>
                             </div>
-                            <div className="flex justify-center flex-col items-center gap-2  ">
+                            <div className="flex justify-center flex-col items-center gap-2">
                                 <InputOTP
                                     maxLength={OTPLENGTH}
                                     pattern={REGEXP_ONLY_DIGITS}
@@ -163,19 +231,20 @@ function CredentialActions({
                                     onChange={(value) =>
                                         setOtp({ OTP: value, error: "" })
                                     }
+                                    disabled={isVerifying}
                                 >
-                                    <InputOTPGroup className=" w-91 " dir="ltr">
+                                    <InputOTPGroup className="w-91" dir="ltr">
                                         {Array.from({ length: OTPLENGTH }).map(
                                             (_, i) => (
                                                 <InputOTPSlot
                                                     key={i}
                                                     index={i}
                                                     type="tel"
-                                                    className={`border-1  ${
+                                                    className={`border-1 ${
                                                         otp.error
                                                             ? "border-red-500"
                                                             : "border-gray-700"
-                                                    } w-1/6 `}
+                                                    } w-1/6`}
                                                 />
                                             )
                                         )}
@@ -184,11 +253,34 @@ function CredentialActions({
                                 {otp.error && (
                                     <ErrorMessage error={otp.error} />
                                 )}
+
                                 <Button
                                     className="mt-4 w-full rounded py-5 capitalize"
                                     onClick={handleVerifyOTP}
+                                    disabled={isVerifying}
                                 >
-                                    {t("submit")}
+                                    {isVerifying ? (
+                                        <SpinnerMini />
+                                    ) : (
+                                        t("submit")
+                                    )}
+                                </Button>
+
+                                <Button
+                                    variant="ghost"
+                                    className="mt-2 text-sm text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    onClick={handleResendOTP}
+                                    disabled={!canResend}
+                                >
+                                    {isResending ? (
+                                        <SpinnerMini />
+                                    ) : countdown > 0 ? (
+                                        `${
+                                            t("resend_otp") || "Resend OTP"
+                                        } (${countdown}s)`
+                                    ) : (
+                                        t("resend_otp") || "Resend OTP"
+                                    )}
                                 </Button>
                             </div>
                         </DialogDescription>

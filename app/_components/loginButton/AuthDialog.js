@@ -24,7 +24,6 @@ export default function AuthDialog({ primary }) {
                 <DialogTrigger asChild>
                     <Button
                         variant="outline"
-                        // className="icons-hover-600 border-1 flex text-sm px-3 py-0 rounded border-gray-500"
                         className={cn(
                             "icons-hover-600 border-1 flex text-sm px-3 py-0 rounded border-gray-500",
                             primary &&

@@ -44,6 +44,7 @@
     },
     "CurrencySwitcher": {
         "title": "Currency",
+        "sub_title": "Select your preferred currency for prices and payments.",
         "select_currency": "Select Currency",
         "cancel": "Cancel",
         "apply": "Apply",
@@ -83,7 +84,13 @@
         "submit": "submit",
         "sign_out": "Sign Out",
         "have_account": "Do you have an Asfartrip account?",
-        "sign_in_helper": "Sign in to book & earn rewards!"
+        "sign_in_helper": "Sign in to book & earn rewards!",
+        "resend_otp": "Resend OTP",
+        "empty_otp": "Please enter the verification code",
+        "manage_account": "Manage your account",
+        "my_bookings": "My Bookings",
+        "travelers": "Travelers",
+        "points": "Points"
     },
 
     "Services": {
@@ -1540,5 +1547,25 @@
         "title": "Session Expired",
         "message": "Please check the latest flights to continue ",
         "button": "Back to Search Results"
+    },
+
+    "Loyalty": {
+        "inline_points": "Earn <bold>{points}</bold> points",
+        "Banner": {
+            "with_tier": "As a {tier} member, you will earn {points} loyalty points",
+            "without_tier": "You will earn {points} loyalty points"
+        },
+        "pay_with_points": {
+            "title": "Pay with Loyalty Points",
+            "points": "Points",
+            "warning": "You don't have enough points to pay with points."
+        },
+        "Bronze": "Bronze",
+        "Silver": "Silver",
+        "Gold": "Gold",
+        "Platinum": "Platinum"
+    },
+    "Installments": {
+        "installments_available": "Installments"
     }
 }

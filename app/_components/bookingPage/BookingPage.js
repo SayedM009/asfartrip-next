@@ -21,7 +21,6 @@ import AddOn from "./AddOn";
 import TopMobileSection from "./TopMobileSection";
 import TicketExpired from "./TicketExpired";
 import FareSummaryDialog from "./FareSummaryDialog";
-import LoyaltyPointsBanner from "../loyaltyPoints/LoyaltyPointsBanner";
 
 export default function BookingPage({ isLogged, cart: initialCart, userId }) {
     const [currentStep, setCurrentStep] = useState(2);

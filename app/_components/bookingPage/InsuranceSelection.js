@@ -67,12 +67,10 @@ export function InsuranceSelection() {
 
             {/* Options */}
             <div className="space-y-3">
-                {allOptions.map((option) => {
+                {allOptions.map((option, index) => {
                     const isSelected =
                         selectedInsurance?.scheme_id === option.scheme_id;
-                    {
-                        console.log(option);
-                    }
+
                     return (
                         <div key={option.scheme_id || option.quote_id}>
                             <button
@@ -103,7 +101,9 @@ export function InsuranceSelection() {
                                                 : "text-accent-900 dark:text-accent-100"
                                         } rtl:text-right truncate`}
                                     >
-                                        {String(option.name).split("-")[1]}
+                                        {index != 0
+                                            ? String(option.name).split("-")[1]
+                                            : option.name}
                                     </span>
                                 </div>
 

@@ -43,6 +43,7 @@
     },
     "CurrencySwitcher": {
         "title": "العملة",
+        "sub_title": "اختر عملتك المفضلة للأسعار والمدفوعات.",
         "select_currency": "اختر العملة",
         "cancel": "إلغاء",
         "apply": "تطبيق",
@@ -82,7 +83,13 @@
         "submit": "إرسال",
         "sign_out": "تسجيل الخروج",
         "have_account": "هل لديك حساب أسفار تريب؟",
-        "sign_in_helper": "سجل الدخول للحجز وكسب المكافآت!"
+        "sign_in_helper": "سجل الدخول للحجز وكسب المكافآت!",
+        "resend_otp": "إعادة إرسال رمز التحقق",
+        "empty_otp": "يرجى إدخال رمز التحقق",
+        "manage_account": "إدارة حسابك",
+        "my_bookings": "حجوزاتي",
+        "travelers": "المسافرون ",
+        "points": "نقاط"
     },
     "Services": {
         "Flights": "طيران",
@@ -1539,5 +1546,24 @@
         "title": "انتهت صلاحية الجلسة",
         "message": "لمتابعة الحجز يرجى الإطلاع على أحدث الرحلات المتاحة",
         "button": "العودة إلى نتائج البحث"
+    },
+    "Loyalty": {
+        "inline_points": "اكسب <bold>{points}</bold> نقطة",
+        "Banner": {
+            "with_tier": "لأن عضويتك {tier} راح تكسب {points} نقطة ولاء",
+            "without_tier": "راح تكسب {points} نقطة ولاء"
+        },
+        "pay_with_points": {
+            "title": "ادفع بنقاط الولاء",
+            "points": "نقاط",
+            "warning": "ملاحظة: لا يمكن استرداد النقاط المستخدمة في الدفع."
+        },
+        "Bronze": "برونزى",
+        "Silver": "فضي",
+        "Gold": "ذهبي",
+        "Platinum": "بلاتيني"
+    },
+    "Installments": {
+        "installments_available": "التقسيط متاح "
     }
 }

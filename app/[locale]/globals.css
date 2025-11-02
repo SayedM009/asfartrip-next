@@ -42,9 +42,26 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
-    --background: oklch(1 0 0);
-    /* --background: oklch(0.985 0 0); */
+    /* --background: oklch(1 0 0); */
+    --background: oklch(0.985 0 0);
     --foreground: #05203c;
+
+    /* Tiers */
+    /* Bronze */
+    --tier-bronze-from: #cda474; /* اللون الفاتح */
+    --tier-bronze-to: #6b4b2f; /* اللون الغامق */
+
+    /* Silver */
+    --tier-silver-from: #b4cef1; /* مزرق فاتح */
+    --tier-silver-to: #3f628e; /* مزرق غامق */
+
+    /* Gold */
+    --tier-gold-from: #fdd388; /* ذهبي فاتح */
+    --tier-gold-to: #6d4a08; /* ذهبي غامق */
+
+    /* Platinum */
+    --tier-platinum-from: #4fa7d1; /* أزرق فاتح */
+    --tier-platinum-to: #124c6d; /* أزرق غامق */
 }
 
 .dark {

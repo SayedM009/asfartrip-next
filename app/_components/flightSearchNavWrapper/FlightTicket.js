@@ -411,9 +411,9 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col items-end sm:items-center gap-1">
+                            <div className="flex flex-col items-end sm:items-center gap-0.5">
                                 {/* Earned Points */}
-                                <LoyaltyPoints />
+                                <LoyaltyPoints price={TotalPrice} />
                                 <div className="text-xs text-muted-foreground">
                                     {t("total_price")}
                                 </div>

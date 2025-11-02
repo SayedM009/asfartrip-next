@@ -406,7 +406,9 @@ export function FlightDetailsDialog({
                         <Plane className="h-5 w-5" />
                         {t("dialog.flight_details")}
                     </DialogTitle>
-                    <DialogDescription>{t("dialog.guide")}</DialogDescription>
+                    <DialogDescription className="text-left rtl:text-right">
+                        {t("dialog.guide")}
+                    </DialogDescription>
                 </DialogHeader>
 
                 <div className="space-y-6">
@@ -581,7 +583,7 @@ export function FlightDetailsDialog({
                     <DialogFooter className="sticky bottom-0 w-full p-3 bg-white dark:bg-muted rounded-t-2xl">
                         <div className="flex flex-col items-center sm:flex-row gap-3 pt-4 w-full">
                             <div className="flex-1 w-full flex items-center justify-between sm:items-start sm:flex-col ">
-                                <LoyaltyPoints />
+                                <LoyaltyPoints price={TotalPrice} />
                                 <div className="flex justify-between items-center font-semibold  gap-2">
                                     <span className="text-xs">
                                         {t("dialog.total_price")}

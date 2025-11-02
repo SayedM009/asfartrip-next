@@ -13,6 +13,7 @@ import useBookingStore from "@/app/_store/bookingStore";
 import TimeoutPopup from "../TimeoutPopup";
 import LoyaltyPointsBanner from "../loyaltyPoints/LoyaltyPointsBanner";
 import FareSummaryDialog from "./FareSummaryDialog";
+import PayWithLoyaltyPoints from "../loyaltyPoints/PayWithLoyaltyPoints";
 
 export default function PaymentSection({ onConfirmPayment, backTo, loading }) {
     const [selectedMethod, setSelectedMethod] = useState("card");
@@ -21,7 +22,8 @@ export default function PaymentSection({ onConfirmPayment, backTo, loading }) {
     const [expiryDate, setExpiryDate] = useState("");
     const [cvv, setCvv] = useState("");
 
-    const { ticket, searchURL } = useBookingStore();
+    const { ticket, searchURL, getTotalPrice } = useBookingStore();
+    const totalAmount = getTotalPrice();
     const p = useTranslations("Payment");
     const paymentMethods = [
         {
@@ -92,7 +94,7 @@ export default function PaymentSection({ onConfirmPayment, backTo, loading }) {
     return (
         <div className="space-y-6 flex-1 mt-1">
             {/* Payment Method Selection */}
-            <div>
+            <div className="space-y-4">
                 <div className="flex items-center gap-4 mb-4 ">
                     <BackWardButtonWithDirections onClick={backTo} />
                     <h2 className=" capitalize  font-semibold text-xl">
@@ -113,7 +115,11 @@ export default function PaymentSection({ onConfirmPayment, backTo, loading }) {
                         </div>
                     </div>
                 </TopMobileSection>
-                <LoyaltyPointsBanner />
+                {/* Loyalty Points Banner */}
+                <LoyaltyPointsBanner price={totalAmount} />
+
+                {/* Pay with Loyalty  Points */}
+                <PayWithLoyaltyPoints />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 sm:mt-auto">
                     {paymentMethods.map((method) => {
                         const Icon = method.icon;
