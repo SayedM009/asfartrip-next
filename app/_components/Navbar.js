@@ -1,7 +1,7 @@
 import CurrencySwicther from "./CurrencySwicther";
 import LanguageSwitcher from "./LanguageSwitcher";
 import LoginButton from "./loginButton/LoginButton";
-import Logo from "./Logo";
+import Logo from "./ui/Logo";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 async function Header() {

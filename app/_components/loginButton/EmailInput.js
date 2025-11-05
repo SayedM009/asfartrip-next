@@ -22,7 +22,7 @@ import FireIcon from "../SVG/FireIcon";
 import Points from "../SVG/PointsIcons";
 import ErrorMessage from "./ErrorMessage";
 import GoogleButton from "./GoogleButton";
-import SpinnerMini from "../SpinnerMini";
+import SpinnerMini from "../ui/SpinnerMini";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 

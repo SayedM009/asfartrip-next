@@ -16,6 +16,8 @@ import Image from "next/image";
 import useLoyaltyStore from "../_store/loyaltyStore";
 import useCheckLocal from "../_hooks/useCheckLocal";
 import useAuthStore from "../_store/authStore";
+import { UserGroupIcon } from "@heroicons/react/24/outline";
+import { Link } from "@/i18n/navigation";
 
 export default function UserDropdown() {
     const { user } = useAuthStore();
@@ -28,7 +30,7 @@ export default function UserDropdown() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Avatar className="h-9 w-9 cursor-pointer border">
+                <Avatar className="h-8 w-8 cursor-pointer border hidden sm:block">
                     <AvatarImage src={user?.avatar} alt={user?.name} />
                     <AvatarFallback>
                         <Image
@@ -37,6 +39,7 @@ export default function UserDropdown() {
                             width={36}
                             height={36}
                             referrerPolicy="no-referrer"
+                            className="rounded-full shadow-lg"
                         />
                     </AvatarFallback>
                 </Avatar>
@@ -47,7 +50,7 @@ export default function UserDropdown() {
                 dir={condition}
                 className="w-65 p-0 overflow-hidden rounded-lg shadow-lg"
             >
-                <section className="p-3 bg-gray-50 dark:bg-gray-800 border-b">
+                <section className={`p-3 bg-gray-50 dark:bg-gray-800 border-b`}>
                     <div className="flex items-center gap-4 mb-2">
                         <Avatar className="h-7 w-7 cursor-pointer border">
                             <AvatarImage src={user?.avatar} alt={user?.name} />
@@ -63,7 +66,7 @@ export default function UserDropdown() {
                         </Avatar>
                         <p className="font-semibold text-sm">{user?.name}</p>
                     </div>
-                    <div className="flex items-center gap-2 ">
+                    {/* <div className="flex items-center gap-2 ">
                         <span className="bg-[#1fa86abe] text-xs p-0.5 px-1 rounded text-white">
                             {Loyalty(tier?.tier_name)}
                         </span>
@@ -84,13 +87,18 @@ export default function UserDropdown() {
                                 {formatPrice(balance)}
                             </span>
                         </div>
-                    </div>
+                    </div> */}
                 </section>
 
                 <section className="p-2">
-                    <DropdownMenuItem className="cursor-pointer py-2 px-3 text-sm flex items-center gap-2 hover:bg-muted transition-colors hover:outline-0">
-                        <Settings className="size-4 text-accent-500" />
-                        {l("manage_account")}
+                    <DropdownMenuItem className="cursor-pointer py-2 px-3 text-sm  gap-2 hover:bg-muted transition-colors hover:outline-0">
+                        <Link
+                            href="/profile"
+                            className="flex items-center gap-2"
+                        >
+                            <Settings className="size-4 text-accent-500" />
+                            {l("manage_account")}
+                        </Link>
                     </DropdownMenuItem>
 
                     <DropdownMenuItem className="cursor-pointer py-2 px-3 text-sm flex items-center gap-2 hover:bg-muted transition-colors hover:outline-0">
@@ -99,7 +107,7 @@ export default function UserDropdown() {
                     </DropdownMenuItem>
 
                     <DropdownMenuItem className="cursor-pointer py-2 px-3 text-sm flex items-center gap-2 hover:bg-muted transition-colors hover:outline-0">
-                        <User className="size-4 text-accent-500" />
+                        <UserGroupIcon className="size-4.5 text-accent-500" />
                         {l("travelers")}
                     </DropdownMenuItem>
 

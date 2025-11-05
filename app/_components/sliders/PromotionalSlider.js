@@ -1,11 +1,12 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
-import { Button } from "../ui/button";
+import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
+
+import Image from "next/image";
 import useCheckLocal from "../../_hooks/useCheckLocal";
-import { cn } from "../ui/utils";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const offers = [
     { src: "/hot_offers/busisness.jpg", alt: "Travel to Egypt now" },
@@ -62,84 +63,82 @@ export function PromotionalSlider() {
     }, [isRTL]);
 
     return (
-        <div className="py-8 bg-background mt-3 sm:mt-5">
-            <div className="max-w-7xl mx-auto px-2 sm:px-0">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-3 sm:mb-6">
-                    <div>
-                        <div className="flex items-center sm:mb-1 gap-2">
-                            <Image
-                                src="/icons/gift.svg"
-                                alt="offers"
-                                width={22}
-                                height={22}
-                                priority
-                            />
-                            <h2 className="text-md sm:text-2xl font-bold text-foreground uppercase">
-                                {t("title")}
-                            </h2>
-                        </div>
-                        <p className="text-xs sm:text-lg text-muted-foreground">
-                            {t("sub_title")}
-                        </p>
+        <section className="mt-10">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-3 sm:mb-6 ">
+                <div>
+                    <div className="flex items-center sm:mb-1 gap-2">
+                        <Image
+                            src="/icons/gift.svg"
+                            alt="offers"
+                            width={22}
+                            height={22}
+                            priority
+                        />
+                        <h2 className="text-md sm:text-2xl font-bold text-foreground uppercase">
+                            {t("title")}
+                        </h2>
                     </div>
-
-                    {/* Desktop Arrows */}
-                    <div
-                        className={cn(
-                            "hidden sm:flex gap-2",
-                            isRTL && "flex-row-reverse"
-                        )}
-                    >
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            disabled={!canScrollLeft}
-                            onClick={() => scroll("left")}
-                        >
-                            <ChevronLeft className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            disabled={!canScrollRight}
-                            onClick={() => scroll("right")}
-                        >
-                            <ChevronRight className="h-4 w-4" />
-                        </Button>
-                    </div>
+                    <p className="text-xs sm:text-lg text-muted-foreground">
+                        {t("sub_title")}
+                    </p>
                 </div>
 
-                {/* Slider */}
-                <div className="relative">
-                    <div
-                        ref={scrollRef}
-                        className={cn(
-                            "flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth pb-3",
-                            "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
-                            isRTL ? "direction-rtl" : "direction-ltr"
-                        )}
-                        onScroll={updateScrollButtons}
+                {/* Desktop Arrows */}
+                <div
+                    className={cn(
+                        "hidden sm:flex gap-2",
+                        isRTL && "flex-row-reverse"
+                    )}
+                >
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        disabled={!canScrollLeft}
+                        onClick={() => scroll("left")}
                     >
-                        {offers.map((item, i) => (
-                            <div
-                                key={i}
-                                className="flex-shrink-0 w-[80vw] sm:w-[350px] lg:w-[480px] aspect-[16/7] relative rounded-xl overflow-hidden"
-                                style={{ scrollSnapAlign: "start" }}
-                            >
-                                <Image
-                                    src={item.src}
-                                    alt={item.alt}
-                                    fill
-                                    className="object-cover"
-                                    sizes="(max-width: 768px) 80vw, (max-width: 1200px) 350px, 480px"
-                                    priority={i === 0}
-                                />
-                            </div>
-                        ))}
-                    </div>
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        disabled={!canScrollRight}
+                        onClick={() => scroll("right")}
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
                 </div>
             </div>
-        </div>
+
+            {/* Slider */}
+            <div className="relative">
+                <div
+                    ref={scrollRef}
+                    className={cn(
+                        "flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth pb-3",
+                        "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+                        isRTL ? "direction-rtl" : "direction-ltr"
+                    )}
+                    onScroll={updateScrollButtons}
+                >
+                    {offers.map((item, i) => (
+                        <div
+                            key={i}
+                            className="flex-shrink-0 w-[80vw] sm:w-[350px] lg:w-[480px] aspect-[16/7] relative rounded-xl overflow-hidden"
+                            style={{ scrollSnapAlign: "start" }}
+                        >
+                            <Image
+                                src={item.src}
+                                alt={item.alt}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 80vw, (max-width: 1200px) 350px, 480px"
+                                priority={i === 0}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
     );
 }

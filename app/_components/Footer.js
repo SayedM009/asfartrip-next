@@ -1,5 +1,5 @@
 import React from "react";
-import { Separator } from "./ui/separator";
+import { Separator } from "@/components/ui/separator";
 import {
     Plane,
     Facebook,
@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import useIsDevice from "../_hooks/useIsDevice";
-import Logo from "./Logo";
+import Logo from "./ui/Logo";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 

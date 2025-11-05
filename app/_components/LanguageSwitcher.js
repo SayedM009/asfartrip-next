@@ -8,20 +8,20 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "./ui/dialog";
-import { Button } from "./ui/button";
-import { Label } from "./ui/label";
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "./ui/select";
+} from "@/components/ui/select";
 import { Globe } from "lucide-react";
 import { useState } from "react";
 import useCheckLocal from "../_hooks/useCheckLocal";
 import Image from "next/image";
+import { Label } from "@radix-ui/react-dropdown-menu";
 
 function LanguageSwitcher({ hiddenOnMobile = false }) {
     const [isOpen, setIsOpen] = useState(false);

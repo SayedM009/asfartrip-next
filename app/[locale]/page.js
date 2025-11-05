@@ -7,8 +7,9 @@ import { generateMetadataObj } from "../_libs/metadata";
 
 import Navbar from "@/app/_components/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
-import FlightSearchWrapper from "../_components/FlightSearchWrapper";
+import FlightSearchWrapper from "../_components/flightComponents/FlightSearchWrapper";
 import BottomAppWrapper from "../_components/bottomAppBar/BottomAppWrapper";
+import { Footer } from "../_components/Footer";
 
 // generateMetadataObj:
 // This function prepares metadata for any main page based on the selected language (locale).
@@ -29,18 +30,21 @@ export async function generateMetadata({ params }) {
 
 function HomePage() {
     return (
-        <>
+        <section className="container-custom">
             <Navbar />
-            <section>
+            <section className="space-y-6">
                 <ServicesNavigation />
                 <FlightSearchWrapper />
                 <PromotionalSlider />
                 <DestinationSlider />
                 <FlightsSlider />
                 <HotelsSlider />
+                {/* Giving More Space on Mobile */}
+                <div className="h-6 sm:hidden" />
             </section>
+            <Footer />
             <BottomAppWrapper />
-        </>
+        </section>
     );
 }
 

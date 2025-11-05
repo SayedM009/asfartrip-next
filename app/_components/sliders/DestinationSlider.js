@@ -1,12 +1,14 @@
 "use client";
 import React, { useState, useRef } from "react";
-import { Button } from "../ui/button";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import { cn } from "../ui/utils";
-import Image from "next/image";
+
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+
+import Image from "next/image";
 import useCheckLocal from "../../_hooks/useCheckLocal";
 import Airpaloon from "../SVG/Airpaloon";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const destinations = [
     {
@@ -107,17 +109,13 @@ export function DestinationSlider() {
     };
 
     return (
-        <div
-            className="py-8 px-4  lg:px-8 bg-background sm:mt-5"
-            style={{ paddingRight: "0", paddingLeft: "0" }}
-        >
-            <div className="max-w-7xl mx-auto">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-2 sm:mb-6">
-                    <div>
-                        <div className="flex items-center sm:mb-2 gap-2">
-                            <Airpaloon width={36} height={36} />
-                            {/* <Image
+        <>
+            {/* Header */}
+            <div className="flex items-center justify-between mb-2 sm:mb-6">
+                <div>
+                    <div className="flex items-center sm:mb-2 gap-2">
+                        <Airpaloon width={36} height={36} />
+                        {/* <Image
                                 // src="/icons/globe.gif"
                                 src="/icons/globe.svg"
                                 alt="Destination dream trip"
@@ -128,95 +126,94 @@ export function DestinationSlider() {
                                 fetchPriority="high"
                                 loading="eager"
                             /> */}
-                            <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
-                                {t("title")}
-                            </h2>
-                        </div>
-
-                        <p className="text-xs sm:text-lg text-muted-foreground">
-                            {t("sub_title")}
-                        </p>
+                        <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
+                            {t("title")}
+                        </h2>
                     </div>
 
-                    {/* Desktop Navigation Buttons */}
-                    <div
-                        className={`hidden sm:flex gap-2 ${
-                            isRTL && "flex-row-reverse"
-                        }`}
-                    >
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => scroll("left")}
-                            disabled={!canScrollLeft}
-                            className="h-10 w-10 cursor-pointer disabled:cursor-not-allowed"
-                            aria-label="Scroll left"
-                        >
-                            <ChevronLeft className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => scroll("right")}
-                            disabled={!canScrollRight}
-                            className="h-10 w-10 cursor-pointer disabled:cursor-not-allowed"
-                            aria-label="Scroll right"
-                        >
-                            <ChevronRight className="h-4 w-4" />
-                        </Button>
-                    </div>
+                    <p className="text-xs sm:text-lg text-muted-foreground">
+                        {t("sub_title")}
+                    </p>
                 </div>
 
-                {/* Slider Container */}
-                <div className="relative">
-                    <div
-                        ref={scrollContainerRef}
-                        onScroll={handleScroll}
-                        className="flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-1"
-                        style={{
-                            scrollSnapType: "x mandatory",
-                        }}
+                {/* Desktop Navigation Buttons */}
+                <div
+                    className={`hidden sm:flex gap-2 ${
+                        isRTL && "flex-row-reverse"
+                    }`}
+                >
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => scroll("left")}
+                        disabled={!canScrollLeft}
+                        className="h-10 w-10 cursor-pointer disabled:cursor-not-allowed"
+                        aria-label="Scroll left"
                     >
-                        {destinations.map((card) => (
-                            <div
-                                key={card.id}
-                                className="flex-shrink-0 w-[80vw] sm:w-72 lg:w-80"
-                                style={{ scrollSnapAlign: "start" }}
-                            >
-                                <div
-                                    className={cn(
-                                        "h-70 rounded-2xl p-6 relative overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-105",
-                                        card.backgroundColor
-                                    )}
-                                >
-                                    {/* Background Image */}
-                                    <Image
-                                        src={card.img}
-                                        alt={`${card.city}, ${card.country}`}
-                                        fill
-                                        className="object-cover"
-                                        priority
-                                        fetchPriority="high"
-                                        loading="eager"
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                    />
-
-                                    {/* Gradient Overlay */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-
-                                    {/* Content */}
-                                    <div className="relative z-10 h-full flex flex-col justify-end mt-3">
-                                        <h3 className="text-white text-xl font-semibold capitalize">
-                                            {t(`cities.${card.city}`)},{" "}
-                                            {t(`countries.${card.country}`)}
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => scroll("right")}
+                        disabled={!canScrollRight}
+                        className="h-10 w-10 cursor-pointer disabled:cursor-not-allowed"
+                        aria-label="Scroll right"
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
                 </div>
             </div>
-        </div>
+
+            {/* Slider Container */}
+            <div className="relative">
+                <div
+                    ref={scrollContainerRef}
+                    onScroll={handleScroll}
+                    className="flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-1"
+                    style={{
+                        scrollSnapType: "x mandatory",
+                    }}
+                >
+                    {destinations.map((card) => (
+                        <div
+                            key={card.id}
+                            className="flex-shrink-0 w-[80vw] sm:w-72 lg:w-80"
+                            style={{ scrollSnapAlign: "start" }}
+                        >
+                            <div
+                                className={cn(
+                                    "h-70 rounded-2xl p-6 relative overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-105",
+                                    card.backgroundColor
+                                )}
+                            >
+                                {/* Background Image */}
+                                <Image
+                                    src={card.img}
+                                    alt={`${card.city}, ${card.country}`}
+                                    fill
+                                    className="object-cover"
+                                    priority
+                                    fetchPriority="high"
+                                    loading="eager"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                />
+
+                                {/* Gradient Overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+
+                                {/* Content */}
+                                <div className="relative z-10 h-full flex flex-col justify-end mt-3">
+                                    <h3 className="text-white text-xl font-semibold capitalize">
+                                        {t(`cities.${card.city}`)},{" "}
+                                        {t(`countries.${card.country}`)}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </>
     );
 }

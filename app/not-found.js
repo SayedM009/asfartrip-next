@@ -1,9 +1,9 @@
 "use client";
-import Image from "next/image";
 import "./[locale]/globals.css";
 import Link from "next/link";
 import FuzzyText from "@/components/FuzzyText";
 import ElectricBorder from "@/components/ElectricBorder";
+
 export default function NotFound({ ...props }) {
     return (
         <div className="h-screen flex items-center justify-center flex-col bg-gray-900">

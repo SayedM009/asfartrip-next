@@ -5,9 +5,11 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DialogFooter,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import {
+    BanknotesIcon,
     DocumentCheckIcon,
     DocumentTextIcon,
     ExclamationCircleIcon,
@@ -16,38 +18,39 @@ import {
     SquaresPlusIcon,
 } from "@heroicons/react/24/outline";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { Switch } from "@/components/ui/switch";
+import { useTheme } from "next-themes";
 import LanguageSwitcher from "../LanguageSwitcher";
 import ThemeSwitcher from "../ThemeSwitcher";
 import CurrencySwicther from "../CurrencySwicther";
-
-import { Link } from "@/i18n/navigation";
-import { Switch } from "@/components/ui/switch";
-import ChevronBasedOnLanguage from "../ChevronBasedOnLanguage";
-import { useTheme } from "next-themes";
-import { DialogFooter } from "../ui/dialog";
+import ChevronBasedOnLanguage from "../ui/ChevronBasedOnLanguage";
 import SignOutButton from "../loginButton/SignOut";
-import { DollarSign } from "lucide-react";
 
 const HELPER_LINKS = [
     {
         title: "about_us",
-        icon: <ExclamationCircleIcon className="size-5" />,
+        icon: <ExclamationCircleIcon className="size-5 text-accent-500" />,
         path: "/about-us",
     },
-    { title: "contact_us", icon: <PhoneIcon />, path: "/about-us" },
+    {
+        title: "contact_us",
+        icon: <PhoneIcon className="text-accent-500" />,
+        path: "/about-us",
+    },
     {
         title: "privacy_policy",
-        icon: <DocumentCheckIcon className="size-5" />,
+        icon: <DocumentCheckIcon className="size-5 text-accent-500" />,
         path: "/privacy_policy",
     },
     {
         title: "terms_conditions",
-        icon: <DocumentTextIcon className="size-5" />,
+        icon: <DocumentTextIcon className="size-5 text-accent-500" />,
         path: "/terms_condition",
     },
     {
         title: "faqs",
-        icon: <QuestionMarkCircleIcon className="size-5" />,
+        icon: <QuestionMarkCircleIcon className="size-5 text-accent-500" />,
         path: "/faqs",
     },
 ];
@@ -102,7 +105,7 @@ function MoreButton() {
                             {/* Currency Switcher */}
                             <div className="flex items-center justify-between pb-2 pt-2 border-b-1 border-gray-300 dark:border-gray-100 w-full">
                                 <div className="flex items-center gap-2">
-                                    <DollarSign className="size-5" />
+                                    <BanknotesIcon className="size-5 text-accent-500" />
                                     <CurrencySwicther isLabel={false} />
                                 </div>
                                 <span className="font-bold dark:text-gray-50">

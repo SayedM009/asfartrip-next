@@ -1,14 +1,14 @@
 "use client";
-import React, { useState, useRef } from "react";
-import { Button } from "../ui/button";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import { cn } from "../ui/utils";
-import Image from "next/image";
-import { useTranslations } from "next-intl";
-import { format, parseISO } from "date-fns";
-import useCheckLocal from "../../_hooks/useCheckLocal";
+import { useState, useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { StarIcon } from "@heroicons/react/24/solid";
+import { useTranslations } from "next-intl";
+
 import Bed from "../SVG/Bed";
+import Image from "next/image";
+import useCheckLocal from "../../_hooks/useCheckLocal";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const destinations = [
     {
@@ -70,10 +70,6 @@ export function HotelsSlider() {
     const [canScrollRight, setCanScrollRight] = useState(true);
     const t = useTranslations("Hotels_slider");
     const { isRTL } = useCheckLocal();
-    function formatDate(isoDate) {
-        if (!isoDate) return "";
-        return format(parseISO(isoDate), "dd MMM");
-    }
 
     const scroll = (direction) => {
         if (scrollContainerRef.current) {
@@ -102,12 +98,10 @@ export function HotelsSlider() {
                 scrollContainerRef.current;
 
             if (isRTL) {
-                // في RTL، نحتاج لحساب الموضع بشكل مختلف
                 const maxScrollLeft = scrollWidth - clientWidth;
                 setCanScrollRight(Math.abs(scrollLeft) > 1);
                 setCanScrollLeft(Math.abs(scrollLeft) < maxScrollLeft - 1);
             } else {
-                // LTR المنطق العادي
                 setCanScrollLeft(scrollLeft > 1);
                 setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
             }
@@ -115,130 +109,112 @@ export function HotelsSlider() {
     };
 
     return (
-        <div
-            className="pb-8 px-4  lg:px-8 bg-background sm:mt-5"
-            style={{ paddingRight: "0", paddingLeft: "0" }}
-        >
-            <div className="max-w-7xl mx-auto">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-2 sm:mb-6">
-                    <div>
-                        <div className="flex items-center sm:mb-2 gap-2">
-                            <Bed width={36} height={36} />
-                            {/* <Image
-                                // src="/icons/bed-m.gif"
-                                src="/icons/bed.svg"
-                                alt="Destination dream trip"
-                                width={30}
-                                height={30}
-                                // unoptimized
-                                // priority
-                                // fetchPriority="high"
-                                loading="lazy"
-                            /> */}
-                            <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
-                                {t("title")}
-                            </h2>
-                        </div>
-
-                        <p className="text-xs sm:text-lg text-muted-foreground">
-                            {t("sub_title")}
-                        </p>
+        <>
+            {/* Header */}
+            <div className="flex items-center justify-between mb-2 sm:mb-6">
+                <div>
+                    <div className="flex items-center sm:mb-2 gap-2">
+                        <Bed width={36} height={36} />
+                        <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
+                            {t("title")}
+                        </h2>
                     </div>
 
-                    {/* Desktop Navigation Buttons */}
-                    <div
-                        className={`hidden sm:flex gap-2 ${
-                            isRTL && "flex-row-reverse"
-                        }`}
-                    >
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => scroll("left")}
-                            disabled={!canScrollLeft}
-                            className="h-10 w-10 cursor-pointer disabled:cursor-not-allowed"
-                            aria-label="Scroll left"
-                        >
-                            <ChevronLeft className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => scroll("right")}
-                            disabled={!canScrollRight}
-                            className="h-10 w-10 cursor-pointer disabled:cursor-not-allowed"
-                            aria-label="Scroll right"
-                        >
-                            <ChevronRight className="h-4 w-4" />
-                        </Button>
-                    </div>
+                    <p className="text-xs sm:text-lg text-muted-foreground">
+                        {t("sub_title")}
+                    </p>
                 </div>
 
-                {/* Slider Container */}
-                <div className="relative">
-                    <div
-                        ref={scrollContainerRef}
-                        onScroll={handleScroll}
-                        className="flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-1"
-                        style={{
-                            scrollSnapType: "x mandatory",
-                        }}
+                {/* Desktop Navigation Buttons */}
+                <div
+                    className={`hidden sm:flex gap-2 ${
+                        isRTL && "flex-row-reverse"
+                    }`}
+                >
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => scroll("left")}
+                        disabled={!canScrollLeft}
+                        className="h-10 w-10 cursor-pointer disabled:cursor-not-allowed"
+                        aria-label="Scroll left"
                     >
-                        {destinations.map((card) => (
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => scroll("right")}
+                        disabled={!canScrollRight}
+                        className="h-10 w-10 cursor-pointer disabled:cursor-not-allowed"
+                        aria-label="Scroll right"
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
+                </div>
+            </div>
+
+            {/* Slider Container */}
+            <div className="relative">
+                <div
+                    ref={scrollContainerRef}
+                    onScroll={handleScroll}
+                    className="flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-1"
+                    style={{
+                        scrollSnapType: "x mandatory",
+                    }}
+                >
+                    {destinations.map((card) => (
+                        <div
+                            key={card.id}
+                            className="flex-shrink-0 w-[80vw] sm:w-72 lg:w-80"
+                            style={{ scrollSnapAlign: "start" }}
+                        >
                             <div
-                                key={card.id}
-                                className="flex-shrink-0 w-[80vw] sm:w-72 lg:w-80"
-                                style={{ scrollSnapAlign: "start" }}
+                                className={cn(
+                                    "h-70 rounded-2xl p-6 relative overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-105",
+                                    card.backgroundColor
+                                )}
                             >
-                                <div
-                                    className={cn(
-                                        "h-70 rounded-2xl p-6 relative overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-105",
-                                        card.backgroundColor
-                                    )}
-                                >
-                                    {/* Background Image */}
-                                    <Image
-                                        src={card.img}
-                                        alt={`${card.from}, ${card.to}`}
-                                        fill
-                                        className="object-cover"
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                        loading="lazy"
-                                    />
+                                {/* Background Image */}
+                                <Image
+                                    src={card.img}
+                                    alt={`${card.from}, ${card.to}`}
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    loading="lazy"
+                                />
 
-                                    {/* Gradient Overlay */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+                                {/* Gradient Overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
 
-                                    {/* Content */}
-                                    <div className=" z-10 h-full flex flex-col justify-end mt-3 ">
-                                        <div className="text-white text-xl font-semibold capitalize bg-[#111] absolute w-full left-0 bottom-0 right-0 py-2 px-3">
-                                            <h3 className="flex items-center gap-2 text-sm">
-                                                {t(`hotels.${card.title}`)}
-                                            </h3>
-                                            <div className="flex items-center justify-between text-sm font-normal text-gray-400">
-                                                {t(
-                                                    `locations.${card.location}`
-                                                )}
-                                                <span className="flex text-xs items-center gap-1">
-                                                    5
-                                                    <StarIcon className="size-3 text-white" />
-                                                </span>
-                                            </div>
-                                            {/* <div className="flex items-center justify-between text-sm">
+                                {/* Content */}
+                                <div className=" z-10 h-full flex flex-col justify-end mt-3 ">
+                                    <div className="text-white text-xl font-semibold capitalize bg-[#111] absolute w-full left-0 bottom-0 right-0 py-2 px-3">
+                                        <h3 className="flex items-center gap-2 text-sm">
+                                            {t(`hotels.${card.title}`)}
+                                        </h3>
+                                        <div className="flex items-center justify-between text-sm font-normal text-gray-400">
+                                            {t(`locations.${card.location}`)}
+                                            <span className="flex text-xs items-center gap-1">
+                                                5
+                                                <StarIcon className="size-3 text-white" />
+                                            </span>
+                                        </div>
+                                        {/* <div className="flex items-center justify-between text-sm">
                                                 <h4>Start from {card.price}</h4>
                                                 <h4 className="bg-gray-300 rounded-sm px-2 text-gray-900 text-xs">
                                                     {card.isDirect && "Direct"}
                                                 </h4>
                                             </div> */}
-                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    ))}
                 </div>
             </div>
-        </div>
+        </>
     );
 }

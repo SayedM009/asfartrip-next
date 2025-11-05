@@ -649,8 +649,8 @@ const useBookingStore = create(
                     payment_status: 0,
                     amount: state.getTotalPrice(),
                     user_type: 0,
-                    // user_id: state.userId || 0,
-                    user_id: 0,
+                    user_id: state.userId || 0,
+                    // user_id: 0,
                 };
 
                 if (

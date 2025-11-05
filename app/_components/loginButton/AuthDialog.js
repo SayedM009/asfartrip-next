@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
-import { cn } from "../ui/utils";
 import {
     Dialog,
     DialogContent,
@@ -12,8 +11,9 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import Logo from "../Logo";
+import Logo from "../ui/Logo";
 import EmailInput from "./EmailInput";
+import { cn } from "@/lib/utils";
 
 export default function AuthDialog({ primary }) {
     const t = useTranslations();

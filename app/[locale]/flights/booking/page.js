@@ -1,5 +1,5 @@
 // app/flights/booking/page.js
-import BookingPage from "@/app/_components/bookingPage/BookingPage";
+import BookingPage from "@/app/_components/flightComponents/bookingPage/BookingPage";
 import Navbar from "@/app/_components/Navbar";
 import { auth } from "@/app/_libs/auth";
 import { getCart } from "@/app/_libs/flightService";

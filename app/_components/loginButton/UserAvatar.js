@@ -7,7 +7,7 @@ export default function UserAvatar({ user }) {
     return (
         <>
             <Link href="/profile" className="block sm:hidden">
-                <Avatar>
+                <Avatar className="rounded-full w-8 h-8 shadow-2xl outline-2 outline-gray-400 dark:outline-white border-2 border-transparent ">
                     <AvatarImage
                         src={user.avatar ? user.avatar : "avatar.webp"}
                         alt={`Alternative avatar for ${user?.name}`}
@@ -15,11 +15,12 @@ export default function UserAvatar({ user }) {
 
                     <AvatarFallback>
                         <Image
-                            src={user?.avatar}
-                            alt={`Alternative avatar for ${user?.avatar}`}
+                            src="/avatar.webp"
+                            alt={`Alternative avatar for ${user?.name}`}
                             width={36}
                             height={36}
                             referrerPolicy="no-referrer"
+                            className="rounded-full shadow-lg"
                         />
                     </AvatarFallback>
                 </Avatar>

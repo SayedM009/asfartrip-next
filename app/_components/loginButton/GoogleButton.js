@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 import { useTransition } from "react";
 import GoogleIcon from "../SVG/GoogleIcon";
-import SpinnerMini from "../SpinnerMini";
+import SpinnerMini from "../ui/SpinnerMini";
 
 export default function GoogleButton({ text = "Continue with Google" }) {
     const [isPending, startTransition] = useTransition();

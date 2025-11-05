@@ -1,7 +1,7 @@
 import { getDictionary } from "@/app/_libs/getDictionary";
 import { generateMetadataObj } from "@/app/_libs/metadata";
-import FlightSearch from "@/app/_components/flightSearchNavWrapper/FlightSearch";
-import FlightSearchNavWrapper from "@/app/_components/flightSearchNavWrapper/FlightSearchNavWrapper";
+import FlightSearch from "@/app/_components/flightComponents/flightSearchNavWrapper/FlightSearch";
+import FlightSearchNavWrapper from "@/app/_components/flightComponents/flightSearchNavWrapper/FlightSearchNavWrapper";
 
 // generateMetadataObj:
 // This function prepares metadata for any main page based on the selected language (locale).

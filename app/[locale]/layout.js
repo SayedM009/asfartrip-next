@@ -4,11 +4,11 @@ import { ThemeProvider } from "next-themes";
 import { rootLayoutMetadata } from "@/app/_libs/metadata";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { AuthProvider } from "./providers";
 import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "../_components/Footer";
 import { CurrencyProvider } from "../_context/CurrencyContext";
 import "@/app/[locale]/globals.css";
+import { AuthProvider } from "./providers";
 
 export const metadata = rootLayoutMetadata;
 
@@ -43,10 +43,8 @@ export default async function RootLayout({ children, params }) {
                                 enableSystem
                                 defaultTheme="system"
                             >
-                                <main className="container-custom min-h-screen ">
-                                    {children}
-                                </main>
-                                <Footer />
+                                {/* <main className="container-custom min-h-screen "> */}
+                                <main>{children}</main>
                                 <Toaster
                                     position="top-center"
                                     duration={1000}

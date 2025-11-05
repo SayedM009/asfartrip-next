@@ -7,7 +7,7 @@ import { generateMetadataObj } from "@/app/_libs/metadata";
 
 import Navbar from "@/app/_components/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
-import FlightSearchWrapper from "@/app/_components/FlightSearchWrapper";
+import FlightSearchWrapper from "@/app/_components/flightComponents/FlightSearchWrapper";
 import BottomAppWrapper from "@/app/_components/bottomAppBar/BottomAppWrapper";
 
 // generateMetadataObj:
@@ -31,11 +31,13 @@ function HomePage() {
     return (
         <>
             <Navbar />
-            <section>
+            <section className="space-y-6">
                 <ServicesNavigation />
                 <FlightSearchWrapper />
                 <PromotionalSlider />
                 <FlightsSlider />
+                {/* Giving More Space on Mobile */}
+                <div className="h-6 sm:hidden" />
             </section>
             <BottomAppWrapper />
         </>
