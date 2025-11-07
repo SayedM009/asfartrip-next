@@ -9,7 +9,7 @@ const BALANCE_TTL = 10 * 60 * 1000; // ✅ مدة التحديث: 10 دقائق 
 
 const useLoyaltyStore = create((set, get) => ({
     config: null,
-    tier: null,
+    tier: "Bronze",
     balance: 0,
     lastBalanceFetch: 0, // ⏱️ لتتبع آخر وقت تم فيه الجلب
     isLoading: false,

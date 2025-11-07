@@ -5,10 +5,9 @@ import { rootLayoutMetadata } from "@/app/_libs/metadata";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Toaster } from "@/components/ui/sonner";
-import { Footer } from "../_components/Footer";
-import { CurrencyProvider } from "../_context/CurrencyContext";
-import "@/app/[locale]/globals.css";
+import "./globals.css";
 import { AuthProvider } from "./providers";
+import { CurrencyProvider } from "../_context/CurrencyContext";
 
 export const metadata = rootLayoutMetadata;
 

@@ -6,7 +6,7 @@ import TimeoutPopup from "../../ui/TimeoutPopup";
 
 export default function FlightSearch({ parsedSearchObject }) {
     const [tickets, setTickets] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const abortControllerRef = useRef(null);
 
@@ -32,11 +32,6 @@ export default function FlightSearch({ parsedSearchObject }) {
             setTickets([]);
 
             try {
-                console.log(
-                    `🔍 [${new Date().toISOString()}] Starting flight search...`,
-                    parsedSearchObject
-                );
-
                 const response = await fetch("/api/flight/search-flights", {
                     method: "POST",
                     headers: {
@@ -48,24 +43,11 @@ export default function FlightSearch({ parsedSearchObject }) {
 
                 // Check if component is still mounted before updating state
                 if (!isMountedRef.current) {
-                    console.log(
-                        "⚠️ Component unmounted, skipping state update"
-                    );
                     return;
                 }
 
                 // Parse response
                 const data = await response.json();
-
-                console.log(
-                    `📡 [${new Date().toISOString()}] Response received:`,
-                    {
-                        status: response.status,
-                        ok: response.ok,
-                        hasError: !!data?.error,
-                        resultsCount: Array.isArray(data) ? data.length : 0,
-                    }
-                );
 
                 // Handle error response
                 if (!response.ok || data?.error) {
@@ -118,9 +100,6 @@ export default function FlightSearch({ parsedSearchObject }) {
 
                 // Handle empty results
                 if (data.length === 0) {
-                    console.warn(
-                        `⚠️ [${new Date().toISOString()}] No flights found`
-                    );
                     setError({
                         message:
                             "No flights available for your search criteria. Try different dates or destinations.",
@@ -132,25 +111,12 @@ export default function FlightSearch({ parsedSearchObject }) {
                 }
 
                 // Success - we have results
-                console.log(
-                    `✅ [${new Date().toISOString()}] Search successful: ${
-                        data.length
-                    } flights found`
-                );
                 setTickets(data);
                 setError(null);
                 setLoading(false);
             } catch (err) {
                 // Don't update state if component unmounted
                 if (!isMountedRef.current) {
-                    return;
-                }
-
-                // Don't show error if request was aborted (intentional cancellation)
-                if (err.name === "AbortError") {
-                    console.log(
-                        `🚫 [${new Date().toISOString()}] Request aborted (user navigated away)`
-                    );
                     return;
                 }
 

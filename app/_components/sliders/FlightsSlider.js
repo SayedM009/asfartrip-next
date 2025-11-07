@@ -26,7 +26,7 @@ const destinations = [
         date: "2025-09-12T00:00:00.000Z",
         time: "1h 40m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100,
+        price: 999,
     },
     {
         id: "2",
@@ -41,7 +41,7 @@ const destinations = [
         date: "2025-09-15T00:00:00.000Z",
         time: "1h 50m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100,
+        price: 999,
     },
     {
         id: "3",
@@ -56,7 +56,7 @@ const destinations = [
         date: "2025-09-20T00:00:00.000Z",
         time: "4h 0m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100,
+        price: 999,
     },
     {
         id: "4",
@@ -71,7 +71,7 @@ const destinations = [
         date: "2025-09-25T00:00:00.000Z",
         time: "3h 30m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100,
+        price: 999,
     },
     {
         id: "5",
@@ -86,7 +86,7 @@ const destinations = [
         date: "2025-09-28T00:00:00.000Z",
         time: "5h 0m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100,
+        price: 999,
     },
     {
         id: "6",
@@ -101,7 +101,7 @@ const destinations = [
         date: "2025-10-02T00:00:00.000Z",
         time: "6h 0m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100,
+        price: 999,
     },
     {
         id: "7",
@@ -116,7 +116,7 @@ const destinations = [
         date: "2025-10-05T00:00:00.000Z",
         time: "6h 20m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100,
+        price: 999,
     },
     {
         id: "8",
@@ -131,7 +131,7 @@ const destinations = [
         date: "2025-09-10T00:00:00.000Z",
         time: "3h 0m",
         isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100,
+        price: 999,
     },
 ];
 
@@ -215,7 +215,7 @@ export function FlightsSlider() {
                             width={36}
                             height={36}
                             loading="lazy"
-                            priority
+                            priority="true"
                         />
 
                         <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">

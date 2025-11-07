@@ -84,7 +84,7 @@ function MoreButton() {
             >
                 <DialogHeader>
                     {/* Dialog Title */}
-                    <DialogTitle className="shadow-lg w-full pb-4 capitalize">
+                    <DialogTitle className="shadow-lg w-full pb-5 capitalize">
                         {t("more")}
                     </DialogTitle>
                     <DialogDescription>

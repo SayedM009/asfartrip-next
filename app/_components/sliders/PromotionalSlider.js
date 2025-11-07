@@ -133,7 +133,7 @@ export function PromotionalSlider() {
                                 fill
                                 className="object-cover"
                                 sizes="(max-width: 768px) 80vw, (max-width: 1200px) 350px, 480px"
-                                priority={i === 0}
+                                priority={i === 0 ? true : undefined}
                             />
                         </div>
                     ))}

@@ -129,7 +129,7 @@ export function PassengerClassModal({
                 {children || (
                     <Button
                         variant="outline"
-                        className="h-12 w-full justify-start "
+                        className="h-12 w-full justify-start p-0"
                         aria-label="Passengers & Flight classes button"
                     >
                         <Users className="h-4 w-4 mr-2 text-muted-foreground" />

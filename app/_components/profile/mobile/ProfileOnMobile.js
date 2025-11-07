@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     BedDouble,
     Users,
@@ -27,12 +27,25 @@ import { LogoutButton } from "./LogoutButton";
 import { Header } from "./Header";
 import Status from "./Status";
 import TravelerBasicFields from "../../TravelerBasicFields";
+import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
+import FlightBookings from "./bookings/FlightBookings";
+import HotelBookings from "./bookings/HotelBookings";
+import InsuranceBookings from "./bookings/InsuranceBookings";
+import { Link } from "@/i18n/navigation";
+import PersonalInfo from "./PersonalInfo";
 
 export default function ProfileOnMobile() {
     const p = useTranslations("Profile");
     const [openDialog, setOpenDialog] = useState(null);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const { isRTL } = useCheckLocal();
+
+    const { activeTab, fetchBookings, flightBookings } =
+        useDashboardBookingsStore();
+
+    useEffect(() => {
+        fetchBookings(52, 2, "cancelled");
+    }, [activeTab, fetchBookings]);
 
     return (
         <AnimatePresence>
@@ -70,31 +83,34 @@ export default function ProfileOnMobile() {
                             <Row
                                 icon={User2}
                                 label={p("personal_info")}
-                                onClick={() => setOpenDialog("Personal Info")}
+                                onClick={() => setOpenDialog("personal_info")}
                             />
                             <Row
                                 icon={Users}
                                 label={p("add_edit_travelers")}
-                                onClick={() => setOpenDialog("Add Traveller")}
+                                onClick={() =>
+                                    setOpenDialog("add_edit_travelers")
+                                }
                             />
                         </AnimatedSection>
 
                         <AnimatedSection title={p("my_bookings")}>
                             <Row
-                                icon={BedDouble}
-                                label={p("hotel_bookings")}
-                                onClick={() => setOpenDialog("Hotel Bookings")}
-                            />
-                            <Row
                                 icon={Plane}
                                 label={p("flight_bookings")}
-                                onClick={() => setOpenDialog("Flight Bookings")}
+                                onClick={() => setOpenDialog("flight_bookings")}
                             />
+                            <Row
+                                icon={BedDouble}
+                                label={p("hotel_bookings")}
+                                onClick={() => setOpenDialog("hotel_bookings")}
+                            />
+
                             <Row
                                 icon={ShieldCheck}
                                 label={p("insurance_bookings")}
                                 onClick={() =>
-                                    setOpenDialog("Insurance Bookings")
+                                    setOpenDialog("insurance_bookings")
                                 }
                             />
                         </AnimatedSection>
@@ -129,16 +145,31 @@ export default function ProfileOnMobile() {
                         </AnimatedSection> */}
 
                         <AnimatedSection title={p("help_account")}>
-                            <Row
-                                icon={HelpCircle}
-                                label={p("FQAs")}
-                                onClick={() => setOpenDialog("FAQs")}
-                            />
-                            <Row
-                                icon={Headset}
-                                label={p("contact_support")}
-                                onClick={() => setOpenDialog("Contact Us")}
-                            />
+                            <Link
+                                href="/faqs"
+                                className="w-full flex items-center justify-between px-4 py-4 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <HelpCircle className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                                    <span className="text-[15px] font-medium">
+                                        {p("FQAs")}
+                                    </span>
+                                </div>
+                                {/* <ChevronBasedOnLanguage size="4" icon="arrow" /> */}
+                            </Link>
+
+                            <Link
+                                href="/contact-us"
+                                className="w-full flex items-center justify-between px-4 py-4 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <Headset className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                                    <span className="text-[15px] font-medium">
+                                        {p("contact_support")}
+                                    </span>
+                                </div>
+                                {/* <ChevronBasedOnLanguage size="4" icon="arrow" /> */}
+                            </Link>
                             <Row
                                 icon={Trash2}
                                 label={p("delete_account")}
@@ -162,12 +193,8 @@ export default function ProfileOnMobile() {
                     >
                         <DialogHeader className="flex flex-row h-fit">
                             <DialogTitle className="text-lg font-semibold">
-                                {openDialog}
+                                {openDialog && p(`${openDialog}`)}
                             </DialogTitle>
-                            {/* <DialogDescription className="text-sm text-gray-500 dark:text-gray-400">
-                                Manage your {openDialog?.toLowerCase()}{" "}
-                                information here.
-                            </DialogDescription> */}
                         </DialogHeader>
                         <div className="space-y-4">
                             {renderDialogBody(openDialog)}
@@ -183,22 +210,21 @@ export default function ProfileOnMobile() {
                     <DialogContent className="max-w-sm p-6 rounded-2xl bg-white dark:bg-[#1e1e20] border border-gray-100 dark:border-neutral-800 text-center shadow-xl data-[state=open]:animate-[scaleUp_0.3s_ease-out]">
                         <DialogHeader>
                             <DialogTitle className="text-lg font-semibold text-red-500">
-                                Delete Account
+                                {p("delete_account")}
                             </DialogTitle>
                             <DialogDescription className="text-sm text-gray-500 dark:text-gray-400">
-                                This action is irreversible. Are you sure you
-                                want to delete your account?
+                                {p("delete_account_confirmation")}
                             </DialogDescription>
                         </DialogHeader>
-                        <div className="flex justify-end gap-3 mt-6">
+                        <div className="flex justify-end gap-3 mt-6 ">
                             <Button
                                 variant="outline"
                                 onClick={() => setShowDeleteDialog(false)}
                             >
-                                Cancel
+                                {p("cancel")}
                             </Button>
                             <Button className="bg-red-500 hover:bg-red-600 text-white">
-                                Delete
+                                {p("delete")}
                             </Button>
                         </div>
                     </DialogContent>
@@ -262,22 +288,17 @@ function Row({ icon: Icon, label, onClick, danger }) {
 
 function renderDialogBody(type) {
     switch (type) {
-        case "Personal Info":
-            return <TravelerBasicFields />;
-        case "Add Traveller":
-            return (
-                <p className="text-sm text-gray-500">
-                    Add travellers to your saved list.
-                </p>
-            );
-        case "FAQs":
-            return (
-                <ul className="list-disc list-inside text-sm text-gray-500 space-y-2">
-                    <li>How do I change my booking?</li>
-                    <li>Can I refund a ticket?</li>
-                    <li>How do I contact support?</li>
-                </ul>
-            );
+        case "personal_info":
+            return <PersonalInfo />;
+        case "add_edit_travelers":
+            return <p>add travellers</p>;
+        case "flight_bookings":
+            return <FlightBookings />;
+        case "hotel_bookings":
+            return <HotelBookings />;
+        case "insurance_bookings":
+            return <InsuranceBookings />;
+
         default:
             return <p className="text-sm text-gray-500">Content for {type}.</p>;
     }

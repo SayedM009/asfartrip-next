@@ -163,7 +163,7 @@ export function FlightSearchForm({ closeModal }) {
             <div className="max-w-md mx-auto">
                 {/* Main Search Card */}
                 <Card className="shadow-lg ">
-                    <CardContent className="px-4 space-y-2 pt-4 pb-1">
+                    <CardContent className="px-4 space-y-2 py-0">
                         {/* Trip Type Tabs with Sliding Animation */}
                         <div className="relative  bg-secondary-200 dark:bg-input-background/5 rounded-lg p-1 h-10">
                             {/* Sliding background */}
@@ -301,7 +301,7 @@ export function FlightSearchForm({ closeModal }) {
                             onClassChange={setTravelClass}
                         >
                             <Button
-                                className="flex w-full items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors"
+                                className="flex w-full items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors p-0"
                                 variant="ghost"
                             >
                                 <div className="flex-1 flex justify-start">

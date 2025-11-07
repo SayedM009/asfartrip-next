@@ -127,9 +127,10 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
                                         <Image
                                             src={curr.symbol}
                                             alt={`${curr.name} currency + flag`}
-                                            width={20}
-                                            height={20}
+                                            width={24}
+                                            height={24}
                                             loading="lazy"
+                                            className="size-5"
                                         />
                                         <span>{curr.name}</span>
                                     </div>

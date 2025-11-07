@@ -291,7 +291,8 @@ export function CurrencyProvider({ children, baseCurrency = "AED" }) {
                             alt={currentCurrency}
                             width={size}
                             height={size}
-                            className="inline-block"
+                            priority={true}
+                            className={`inline-block size-${size} `}
                         />
                     ) : (
                         <span className="ml-1 text-sm font-medium">
