@@ -2,23 +2,21 @@ import { Link } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
-import useCheckLocal from "@/app/_hooks/useCheckLocal";
-import ChevronBasedOnLanguage from "../../ui/ChevronBasedOnLanguage";
-import useAuthStore from "@/app/_store/authStore";
+import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
+import { AvatarImage } from "@/components/ui/avatar";
 
-export function Header() {
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
+import useAuthStore from "@/app/_store/authStore";
+import ChevronBasedOnLanguage from "../../ui/ChevronBasedOnLanguage";
+
+export default function Header() {
     const p = useTranslations("Profile");
+
     const [greeting, setGreeting] = useState(p("welcome_back"));
     const { isRTL } = useCheckLocal();
 
-    const {
-        session: {
-            fullData: { user },
-        },
-    } = useAuthStore();
-
-    const { firstname, lastname, email } = user;
+    const { user } = useAuthStore();
+    const { name = "", email = "", avatar = "" } = user;
 
     useEffect(() => {
         const hour = new Date().getHours();
@@ -29,7 +27,7 @@ export function Header() {
 
     return (
         <>
-            {/* 🔙 Back Button */}
+            {/*  Back Button */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -47,26 +45,27 @@ export function Header() {
                 </Link>
             </motion.div>
 
-            {/* 👤 Header */}
+            {/*  Header */}
             <motion.div
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
                 className="px-4 pt-16 pb-6 border-b border-gray-100 dark:border-neutral-800 flex items-center gap-3"
             >
-                <Image
-                    src="/avatar.webp"
-                    alt="User Avatar"
-                    width={65}
-                    height={65}
-                    className="rounded-full shadow-lg"
-                />
+                <Avatar className="rounded-full w-16 h-16 shadow-2xl outline-2 outline-gray-300 dark:outline-white border-2 border-transparent flex items-center justify-center">
+                    <AvatarImage src={avatar} alt={`Avatar of ${name}`} />
+
+                    <AvatarFallback className="text-3xl font-bold">
+                        {`${user?.name?.trim()?.split(" ")?.[0]?.[0] || ""}`}
+                        {`${user?.name?.trim()?.split(" ")?.[1]?.[0] || ""}`}
+                    </AvatarFallback>
+                </Avatar>
                 <div>
-                    <p className="text-xs text-gray-400 dark:text-gray-500">
+                    <p className="text-xs text-gray-400 dark:text-gray-400">
                         {greeting}
                     </p>
                     <h1 className="font-semibold text-[17px] leading-tight">
-                        {firstname} {lastname}
+                        {name}
                     </h1>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                         {email}

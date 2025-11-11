@@ -196,7 +196,9 @@ export default function BookingPage({ isLogged, cart: initialCart, userId }) {
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-4">
                                 <div className="hidden sm:block">
-                                    <BackWardButtonWithDirections />
+                                    <BackWardButtonWithDirections
+                                        href={searchURL}
+                                    />
                                 </div>
                                 <h2 className="font-semibold text-xl">
                                     {t("booking.traveler_information")}

@@ -26,6 +26,7 @@ import ThemeSwitcher from "../ThemeSwitcher";
 import CurrencySwicther from "../CurrencySwicther";
 import ChevronBasedOnLanguage from "../ui/ChevronBasedOnLanguage";
 import SignOutButton from "../loginButton/SignOut";
+import { Earth } from "lucide-react";
 
 const HELPER_LINKS = [
     {
@@ -90,11 +91,14 @@ function MoreButton() {
                     <DialogDescription>
                         <section className=" dark:bg-gray-[#555]  mt-2 mx-3 rounded-lg min-h-80 pt-2 flex flex-col  px-4 shadow-xl  ">
                             {/* Language Switcher */}
-                            <div className="border-b-1 border-gray-300 pb-2  dark:border-gray-100">
-                                <LanguageSwitcher />
+                            <div className="flex items-center border-b-1 border-gray-300 pb-1  dark:border-gray-100">
+                                <Earth className="size-5 w-5 h-5 text-accent-500" />
+                                <div className=" w-full">
+                                    <LanguageSwitcher />
+                                </div>
                             </div>
                             {/* Theme Switcher */}
-                            <div className="py-3 flex text-md font-bold items-center border-b-1 border-gray-300 dark:border-gray-100 justify-between">
+                            <div className="py-2 flex text-md font-bold items-center border-b-1 border-gray-300 dark:border-gray-100 justify-between bac">
                                 <ThemeSwitcher />
                                 <Switch
                                     checked={condition}
@@ -103,15 +107,16 @@ function MoreButton() {
                                 />
                             </div>
                             {/* Currency Switcher */}
-                            <div className="flex items-center justify-between pb-2 pt-2 border-b-1 border-gray-300 dark:border-gray-100 w-full">
-                                <div className="flex items-center gap-2">
-                                    <BanknotesIcon className="size-5 text-accent-500" />
+                            <div className="py-2 flex items-center border-b-1 border-gray-300 pb-1  dark:border-gray-100 gap-3">
+                                <BanknotesIcon className="size-5 text-accent-500" />
+                                <div className=" w-full">
                                     <CurrencySwicther isLabel={false} />
                                 </div>
                                 <span className="font-bold dark:text-gray-50">
                                     <ChevronBasedOnLanguage />
                                 </span>
                             </div>
+
                             {/* Helper Links */}
                             {HELPER_LINKS.map((link, index) => (
                                 <Link

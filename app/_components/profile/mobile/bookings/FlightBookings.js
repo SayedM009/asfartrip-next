@@ -12,10 +12,14 @@ import { useTranslations } from "next-intl";
 import Tabs from "../Tabs";
 import ChevronBasedOnLanguage from "../../../ui/ChevronBasedOnLanguage";
 import AirplaneStairs from "../../../SVG/AirplaneStairs";
+import useAuthStore from "@/app/_store/authStore";
 
 export default function FlightBookings() {
     const p = useTranslations("Profile");
     const { formatPrice } = useCurrency();
+    const {
+        user: { id, usertype },
+    } = useAuthStore();
     const { fetchBookings, flightBookings, loading } =
         useDashboardBookingsStore();
 
@@ -23,8 +27,9 @@ export default function FlightBookings() {
 
     // 1. user_id and user_type needed
     useEffect(() => {
-        fetchBookings(52, 2, activeTab);
-    }, [activeTab, fetchBookings]);
+        // if (!id || !usertype) return null;
+        fetchBookings(id, usertype, activeTab);
+    }, [activeTab, fetchBookings, id, usertype]);
 
     return (
         <div className="flex flex-col h-[calc(100vh-50px)]">

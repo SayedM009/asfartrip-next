@@ -8,6 +8,8 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { AuthProvider } from "./providers";
 import { CurrencyProvider } from "../_context/CurrencyContext";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 
 export const metadata = rootLayoutMetadata;
 
@@ -27,9 +29,10 @@ export default async function RootLayout({ children, params }) {
             suppressHydrationWarning
         >
             <body
-                className={`${
-                    conditions ? cairo.className : ibmSans.className
-                }  `}
+                // className={`${
+                //     conditions ? cairo.className : ibmSans.className
+                // }  `}
+                className={`${cairo.className}`}
             >
                 <AuthProvider>
                     <CurrencyProvider baseCurrency="AED">
@@ -46,7 +49,15 @@ export default async function RootLayout({ children, params }) {
                                 <main>{children}</main>
                                 <Toaster
                                     position="top-center"
-                                    duration={1000}
+                                    duration={2000}
+                                    icons={{
+                                        success: (
+                                            <CheckCircleIcon className="text-green-500 size-5" />
+                                        ),
+                                        error: (
+                                            <AlertCircle className="rounded-full size-5 bg-red-500 text-white" />
+                                        ),
+                                    }}
                                 />
                             </ThemeProvider>
                         </NextIntlClientProvider>

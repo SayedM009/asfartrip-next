@@ -49,9 +49,11 @@ export default function MobileHeaderWrapper() {
     const formatDate = useDateFormatter();
     const pattern = isRTL ? "dd MMMM" : "dd MMM";
     return (
-        <div className="flex items-center justify-between space-x-4">
+        <div className="flex items-center justify-between gap-2">
             {/* Backward Button */}
-            <BackWardButtonWithDirections />
+            <div>
+                <BackWardButtonWithDirections href="/" />
+            </div>
 
             {/* Section in the middle */}
             <Dialog open={open} onOpenChange={setOpen}>
@@ -99,7 +101,7 @@ export default function MobileHeaderWrapper() {
                                     : t("passengers.passenger")}
                             </span>
                             <span>|</span>
-                            <span className="text-xs capitalize">
+                            <span className="text-xs capitalize ">
                                 {t(
                                     `ticket_class.${String(
                                         tripClass

@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PassengerClassModal } from "./PassengerClassModal";
-import { User, Users, Baby } from "lucide-react";
+import { User, Users, Baby, LucideLoader } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { safeParse } from "@/app/_helpers/safeParse";
 import { useRouter } from "@/i18n/navigation";
@@ -83,46 +83,36 @@ export function FlightSearchForm({ closeModal }) {
 
     function handleSearch() {
         if (departure && destination && departure?.city === destination?.city) {
-            toast.error(t("errors.same_city", { city: departure?.city }), {
-                icon: <XCircleIcon className="text-red-500" />,
-            });
+            toast.error(t("errors.same_city", { city: departure?.city }));
             return;
         }
 
         if (!departure) {
-            toast.error(t("errors.departure_required"), {
-                icon: <XCircleIcon className="text-red-500" />,
-            });
+            toast.error(t("errors.departure_required"));
             return;
         }
 
         if (!destination) {
-            toast.error(t("errors.destination_required"), {
-                icon: <XCircleIcon className="text-red-500" />,
-            });
+            toast.error(t("errors.destination_required"));
             return;
         }
 
         if (tripType === "oneway") {
             if (!departDate) {
-                toast.error(t("errors.departure_date_required"), {
-                    icon: <XCircleIcon className="text-red-500" />,
-                });
+                toast.error(t("errors.departure_date_required"));
                 return;
             }
         }
 
         if (tripType === "roundtrip") {
             if (!range?.from || !range?.to) {
-                toast.error(t("errors.return_date_required"), {
-                    icon: <XCircleIcon className="text-red-500" />,
-                });
+                toast.error(t("errors.return_date_required"));
                 return;
             }
         }
 
         toast.success(t("operations.searching"), {
-            icon: <CheckBadgeIcon className="text-green-500" />,
+            icon: <LucideLoader className="size-5 animate-spin" />,
         });
 
         let searchObject;

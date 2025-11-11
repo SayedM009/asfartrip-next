@@ -38,8 +38,8 @@ const useBookingStore = create(
             isDataModified: false,
             searchURL: "",
             baggageData: {
-                outward: null,
-                return: null,
+                outward: [],
+                return: [],
             },
             sameBookingURL: "",
 

@@ -166,7 +166,7 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                         </Button>
                         <Button
                             onClick={() => handleSwitch(currentLanguage)}
-                            className="hover:cursor-pointer bg-accent-500 hover:bg-accent-600 transition-colors"
+                            className="hover:cursor-pointer bg-accent-500 hover:bg-accent-600 transition-colors dark:text-white"
                         >
                             {t("apply")}
                         </Button>

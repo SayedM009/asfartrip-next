@@ -61,7 +61,7 @@ export default function FareSummarySidebar({ onProceedToPayment, loading }) {
 
             {/* Baggage Info */}
             <div className="pb-4 border-b border-border space-y-4">
-                <h4 className="text-md font-semibold text-primary-600 dark:text-primary-200 rtl:text-right">
+                <h4 className="text-md font-semibold text-primary-600 dark:text-primary-200 rtl:text-right text-left">
                     {f("booking.baggage")}
                 </h4>
 
@@ -117,7 +117,7 @@ export default function FareSummarySidebar({ onProceedToPayment, loading }) {
 
             {/* Price Details */}
             <div className="space-y-4">
-                <h4 className="text-md font-semibold text-primary-600 dark:text-primary-200 rtl:text-right capitalize">
+                <h4 className="text-md font-semibold text-primary-600 dark:text-primary-200 rtl:text-right capitalize text-left">
                     {f("booking.price_details")}
                 </h4>
 

@@ -84,8 +84,10 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
                 <Button
                     variant="ghost"
                     size="sm"
-                    className={`hover:bg-accent font-bold sm:flex dark:text-gray-50 justify-start gap-2 cursor-pointer ${
-                        hiddenOnMobile ? "hidden sm:flex sm:w-10" : "flex"
+                    className={`hover:bg-accent font-bold sm:flex dark:text-gray-50 justify-start gap-2 cursor-pointer p-0 ${
+                        hiddenOnMobile
+                            ? "hidden sm:flex sm:w-10"
+                            : "flex w-full"
                     }`}
                     aria-label={t("title")}
                 >
@@ -178,7 +180,7 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
                     </Button>
                     <Button
                         onClick={handleApply}
-                        className="bg-accent-500 hover:bg-accent-600 transition-colors cursor-pointer"
+                        className="bg-accent-500 hover:bg-accent-600 transition-colors cursor-pointer dark:text-white"
                         disabled={isLoading}
                     >
                         {t("apply")}

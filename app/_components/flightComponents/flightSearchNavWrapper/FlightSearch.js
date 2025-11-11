@@ -120,7 +120,12 @@ export default function FlightSearch({ parsedSearchObject }) {
                     return;
                 }
 
-                // Network or unexpected errors
+                // ✅ Ignore aborted requests
+                if (err.name === "AbortError") {
+                    console.log("🔁 Request aborted safely (ignored)");
+                    return;
+                }
+
                 console.error(
                     `❌ [${new Date().toISOString()}] Fetch error:`,
                     err
@@ -223,7 +228,7 @@ export function FlightSearchSkeleton() {
 
 function TicketSkeleton() {
     return (
-        <div className="animate-pulse rounded-xl p-4 flex flex-col mb-4 shadow-sm bg-white">
+        <div className="animate-pulse rounded-xl p-4 flex flex-col mb-4 shadow-lg dark:shadow-gray-700">
             {/* Departure */}
             <div className="flex justify-between mb-4">
                 <div className="flex flex-col items-start">
@@ -264,7 +269,7 @@ function TicketSkeleton() {
 
 function FliterSkeleton() {
     return (
-        <div className="animate-pulse p-4 rounded-xl shadow-sm bg-white w-full">
+        <div className="animate-pulse p-4 rounded-xl shadow-lg dark:shadow-gray-700 w-full">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
                 <div className="h-6 w-32 bg-gray-200 rounded"></div>
@@ -349,7 +354,7 @@ function FliterSkeleton() {
 
 function TabSkeleton() {
     return (
-        <div className="animate-pulse flex items-center justify-around gap-2 mb-4 md:hidden shadow p-2 rounded-xl bg-white">
+        <div className="animate-pulse flex items-center justify-around gap-2 mb-4 md:hidden shadow p-2 rounded-xl ">
             <div className="h-9 w-24 bg-gray-200 rounded-lg"></div>
             <div className="h-9 w-24 bg-gray-200 rounded-lg"></div>
             <div className="h-9 w-24 bg-gray-200 rounded-lg"></div>

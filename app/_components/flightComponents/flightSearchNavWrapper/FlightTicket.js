@@ -7,7 +7,7 @@ import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 import { Card, CardContent } from "@/components/ui/card";
 import { FlightDetailsDialog } from "./FlightDetailsDialog";
-import { Plane, Luggage, ArrowRight, Backpack } from "lucide-react";
+import { Plane, ArrowRight } from "lucide-react";
 import { format, parseISO, differenceInMinutes } from "date-fns";
 
 import Image from "next/image";
@@ -24,8 +24,6 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
         segments,
         onward,
         return: returnJourney,
-        CabinLuggage,
-        BaggageAllowance,
     } = ticket;
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
     const { isRTL } = useCheckLocal();
@@ -116,7 +114,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                             {formatTime(firstSeg.DepartureTime)}
                         </div>
                         <div className="text-muted-foreground text-xs">
-                            {firstSeg.Origin}{" "}
+                            <span className="font-bold">{firstSeg.Origin}</span>{" "}
                             {formatDate(firstSeg.DepartureTime, {
                                 pattern,
                             })}
@@ -158,7 +156,9 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                             )}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                            {lastSeg.Destination}{" "}
+                            <span className="font-bold">
+                                {lastSeg.Destination}
+                            </span>{" "}
                             {formatDate(lastSeg.ArrivalTime, {
                                 pattern,
                             })}
@@ -180,7 +180,9 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                 })}
                             </div>
                             <div className="text-xs text-muted-foreground">
-                                {firstSeg.Origin}{" "}
+                                <span className="font-bold">
+                                    {firstSeg.Origin}
+                                </span>{" "}
                                 {formatDate(firstSeg.DepartureTime, {
                                     pattern,
                                 })}
@@ -230,19 +232,21 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
 
                         {/* Arrival */}
                         <div className="text-center">
-                            <div className="text-xl font-bold text-foreground">
+                            <div className="text-xl font-bold text-foreground flex justify-center">
                                 {formatTime(lastSeg.ArrivalTime)}
                                 {isNextDay(
                                     firstSeg.DepartureTime,
                                     lastSeg.ArrivalTime
                                 ) && (
-                                    <sup className="text-xs text-destructive ml-1">
+                                    <sup className="text-xs text-destructive ml-1 rtl:mr-1 rtl:ml-0">
                                         +1
                                     </sup>
                                 )}
                             </div>
                             <div className="text-xs text-muted-foreground">
-                                {lastSeg.Destination}{" "}
+                                <span className="font-bold">
+                                    {lastSeg.Destination}
+                                </span>{" "}
                                 {formatDate(lastSeg.ArrivalTime, {
                                     pattern,
                                 })}
@@ -263,7 +267,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                         <div className="px-4 py-1">
                             <div className="text-xs text-muted-foreground flex items-center gap-1">
                                 <Plane className="h-3 w-3" />
-                                Outbound
+                                {t("outbound")}
                             </div>
                         </div>
                         {renderSingleJourney(onward.segments)}
@@ -277,7 +281,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                         <div className="px-4 py-1">
                             <div className="text-xs text-muted-foreground flex items-center gap-1">
                                 <ArrowRight className="h-3 w-3 rotate-180" />
-                                Return
+                                {t("return")}
                             </div>
                         </div>
                         {renderSingleJourney(returnJourney.segments, true)}
@@ -412,9 +416,9 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col items-end sm:items-center gap-0.5">
+                            <div className="flex flex-col items-center sm:items-center gap-1.5">
                                 {/* Earned Points */}
-                                <LoyaltyPoints price={TotalPrice} />
+
                                 <div className="text-xs text-muted-foreground">
                                     {t("total_price")}
                                 </div>
@@ -424,7 +428,7 @@ export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
                                         {formatPrice(TotalPrice)}
                                     </span>
                                 </div>
-
+                                <LoyaltyPoints price={TotalPrice} />
                                 {/* Desktop Select Button - under price */}
                                 <div className="hidden sm:block  ">
                                     <Button

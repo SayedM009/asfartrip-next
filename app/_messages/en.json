@@ -54,7 +54,27 @@
         "FAILURE": "Failed",
         "NOT-CREATED": "Pending",
         "booking_id": "Booking ID",
-        "policy_number": "Policy Number"
+        "policy_number": "Policy Number",
+        "save_information": "Save Information",
+        "fields_required": "Please fill in all required fields.",
+        "invalid_passport_expiry": "Passport expiry date must be in the future.",
+        "update_success": "Personal information updated successfully.",
+        "traveller_success": "Traveller information updated successfully.",
+        "update_failed": "Failed to update personal information.",
+        "saving": "Saving...",
+        "pull_failed": "Failed to fetch personal information.",
+        "add_edit_traveller": "Add / Edit Traveller",
+        "add_new_traveller": "Add new traveller",
+        "edit_traveller": "Update traveller",
+        "valid": "Valid",
+        "action_needed": "Action Needed",
+        "expired": "Expired",
+        "dob": "Date of Birth",
+        "passport_number": "Passport Number",
+        "no_travellers": "No travellers added yet.",
+        "add_traveller_description": " Add traveller information to make future bookings easier.",
+        "saving_not_available": "Saving is not available right now",
+        "failed_saving": "Failed to save traveller."
     },
     "Pages": {
         "about_us": "About Us",
@@ -175,6 +195,10 @@
         "select_flight": "Select Flight",
         "city": " City",
         "airport": " Airport",
+        "outbound": "Outbound",
+        "return": "Return",
+        "before": "Before 6:00",
+        "after": " After 18:00",
         "cities": {
             "cairo": "cairo",
             "manila": "manila",
@@ -302,7 +326,8 @@
             "return_flight": "Return Flight",
             "terminal": "Terminal",
             "flight_time": "Flight time",
-            "checking": "Checking price..."
+            "checking": "Checking price...",
+            "total_round_trip": "Total round trip"
         },
         "baggage": {
             "cabin_luggage": "Cabin Luggage",
@@ -1075,7 +1100,7 @@
             "XU": "African Express Airways",
             "XV": "BVI Airways",
             "XW": "Sky Express",
-            "XY": "Al-Khayala",
+            "XY": "Flynas",
             "Y0": "Yellow Airtaxi",
             "Y1": "Taymir",
             "Y4": "Volaris",
@@ -1185,6 +1210,7 @@
         "first_name": "First Name",
         "last_name": "Last Name",
         "date_of_birth": "Date of Birth",
+        "passport": "Passport",
         "passport_info": "Passport Information",
         "passport_number": "Passport Number",
         "passport_expiry_date": "Passport Expiry Date",
@@ -1219,7 +1245,8 @@
         "no_saved_travelers": "No saved travelers found.",
         "age_must_be_12_or_above": "Adult must be 12 years or older",
         "age_must_be_between_2_and_12": "Child must be between 2 and 11 years old",
-        "age_must_be_under_2": "Infant must be under 2 years old"
+        "age_must_be_under_2": "Infant must be under 2 years old",
+        "you": "You"
     },
     "Payment": {
         "title": "Payment Method",
@@ -1507,7 +1534,7 @@
         "NI": "Nicaragua",
         "NL": "Netherlands, Kingdom of the",
         "NO": "Norway",
-        "NP": "Nepal",
+        "NP": "Nile Air",
         "NR": "Nauru",
         "NU": "Niue",
         "NZ": "New Zealand",

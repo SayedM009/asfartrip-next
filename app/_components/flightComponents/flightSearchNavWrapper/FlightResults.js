@@ -23,14 +23,8 @@ import Image from "next/image";
 import FlightTabs from "./FlightTabs";
 import FloatingSortFilter from "./FloatingSortFilter";
 
-const tripTimes = [
-    { id: "before6", label: "Before 6:00", icon: <CloudSun /> },
-    { id: "morning", label: "06:00 - 12:00", icon: <Sunrise /> },
-    { id: "afternoon", label: "12:00 - 18:00", icon: <SunMedium /> },
-    { id: "evening", label: "After 18:00", icon: <Sunset /> },
-];
-
 export function FlightResults({ flights = [] }) {
+    const f = useTranslations("Flight");
     const [filterBy, setFilterBy] = useState("all");
     const [sortBy, setSortBy] = useState("price");
     const [selectedAirlines, setSelectedAirlines] = useState([]);
@@ -44,6 +38,13 @@ export function FlightResults({ flights = [] }) {
         airports: [],
         stopoverDuration: [0, 24],
     });
+
+    const tripTimes = [
+        { id: "before6", label: f("before"), icon: <CloudSun /> },
+        { id: "morning", label: "06:00 - 12:00", icon: <Sunrise /> },
+        { id: "afternoon", label: "12:00 - 18:00", icon: <SunMedium /> },
+        { id: "evening", label: f("after"), icon: <Sunset /> },
+    ];
 
     const getOutboundSegments = useCallback((flight) => {
         if (flight.MultiLeg === "true" && flight.onward)

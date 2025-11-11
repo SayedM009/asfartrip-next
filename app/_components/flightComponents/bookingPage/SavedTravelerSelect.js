@@ -1,12 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useState, useMemo } from "react";
 import { Check, ChevronsUpDown, User } from "lucide-react";
 import {
     Popover,
     PopoverTrigger,
     PopoverContent,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
+
 import {
     Command,
     CommandEmpty,
@@ -15,64 +17,84 @@ import {
     CommandItem,
     CommandList,
 } from "@/components/ui/command";
-import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
 
-// Mock saved travelers with complete data
-const savedTravelers = [
-    {
-        id: "1",
-        title: "Mr",
-        firstName: "AHMED",
-        lastName: "MOHAMED",
-        dateOfBirth: new Date("1990-05-15"),
-        passportNumber: "A12345678",
-        passportExpiry: new Date("2028-12-31"),
-        nationality: "AE",
-    },
-    {
-        id: "2",
-        title: "Mrs",
-        firstName: "FATIMA",
-        lastName: "SALEM",
-        dateOfBirth: new Date("1992-08-20"),
-        passportNumber: "B98765432",
-        passportExpiry: new Date("2029-06-30"),
-        nationality: "SA",
-    },
-    {
-        id: "3",
-        title: "Miss",
-        firstName: "LAYLA",
-        lastName: "HASSAN",
-        dateOfBirth: new Date("2015-03-10"),
-        passportNumber: "C11223344",
-        passportExpiry: new Date("2027-09-15"),
-        nationality: "EG",
-    },
-    {
-        id: "4",
-        title: "Master",
-        firstName: "OMAR",
-        lastName: "KHALID",
-        dateOfBirth: new Date("2023-06-15"),
-        passportNumber: "D55667788",
-        passportExpiry: new Date("2028-06-15"),
-        nationality: "AE",
-    },
-];
+import { useTranslations } from "next-intl";
+import { parseISO, isBefore } from "date-fns";
+import useAuthStore from "@/app/_store/authStore";
+import useTravellersStore from "@/app/_store/travellersStore";
 
 export function SavedTravelerSelect({ onSelect }) {
+    const t = useTranslations("Traveler");
     const [open, setOpen] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
-    const t = useTranslations("Traveler");
-    const selectedTraveler = savedTravelers.find((t) => t.id === selectedId);
+
+    const { travellers } = useTravellersStore();
+    const { session } = useAuthStore();
+    const userData = session?.fullData?.user;
+
+    const mappedTravellers = travellers
+        .map((traveller) => {
+            const data = JSON.parse(traveller.json_list || "{}");
+            const {
+                title = "",
+                first_name = "",
+                last_name = "",
+                dob = "",
+                passport_country = "",
+                passport_expiry = "",
+                passport_no = "",
+            } = data;
+
+            return {
+                id: `traveller-${traveller.id}`,
+                title,
+                firstName: first_name,
+                lastName: last_name,
+                dateOfBirth: dob,
+                passportNumber: passport_no,
+                passportExpiry: passport_expiry,
+                nationality: passport_country,
+            };
+        })
+        .filter((traveler) => {
+            if (!traveler.passportExpiry) return true;
+            const expiry = parseISO(traveler.passportExpiry);
+            return expiry && !isBefore(expiry, new Date());
+        });
+
+    const currentUserTraveler = userData
+        ? {
+              id: `user-${userData.user_id}`,
+              title: userData.title || "Mr",
+              firstName: userData.firstname || "",
+              lastName: userData.lastname || "",
+              dateOfBirth: userData.dob || "",
+              passportNumber: userData.middlename || "", // أو أي حقل يحتوي رقم الجواز
+              passportExpiry: userData.passport_expiry || "",
+              nationality: userData.country_code || "",
+              isPrimary: true, // عشان نقدر نميز المستخدم نفسه
+          }
+        : null;
+
+    const allTravelers = useMemo(() => {
+        const list = mappedTravellers ? [...mappedTravellers] : [];
+        if (currentUserTraveler) {
+            const alreadyExists = list.some(
+                (t) =>
+                    t.firstName === currentUserTraveler.firstName &&
+                    t.lastName === currentUserTraveler.lastName
+            );
+            if (!alreadyExists) list.unshift(currentUserTraveler);
+        }
+        return list;
+    }, [mappedTravellers, currentUserTraveler]);
+
+    const selectedTraveler = allTravelers.find((t) => t.id === selectedId);
 
     const handleSelect = (travelerId) => {
-        const traveler = savedTravelers.find((t) => t.id === travelerId);
+        const traveler = allTravelers.find((t) => t.id === travelerId);
         if (traveler) {
             setSelectedId(travelerId);
-
             onSelect?.({
                 title: traveler.title,
                 firstName: traveler.firstName,
@@ -113,7 +135,7 @@ export function SavedTravelerSelect({ onSelect }) {
                     </Button>
                 </PopoverTrigger>
 
-                <PopoverContent className="w-[400px] p-0" align="start">
+                <PopoverContent className=" p-0" align="start">
                     <Command>
                         <CommandInput placeholder="Search travelers..." />
                         <CommandList>
@@ -121,7 +143,7 @@ export function SavedTravelerSelect({ onSelect }) {
                                 {t("no_saved_travelers")}
                             </CommandEmpty>
                             <CommandGroup>
-                                {savedTravelers.map((traveler) => (
+                                {allTravelers.map((traveler) => (
                                     <CommandItem
                                         key={traveler.id}
                                         value={`${traveler.firstName} ${traveler.lastName}`}
@@ -132,7 +154,7 @@ export function SavedTravelerSelect({ onSelect }) {
                                     >
                                         <Check
                                             className={cn(
-                                                "ltr:mr-2 rtl:ml-2 h-4 w-4",
+                                                "ltr:mr-2 rtl:ml-2 h-4 w-4 text-accent-500",
                                                 selectedId === traveler.id
                                                     ? "opacity-100"
                                                     : "opacity-0"
@@ -140,15 +162,27 @@ export function SavedTravelerSelect({ onSelect }) {
                                         />
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2">
-                                                <span className="font-medium">
+                                                <span
+                                                    className={cn(
+                                                        "font-medium",
+                                                        traveler.isPrimary &&
+                                                            "text-green-600"
+                                                    )}
+                                                >
                                                     {traveler.title}{" "}
                                                     {traveler.firstName}{" "}
                                                     {traveler.lastName}
+                                                    {traveler.isPrimary && (
+                                                        <span>
+                                                            {" "}
+                                                            ({t("you")})
+                                                        </span>
+                                                    )}
                                                 </span>
                                             </div>
                                             <div className="text-xs text-muted-foreground">
-                                                Passport:{" "}
-                                                {traveler.passportNumber}
+                                                {t("passport")}:{" "}
+                                                {traveler.passportNumber || "—"}
                                             </div>
                                         </div>
                                     </CommandItem>
@@ -161,5 +195,3 @@ export function SavedTravelerSelect({ onSelect }) {
         </div>
     );
 }
-
-export { savedTravelers };

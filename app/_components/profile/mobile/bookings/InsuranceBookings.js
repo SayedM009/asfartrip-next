@@ -65,7 +65,7 @@ export default function InsuranceBookings() {
                                 <motion.div
                                     key={idx}
                                     whileHover={{ scale: 1.01 }}
-                                    className="rounded-2xl bg-white dark:bg-d[#1c1c1e] border border-gray-100 dark:border-neutral-800 overflow-hidden shadow-sm"
+                                    className="rounded-2xl bg-white dark:bg-[#1c1c1e] border border-gray-100 dark:border-neutral-800 overflow-hidden shadow-sm"
                                 >
                                     {console.log(insuranceBookings)}
                                     {/* Header Row */}
@@ -116,7 +116,7 @@ export default function InsuranceBookings() {
 
                                         {/* INSURANCE DETAILS */}
                                         <div className="mt-2">
-                                            <div className="text-md text-gray-700 flex items-center gap-2 font-semibold capitalize">
+                                            <div className="text-md text-gray-700 dark:text-gray-100 flex items-center gap-2 font-semibold capitalize">
                                                 {b.customer_name || "—"}{" "}
                                                 <ChevronBasedOnLanguage icon="arrow" />
                                                 {b.request?.destination ||

@@ -116,7 +116,7 @@ export default function HotelBookings() {
 
                                         {/* HOTEL DETAILS */}
                                         <div className="mt-2">
-                                            <div className="text-md text-gray-700 flex items-center gap-2 font-semibold">
+                                            <div className="text-md text-gray-700 dark:text-gray-50 flex items-center gap-2 font-semibold">
                                                 {b.details?.hotel_name ||
                                                     "Hotel Name Not Provided"}{" "}
                                                 {b.details

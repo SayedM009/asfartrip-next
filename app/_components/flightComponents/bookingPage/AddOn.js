@@ -1,13 +1,15 @@
 import useBookingStore from "@/app/_store/bookingStore";
 import BaggageDialog from "./BaggageDialog";
-import MealsDialog from "./MealsDialog";
+// import MealsDialog from "./MealsDialog";
 import { useTranslations } from "next-intl";
 
 function AddOn() {
-    const bookingTicket = useBookingStore((state) => state.ticket);
     const t = useTranslations("Flight");
-    const { baggageData } = useBookingStore();
-    if (!baggageData?.outbound && !baggageData?.inbound) return null;
+    const { baggageData, ticket: bookingTicket } = useBookingStore();
+    // const bookingTicket = useBookingStore((state) => state.ticket);
+
+    if (!baggageData?.outward?.length && !baggageData?.return?.length)
+        return null;
     return (
         <>
             <h2 className="mb-4 rtl:text-right font-semibold text-xl ">

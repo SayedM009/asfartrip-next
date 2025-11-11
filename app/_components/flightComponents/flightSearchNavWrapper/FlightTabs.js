@@ -106,7 +106,7 @@ export default function FlightTabs({
 
             {/* Sub Tabs - Trip Times */}
             {filterBy === "triptime" && (
-                <div className="flex gap-2 mt-3 overflow-x-auto">
+                <div className="flex justify-between gap-2 mt-3 overflow-x-auto">
                     {tripTimes.map((t) => (
                         <button
                             key={t.id}
@@ -119,7 +119,7 @@ export default function FlightTabs({
                             }
                             className={`px-2 py-1 rounded-xl border text-xs flex flex-col items-center gap-2 ${
                                 selectedTripTimes.includes(t.id) &&
-                                "bg-accent-100 "
+                                "bg-accent-100 dark:bg-accent-500"
                             }`}
                         >
                             <span>{t.icon}</span>

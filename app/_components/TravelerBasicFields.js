@@ -1,5 +1,3 @@
-// components/forms/TravelerBasicFields.jsx
-import React, { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
@@ -7,7 +5,6 @@ import { DateDropdownFields } from "./flightComponents/bookingPage/DateDropdownF
 import { NationalitySelect } from "./flightComponents/bookingPage/NationalitySelect";
 import { cn } from "@/lib/utils";
 
-// ✅ Helper functions - Pure functions (no side effects)
 function calcAge(dob) {
     if (!dob) return null;
     const d = new Date(dob);
@@ -47,38 +44,29 @@ export default function TravelerBasicFields({
     onFieldChange,
     isLoggedIn = false,
     SavedTravelerSlot,
-    ageError = "", // ✅ استقبال خطأ العمر من الـ parent
+    ageError = "",
 }) {
     const t = useTranslations("Traveler");
 
-    // ✅ احسب الـ gender من الـ title الموجود في Store (readonly)
-    // استخدام direct calculation بدلاً من useMemo لضمان التحديث الفوري
     const currentGender = genderFromTitle(traveler.title) || "";
 
-    // ✅ Handler للـ Gender Change
     const handleGenderChange = (newGender) => {
-        // ✅ لو مافيش تاريخ ميلاد، اكتب title افتراضي
         if (!traveler.dateOfBirth) {
-            // افتراضي: Adult (12+ سنة)
             const defaultTitle = newGender === "Male" ? "Mr" : "Mrs";
             onFieldChange?.("title", defaultTitle);
             return;
         }
 
-        // احسب الـ title المناسب بناءً على Gender + DOB
         const newTitle = deriveTitle(newGender, traveler.dateOfBirth);
 
-        // اكتب الـ title الجديد للـ Store مباشرة
         if (newTitle) {
             onFieldChange?.("title", newTitle);
         }
     };
 
-    // ✅ Handler لتغيير تاريخ الميلاد
     const handleDobChange = (newDob) => {
         onFieldChange?.("dateOfBirth", newDob || null);
 
-        // لو فيه gender محدد، احسب title جديد
         if (currentGender && newDob) {
             const newTitle = deriveTitle(currentGender, newDob);
             if (newTitle && newTitle !== traveler.title) {
@@ -104,28 +92,34 @@ export default function TravelerBasicFields({
                             type="button"
                             onClick={() => handleGenderChange(g)}
                             className={cn(
-                                "px-6 py-3 rounded-lg border-2 transition-all cursor-pointer mt-2",
+                                "p-2 rounded-lg border-2 transition-all cursor-pointer mt-2",
                                 currentGender === g
                                     ? "border-accent-500 bg-accent-500 text-white shadow-md"
-                                    : "border-gray-200 dark:border-gray-700 hover:border-accent-400 hover:bg-accent-50 dark:hover:bg-accent-900/30"
+                                    : "border-gray-200 dark:border-gray-700 hover:border-accent-400 hover:bg-accent-50 dark:hover:bg-accent-900/30",
+                                showValidation &&
+                                    !currentGender &&
+                                    "border-red-500"
                             )}
-                            disabled={false} // ✅ دائماً قابل للتعديل
+                            disabled={false}
                         >
                             {t(g.toLowerCase())}
                         </button>
                     ))}
                 </div>
-                {showValidation && !currentGender && (
+                {/* {showValidation && !currentGender && (
                     <p className="text-sm text-red-500">
                         {t("gender_required") || "Please select gender"}
                     </p>
-                )}
+                )} */}
             </div>
 
             {/* First / Last Name */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <Label>{t("first_name")} *</Label>
+                    <Label>
+                        {t("first_name")}{" "}
+                        <span className="text-red-500">*</span>
+                    </Label>
                     <Input
                         value={traveler.firstName || ""}
                         onChange={(e) => {
@@ -149,7 +143,9 @@ export default function TravelerBasicFields({
                 </div>
 
                 <div className="space-y-2">
-                    <Label>{t("last_name")} *</Label>
+                    <Label>
+                        {t("last_name")} <span className="text-red-500">*</span>
+                    </Label>
                     <Input
                         value={traveler.lastName || ""}
                         onChange={(e) => {
@@ -184,7 +180,6 @@ export default function TravelerBasicFields({
                     required
                     error={showValidation && !traveler.dateOfBirth}
                 />
-                {/* ✅ رسالة خطأ العمر تحت تاريخ الميلاد مباشرة */}
                 {ageError && (
                     <p className="text-sm text-red-500 font-medium">
                         {ageError}
@@ -195,7 +190,10 @@ export default function TravelerBasicFields({
             {/* Passport Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <Label>{t("passport_number")} *</Label>
+                    <Label>
+                        {t("passport_number")}{" "}
+                        <span className="text-red-500">*</span>
+                    </Label>
                     <Input
                         value={traveler.passportNumber || ""}
                         onChange={(e) => {
@@ -215,7 +213,10 @@ export default function TravelerBasicFields({
                 </div>
 
                 <div className="space-y-2">
-                    <Label>{t("nationality")} *</Label>
+                    <Label>
+                        {t("nationality")}{" "}
+                        <span className="text-red-500">*</span>
+                    </Label>
                     <div
                         className={cn(
                             "mt-2",
@@ -249,5 +250,4 @@ export default function TravelerBasicFields({
     );
 }
 
-// Export helper functions for use in other components
 export { calcAge, deriveTitle, genderFromTitle };

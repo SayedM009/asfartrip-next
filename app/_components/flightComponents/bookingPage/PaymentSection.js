@@ -201,11 +201,31 @@ export default function PaymentSection({ onConfirmPayment, backTo, loading }) {
                                                         quality={100}
                                                     />
                                                     <Image
-                                                        src="/currencies/ziina.jpg"
-                                                        alt="card payment with ziina"
-                                                        className="rounded-full"
-                                                        width={20}
-                                                        height={20}
+                                                        src="/currencies/maestro.svg"
+                                                        alt="card payment with maestro"
+                                                        width={30}
+                                                        height={30}
+                                                        quality={100}
+                                                    />
+                                                    <Image
+                                                        src="/currencies/mada.svg"
+                                                        alt="card payment with mada"
+                                                        width={40}
+                                                        height={40}
+                                                        quality={100}
+                                                    />
+                                                    <Image
+                                                        src="/currencies/jcb.svg"
+                                                        alt="card payment with jcb"
+                                                        width={25}
+                                                        height={25}
+                                                        quality={100}
+                                                    />
+                                                    <Image
+                                                        src="/currencies/amex.svg"
+                                                        alt="card payment with american-express"
+                                                        width={30}
+                                                        height={30}
                                                         quality={100}
                                                     />
                                                 </div>

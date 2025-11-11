@@ -55,7 +55,7 @@ export default function EmailInput({ parentSetOpen }) {
             <Input
                 type="email"
                 placeholder={t("email")}
-                className={`rounded border-1 border-gray-500 mt-4 py-6 bg-white text-gray-950 ${
+                className={`rounded border-1 border-gray-500 mt-4 py-6 bg-white text-gray-950 dark:text-gray-50${
                     email.error && "border-red-500"
                 }`}
                 value={email.email}
@@ -207,7 +207,7 @@ function CredentialActions({
                 <Dialog open={otpOpen} onOpenChange={setOtpOpen}>
                     <DialogContent
                         className={cn(
-                            "bg-gradient-to-b from-primary-100 to-white pt-4 block",
+                            " pt-4 block",
                             "max-w-none w-full h-full rounded-none border-0 md:h-11/12 md:rounded",
                             "data-[state=open]:animate-in data-[state=open]:slide-in-from-right",
                             "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right"
@@ -221,7 +221,10 @@ function CredentialActions({
                         <DialogDescription className="mt-4">
                             <div className="text-center mb-4">
                                 {t("short_message")}
-                                <strong> {email.email}</strong>
+                                <strong className="dark:text-white">
+                                    {" "}
+                                    {email.email}
+                                </strong>
                             </div>
                             <div className="flex justify-center flex-col items-center gap-2">
                                 <InputOTP
@@ -240,7 +243,7 @@ function CredentialActions({
                                                     key={i}
                                                     index={i}
                                                     type="tel"
-                                                    className={`border-1 ${
+                                                    className={`border-1 dark:text-white ${
                                                         otp.error
                                                             ? "border-red-500"
                                                             : "border-gray-700"
@@ -268,7 +271,7 @@ function CredentialActions({
 
                                 <Button
                                     variant="ghost"
-                                    className="mt-2 text-sm text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="mt-2 text-sm text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed dark:text-gray-200"
                                     onClick={handleResendOTP}
                                     disabled={!canResend}
                                 >

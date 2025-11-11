@@ -1,19 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Search, XCircleIcon } from "lucide-react";
+import { Loader, LucideLoader, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import { safeParse } from "@/app/_helpers/safeParse";
+import { toast } from "sonner";
+import { useRouter } from "@/i18n/navigation";
+import { format } from "date-fns";
+import { Card, CardContent } from "@/components/ui/card";
 
 import TripType from "./TripType";
 import MainSearchForm from "./MainSearchForm";
 import Dates from "./Date";
 import PassengersAndClass from "./PassengersAndClass";
-import { safeParse } from "@/app/_helpers/safeParse";
-import { toast } from "sonner";
-import { CheckBadgeIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "@/i18n/navigation";
-import { format } from "date-fns";
-import { Card, CardContent } from "@/components/ui/card";
 
 export function FlightSearchFormDesktop({ isLabel = true }) {
     const [tripType, setTripType] = useState("roundtrip");
@@ -54,46 +53,36 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
 
     async function handleSearch() {
         if (departure && destination && departure?.city === destination?.city) {
-            toast.error(t("errors.same_city", { city: departure?.city }), {
-                icon: <XCircleIcon className="text-red-500 text-sm" />,
-            });
+            toast.error(t("errors.same_city", { city: departure?.city }));
             return;
         }
 
         if (!departure) {
-            toast.error(t("errors.departure_required"), {
-                icon: <XCircleIcon className="text-red-500 text-sm" />,
-            });
+            toast.error(t("errors.departure_required"));
             return;
         }
 
         if (!destination) {
-            toast.error(t("errors.destination_required"), {
-                icon: <XCircleIcon className="text-red-500 text-sm" />,
-            });
+            toast.error(t("errors.destination_required"));
             return;
         }
 
         if (tripType === "oneway") {
             if (!departDate) {
-                toast.error(t("errors.departure_date_required"), {
-                    icon: <XCircleIcon className="text-red-500 text-sm" />,
-                });
+                toast.error(t("errors.departure_date_required"));
                 return;
             }
         }
 
         if (tripType === "roundtrip") {
             if (!range?.from || !range?.to) {
-                toast.error(t("errors.return_date_required"), {
-                    icon: <XCircleIcon className="text-red-500 text-sm" />,
-                });
+                toast.error(t("errors.return_date_required"));
                 return;
             }
         }
 
         toast.success(t("operations.searching"), {
-            icon: <CheckBadgeIcon className="text-green-500" />,
+            icon: <LucideLoader className="size-5 animate-spin" />,
         });
 
         let searchObject;

@@ -1,21 +1,26 @@
-import useAuthStore from "@/app/_store/authStore";
-import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
-import useLoyaltyStore from "@/app/_store/loyaltyStore";
-import { motion, AnimatePresence } from "framer-motion";
-import { useTranslations } from "next-intl";
-import Image from "next/image";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { motion, AnimatePresence } from "framer-motion";
+import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
+
+import Image from "next/image";
+import useAuthStore from "@/app/_store/authStore";
+import useLoyaltyStore from "@/app/_store/loyaltyStore";
 
 function Status() {
     const p = useTranslations("Profile");
+    const l = useTranslations("Loyalty");
+    const {
+        user: { id, usertype },
+    } = useAuthStore();
     const { balance, tier } = useLoyaltyStore();
     const { fetchBookings, totalCompleted, loading } =
         useDashboardBookingsStore();
 
-    // Need to replace user_id & user_type
     useEffect(() => {
-        fetchBookings(52, 2, "completed");
-    }, []);
+        if (!id || !usertype) return null;
+        fetchBookings(id, usertype, "completed");
+    }, [id, usertype, fetchBookings]);
 
     return (
         <div className="px-4 mt-5 grid grid-cols-3 gap-3 relative">
@@ -91,7 +96,7 @@ function Status() {
                                     />
                                 }
                                 label={p("tier")}
-                                value={tier?.tier_name || "-"}
+                                value={l(tier?.tier_name) || "-"}
                             />
                         </StatMotion>
                     </motion.div>

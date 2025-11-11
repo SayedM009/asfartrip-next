@@ -158,19 +158,20 @@ export function FlightDetailsDialog({
             switch (pricingData.status) {
                 case "success": {
                     // 1️. Save the ticket & SearchInfo in bookingStore
+                    clearBookingData();
                     setTicket(ticket);
-                    console.log(searchInfo);
                     setSearchInfo(searchInfo);
                     setSessionId(pricingData.data.sessionId);
                     setTempId(pricingData.data.tempId);
                     setSearchURL(window.location.href);
                     setBaggageData({
                         outward:
-                            pricingData.data.baggageData.outwardLuggageOptions,
-                        return: pricingData.data.baggageData
-                            .returnLuggageOptions,
+                            pricingData.data?.baggageData
+                                ?.OutwardLuggageOptions ?? null,
+                        return:
+                            pricingData.data?.baggageData
+                                ?.ReturnLuggageOptions ?? null,
                     });
-                    clearBookingData();
 
                     // 2. Save Departure & Destination in Case of there are no Objects in Session Storage
                     if (
@@ -338,7 +339,6 @@ export function FlightDetailsDialog({
                             </div>
                             <div>
                                 <div className="font-medium flex items-center gap-2">
-                                    {/* <div className="absolute left-[-9%] sm:left-[-9.5%] rtl:right-[-9%] rtl:sm:right-[-9.5%] bottom-6 transform -translate-y-1/2 w-2 h-2 bg-primary rounded-full"></div> */}
                                     {segment.Destination}
                                     <span>
                                         {segment.DestinationTerminal && (
@@ -444,25 +444,25 @@ export function FlightDetailsDialog({
                                                 returnSegments[0].DepartureTime,
                                                 {
                                                     pattern:
-                                                        "EEEE, MMMM d, yyyy",
+                                                        "EEEE, d MMMM , yyyy",
                                                 }
                                             )}
                                         </span>
                                     )}
+                                    <div className="text-sm text-muted-foreground">
+                                        {isRoundTrip
+                                            ? t("dialog.total_round_trip")
+                                            : `${t(
+                                                  "dialog.journey"
+                                              )}: ${calculateTotalDuration(
+                                                  outboundSegments
+                                              )}`}
+                                    </div>
                                 </p>
                             </div>
                             <div className="text-right">
                                 <div className="text-sm font-bold text-accent-400">
                                     {formatPrice(TotalPrice, undefined, 12)}
-                                </div>
-                                <div className="text-sm text-muted-foreground">
-                                    {isRoundTrip
-                                        ? "Total round trip"
-                                        : `${t(
-                                              "dialog.journey"
-                                          )}: ${calculateTotalDuration(
-                                              outboundSegments
-                                          )}`}
                                 </div>
                             </div>
                         </div>
