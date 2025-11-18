@@ -37,7 +37,7 @@ const HELPER_LINKS = [
     {
         title: "contact_us",
         icon: <PhoneIcon className="text-accent-500" />,
-        path: "/about-us",
+        path: "/contact-us",
     },
     {
         title: "privacy_policy",

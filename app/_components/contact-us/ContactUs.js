@@ -234,7 +234,7 @@ export default function ContactUs() {
                                     }}
                                 >
                                     <div
-                                        className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 lg:p-10 h-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 group cursor-pointer"
+                                        className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 lg:p-10 h-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 group cursor-pointer flex flex-col items-center sm:block"
                                         onClick={() =>
                                             card.link &&
                                             window.open(card.link, "_blank")
