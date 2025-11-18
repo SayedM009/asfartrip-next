@@ -1,5 +1,4 @@
-import About from "@/app/_components/staticPages/about/About";
-
+import PrivacyPage from "@/app/_components/staticPages/privacy/PrivacyPage";
 // Generate SEO
 import Script from "next/script";
 import { getDictionary } from "@/app/_libs/getDictionary";
@@ -13,32 +12,34 @@ export async function generateMetadata({ params }) {
     return generatePageMetadata({
         locale,
         path: "/about-us",
-        title: dict.About.metaTitle,
-        description: dict.About.metaDescription,
-        keywords: dict.About.metaKeywords,
+        title: dict.PrivacyPage.metaTitle,
+        description: dict.PrivacyPage.metaDescription,
+        keywords: dict.PrivacyPage.metaKeywords,
     });
 }
 
-export default function AboutPage({ params }) {
+function page({ params }) {
     const locale = params?.locale || DEFAULT_LOCALE;
     const dict = getDictionary(locale);
 
     const jsonLd = buildWebPageJsonLd({
         locale,
         path: "/about-us",
-        title: dict.About?.metaTitle,
-        description: dict.About?.metaDescription,
-        keywords: dict.About?.metaKeywords,
+        title: dict.PrivacyPage?.metaTitle,
+        description: dict.PrivacyPage?.metaDescription,
+        keywords: dict.PrivacyPage?.metaKeywords,
     });
     return (
         <>
             <Script
-                id="about-us"
+                id="terms-and-condition"
                 type="application/ld+json"
                 strategy="afterInteractive"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-            <About />
+            <PrivacyPage />
         </>
     );
 }
+
+export default page;

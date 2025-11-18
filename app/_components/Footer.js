@@ -1,19 +1,11 @@
 import React from "react";
 import { Separator } from "@/components/ui/separator";
-import {
-    Plane,
-    Facebook,
-    Twitter,
-    Instagram,
-    Youtube,
-    Mail,
-} from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Facebook, Instagram, Music2 } from "lucide-react";
 import useIsDevice from "../_hooks/useIsDevice";
 import Logo from "./ui/Logo";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import Image from "next/image";
 
 const quick_links = [
     {
@@ -27,10 +19,6 @@ const quick_links = [
     {
         title: "faqs",
         path: "/faqs",
-    },
-    {
-        title: "blog",
-        path: "/blog",
     },
 ];
 
@@ -54,8 +42,10 @@ const services = [
 ];
 
 const important_links = [
-    { title: "privacy_policy", path: "/privacy" },
-    { title: "terms_conditions", path: "/terms" },
+    { title: "terms_conditions", path: "/terms-and-conditions" },
+    { title: "privacy_policy", path: "/privacy-policy" },
+    { title: "cancellation_policy", path: "/cancellation-policy" },
+    { title: "refund_policy", path: "/refund-policy" },
 ];
 
 export function Footer() {
@@ -74,49 +64,36 @@ export function Footer() {
                         </div>
                         <p className="text-sm mb-4">{t("title")}</p>
                         <div className="flex space-x-3">
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
+                            <Link
+                                className="p-2 hover:cursor-pointer "
                                 title={t("social_icons.face_book")}
+                                href="https://www.facebook.com/Asfartrip"
+                                target="_blank"
                             >
-                                <Facebook className="h-4 w-4" />
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                title={t("social_icons.x")}
-                            >
-                                <Twitter className="h-4 w-4" />
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
+                                <Facebook className="size-5 hover:text-black dark:hover:text-white" />
+                            </Link>
+                            <Link
+                                className="p-2 hover:cursor-pointer"
                                 title={t("social_icons.instagram")}
+                                href="https://www.instagram.com/asfartrip_official/"
+                                target="_blank"
                             >
-                                <Instagram className="h-4 w-4" />
-                            </Button>
-                            {/* <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8 relative"
-                                title={t("social_icons.tik_tok")}
+                                <Instagram className="size-5 hover:text-black dark:hover:text-white" />
+                            </Link>
+                            <Link
+                                className="p-2 hover:cursor-pointer"
+                                title={t("social_icons.x")}
+                                href="https://www.tiktok.com/@asfartrip"
+                                target="_blank"
                             >
-                                <Image
-                                    src="/icons/tiktok.png"
-                                    alt="tiktok"
-                                    width={16}
-                                    height={8}
-                                />
-                            </Button> */}
+                                <Music2 className="size-5 hover:text-black dark:hover:text-white" />
+                            </Link>
                         </div>
                     </div>
 
                     {/* Quick Links */}
                     <div>
-                        <h3 className="text-foreground mb-4 font-semibold">
+                        <h3 className="text-foreground mb-4 font-semibold text-lg">
                             {t("company")}
                         </h3>
                         <ul className="space-y-2 text-sm">
@@ -135,7 +112,7 @@ export function Footer() {
 
                     {/* Services */}
                     <div>
-                        <h3 className="text-foreground mb-4 font-semibold">
+                        <h3 className="text-foreground mb-4 font-semibold text-lg">
                             {t("services.title")}
                         </h3>
                         <ul className="space-y-2 text-sm">
@@ -152,8 +129,26 @@ export function Footer() {
                         </ul>
                     </div>
 
-                    {/* Newsletter */}
                     <div>
+                        <h3 className="text-foreground mb-4 font-semibold text-lg">
+                            {t("legal.title")}
+                        </h3>
+                        <ul className="space-y-2 text-sm">
+                            {important_links.map((link) => (
+                                <li key={link}>
+                                    <Link
+                                        href={link.path}
+                                        className="hover:text-foreground transition-colors"
+                                    >
+                                        {p(`${link.title}`)}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Newsletter */}
+                    {/* <div>
                         <h3 className="text-foreground mb-4 font-semibold">
                             {t("stay_updated.title")}
                         </h3>
@@ -172,7 +167,7 @@ export function Footer() {
                                 {t("stay_updated.subscribe")}
                             </Button>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <Separator className="mb-8" />
@@ -185,16 +180,56 @@ export function Footer() {
                             {t("copy_right.website")} {t("copy_right.text")}
                         </p>
                     </div>
-                    <div className="flex space-x-6">
-                        {important_links.map((link) => (
-                            <Link
-                                href={link.path}
-                                key={link.path}
-                                className="hover:text-foreground transition-colors"
-                            >
-                                {p(`${link.title}`)}
-                            </Link>
-                        ))}
+                    <div className="flex items-center gap-2">
+                        <Image
+                            src="/currencies/visa.svg"
+                            alt="card payment with visa"
+                            width={30}
+                            height={30}
+                            quality={100}
+                        />
+                        <Image
+                            src="/currencies/mastercard.svg"
+                            alt="card payment with mastercard"
+                            width={30}
+                            height={30}
+                            quality={100}
+                        />
+                        <Image
+                            src="/currencies/maestro.svg"
+                            alt="card payment with maestro"
+                            width={30}
+                            height={30}
+                            quality={100}
+                        />
+                        <Image
+                            src="/currencies/mada.svg"
+                            alt="card payment with mada"
+                            width={40}
+                            height={40}
+                            quality={100}
+                        />
+                        <Image
+                            src="/currencies/jcb.svg"
+                            alt="card payment with jcb"
+                            width={25}
+                            height={25}
+                            quality={100}
+                        />
+                        <Image
+                            src="/currencies/amex.svg"
+                            alt="card payment with american-express"
+                            width={30}
+                            height={30}
+                            quality={100}
+                        />
+                        <Image
+                            src="/currencies/tabby.svg"
+                            alt="payment with tabby"
+                            width={30}
+                            height={30}
+                            quality={100}
+                        />
                     </div>
                 </div>
             </div>

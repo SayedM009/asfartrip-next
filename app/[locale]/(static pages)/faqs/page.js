@@ -1,7 +1,4 @@
-import { Footer } from "@/app/_components/Footer";
-import BottomAppBar from "@/app/_components/bottomAppBar/BottomAppBar";
-import FAQPage from "@/app/_components/faq/FAQPage";
-import Header from "@/app/_components/Navbar";
+import FAQPage from "@/app/_components/staticPages/faq/FAQPage";
 
 // Generate SEO
 import Script from "next/script";
@@ -40,10 +37,7 @@ function page({ params }) {
                 strategy="afterInteractive"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-            <Header />
             <FAQPage />
-            <Footer />
-            <BottomAppBar />
         </>
     );
 }

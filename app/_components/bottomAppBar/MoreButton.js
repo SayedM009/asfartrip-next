@@ -10,8 +10,6 @@ import {
 import { cn } from "@/lib/utils";
 import {
     BanknotesIcon,
-    DocumentCheckIcon,
-    DocumentTextIcon,
     ExclamationCircleIcon,
     PhoneIcon,
     QuestionMarkCircleIcon,
@@ -26,12 +24,20 @@ import ThemeSwitcher from "../ThemeSwitcher";
 import CurrencySwicther from "../CurrencySwicther";
 import ChevronBasedOnLanguage from "../ui/ChevronBasedOnLanguage";
 import SignOutButton from "../loginButton/SignOut";
-import { Earth } from "lucide-react";
+import {
+    Ban,
+    Earth,
+    FileText,
+    RotateCcw,
+    ShieldCheck,
+    User,
+} from "lucide-react";
+import { useState } from "react";
 
 const HELPER_LINKS = [
     {
         title: "about_us",
-        icon: <ExclamationCircleIcon className="size-5 text-accent-500" />,
+        icon: <User className="size-5 text-accent-500" />,
         path: "/about-us",
     },
     {
@@ -40,23 +46,34 @@ const HELPER_LINKS = [
         path: "/contact-us",
     },
     {
-        title: "privacy_policy",
-        icon: <DocumentCheckIcon className="size-5 text-accent-500" />,
-        path: "/privacy_policy",
-    },
-    {
-        title: "terms_conditions",
-        icon: <DocumentTextIcon className="size-5 text-accent-500" />,
-        path: "/terms_condition",
-    },
-    {
         title: "faqs",
         icon: <QuestionMarkCircleIcon className="size-5 text-accent-500" />,
         path: "/faqs",
     },
+    {
+        title: "terms_conditions",
+        icon: <FileText className="size-5 text-accent-500" />,
+        path: "/terms-and-conditions",
+    },
+    {
+        title: "privacy_policy",
+        icon: <ShieldCheck className="size-5 text-accent-500" />,
+        path: "/privacy-policy",
+    },
+    {
+        title: "cancellation_policy",
+        icon: <Ban className="size-5 text-accent-500" />,
+        path: "/cancellation-policy",
+    },
+    {
+        title: "refund_policy",
+        icon: <RotateCcw className="size-5 text-accent-500" />,
+        path: "/refund-policy",
+    },
 ];
 
 function MoreButton() {
+    const [open, setOpen] = useState(false);
     const t = useTranslations("Homepage");
     const p = useTranslations("Pages");
     const { theme, setTheme } = useTheme();
@@ -65,7 +82,7 @@ function MoreButton() {
         setTheme(condition ? "light" : "dark");
     }
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger>
                 {/* Dialog Trigger */}
                 <div className="  pt-2 pb-0.5  flex flex-col items-center">
@@ -126,6 +143,7 @@ function MoreButton() {
                                             ? "border-gray-300 dark:border-gray-100 "
                                             : ""
                                     }`}
+                                    onClick={() => setOpen(false)}
                                     href={link.path}
                                 >
                                     <div className="flex gap-2 capitalize font-bold">
