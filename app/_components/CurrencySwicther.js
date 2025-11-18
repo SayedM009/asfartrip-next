@@ -19,9 +19,9 @@ import {
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import useCheckLocal from "../_hooks/useCheckLocal";
-import { useCurrency } from "../_context/CurrencyContext";
 import Image from "next/image";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { useCurrencyStore } from "../_store/useCurrencyStore";
 
 function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +30,7 @@ function CurrencySwitcher({ hiddenOnMobile = false, isLabel = true }) {
     const { isRTL } = useCheckLocal();
 
     const { currentCurrency, updateCurrency, isLoading, error, exchangeRate } =
-        useCurrency();
+        useCurrencyStore();
 
     const handleApply = () => {
         if (tempCurrency && tempCurrency !== currentCurrency) {

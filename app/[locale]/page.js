@@ -1,49 +1,57 @@
+// Sliders
 import { PromotionalSlider } from "../_components/sliders/PromotionalSlider";
 import { DestinationSlider } from "../_components/sliders/DestinationSlider";
 import { FlightsSlider } from "../_components/sliders/FlightsSlider";
 import { HotelsSlider } from "../_components/sliders/HotelsSlider";
-import { getDictionary } from "../_libs/getDictionary";
-import { generateMetadataObj } from "../_libs/metadata";
 
+// Components
+import { Footer } from "../_components/Footer";
 import Navbar from "@/app/_components/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
 import FlightSearchWrapper from "../_components/flightComponents/FlightSearchWrapper";
-import BottomAppWrapper from "../_components/bottomAppBar/BottomAppWrapper";
-import { Footer } from "../_components/Footer";
 
-// generateMetadataObj:
-// This function prepares metadata for any main page based on the selected language (locale).
-// It uses the dictionary to get the page title and description.
-// Returns an object ready to be used in Next.js generateMetadata.
+// Generate SEO
+import Script from "next/script";
+import { DEFAULT_LOCALE } from "@/app/_config/i18n";
+import { getDictionary } from "../_libs/getDictionary";
+import { generatePageMetadata, buildHomeJsonLd } from "@/app/_libs/seo";
+import BottomAppBar from "../_components/bottomAppBar/BottomAppBar";
 
 export async function generateMetadata({ params }) {
-    const locale = (await params).locale || "en";
+    const locale = params?.locale || DEFAULT_LOCALE;
     const dict = await getDictionary(locale);
 
-    return generateMetadataObj({
-        title: dict.Homepage.title,
-        description: dict.Homepage.description,
-        url: "https://www.asfartrip.com/",
-        locale: locale || "en",
+    return generatePageMetadata({
+        locale,
+        path: "/",
+        title: dict.Homepage?.metaTitle,
+        description: dict.Homepage?.metaDescription,
+        keywords: dict.Homepage?.metaKeywords,
     });
 }
 
-function HomePage() {
+function HomePage({ params }) {
+    const locale = params?.locale || DEFAULT_LOCALE;
+    const jsonLd = buildHomeJsonLd({ locale });
     return (
         <section className="container-custom">
+            <Script
+                id="home-jsonld"
+                type="application/ld+json"
+                strategy="afterInteractive"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <Navbar />
-            <section className="space-y-6">
+            <section className="space-y-6 mb-10">
                 <ServicesNavigation />
                 <FlightSearchWrapper />
                 <PromotionalSlider />
                 <DestinationSlider />
                 <FlightsSlider />
                 <HotelsSlider />
-                {/* Giving More Space on Mobile */}
-                <div className="h-6 sm:hidden" />
             </section>
             <Footer />
-            <BottomAppWrapper />
+            <BottomAppBar />
         </section>
     );
 }

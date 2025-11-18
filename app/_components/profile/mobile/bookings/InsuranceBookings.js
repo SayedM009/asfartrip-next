@@ -1,28 +1,33 @@
 "use client";
-
 import { Link } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
+// Stores
 import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
-import { Button } from "@/components/ui/button";
-import { formatDisplayDate } from "@/app/_helpers/formatDisplayDate";
-import { useCurrency } from "@/app/_context/CurrencyContext";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
+import useAuthStore from "@/app/_store/authStore";
+// Components
 import Tabs from "../Tabs";
+import { Button } from "@/components/ui/button";
 import TravelInsuranceIcon from "@/app/_components/SVG/TravelInsuranceIcon";
 import ChevronBasedOnLanguage from "@/app/_components/ui/ChevronBasedOnLanguage";
-import { useTranslations } from "next-intl";
+// Helper functions
+import { formatDisplayDate } from "@/app/_helpers/formatDisplayDate";
 
 export default function InsuranceBookings() {
     const p = useTranslations("Profile");
-    const { formatPrice } = useCurrency();
+    const { formatPrice } = useCurrencyStore();
+    const { user } = useAuthStore();
     const { fetchBookings, insuranceBookings, loading } =
         useDashboardBookingsStore();
 
     const [activeTab, setActiveTab] = useState("upcoming");
 
     useEffect(() => {
-        fetchBookings(52, 2, activeTab);
-    }, [activeTab, fetchBookings]);
+        if (!user.id || !user.usertype) return;
+        fetchBookings(user.id, user.usertype, activeTab);
+    }, [activeTab, fetchBookings, user.id, user.usertype]);
 
     return (
         <div className="flex flex-col h-[calc(100vh-50px)]">

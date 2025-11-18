@@ -16,17 +16,17 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useTranslations } from "use-intl";
 import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import useBookingStore from "@/app/_store/bookingStore";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
 
 export default function BaggageDialog({ trigger }) {
     const f = useTranslations("Flight");
     const t = useTranslations("Traveler");
     const { formatBaggage } = useFormatBaggage();
-    const { formatPrice } = useCurrency();
+    const { formatPrice } = useCurrencyStore();
     const { travelers, baggageData, addOns, updateBaggage } = useBookingStore();
     const { isRTL } = useCheckLocal();
     const direction = isRTL ? "rtl" : "ltr";

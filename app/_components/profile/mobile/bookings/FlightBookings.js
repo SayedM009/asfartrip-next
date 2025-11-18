@@ -6,17 +6,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
 import { Button } from "@/components/ui/button";
 import { formatDisplayDate } from "@/app/_helpers/formatDisplayDate";
-import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useTranslations } from "next-intl";
 
 import Tabs from "../Tabs";
 import ChevronBasedOnLanguage from "../../../ui/ChevronBasedOnLanguage";
 import AirplaneStairs from "../../../SVG/AirplaneStairs";
 import useAuthStore from "@/app/_store/authStore";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
 
 export default function FlightBookings() {
     const p = useTranslations("Profile");
-    const { formatPrice } = useCurrency();
+    const { formatPrice } = useCurrencyStore();
     const {
         user: { id, usertype },
     } = useAuthStore();

@@ -6,15 +6,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
 import { Button } from "@/components/ui/button";
 import { formatDisplayDate } from "@/app/_helpers/formatDisplayDate";
-import { useCurrency } from "@/app/_context/CurrencyContext";
 import Tabs from "../Tabs";
 import ChevronBasedOnLanguage from "../../../ui/ChevronBasedOnLanguage";
 import HotelCard from "../../../SVG/HotelCard"; // لو عندك أيقونة فندق، أو بدلها بـ Image
 import { useTranslations } from "next-intl";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
 
 export default function HotelBookings() {
     const p = useTranslations("Profile");
-    const { formatPrice } = useCurrency();
+    const { formatPrice } = useCurrencyStore();
     const { fetchBookings, hotelBookings, loading } =
         useDashboardBookingsStore();
 

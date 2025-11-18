@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
-import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,10 +12,11 @@ import { format, parseISO, differenceInMinutes } from "date-fns";
 import Image from "next/image";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import LoyaltyPoints from "../../loyaltyPoints/LoyaltyPoints";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
 
 export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
     // Convert Currency
-    const { formatPrice } = useCurrency();
+    const { formatPrice } = useCurrencyStore();
 
     const {
         TotalPrice,

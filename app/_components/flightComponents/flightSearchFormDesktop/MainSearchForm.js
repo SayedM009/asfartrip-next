@@ -1,20 +1,16 @@
 "use client";
 import { useState } from "react";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, Plane } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { searchAirports } from "@/app/_libs/flightService";
 import SwapButton from "@/app/_components/ui/SwapButton";
-import useCheckLocal from "@/app/_hooks/useCheckLocal";
-import SpinnerMini from "@/app/_components/ui/SpinnerMini";
+import DestinationsContent from "./DestinationsContent";
 
-// Popular destinations data
+// ========================
+// Popular Destinations Data
+// ========================
 const popularDestinationsGCC = [
     {
         label_code: "DXB",
@@ -26,8 +22,7 @@ const popularDestinationsGCC = [
         label_code: "AUH",
         city: "Abu Dhabi",
         country: "United Arab Emirates",
-        airport:
-            "Zayed International Airport (formerly Abu Dhabi International)",
+        airport: "Zayed International Airport",
     },
     {
         label_code: "SHJ",
@@ -142,6 +137,9 @@ const popularInternationalDestinations = [
     },
 ];
 
+// ========================
+// Main Component
+// ========================
 export default function MainSearchForm({
     departure,
     setDeparture,
@@ -160,16 +158,30 @@ export default function MainSearchForm({
     const [isLoading, setIsLoading] = useState(false);
     const t = useTranslations("Flight");
 
+    // ========================
+    // Search Handler
+    // ========================
     const handleSearch = async (value, onSearch, onResults) => {
         onSearch(value);
 
         if (value && value.length > 2) {
             try {
                 setIsLoading(true);
+                onResults([]); // clear old results first
                 const data = await searchAirports(value);
-                onResults(data);
+
+                // Filter invalid / incomplete results
+                const validResults = data.filter(
+                    (d) =>
+                        d.label_code?.length === 3 &&
+                        d.city &&
+                        d.country &&
+                        !d.city.toLowerCase().includes("test")
+                );
+
+                onResults(validResults);
             } catch (error) {
-                console.error("Error searching destination airports:", error);
+                console.error("Error searching airports:", error);
                 onResults([]);
             } finally {
                 setIsLoading(false);
@@ -179,6 +191,9 @@ export default function MainSearchForm({
         }
     };
 
+    // ========================
+    // Swap Function
+    // ========================
     const swapCities = () => {
         const temp = departure;
         setDeparture(destination);
@@ -187,8 +202,7 @@ export default function MainSearchForm({
 
     return (
         <>
-            {" "}
-            {/* From City */}
+            {/* Departure */}
             <div className="flex-1">
                 {isLabel && (
                     <label className="block mb-2 text-muted-foreground text-sm">
@@ -206,16 +220,6 @@ export default function MainSearchForm({
                                 setIsSearchingDeparture(true);
                                 setShowDepartureResults(true);
                             }}
-                            role={!isSearchingDeparture ? "button" : undefined}
-                            tabIndex={!isSearchingDeparture ? 0 : undefined}
-                            aria-label={
-                                !isSearchingDeparture
-                                    ? `Selected departure city: ${
-                                          departure.city ||
-                                          t("operations.departure_search")
-                                      }`
-                                    : undefined
-                            }
                         >
                             {isSearchingDeparture ? (
                                 <Input
@@ -230,7 +234,7 @@ export default function MainSearchForm({
                                     placeholder={t(
                                         "operations.departure_search"
                                     )}
-                                    className="h-12 pl-10 border-0"
+                                    className="h-12 pl-10 border-0 rtl:pr-10"
                                     autoFocus
                                     onBlur={(e) => {
                                         if (
@@ -245,18 +249,16 @@ export default function MainSearchForm({
                                             }, 100);
                                         }
                                     }}
-                                    aria-label="Search departure city"
                                 />
                             ) : (
-                                <div className="h-12 bg-input-background dark:bg-input-background/5 rounded-md border-0 px-3 py-2 pl-10 flex items-center">
+                                <div className="h-12 bg-input-background dark:bg-input-background/5 rounded-md border-0 rtl:pr-10 py-2 pl-10 flex items-center">
                                     <span className="font-medium text-foreground capitalize">
                                         {departure.city ||
                                             t("operations.departure_search")}
                                     </span>
                                 </div>
                             )}
-
-                            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground rtl:right-3" />
                         </div>
                     </PopoverTrigger>
                     <DestinationsContent
@@ -272,11 +274,13 @@ export default function MainSearchForm({
                     />
                 </Popover>
             </div>
-            {/* Swap Button */}
+
+            {/* Swap */}
             <div className="flex justify-center items-center mb-2">
                 <SwapButton callBack={swapCities} />
             </div>
-            {/* To City */}
+
+            {/* Destination */}
             <div className="flex-1">
                 {isLabel && (
                     <label className="block mb-2 text-muted-foreground text-sm">
@@ -294,18 +298,6 @@ export default function MainSearchForm({
                                 setIsSearchingDestination(true);
                                 setShowDestinationResults(true);
                             }}
-                            role={
-                                !isSearchingDestination ? "button" : undefined
-                            }
-                            tabIndex={!isSearchingDestination ? 0 : undefined}
-                            aria-label={
-                                !isSearchingDestination
-                                    ? `Selected destination city: ${
-                                          destination.city ||
-                                          t("operations.destination_search")
-                                      }`
-                                    : undefined
-                            }
                         >
                             {isSearchingDestination ? (
                                 <Input
@@ -320,7 +312,7 @@ export default function MainSearchForm({
                                     placeholder={t(
                                         "operations.destination_search"
                                     )}
-                                    className="h-12 pl-10 bg-input-background border-0"
+                                    className="h-12 pl-10 bg-input-background border-0 rtl:pr-10"
                                     autoFocus
                                     onBlur={(e) => {
                                         if (
@@ -339,18 +331,16 @@ export default function MainSearchForm({
                                             }, 100);
                                         }
                                     }}
-                                    aria-label="Search destination city"
                                 />
                             ) : (
-                                <div className="h-12 bg-input-background dark:bg-input-background/5 rounded-md border-0 px-3 py-2 pl-10 flex items-center">
+                                <div className="h-12 bg-input-background dark:bg-input-background/5 rounded-md border-0 rtl:pr-10 py-2 pl-10 flex items-center">
                                     <span className="font-medium text-foreground capitalize">
                                         {destination.city ||
                                             t("operations.destination_search")}
                                     </span>
                                 </div>
                             )}
-
-                            <Plane className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Plane className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground rtl:right-3" />
                         </div>
                     </PopoverTrigger>
                     <DestinationsContent
@@ -367,134 +357,5 @@ export default function MainSearchForm({
                 </Popover>
             </div>
         </>
-    );
-}
-
-function DestinationsContent({
-    search,
-    results,
-    onDestination,
-    onSearch,
-    onShowResults,
-    onIsSearching,
-    popularDestinations = popularDestinationsGCC,
-    sessionKey,
-    isLoading = false, // <--- نضيف prop جديد
-}) {
-    const fillteredObj = search
-        ? results
-        : popularDestinations.filter(
-              (dest) =>
-                  dest.city.toLowerCase().includes(search.toLowerCase()) ||
-                  dest.label_code
-                      .toLowerCase()
-                      .includes(search.toLowerCase()) ||
-                  dest.country.toLowerCase().includes(search.toLowerCase())
-          );
-    const { locale, isRTL } = useCheckLocal();
-    const dir = isRTL ? "rtl" : "ltr";
-    const t = useTranslations("Flight");
-
-    const handleSelect = (dest) => {
-        onDestination(dest);
-        onSearch("");
-        onShowResults(false);
-        onIsSearching(false);
-        sessionStorage.setItem(
-            sessionKey,
-            JSON.stringify({
-                city: dest.city,
-                label_code: dest.label_code,
-                country: dest.country,
-                airport: dest.airport,
-            })
-        );
-    };
-
-    return (
-        <PopoverContent
-            className="w-80 p-0 mt-1"
-            align="start"
-            side="bottom"
-            onOpenAutoFocus={(e) => e.preventDefault()}
-        >
-            <ScrollArea className="h-64 " dir={dir}>
-                <div className="p-1">
-                    {search ? (
-                        isLoading ? (
-                            <div className="p-4 text-center flex items-center justify-center h-56">
-                                <SpinnerMini />
-                            </div>
-                        ) : fillteredObj.length > 0 ? (
-                            fillteredObj.map((dest) => (
-                                <button
-                                    key={dest.label_code}
-                                    onClick={() => handleSelect(dest)}
-                                    className="w-full p-3 text-left hover:bg-muted rounded-md border-b last:border-0 cursor-pointer"
-                                    role="option"
-                                >
-                                    <div className="flex items-center justify-between ">
-                                        <div>
-                                            <div
-                                                className={`font-medium ${
-                                                    locale === "ar" &&
-                                                    "text-right"
-                                                }`}
-                                            >
-                                                {dest.city},{" "}
-                                                {dest.country.split("-").at(0)}
-                                            </div>
-                                            <div className="text-muted-foreground">
-                                                {dest.airport ||
-                                                    dest.country
-                                                        .split("-")
-                                                        .at(1)}
-                                            </div>
-                                        </div>
-                                        <div className="font-medium text-muted-foreground">
-                                            {dest.label_code}
-                                        </div>
-                                    </div>
-                                </button>
-                            ))
-                        ) : (
-                            <div className="p-4 text-center text-gray-500">
-                                {t("operations.no_results")}
-                            </div>
-                        )
-                    ) : (
-                        // لو المستخدم مش بيبحث، نعرض الوجهات الشعبية
-                        fillteredObj.map((dest) => (
-                            <button
-                                key={dest.label_code}
-                                onClick={() => handleSelect(dest)}
-                                className="w-full p-3 text-left hover:bg-muted rounded-md border-b last:border-0 cursor-pointer"
-                                role="option"
-                            >
-                                <div className="flex items-center justify-between ">
-                                    <div>
-                                        <div
-                                            className={`font-medium ${
-                                                locale === "ar" && "text-right"
-                                            }`}
-                                        >
-                                            {dest.city},{" "}
-                                            {dest.country.split("-").at(0)}
-                                        </div>
-                                        <div className="text-muted-foreground">
-                                            {dest.airport ||
-                                                dest.country.split("-").at(1)}
-                                        </div>
-                                    </div>
-                                    <div className="font-medium text-muted-foreground">
-                                        {dest.label_code}
-                                    </div>
-                                </div>
-                            </button>
-                        ))
-                    )}
-                </div>
-            </ScrollArea>
-        </PopoverContent>
     );
 }

@@ -60,7 +60,7 @@ function ServicesNavigation() {
                             ? "md:bg-accent-400"
                             : service.path == "/flights" && pathname == "/"
                             ? "md:bg-accent-400"
-                            : "md:bg-gradient-to-b to-gray-300 from-white"
+                            : "md:bg-gradient-to-b to-gray-200 from-white"
                     }`}
                 >
                     <Image
@@ -68,7 +68,6 @@ function ServicesNavigation() {
                         alt={service.subTitle}
                         width={WIDTH}
                         height={HEIGHT}
-                        // unoptimized
                         priority
                         fetchPriority="high"
                         loading="eager"
@@ -80,7 +79,7 @@ function ServicesNavigation() {
                                 : `bg-gradient-to-b ${
                                       condition
                                           ? " from-gray-100"
-                                          : " to-gray-300 from-white"
+                                          : " to-gray-200 from-white"
                                   }`
                         } rounded-lg p-2.5 md:p-0 aspect-square`}
                     />

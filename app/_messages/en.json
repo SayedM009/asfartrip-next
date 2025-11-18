@@ -1,23 +1,39 @@
 {
     "Homepage": {
-        "title": "Asfartrip.com",
-        "description": "Asfartrip.com is an online travel agency providing flights, hotels, car rentals, travel insurance & holiday packages.",
+        "metaTitle": "AsfarTrip | Book Cheap Flights, Hotels & Travel Deals in the UAE",
+        "metaDescription": "Find and book cheap flights, hotels, travel insurance, and holiday packages on AsfarTrip. Enjoy instant booking, secure payments, and 24/7 customer support across the UAE.",
+        "metaKeywords": "cheap flights, flight booking, book flights online, hotel booking, travel deals, UAE travel, Dubai flights, Abu Dhabi flights, online travel agency, holiday packages, car rentals, travel insurance, best flight prices, compare flight prices, last minute flights, affordable hotels, travel offers, book tickets online, UAE travel deals",
         "home": "home",
         "trips": "trips",
         "offers": "offers",
         "more": "more"
     },
     "FlightPage": {
-        "title": "Book Cheap Flights Online | AsfarTrip",
-        "description": "Find and book cheap flight tickets with AsfarTrip. Compare airfares from top airlines, explore domestic and international routes, and enjoy secure online booking with exclusive deals.",
+        "metaTitle": "Book Cheap Flights Online | AsfarTrip",
+        "metaDescription": "Find and book cheap flight tickets with AsfarTrip. Compare airfares from top airlines, explore domestic and international routes, and enjoy secure online booking with exclusive deals.",
+        "metaKeywords": "cheap flights, flight booking, book flights online, airfare deals, compare flight prices, flights from UAE, Dubai flights, Abu Dhabi flights, online flight tickets, best flight deals, international flights, round trip flights",
         "Search": {
-            "title": "Compare Flight Prices & Book Cheap Air Tickets | AsfarTrip",
-            "description": "View the best flight deals from top airlines on AsfarTrip. Compare prices, flight times, and routes to book your perfect trip quickly and securely online."
+            "metaTitle": "Compare Flight Prices & Book Cheap Air Tickets | AsfarTrip",
+            "metaDescription": "View the best flight deals from top airlines on AsfarTrip. Compare prices, flight times, and routes to book your perfect trip quickly and securely online.",
+            "metaKeywords": "compare flight prices, flight search, best flight deals, cheap air tickets, flight comparison, airfare search, online flight finder, airline prices, search flights UAE"
+        },
+
+        "Booking": {
+            "metaTitle": "Flight Booking | Secure & Fast Online Flight Reservations | AsfarTrip",
+            "metaDescription": "Complete your flight booking on AsfarTrip with our secure and fast online reservation system. Review your itinerary, select seats, and make payments with ease.",
+            "metaKeywords": "flight booking online, secure flight reservation, book flight tickets, travel itinerary, select seats, confirm booking, online payment flights, reserve airline tickets"
+        },
+
+        "Status": {
+            "metaTitle": "Flight Booking Status | Check Flight Reservation Status | AsfarTrip",
+            "metaDescription": "Check the status of your flight booking on AsfarTrip. Get real-time updates on your reservation, including confirmation, payment status, and itinerary details.",
+            "metaKeywords": "flight booking status, check reservation status, flight confirmation, booking updates, flight payment status, verify booking, airline booking status"
         }
     },
     "Profile": {
-        "title": "Profile",
-        "description": "Manage your AsfarTrip profile, view booking history, update personal information, and access exclusive member benefits for a seamless travel experience.",
+        "metaTitle": "My Account & Profile | Manage Bookings & Travel Details | AsfarTrip",
+        "metaDescription": "Manage your AsfarTrip account, update personal information, view your booking history, save traveller details, and access exclusive member features for a smoother travel experience.",
+        "metaKeywords": "asfartrip account, my account, user profile, manage bookings, booking history, personal information, saved travellers, travel profile, manage travel details, user dashboard, member account, account settings, update profile, travel preferences, profile management",
         "welcome_back": "Welcome back,",
         "greeding_morning": "Good morning",
         "greeding_afternoon": "Good afternoon",
@@ -25,6 +41,10 @@
         "delete_account": "Delete Account",
         "delete_account_confirmation": "Are you sure you want to delete your account? This action cannot be undone.",
         "delete_account_success": "Your account has been successfully deleted. We are sorry to see you go!",
+        "delete_traveller": "Delete Traveller",
+        "delete_traveller_confirmation": "Are you sure you want to delete {traveller}? This action cannot be undone.",
+        "delete_traveller_success": "Traveller {traveller} has been successfully deleted. ",
+        "delete_traveller_failed": "Failed to delete traveller {traveller}. Please try again.",
         "delete": " Delete",
         "cancel": " Cancel",
         "bookings": "Bookings",
@@ -74,7 +94,118 @@
         "no_travellers": "No travellers added yet.",
         "add_traveller_description": " Add traveller information to make future bookings easier.",
         "saving_not_available": "Saving is not available right now",
-        "failed_saving": "Failed to save traveller."
+        "failed_saving": "Failed to save traveller.",
+        "traveller_added_successfully": "Traveller added successfully."
+    },
+
+    "About": {
+        "metaTitle": "About Us | AsfarTrip | Leading UAE Travel Platform for Flights, Hotels & Travel Services",
+        "metaDescription": "AsfarTrip is a UAE-based digital travel platform offering flights, hotels, travel insurance, and holiday packages across the Middle East. Learn about our mission, vision, and how our advanced technology delivers fast, reliable, and secure travel experiences for millions of travelers. Book with confidence on AsfarTrip.",
+        "metaKeywords": "about asfartrip, asfartrip company, travel platform uae, online travel agency, about our travel services, asfartrip mission, asfartrip vision, trusted travel agency uae, travel technology platform, travel solutions uae, flights and hotels platform, digital travel company, about our company, uae travel provider",
+        "hero": {
+            "title": "About AsfarTrip.com",
+            "subtitle": "AsfarTrip.com is a UAE-based online travel platform delivering end-to-end travel solutions, including flights, hotels, travel insurance, and holiday packages. Built on advanced technology and supported by a network of global suppliers, AsfarTrip ensures real-time fares, fast bookings, and secure payment options for both individual travelers and business partners. Our mission is to make travel simpler, faster, and more accessible while maintaining the highest standards of reliability, transparency, and customer support."
+        },
+
+        "about": {
+            "title": "Who We Are",
+            "body": "Founded in the UAE, AsfarTrip aims to simplify travel through technology and trust. We connect travelers to global experiences via seamless booking services, secure payments, and 24/7 support."
+        },
+
+        "services": {
+            "title": "Our Services",
+            "flights": "Flights",
+            "hotels": "Hotels",
+            "insurance": "Travel Insurance",
+            "holidays": "Holidays",
+            "activities": "Activities",
+            "car_transfer": "Car Transfer",
+            "car_rental": "Car Rental",
+            "esim": "eSIM"
+        },
+
+        "soon": "Coming Soon",
+
+        "vision": {
+            "title": "Our Vision",
+            "content": "We strive to become the leading digital travel destination in the Middle East by delivering advanced technology solutions and fast, reliable booking experiences that support and empower travelers with confidence on every journey."
+        },
+
+        "mission": {
+            "title": "Our Mission",
+            "content": "Our mission is to simplify the travel experience by delivering innovative technology, diverse travel options, and exceptional customer support—empowering every traveler to plan their journey with confidence and peace of mind."
+        },
+
+        "values": {
+            "title": "Our Values",
+            "items": [
+                "Integrity: We operate with honesty, transparency, and fairness.",
+                "Innovation: We develop advanced solutions to enhance travel.",
+                "Customer Focus: We prioritize travelers' needs with ongoing support.",
+                "Quality: We provide high-quality and seamless booking experiences.",
+                "Trust: We work to be a dependable partner for individuals and businesses."
+            ]
+        },
+
+        "why": {
+            "title": "Why Choose Us",
+            "items": [
+                "Real-time fares from leading travel suppliers.",
+                "Fast, secure, and seamless booking experience.",
+                "24/7 customer support for travelers and partners.",
+                "All travel services in one platform.",
+                "Trusted by thousands of travelers across the Middle East."
+            ]
+        },
+
+        "promise": {
+            "title": "Our Promise",
+            "body": "We are committed to delivering a safe, reliable, and transparent travel experience.\nWe promise to support you at every step, provide clear information, and ensure your bookings are handled with care and professionalism."
+        },
+
+        "b2b": {
+            "title": "Corporate & B2B Travel Solutions",
+            "body": "AsfarTrip provides dedicated travel solutions for travel agencies and businesses, including access to special fares, API integrations, customized booking tools, and priority support—empowering partners to manage bookings efficiently and scale their operations."
+        },
+
+        "partners": {
+            "title": "Our Trusted Partners"
+        },
+
+        "cta": {
+            "title": "Ready to plan your next trip?",
+            "subtitle": "Start exploring with AsfarTrip — simple, fast, and reliable.",
+            "button": "Contact Us"
+        }
+    },
+    "ContactPage": {
+        "metaTitle": "Contact Us | AsfarTrip | UAE Travel Support & Customer Service",
+        "metaDescription": "Get in touch with AsfarTrip for assistance with your travel bookings, inquiries, or support needs. Our dedicated customer service team is here to help you with flights, hotels, travel insurance, and holiday packages across the UAE and beyond.",
+        "metaKeywords": "contact asfartrip, asfartrip support, travel customer service, uae travel assistance, contact travel agency, flight booking help, hotel booking support, travel inquiries, travel agency contact, asfartrip customer care, travel support uae, travel helpdesk",
+        "support_badge": "24/7 Support",
+        "hero_title": "Contact Us",
+        "hero_subtitle": "Reach us anytime — We're here to help.",
+
+        "cards_whatsapp_title": "WhatsApp Support",
+        "cards_whatsapp_subtitle": "Chat with us instantly",
+        "cards_whatsapp_value": "+971 04 340 9933",
+
+        "cards_email_title": "Email Support",
+        "cards_email_subtitle": "We reply as fast as possible",
+        "cards_email_value": "info@asfartrip.com",
+
+        "cards_office_title": "Our Office",
+        "cards_office_subtitle": "Visit us anytime",
+        "cards_office_value": "10 39th St - Al Karama - Dubai",
+
+        "social_title": "Follow Us",
+        "social_subtitle": "Stay connected with us on social media",
+
+        "map_title": "Find us on the map",
+
+        "social_instagram": "Instagram",
+        "social_facebook": "Facebook",
+        "social_tiktok": "TikTok"
     },
     "Pages": {
         "about_us": "About Us",
@@ -1334,7 +1465,7 @@
             "instagram": "Instagram",
             "tik_tok": "Tiktok"
         },
-        "quick_links": "Quick links",
+        "company": "Company",
         "services": {
             "title": "Services",
             "flight": "Flight Booking",

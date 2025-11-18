@@ -10,8 +10,6 @@ import {
     User,
     ShieldCheck,
     CreditCard,
-    Mail,
-    Phone,
     AlertTriangle,
     Luggage,
     Calendar,

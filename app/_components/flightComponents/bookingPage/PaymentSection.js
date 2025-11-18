@@ -7,13 +7,13 @@ import { cn } from "@/lib/utils";
 import { BackWardButtonWithDirections } from "../flightSearchNavWrapper/BackwardButton";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useCurrency } from "@/app/_context/CurrencyContext";
 import TopMobileSection from "./TopMobileSection";
 import useBookingStore from "@/app/_store/bookingStore";
 import TimeoutPopup from "../../ui/TimeoutPopup";
 import LoyaltyPointsBanner from "../../loyaltyPoints/LoyaltyPointsBanner";
 import FareSummaryDialog from "./FareSummaryDialog";
 import PayWithLoyaltyPoints from "../../loyaltyPoints/PayWithLoyaltyPoints";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
 
 export default function PaymentSection({ onConfirmPayment, backTo, loading }) {
     const [selectedMethod, setSelectedMethod] = useState("card");
@@ -370,7 +370,7 @@ export default function PaymentSection({ onConfirmPayment, backTo, loading }) {
 function PaymentButton({ onConfirmPayment, loading, hiddenOnMobile = false }) {
     const { getTotalPrice } = useBookingStore();
     const totalAmount = getTotalPrice();
-    const { formatPrice } = useCurrency();
+    const { formatPrice } = useCurrencyStore();
     const p = useTranslations("Payment");
     return (
         <Button

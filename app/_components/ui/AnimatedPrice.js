@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import CountUp from "@/components/CountUp";
-import { useCurrency } from "@/app/_context/CurrencyContext";
 import Image from "next/image";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
 
 export default function AnimatedPrice({
     basePrice,
@@ -12,7 +12,7 @@ export default function AnimatedPrice({
     size = 15,
     className = "",
 }) {
-    const { convertPrice, currentCurrency } = useCurrency();
+    const { convertPrice, currentCurrency } = useCurrencyStore();
 
     const converted = convertPrice(basePrice);
 

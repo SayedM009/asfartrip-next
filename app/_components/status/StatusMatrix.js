@@ -6,7 +6,7 @@ import FlightSummaryNeoFull from "./FlightSummaryNeoFull";
 
 export default function StatusMatrix({ state, booking }) {
     return (
-        <div className="relative min-h-screen bg-[#050b15] text-white overflow-hidden">
+        <div className="relative min-h-screen overflow-hidden">
             {/* Moving light beam */}
             <motion.div
                 className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(232,107,30,0.15),transparent_70%)] blur-2xl"
@@ -40,9 +40,9 @@ export default function StatusMatrix({ state, booking }) {
             />
 
             {/* Summary section */}
-            <div className="max-w-5xl mx-auto px-6 pb-20">
+            <divx>
                 <FlightSummaryNeoFull data={booking} />
-            </div>
+            </divx>
         </div>
     );
 }

@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import { Switch } from "@/components/ui/switch";
-import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useTranslations } from "next-intl";
 import useLoyaltyStore from "@/app/_store/loyaltyStore";
 import useAuthStore from "@/app/_store/authStore";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
 
 export default function PayWithLoyaltyPoints() {
     const l = useTranslations("Loyalty.pay_with_points");
-    const { formatPrice } = useCurrency();
+    const { formatPrice } = useCurrencyStore();
     const { status } = useAuthStore();
     const { balance, calculateBalanceValue, isLoading } = useLoyaltyStore();
     if (status !== "authenticated") return null;

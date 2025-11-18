@@ -8,12 +8,10 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
-import { User, LogOut, Settings, CalendarRange } from "lucide-react";
+import { LogOut, Settings, CalendarRange } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { useCurrency } from "../_context/CurrencyContext";
 import Image from "next/image";
-import useLoyaltyStore from "../_store/loyaltyStore";
 import useCheckLocal from "../_hooks/useCheckLocal";
 import useAuthStore from "../_store/authStore";
 import { UserGroupIcon } from "@heroicons/react/24/outline";
@@ -22,10 +20,7 @@ import { Link } from "@/i18n/navigation";
 export default function UserDropdown() {
     const { user } = useAuthStore();
     const l = useTranslations("Login");
-    const Loyalty = useTranslations("Loyalty");
     const { isRTL } = useCheckLocal();
-    const { balance, tier } = useLoyaltyStore();
-    const { formatPrice } = useCurrency();
     const condition = isRTL ? "rtl" : "ltr";
     return (
         <DropdownMenu>
@@ -66,28 +61,6 @@ export default function UserDropdown() {
                         </Avatar>
                         <p className="font-semibold text-sm">{user?.name}</p>
                     </div>
-                    {/* <div className="flex items-center gap-2 ">
-                        <span className="bg-[#1fa86abe] text-xs p-0.5 px-1 rounded text-white">
-                            {Loyalty(tier?.tier_name)}
-                        </span>
-                        <div className="flex items-center gap-2 ">
-                            <Image
-                                src="/icons/pay-with-coin.png"
-                                alt="Pay with coins"
-                                width={15}
-                                height={15}
-                            />
-                            <span className="font-semibold text-sm">
-                                {balance}
-                            </span>
-                            <p className="capitalize text-xs">
-                                {l("points")} ≈
-                            </p>
-                            <span className="text-accent-400 font-semibold">
-                                {formatPrice(balance)}
-                            </span>
-                        </div>
-                    </div> */}
                 </section>
 
                 <section className="p-2">

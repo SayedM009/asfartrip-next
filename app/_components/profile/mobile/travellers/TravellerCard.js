@@ -5,6 +5,7 @@ import { formatDisplayDate } from "@/app/_helpers/formatDisplayDate";
 import { useTranslations } from "next-intl";
 import { getPassportStatus } from "@/app/_utils/travelers";
 import AddEditTraveller from "./AddEditTraveller";
+import DeleteTravellerDialog from "./DeleteTravellerDialog";
 
 export default function TravellerCard({
     traveller,
@@ -67,12 +68,10 @@ export default function TravellerCard({
                             userType={userType}
                             asIcon
                         />
-                        <button
-                            onClick={() => onDelete(traveller.id)}
-                            className="transition-colors"
-                        >
-                            <Trash className="size-5 text-red-500 hover:text-red-600 cursor-pointer" />
-                        </button>
+                        <DeleteTravellerDialog
+                            traveller={traveller}
+                            userId={userId}
+                        />
                     </div>
                 </div>
 

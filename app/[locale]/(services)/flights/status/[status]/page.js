@@ -1,31 +1,48 @@
-import ActionsBar from "@/app/_components/status/ActionsBar";
-import FlightSummary from "@/app/_components/status/FlightSummary";
 import LoadingState from "@/app/_components/status/LoadingState";
-import StatusHero from "@/app/_components/status/StatusHero";
-import StatusHeroAI from "@/app/_components/status/StatusHeroAI";
-import SummaryCard from "@/app/_components/status/SummaryCard";
 import { getFlightBookingDetails } from "@/app/_libs/flightService";
-
 import StatusMatrix from "@/app/_components/status/StatusMatrix";
 
+// Generate SEO
+import Script from "next/script";
+import { getDictionary } from "@/app/_libs/getDictionary";
+import { generatePageMetadata, buildWebPageJsonLd } from "@/app/_libs/seo";
+import { DEFAULT_LOCALE } from "@/app/_config/i18n";
+export async function generateMetadata({ params }) {
+    const locale = params?.locale || DEFAULT_LOCALE;
+    const dict = await getDictionary(locale);
+
+    return generatePageMetadata({
+        locale,
+        path: "/flights/status",
+        title: dict.FlightPage?.Status?.metaTitle,
+        description: dict.FlightPage?.Status?.metaDescription,
+        keywords: dict.FlightPage?.Status?.metaKeywords,
+    });
+}
+
 export default async function StatusPage({ params, searchParams }) {
-    // ✅ معالجة الـ params والـ query
+    const locale = params?.locale || DEFAULT_LOCALE;
+    const dict = getDictionary(locale);
+    const jsonLd = buildWebPageJsonLd({
+        locale,
+        path: "/flights/status",
+        title: dict.FlightPage?.Status?.metaTitle,
+        description: dict.FlightPage?.Status?.metaDescription,
+        keywords: dict.FlightPage?.Status?.metaKeywords,
+    });
+
     const { status: routeStatus } = await Promise.resolve(params);
     const status = routeStatus || searchParams.status || "failed";
     const moduleType = searchParams.module || "flight";
     const orderId = searchParams.order_id;
-    const bookingRef = searchParams.booking_ref;
 
-    // ✅ قراءة pending
     const rawPending = String(searchParams?.pending ?? "").toLowerCase();
     const isPending =
         rawPending === "true" || rawPending === "1" || rawPending === "yes";
 
-    // ✅ تحديد الحالة العامة
     const state =
         status === "success" ? (isPending ? "pending" : "success") : "failed";
 
-    // 🧾 جلب بيانات الحجز
     let bookingData = null;
     if (moduleType === "flight" && orderId) {
         try {
@@ -35,7 +52,6 @@ export default async function StatusPage({ params, searchParams }) {
         }
     }
 
-    // ✅ النصوص لكل حالة
     const titles = {
         success: "Payment & Booking Confirmed",
         pending: "Payment Received – Ticket Issuance Pending",
@@ -49,9 +65,14 @@ export default async function StatusPage({ params, searchParams }) {
         failed: "The transaction couldn’t be completed. Please try again.",
     };
 
-    // ✅ العرض النهائي
     return (
         <>
+            <Script
+                id="flights/status"
+                type="application/ld+json"
+                strategy="afterInteractive"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {bookingData ? (
                 <StatusMatrix
                     state={state}

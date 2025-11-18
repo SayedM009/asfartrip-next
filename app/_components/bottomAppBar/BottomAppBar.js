@@ -35,7 +35,7 @@ function BottomAppBar() {
     ];
     return (
         <footer
-            className=" fixed w-full bottom-0  flex justify-around left-0 bg-background"
+            className="fixed w-full bottom-0  flex justify-around left-0 bg-background sm:hidden"
             style={{ boxShadow: "0px 5px 10px rgba(0,0,0,0.5)" }}
         >
             {HOME_PAGE_LINKS.map((link) => (

@@ -9,7 +9,7 @@ const REQUEST_TIMEOUT = 30000;
 
 // Simple in-memory cache
 const CACHE = new Map();
-const CACHE_TTL = 60 * 1000; // 1 minute
+const CACHE_TTL = 3 * 60 * 1000; // 3 minutes
 
 async function makeFlightSearchRequest(requestData, basicAuth, apiUrl) {
     const controller = new AbortController();

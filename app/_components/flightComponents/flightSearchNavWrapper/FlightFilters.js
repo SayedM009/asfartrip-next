@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useTranslations } from "use-intl";
-import { useCurrency } from "@/app/_context/CurrencyContext";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
 
 const API = process.env.NEXT_PUBLIC_APP_API_BASE_URL;
 
@@ -236,7 +236,7 @@ export default function FlightFilters({
         fetchAirportNames();
     }, [airports]);
 
-    const { formatPrice, convertPrice } = useCurrency();
+    const { formatPrice, convertPrice } = useCurrencyStore();
     return (
         <Card className="sm:p-4 space-y-1 border-0 shadow-none sm:shadow dark:shadow-gray-600">
             <div className="flex items-center justify-between">

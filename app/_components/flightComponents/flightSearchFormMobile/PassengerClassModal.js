@@ -274,7 +274,10 @@ export function PassengerClassModal({
                         <Button variant="outline" onClick={handleCancel}>
                             {t("passengers.cancel")}
                         </Button>
-                        <Button onClick={handleApply}>
+                        <Button
+                            onClick={handleApply}
+                            className="bg-accent-500 dark:text-white"
+                        >
                             {t("passengers.apply")}
                         </Button>
                     </div>

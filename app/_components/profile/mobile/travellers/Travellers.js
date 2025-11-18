@@ -36,7 +36,6 @@ export default function Travellers() {
                                     traveller={t}
                                     userId={user?.id}
                                     userType={user?.usertype}
-                                    onDelete={handleDelete}
                                 />
                             ))}
                         </motion.div>

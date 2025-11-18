@@ -5,11 +5,12 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 function ThemeSwitcher({ hiddenOnMobile = false }) {
     const { theme, setTheme } = useTheme();
-    const condition = theme === "dark";
+    const condition = theme === "dark" || theme === "system";
     const t = useTranslations("ThemeSwitcher");
     function handleSwitch() {
         setTheme(condition ? "light" : "dark");
     }
+
     return (
         <Button
             variant="ghost"

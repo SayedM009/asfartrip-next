@@ -16,16 +16,14 @@ export default function StatusHeroAI({
     }[state];
 
     const Icon = {
-        success: <CheckCircle2 className="w-20 h-20 text-emerald-400" />,
-        failed: <XCircle className="w-20 h-20 text-rose-400" />,
-        pending: <Clock className="w-20 h-20 text-amber-400" />,
-        processing: (
-            <Loader2 className="w-20 h-20 text-blue-400 animate-spin" />
-        ),
-    }[state] || <Loader2 className="w-20 h-20 text-blue-400 animate-spin" />;
+        success: <CheckCircle2 className="size-10 text-emerald-400" />,
+        failed: <XCircle className="size-10 text-rose-400" />,
+        pending: <Clock className="size-10 text-amber-400" />,
+        processing: <Loader2 className="size-10 text-blue-400 animate-spin" />,
+    }[state] || <Loader2 className="size-10 text-blue-400 animate-spin" />;
 
     return (
-        <section className="relative flex flex-col items-center justify-center text-center min-h-[20vh] py-10">
+        <section className="relative flex flex-col items-center justify-center text-center pt-10">
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -49,16 +47,18 @@ export default function StatusHeroAI({
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8 }}
-                className="relative z-10"
+                className="relative z-10 flex"
             >
-                <div className="flex justify-center mb-6">{Icon}</div>
-                <h1 className="text-4xl font-semibold tracking-tight mb-3 text-white">
-                    {title || "Processing your request..."}
-                </h1>
-                <p className="text-white/60 max-w-lg mx-auto">
-                    {subtitle ||
-                        "Our AI systems are validating your transaction in real time."}
-                </p>
+                <div className="flex justify-center">{Icon}</div>
+                <div>
+                    <h1 className="text-4xl font-semibold tracking-tight mb-3 ">
+                        {title || "Processing your request..."}
+                    </h1>
+                    <p className="text-black/60 dark:text-white/60 max-w-lg mx-auto">
+                        {subtitle ||
+                            "Our AI systems are validating your transaction in real time."}
+                    </p>
+                </div>
             </motion.div>
         </section>
     );

@@ -18,11 +18,11 @@ import { Link } from "@/i18n/navigation";
 const quick_links = [
     {
         title: "about_us",
-        path: "/about",
+        path: "/about-us",
     },
     {
         title: "contact_us",
-        path: "/contact",
+        path: "/contact-us",
     },
     {
         title: "faqs",
@@ -37,7 +37,7 @@ const quick_links = [
 const services = [
     {
         title: "flight",
-        path: "/flight",
+        path: "/flights",
     },
     {
         title: "hotel",
@@ -117,7 +117,7 @@ export function Footer() {
                     {/* Quick Links */}
                     <div>
                         <h3 className="text-foreground mb-4 font-semibold">
-                            {t("quick_links")}
+                            {t("company")}
                         </h3>
                         <ul className="space-y-2 text-sm">
                             {quick_links.map((link) => (

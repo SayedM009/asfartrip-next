@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from "react";
 import { Shield, CheckCircle2, Circle } from "lucide-react";
-import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useTranslations } from "next-intl";
 import useBookingStore from "@/app/_store/bookingStore";
 import Image from "next/image";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
 
 export function InsuranceSelection() {
     const {
@@ -17,7 +17,7 @@ export function InsuranceSelection() {
     const onInsuranceChange = setSelectedInsurance;
     const totalPassengers = getTotalPassengers() || 1;
 
-    const { formatPrice } = useCurrency();
+    const { formatPrice } = useCurrencyStore();
     const f = useTranslations("Flight");
 
     // Add "No Insurance" option at the beginning

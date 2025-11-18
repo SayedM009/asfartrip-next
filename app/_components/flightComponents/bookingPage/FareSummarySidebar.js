@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Info, Loader2, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FlightDetailsDialog } from "../flightSearchNavWrapper/FlightDetailsDialog";
-import { useCurrency } from "@/app/_context/CurrencyContext";
 import {
     Tooltip,
     TooltipContent,
@@ -15,10 +14,11 @@ import { useTranslations } from "use-intl";
 import ChevronBasedOnLanguage from "../../ui/ChevronBasedOnLanguage";
 import useBookingStore from "@/app/_store/bookingStore";
 import AnimatedPrice from "../../ui/AnimatedPrice";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
 
 export default function FareSummarySidebar({ onProceedToPayment, loading }) {
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
-    const { formatPrice } = useCurrency();
+    const { formatPrice } = useCurrencyStore();
     const { formatBaggage } = useFormatBaggage();
     const f = useTranslations("Flight");
 
@@ -189,7 +189,7 @@ export default function FareSummarySidebar({ onProceedToPayment, loading }) {
 }
 
 function PriceRow({ label, value }) {
-    const { formatPrice } = useCurrency();
+    const { formatPrice } = useCurrencyStore();
     return (
         <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">{label}</span>

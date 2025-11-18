@@ -15,7 +15,6 @@ import {
     Plane,
     Clock,
     Luggage,
-    CreditCard,
     AlertCircle,
     Backpack,
     Loader2,
@@ -26,7 +25,6 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
-import { useCurrency } from "@/app/_context/CurrencyContext";
 import { useRouter } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +32,7 @@ import useBookingStore from "@/app/_store/bookingStore";
 import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 import ChevronBasedOnLanguage from "../../ui/ChevronBasedOnLanguage";
 import LoyaltyPoints from "../../loyaltyPoints/LoyaltyPoints";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
 
 export function FlightDetailsDialog({
     ticket,
@@ -64,7 +63,7 @@ export function FlightDetailsDialog({
 
     const t = useTranslations("Flight");
     const formatDate = useDateFormatter();
-    const { formatPrice } = useCurrency();
+    const { formatPrice } = useCurrencyStore();
     const searchParams = useSearchParams();
     const searchInfo = JSON.parse(searchParams.get("searchObject"));
 

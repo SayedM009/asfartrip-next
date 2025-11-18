@@ -10,8 +10,8 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import FlightFilters from "./FlightFilters";
 import React, { useState, useMemo, useCallback } from "react";
 import { useTranslations } from "next-intl";
-import { useCurrency } from "@/app/_context/CurrencyContext";
 import { cn } from "@/lib/utils";
+import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
 export default function FloatingSortFilter({
     flights,
     setSortBy,
@@ -43,7 +43,7 @@ export default function FloatingSortFilter({
 function FlowingSortDialog({ flights, setSortBy, sortBy }) {
     const t = useTranslations("Flight");
     const [open, setOpen] = useState(false);
-    const { formatPrice } = useCurrency();
+    const { formatPrice } = useCurrencyStore();
 
     function getAllSegments(flight) {
         if (!flight) return [];
