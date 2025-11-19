@@ -1,11 +1,11 @@
-import BottomAppBar from "@/app/_components/bottomAppBar/BottomAppBar";
-import { Footer } from "@/app/_components/Footer";
-import Header from "@/app/_components/Navbar";
+import BottomAppBar from "@/app/_components/layout/bottomAppBar/BottomAppBar";
+import Footer from "@/app/_components/layout/footer/Footer";
+import Navbar from "@/app/_components/layout/Navbar";
 
 function layout({ children }) {
     return (
         <section className="container-custom">
-            <Header />
+            <Navbar />
             {children}
             <Footer />
             <BottomAppBar />

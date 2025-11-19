@@ -1,5 +1,5 @@
 "use client";
-import CurrencySwitcher from "../../CurrencySwicther";
+// import CurrencySwitcher from "../../CurrencySwicther";
 import { FlightSearchForm } from "../flightSearchFormMobile/FlightSearchFormMobile";
 import {
     Dialog,
@@ -18,6 +18,7 @@ import { BackWardButtonWithDirections } from "./BackwardButton";
 import { useTranslations } from "next-intl";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 import { cn } from "@/lib/utils";
+import CurrencySwitcher from "@/app/_modules/currency/components/organisms/CurrencySwitcher";
 
 export default function MobileHeaderWrapper() {
     const t = useTranslations("Flight");

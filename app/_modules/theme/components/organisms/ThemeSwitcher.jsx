@@ -1,15 +1,12 @@
 "use client";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
-import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { useThemeSwitcher } from "../../hooks/useThemeSwitcher";
+
 function ThemeSwitcher({ hiddenOnMobile = false }) {
-    const { theme, setTheme } = useTheme();
-    const condition = theme === "dark" || theme === "system";
+    const { condition, handleSwitch } = useThemeSwitcher();
     const t = useTranslations("ThemeSwitcher");
-    function handleSwitch() {
-        setTheme(condition ? "light" : "dark");
-    }
 
     return (
         <Button

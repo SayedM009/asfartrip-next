@@ -2,7 +2,7 @@
 import React from "react";
 import CountUp from "@/components/CountUp";
 import Image from "next/image";
-import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
+import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 
 export default function AnimatedPrice({
     basePrice,
@@ -12,7 +12,7 @@ export default function AnimatedPrice({
     size = 15,
     className = "",
 }) {
-    const { convertPrice, currentCurrency } = useCurrencyStore();
+    const { convertPrice, currentCurrency } = useCurrency();
 
     const converted = convertPrice(basePrice);
 

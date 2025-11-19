@@ -3,8 +3,6 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import Airplane from "./SVG/Airplane";
-import Bed from "./SVG/Bed";
 
 const WIDTH = 60;
 const HEIGHT = 60;
@@ -13,7 +11,6 @@ const SERVICES = [
     {
         title: "Flights",
         subTitle: "Book Flights",
-        // src: "/icons/airplane-m.gif",
         src: "/icons/airplane.svg",
         path: "/flights",
         default: true,
@@ -21,7 +18,6 @@ const SERVICES = [
     {
         title: "Hotels",
         subTitle: "Perfect Stays",
-        // src: "/icons/bed-m.gif",
         src: "/icons/bed.svg",
         path: "/hotels",
         soon: true,
@@ -29,7 +25,6 @@ const SERVICES = [
     {
         title: "Insurance",
         subTitle: "Safe Trip",
-        // src: "/icons/insurance-m.gif",
         src: "/icons/insurance.svg",
         path: "/insurance",
         soon: true,
@@ -37,7 +32,6 @@ const SERVICES = [
     {
         title: "Cars",
         subTitle: "Rent Vehicles",
-        // src: "/icons/car-m.gif",
         src: "/icons/car.svg",
         path: "/cars",
         soon: true,
@@ -58,7 +52,7 @@ function ServicesNavigation() {
                     href={service.path}
                     onClick={(e) => {
                         if (service.soon) {
-                            e.preventDefault(); // يمنع الذهاب للصفحة
+                            e.preventDefault();
                         }
                     }}
                     className={`flex justify-start flex-col sm:min-w-40 items-center 

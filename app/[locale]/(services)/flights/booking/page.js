@@ -1,5 +1,5 @@
 import BookingPage from "@/app/_components/flightComponents/bookingPage/BookingPage";
-import Navbar from "@/app/_components/Navbar";
+import Navbar from "@/app/_components/layout/Navbar";
 import { auth } from "@/app/_libs/auth";
 import { getCart } from "@/app/_libs/flightService";
 

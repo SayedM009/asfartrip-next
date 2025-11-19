@@ -3,7 +3,7 @@ import { PromotionalSlider } from "@/app/_components/sliders/PromotionalSlider";
 import { FlightsSlider } from "@/app/_components/sliders/FlightsSlider";
 
 // Components
-import Navbar from "@/app/_components/Navbar";
+import Navbar from "@/app/_components/layout/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
 import FlightSearchWrapper from "@/app/_components/flightComponents/FlightSearchWrapper";
 
@@ -12,7 +12,7 @@ import Script from "next/script";
 import { getDictionary } from "@/app/_libs/getDictionary";
 import { generatePageMetadata, buildWebPageJsonLd } from "@/app/_libs/seo";
 import { DEFAULT_LOCALE } from "@/app/_config/i18n";
-import BottomAppBar from "@/app/_components/bottomAppBar/BottomAppBar";
+import BottomAppBar from "@/app/_components/layout/bottomAppBar/BottomAppBar";
 
 export async function generateMetadata({ params }) {
     const locale = params?.locale || DEFAULT_LOCALE;

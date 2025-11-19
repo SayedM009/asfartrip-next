@@ -581,6 +581,15 @@
         "liability_p2": "AsfarTrip is not liable for any refusal by the airline to refund, any delays in processing a refund, or any loss arising from non-refundable tickets or partially used services.",
         "liability_p3": "In all cases, AsfarTrip's total aggregate liability related to a refund request shall be limited to the amount of service fees, if any, received by AsfarTrip for that specific booking."
     },
+    "OffersPage": {
+        "metaTitle": "Special Offers & Deals | AsfarTrip | Flight Booking Discounts",
+        "metaDescription": "Discover the latest special offers and flight booking deals on AsfarTrip. Save on domestic and international flights with our exclusive discounts and promotions. Book now to take advantage of limited-time offers!",
+        "metaKeywords": "asfartrip special offers, flight deals, travel discounts, flight booking offers, cheap flights uae, international flight deals, domestic flight discounts, asfartrip promotions, travel agency offers",
+        "hero_title": "Special Offers & Deals",
+        "hero_subtitle": "Explore our latest flight deals and special offers.",
+        "view_details": "View Details",
+        "starting_from": "Starting from"
+    },
     "Pages": {
         "about_us": "About Us",
         "contact_us": "Contact Us",

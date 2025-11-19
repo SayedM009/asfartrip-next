@@ -12,11 +12,11 @@ import { format, parseISO, differenceInMinutes } from "date-fns";
 import Image from "next/image";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import LoyaltyPoints from "../../loyaltyPoints/LoyaltyPoints";
-import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
+import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 
 export function FlightTicket({ ticket, onSelect, isFastest, isCheapest }) {
     // Convert Currency
-    const { formatPrice } = useCurrencyStore();
+    const { formatPrice } = useCurrency();
 
     const {
         TotalPrice,

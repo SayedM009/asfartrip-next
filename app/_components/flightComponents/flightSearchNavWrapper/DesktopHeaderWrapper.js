@@ -1,4 +1,4 @@
-import Navbar from "@/app/_components/Navbar";
+import Navbar from "@/app/_components/layout/Navbar";
 import { FlightSearchFormDesktop } from "../flightSearchFormDesktop/FlightSearchFromDesktop";
 export default function DesktopHeaderWrapper() {
     return (

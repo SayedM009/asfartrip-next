@@ -10,7 +10,6 @@ import {
 import { cn } from "@/lib/utils";
 import {
     BanknotesIcon,
-    ExclamationCircleIcon,
     PhoneIcon,
     QuestionMarkCircleIcon,
     SquaresPlusIcon,
@@ -19,11 +18,9 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "next-themes";
-import LanguageSwitcher from "../LanguageSwitcher";
-import ThemeSwitcher from "../ThemeSwitcher";
-import CurrencySwicther from "../CurrencySwicther";
-import ChevronBasedOnLanguage from "../ui/ChevronBasedOnLanguage";
-import SignOutButton from "../loginButton/SignOut";
+import CurrencySwitcher from "@/app/_modules/currency/components/organisms/CurrencySwitcher";
+import ChevronBasedOnLanguage from "../../ui/ChevronBasedOnLanguage";
+import SignOutButton from "../../loginButton/SignOut";
 import {
     Ban,
     Earth,
@@ -33,6 +30,8 @@ import {
     User,
 } from "lucide-react";
 import { useState } from "react";
+import { LanguageSwitcher } from "@/app/_modules/language";
+import { ThemeSwitcher } from "@/app/_modules/theme";
 
 const HELPER_LINKS = [
     {
@@ -127,7 +126,7 @@ function MoreButton() {
                             <div className="py-2 flex items-center border-b-1 border-gray-300 pb-1  dark:border-gray-100 gap-3">
                                 <BanknotesIcon className="size-5 text-accent-500" />
                                 <div className=" w-full">
-                                    <CurrencySwicther isLabel={false} />
+                                    <CurrencySwitcher isLabel={false} />
                                 </div>
                                 <span className="font-bold dark:text-gray-50">
                                     <ChevronBasedOnLanguage />

@@ -11,7 +11,8 @@ import FlightFilters from "./FlightFilters";
 import React, { useState, useMemo, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
+import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
+
 export default function FloatingSortFilter({
     flights,
     setSortBy,
@@ -43,7 +44,7 @@ export default function FloatingSortFilter({
 function FlowingSortDialog({ flights, setSortBy, sortBy }) {
     const t = useTranslations("Flight");
     const [open, setOpen] = useState(false);
-    const { formatPrice } = useCurrencyStore();
+    const { formatPrice } = useCurrency();
 
     function getAllSegments(flight) {
         if (!flight) return [];

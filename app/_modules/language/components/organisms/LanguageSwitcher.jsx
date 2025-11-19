@@ -19,42 +19,22 @@ import {
 } from "@/components/ui/select";
 import { Globe } from "lucide-react";
 import { useState } from "react";
-import useCheckLocal from "../_hooks/useCheckLocal";
 import Image from "next/image";
 import { Label } from "@radix-ui/react-dropdown-menu";
+import { useLanguage } from "../../hooks/useLanguage";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
 
 function LanguageSwitcher({ hiddenOnMobile = false }) {
     const [isOpen, setIsOpen] = useState(false);
     const { locale, isRTL } = useCheckLocal();
     const [currentLanguage, setCurrentLanguage] = useState(locale);
-    const pathname = usePathname();
-    const router = useRouter();
-    const searchParams = useSearchParams();
+
     const t = useTranslations("Languageswitcher");
-
-    function handleSwitch(locale) {
-        const nextLocale = locale;
-        const segments = pathname.split("/");
-        segments[1] = nextLocale;
-        const newPath = segments.join("/");
-        const currentParams = searchParams.toString();
-        const finalPath = currentParams
-            ? `${newPath}?${currentParams}`
-            : newPath;
-
-        router.push(finalPath);
-        setIsOpen(false);
-    }
+    const { switchLang } = useLanguage();
 
     const languages = [
         { code: "en", name: "English", flag: "/flags/usa.svg" },
         { code: "ar", name: "العربية", flag: "/flags/uae.svg" },
-        // { code: "fr", name: "Français", flag: "🇫🇷" },
-        // { code: "de", name: "Deutsch", flag: "🇩🇪" },
-        // { code: "it", name: "Italiano", flag: "🇮🇹" },
-        // { code: "pt", name: "Português", flag: "🇧🇷" },
-        // { code: "zh", name: "中文", flag: "🇨🇳" },
-        // { code: "ja", name: "日本語", flag: "🇯🇵" },
     ];
 
     const selectedLanguage = languages.find(
@@ -70,9 +50,7 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                     className={`sm:items-center hover:bg-accent font-bold sm:flex dark:text-gray-50 cursor-pointer w-full sm:w-auto justify-start ${
                         hiddenOnMobile ? "hidden sm:flex" : "flex"
                     }`}
-                    aria-label={`Change language. Current: ${selectedLanguage?.name}`}
                 >
-                    {/* <Globe className="size-4" /> */}
                     <Image
                         src={selectedLanguage?.flag}
                         alt={`Selected Language is ${selectedLanguage?.name}`}
@@ -85,6 +63,7 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                     </span>
                 </Button>
             </DialogTrigger>
+
             <DialogContent className="sm:max-w-md border-0">
                 <DialogHeader>
                     <DialogTitle className="flex items-center space-x-2">
@@ -99,15 +78,16 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                         {t("sub_title")}
                     </DialogDescription>
                 </DialogHeader>
+
                 <div className="space-y-6">
                     <div>
                         <Label className="text-sm mb-3 block text-gray-50">
                             {t("select_language")}
                         </Label>
+
                         <Select
                             value={currentLanguage}
                             onValueChange={(e) => setCurrentLanguage(e)}
-                            className={`${isRTL && "text-right"}`}
                         >
                             <SelectTrigger
                                 className="w-full cursor-pointer"
@@ -117,33 +97,31 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                                     <div className="flex items-center space-x-2 uppercase dark:text-white">
                                         <Image
                                             src={selectedLanguage?.flag}
-                                            alt={`Selected Language is ${selectedLanguage?.name}`}
+                                            alt={selectedLanguage?.name}
                                             width={25}
                                             height={25}
                                             loading="lazy"
                                         />
-                                        {/* <span>{selectedLanguage?.flag}</span> */}
                                         <span>{selectedLanguage?.name}</span>
                                     </div>
                                 </SelectValue>
                             </SelectTrigger>
+
                             <SelectContent>
                                 {languages.map((lang) => (
                                     <SelectItem
                                         key={lang.code}
                                         value={lang.code}
-                                        dir={isRTL ? "rtl" : "ltr"}
                                         className="cursor-pointer"
+                                        dir={isRTL ? "rtl" : "ltr"}
                                     >
                                         <div className="flex items-center space-x-2">
                                             <Image
                                                 src={lang.flag}
-                                                alt={`Selected Language is ${selectedLanguage?.name}`}
+                                                alt={lang.name}
                                                 width={25}
                                                 height={25}
-                                                loading="lazy"
                                             />
-                                            {/* <span>{lang.flag}</span> */}
                                             <span>{lang.name}</span>
                                         </div>
                                     </SelectItem>
@@ -160,13 +138,14 @@ function LanguageSwitcher({ hiddenOnMobile = false }) {
                         <Button
                             variant="outline"
                             onClick={() => setIsOpen(false)}
-                            className="hover:cursor-pointer hover:bg-input-background/90 py-5"
+                            className="cursor-pointer"
                         >
                             {t("cancel")}
                         </Button>
+
                         <Button
-                            onClick={() => handleSwitch(currentLanguage)}
-                            className="hover:cursor-pointer bg-accent-500 hover:bg-accent-600 transition-colors dark:text-white"
+                            onClick={() => switchLang(currentLanguage)}
+                            className="bg-accent-500 hover:bg-accent-600 dark:text-white cursor-pointer"
                         >
                             {t("apply")}
                         </Button>

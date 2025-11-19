@@ -32,7 +32,7 @@ import useBookingStore from "@/app/_store/bookingStore";
 import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 import ChevronBasedOnLanguage from "../../ui/ChevronBasedOnLanguage";
 import LoyaltyPoints from "../../loyaltyPoints/LoyaltyPoints";
-import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
+import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 
 export function FlightDetailsDialog({
     ticket,
@@ -63,7 +63,7 @@ export function FlightDetailsDialog({
 
     const t = useTranslations("Flight");
     const formatDate = useDateFormatter();
-    const { formatPrice } = useCurrencyStore();
+    const { formatPrice } = useCurrency();
     const searchParams = useSearchParams();
     const searchInfo = JSON.parse(searchParams.get("searchObject"));
 

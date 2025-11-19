@@ -1,12 +1,10 @@
 // Sliders
-import { PromotionalSlider } from "../_components/sliders/PromotionalSlider";
 import { DestinationSlider } from "../_components/sliders/DestinationSlider";
 import { FlightsSlider } from "../_components/sliders/FlightsSlider";
 import { HotelsSlider } from "../_components/sliders/HotelsSlider";
 
 // Components
-import { Footer } from "../_components/Footer";
-import Navbar from "@/app/_components/Navbar";
+import Navbar from "@/app/_components/layout/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
 import FlightSearchWrapper from "../_components/flightComponents/FlightSearchWrapper";
 
@@ -15,7 +13,9 @@ import Script from "next/script";
 import { DEFAULT_LOCALE } from "@/app/_config/i18n";
 import { getDictionary } from "../_libs/getDictionary";
 import { generatePageMetadata, buildHomeJsonLd } from "@/app/_libs/seo";
-import BottomAppBar from "../_components/bottomAppBar/BottomAppBar";
+import BottomAppBar from "../_components/layout/bottomAppBar/BottomAppBar";
+import PromotionalSlider from "../_modules/offers/components/organisms/PromotionalSlider";
+import Footer from "../_components/layout/footer/Footer";
 
 export async function generateMetadata({ params }) {
     const locale = params?.locale || DEFAULT_LOCALE;
