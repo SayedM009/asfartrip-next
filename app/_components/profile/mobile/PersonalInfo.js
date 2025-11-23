@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { TravelerBasicFieldsSkeleton } from "../../TravelerBasicFieldsSkeleton";
 import { fetchUserProfile, updateProfileClient } from "@/app/_libs/profile";
-import useAuthStore from "@/app/_store/authStore";
 import TravelerBasicFields from "../../TravelerBasicFields";
+import useAuthStore from "@/app/_modules/auth/store/authStore";
 
 function PersonalInfo({ close }) {
     const [userInfo, setUserInfo] = useState({});

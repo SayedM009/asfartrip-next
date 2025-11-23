@@ -20,13 +20,13 @@ import { useTranslations } from "use-intl";
 import { useFormatBaggage } from "@/app/_hooks/useFormatBaggage";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import useBookingStore from "@/app/_store/bookingStore";
-import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
+import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 
 export default function BaggageDialog({ trigger }) {
     const f = useTranslations("Flight");
     const t = useTranslations("Traveler");
     const { formatBaggage } = useFormatBaggage();
-    const { formatPrice } = useCurrencyStore();
+    const { formatPrice } = useCurrency();
     const { travelers, baggageData, addOns, updateBaggage } = useBookingStore();
     const { isRTL } = useCheckLocal();
     const direction = isRTL ? "rtl" : "ltr";

@@ -5,8 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 // Stores
 import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
-import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
-import useAuthStore from "@/app/_store/authStore";
+import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 // Components
 import Tabs from "../Tabs";
 import { Button } from "@/components/ui/button";
@@ -14,10 +13,11 @@ import TravelInsuranceIcon from "@/app/_components/SVG/TravelInsuranceIcon";
 import ChevronBasedOnLanguage from "@/app/_components/ui/ChevronBasedOnLanguage";
 // Helper functions
 import { formatDisplayDate } from "@/app/_helpers/formatDisplayDate";
+import { useAuthStore } from "@/app/_modules/auth";
 
 export default function InsuranceBookings() {
     const p = useTranslations("Profile");
-    const { formatPrice } = useCurrencyStore();
+    const { formatPrice } = useCurrency();
     const { user } = useAuthStore();
     const { fetchBookings, insuranceBookings, loading } =
         useDashboardBookingsStore();

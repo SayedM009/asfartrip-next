@@ -10,11 +10,11 @@ import Tabs from "../Tabs";
 import ChevronBasedOnLanguage from "../../../ui/ChevronBasedOnLanguage";
 import HotelCard from "../../../SVG/HotelCard"; // لو عندك أيقونة فندق، أو بدلها بـ Image
 import { useTranslations } from "next-intl";
-import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
+import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 
 export default function HotelBookings() {
     const p = useTranslations("Profile");
-    const { formatPrice } = useCurrencyStore();
+    const { formatPrice } = useCurrency();
     const { fetchBookings, hotelBookings, loading } =
         useDashboardBookingsStore();
 

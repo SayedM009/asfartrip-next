@@ -6,10 +6,10 @@ import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
 import Header from "./Header";
 import Status from "./Status";
 import DeleteAccount from "./DeleteAccount";
-import useAuthStore from "@/app/_store/authStore";
 import Sections from "./Section";
 import FullscreenDialog from "./FullscreenDialog";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
+import useAuthStore from "@/app/_modules/auth/store/authStore";
 
 export default function ProfileOnMobile() {
     const [openDialog, setOpenDialog] = useState(null);

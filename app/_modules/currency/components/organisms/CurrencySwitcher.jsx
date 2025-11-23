@@ -76,11 +76,7 @@ export default function CurrencySwitcher({
                     size="sm"
                     aria-label={t("title")}
                     className={`font-bold gap-2 cursor-pointer p-0 dark:text-white
-                        ${
-                            hiddenOnMobile
-                                ? "hidden sm:flex sm:w-10"
-                                : "flex w-full"
-                        }`}
+                        ${hiddenOnMobile ? "hidden sm:flex sm:w-10" : "flex "}`}
                 >
                     {currentCurrency}
                     {isLabel && <span>{t("title")}</span>}

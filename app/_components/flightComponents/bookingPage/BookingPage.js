@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BackWardButtonWithDirections } from "../flightSearchNavWrapper/BackwardButton";
 import { useTranslations } from "next-intl";
 import { InsuranceSelection } from "./InsuranceSelection";
 import { savePassengers } from "@/app/_libs/flightService";
@@ -21,6 +20,7 @@ import AddOn from "./AddOn";
 import TopMobileSection from "./TopMobileSection";
 import TicketExpired from "./TicketExpired";
 import FareSummaryDialog from "./FareSummaryDialog";
+import { BackWardButtonWithDirections } from "../../layout/BackwardButton";
 
 export default function BookingPage({ isLogged, cart: initialCart, userId }) {
     const [currentStep, setCurrentStep] = useState(2);
@@ -40,11 +40,12 @@ export default function BookingPage({ isLogged, cart: initialCart, userId }) {
         setInsurancePlans,
         setUserId,
         setCart,
-        setBookingData,
+        setBookingRef,
         bookingReference,
         gateway,
         searchURL,
         setSameBookingURL,
+        setGateway,
     } = useBookingStore();
 
     const totalPassengers = getTotalPassengers();
@@ -97,7 +98,8 @@ export default function BookingPage({ isLogged, cart: initialCart, userId }) {
                     data.booking_reference &&
                     data.gateway
                 ) {
-                    setBookingData(data);
+                    setBookingRef(data.booking_reference);
+                    setGateway(data.gateway.ifrurl);
                     setDataModified(false);
                     setCurrentStep(3);
                     window.scrollTo({ top: 0, behavior: "smooth" });

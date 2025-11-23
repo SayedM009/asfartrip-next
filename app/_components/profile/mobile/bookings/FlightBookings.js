@@ -11,12 +11,12 @@ import { useTranslations } from "next-intl";
 import Tabs from "../Tabs";
 import ChevronBasedOnLanguage from "../../../ui/ChevronBasedOnLanguage";
 import AirplaneStairs from "../../../SVG/AirplaneStairs";
-import useAuthStore from "@/app/_store/authStore";
-import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
+import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
+import { useAuthStore } from "@/app/_modules/auth";
 
 export default function FlightBookings() {
     const p = useTranslations("Profile");
-    const { formatPrice } = useCurrencyStore();
+    const { formatPrice } = useCurrency();
     const {
         user: { id, usertype },
     } = useAuthStore();

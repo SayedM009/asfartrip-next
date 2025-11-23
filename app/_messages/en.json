@@ -716,6 +716,13 @@
         "return": "Return",
         "before": "Before 6:00",
         "after": " After 18:00",
+        "sort": {
+            "cheapest": "Cheapest",
+            "fastest": "Fastest",
+            "earliest": "Earliest",
+            "h": "h",
+            "m": "m"
+        },
         "cities": {
             "cairo": "cairo",
             "manila": "manila",
@@ -1763,7 +1770,10 @@
         "age_must_be_12_or_above": "Adult must be 12 years or older",
         "age_must_be_between_2_and_12": "Child must be between 2 and 11 years old",
         "age_must_be_under_2": "Infant must be under 2 years old",
-        "you": "You"
+        "you": "You",
+        "full_name_required": "Full name is required",
+        "email_required": "Email is required",
+        "phone_required": "Phone number is required"
     },
     "Payment": {
         "title": "Payment Method",

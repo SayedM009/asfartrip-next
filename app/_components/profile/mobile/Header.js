@@ -6,8 +6,8 @@ import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
 import { AvatarImage } from "@/components/ui/avatar";
 
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
-import useAuthStore from "@/app/_store/authStore";
 import ChevronBasedOnLanguage from "../../ui/ChevronBasedOnLanguage";
+import useAuthStore from "@/app/_modules/auth/store/authStore";
 
 export default function Header() {
     const p = useTranslations("Profile");

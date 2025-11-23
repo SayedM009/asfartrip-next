@@ -1,8 +1,8 @@
 "use client";
 import { useEffect } from "react";
 import { SessionProvider, useSession } from "next-auth/react";
-import useAuthStore from "@/app/_store/authStore";
-import useLoyaltyStore from "@/app/_store/loyaltyStore";
+import useLoyaltyStore from "../_modules/loyalty/store/loyaltyStore";
+import useAuthStore from "../_modules/auth/store/authStore";
 
 function LoyaltyInitializer() {
     const { data: session, status } = useSession();

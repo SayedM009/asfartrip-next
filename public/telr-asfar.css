@@ -1,0 +1,97 @@
+/* ===========================
+   GLOBAL
+=========================== */
+body,
+html {
+  font-family: "Arial", sans-serif !important;
+  background: #f7f7f7 !important;
+  color: #05203c !important;
+}
+
+/* Remove Telr header */
+.header,
+.logo-holder {
+  display: none !important;
+}
+
+/* AsfarTrip Header */
+.asfar-header {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.asfar-header img {
+  width: 150px;
+  margin: 0 auto 10px;
+}
+
+/* ===========================
+   FORM FIELDS
+=========================== */
+input,
+select {
+  border: 1px solid #d5d5d5 !important;
+  border-radius: 10px !important;
+  padding: 12px !important;
+  font-size: 15px !important;
+}
+
+input:focus,
+select:focus {
+  border-color: #e86b1e !important;
+  box-shadow: 0 0 0 2px rgba(232, 107, 30, 0.15) !important;
+}
+
+/* ===========================
+   MAIN BUTTON
+=========================== */
+.button-primary,
+button[type="submit"] {
+  background: #e86b1e !important;
+  color: #fff !important;
+  border-radius: 14px !important;
+  border: none !important;
+  padding: 14px !important;
+  font-size: 17px !important;
+  font-weight: bold !important;
+  width: 100% !important;
+  transition: 0.3s ease-in-out !important;
+}
+
+.button-primary:hover,
+button[type="submit"]:hover {
+  background: #05203c !important;
+}
+
+/* ===========================
+   SECONDARY BUTTON (cancel)
+=========================== */
+.button-secondary {
+  background: #05203c !important;
+  color: #fff !important;
+  border-radius: 12px !important;
+}
+
+/* ===========================
+   CARD INPUTS
+=========================== */
+.card-input {
+  border-radius: 12px !important;
+  border-color: #ccc !important;
+}
+
+/* ===========================
+   LABELS
+=========================== */
+label {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #05203c !important;
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+.footer {
+  display: none !important;
+}

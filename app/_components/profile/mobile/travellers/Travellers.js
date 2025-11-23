@@ -5,8 +5,8 @@ import { useTravellersManager } from "@/app/_hooks/useTravellersManager";
 import TravellerCard from "./TravellerCard";
 import TravellerCardSkeleton from "./TravellerCardSkeleton";
 import AddEditTraveller from "./AddEditTraveller";
-import useAuthStore from "@/app/_store/authStore";
 import AirplaneStairs from "@/app/_components/SVG/AirplaneStairs";
+import { useAuthStore } from "@/app/_modules/auth";
 
 export default function Travellers() {
     const p = useTranslations("Profile");

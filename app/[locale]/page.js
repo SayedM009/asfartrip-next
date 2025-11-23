@@ -6,7 +6,7 @@ import { HotelsSlider } from "../_components/sliders/HotelsSlider";
 // Components
 import Navbar from "@/app/_components/layout/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
-import FlightSearchWrapper from "../_components/flightComponents/FlightSearchWrapper";
+import { FlightSearchWrapper } from "../_modules/flight/search";
 
 // Generate SEO
 import Script from "next/script";

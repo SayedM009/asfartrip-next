@@ -1,17 +1,17 @@
 // 1. Search airports
-const API = process.env.NEXT_PUBLIC_APP_API_BASE_URL;
+// const API = process.env.NEXT_PUBLIC_APP_API_BASE_URL;
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-export async function searchAirports(value) {
-    if (!value) throw new Error("There is no value");
-    try {
-        const res = await fetch(`${API}/api/flight/airports?term=${value}`);
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        console.error(error.message);
-    }
-}
+// export async function searchAirports(value) {
+//     if (!value) throw new Error("There is no value");
+//     try {
+//         const res = await fetch(`${API}/api/flight/airports?term=${value}`);
+//         const data = await res.json();
+//         return data;
+//     } catch (error) {
+//         console.error(error.message);
+//     }
+// }
 
 export async function getCart(sessionId) {
     const res = await fetch(`${baseUrl}/api/flight/get-cart`, {

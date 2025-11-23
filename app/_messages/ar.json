@@ -714,6 +714,13 @@
         "return": "العودة",
         "before": "قبل 6:00",
         "after": " بعد 18:00",
+        "sort": {
+            "cheapest": "الأرخص",
+            "fastest": "الأسرع",
+            "earliest": "الأبكر",
+            "h": "س",
+            "m": "د"
+        },
         "cities": {
             "cairo": "القاهرة",
             "manila": "مانيلا",
@@ -1761,7 +1768,10 @@
         "age_must_be_12_or_above": "يجب أن يكون عمر البالغ 12 سنة أو أكثر",
         "age_must_be_between_2_and_12": "يجب أن يكون عمر الطفل بين 2 و 11 سنة",
         "age_must_be_under_2": "يجب أن يكون عمر الرضيع أقل من سنتين",
-        "you": "أنت"
+        "you": "أنت",
+        "full_name_required": "الإسم الكامل مطلوب",
+        "email_required": "الإيميل مطلوب",
+        "phone_required": "رقم الهاتف مطلوب"
     },
     "Payment": {
         "title": "الدفع",

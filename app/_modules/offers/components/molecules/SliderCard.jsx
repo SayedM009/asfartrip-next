@@ -2,7 +2,6 @@ import { Link } from "@/i18n/navigation";
 import SliderImage from "../atoms/SliderImage";
 
 export default function SliderCard({ offer, locale }) {
-    console.log(offer);
     return (
         <Link
             href={`/offers/${offer.slug}`}

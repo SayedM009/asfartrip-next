@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import BackwardButton from "../flightSearchNavWrapper/BackwardButton";
+import BackwardButton from "../../layout/BackwardButton";
 
 export default function TicketExpired() {
     return (

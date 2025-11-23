@@ -1,7 +1,7 @@
-import React from "react";
 import { Gift } from "lucide-react";
-import AuthDialog from "../../loginButton/AuthDialog";
 import { useTranslations } from "next-intl";
+import { AuthDialog } from "@/app/_modules/auth";
+
 export default function TravelerLoginSection() {
     const t = useTranslations("Login");
     return (

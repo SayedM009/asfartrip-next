@@ -9,15 +9,15 @@ import {
 import { ChevronUp } from "lucide-react";
 import { useTranslations } from "next-intl";
 import PayInInstallments from "../../PayInInstallments";
-import LoyaltyPoints from "../../loyaltyPoints/LoyaltyPoints";
 import FareSummarySidebar from "./FareSummarySidebar";
 import useBookingStore from "@/app/_store/bookingStore";
-import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
+import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
+import LoyaltyPoints from "@/app/_modules/loyalty/components/organisms/LoyaltyPoints";
 
 export default function FareSummaryDialog() {
     const { getTotalPrice } = useBookingStore();
     const t = useTranslations("Flight");
-    const { formatPrice } = useCurrencyStore();
+    const { formatPrice } = useCurrency();
     const dynamicTotal = getTotalPrice();
     return (
         <Dialog>

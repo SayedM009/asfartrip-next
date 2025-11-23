@@ -20,8 +20,8 @@ import {
 
 import { useTranslations } from "next-intl";
 import { parseISO, isBefore } from "date-fns";
-import useAuthStore from "@/app/_store/authStore";
 import useTravellersStore from "@/app/_store/travellersStore";
+import useAuthStore from "@/app/_modules/auth/store/authStore";
 
 export function SavedTravelerSelect({ onSelect }) {
     const t = useTranslations("Traveler");

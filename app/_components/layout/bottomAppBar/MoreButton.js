@@ -20,7 +20,6 @@ import { Switch } from "@/components/ui/switch";
 import { useTheme } from "next-themes";
 import CurrencySwitcher from "@/app/_modules/currency/components/organisms/CurrencySwitcher";
 import ChevronBasedOnLanguage from "../../ui/ChevronBasedOnLanguage";
-import SignOutButton from "../../loginButton/SignOut";
 import {
     Ban,
     Earth,
@@ -32,6 +31,7 @@ import {
 import { useState } from "react";
 import { LanguageSwitcher } from "@/app/_modules/language";
 import { ThemeSwitcher } from "@/app/_modules/theme";
+import { SignOutButton } from "@/app/_modules/auth";
 
 const HELPER_LINKS = [
     {

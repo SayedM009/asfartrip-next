@@ -1,8 +1,8 @@
 import { LanguageSwitcher } from "../../_modules/language";
 import { ThemeSwitcher } from "@/app/_modules/theme";
 import CurrencySwitcher from "@/app/_modules/currency/components/organisms/CurrencySwitcher";
-import LoginButton from "../loginButton/LoginButton";
 import Logo from "../ui/Logo";
+import { LoginButton } from "@/app/_modules/auth";
 
 async function Navbar() {
     return (

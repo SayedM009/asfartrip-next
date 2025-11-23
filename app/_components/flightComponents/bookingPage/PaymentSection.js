@@ -1,41 +1,55 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { CreditCard, Wallet, Bitcoin, Check, Loader2 } from "lucide-react";
-import { Label } from "@radix-ui/react-label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { BackWardButtonWithDirections } from "../flightSearchNavWrapper/BackwardButton";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import TopMobileSection from "./TopMobileSection";
 import useBookingStore from "@/app/_store/bookingStore";
 import TimeoutPopup from "../../ui/TimeoutPopup";
-import LoyaltyPointsBanner from "../../loyaltyPoints/LoyaltyPointsBanner";
 import FareSummaryDialog from "./FareSummaryDialog";
-import PayWithLoyaltyPoints from "../../loyaltyPoints/PayWithLoyaltyPoints";
-import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
+import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
+import { BackWardButtonWithDirections } from "../../layout/BackwardButton";
+import LoyaltyPointsBanner from "@/app/_modules/loyalty/components/organisms/LoyaltyPointsBanner";
+import PayWithLoyaltyPoints from "@/app/_modules/loyalty/components/organisms/PayWithLoyaltyPoints";
+import { WebsiteConfigContext } from "@/app/_modules/config";
+
+import TopMobileSection from "@/app/_modules/flight/booking/components/organism/TopMobileSection";
+import BookingPagePaymentTitle from "@/app/_modules/flight/booking/components/atoms/BookingPagePaymentTitle";
+import BookingPagePaymentSubTitle from "@/app/_modules/flight/booking/components/atoms/BookingPagePaymentSubTitle";
 
 export default function PaymentSection({ onConfirmPayment, backTo, loading }) {
     const [selectedMethod, setSelectedMethod] = useState("card");
-    const [cardNumber, setCardNumber] = useState("");
-    const [cardName, setCardName] = useState("");
-    const [expiryDate, setExpiryDate] = useState("");
-    const [cvv, setCvv] = useState("");
 
-    const { ticket, searchURL, getTotalPrice } = useBookingStore();
+    const { payment_gateways, cards_accepted } =
+        useContext(WebsiteConfigContext);
+
+    const supportedGateways = payment_gateways.map((p) => p.name.toLowerCase());
+
+    console.log(supportedGateways);
+
+    const { ticket, searchURL, getTotalPrice, gateway } = useBookingStore();
     const totalAmount = getTotalPrice();
     const p = useTranslations("Payment");
+    const t = useTranslations("Flight");
+
     const paymentMethods = [
         {
             id: "card",
-            name: "Credit/Debit Card",
+            name: "telr",
             icon: CreditCard,
-            description: "Pay securely with your card",
-            color: "blue",
+            description: "Pay securely with telr",
+            color: "green",
+        },
+        {
+            id: "card",
+            name: "ziina",
+            icon: CreditCard,
+            description: "Pay securely with ziina",
+            color: "purple",
         },
         {
             id: "tabby",
-            name: "Tabby",
+            name: "tabby",
             icon: Wallet,
             description: "Split into 4 payments",
             color: "green",
@@ -43,7 +57,7 @@ export default function PaymentSection({ onConfirmPayment, backTo, loading }) {
         },
         {
             id: "tamara",
-            name: "Tamara",
+            name: "tamara",
             icon: Wallet,
             description: "Buy now, pay later",
             color: "purple",
@@ -54,64 +68,35 @@ export default function PaymentSection({ onConfirmPayment, backTo, loading }) {
         },
         {
             id: "crypto",
-            name: "Cryptocurrency",
+            name: "cryptadium",
             icon: Bitcoin,
             description: "Pay with Bitcoin or other crypto",
             color: "orange",
         },
     ];
 
-    const formatCardNumber = (value) => {
-        const cleaned = value.replace(/\s/g, "");
-        const formatted = cleaned.match(/.{1,4}/g)?.join(" ") || cleaned;
-        return formatted;
-    };
-
-    const handleCardNumberChange = (e) => {
-        const value = e.target.value.replace(/\s/g, "");
-        if (value.length <= 16) {
-            setCardNumber(value);
-        }
-    };
-
-    const handleExpiryChange = (e) => {
-        let value = e.target.value.replace(/\D/g, "");
-        if (value.length >= 2) {
-            value = value.slice(0, 2) + "/" + value.slice(2, 4);
-        }
-        if (value.length <= 5) {
-            setExpiryDate(value);
-        }
-    };
-
-    const handleCvvChange = (e) => {
-        const value = e.target.value.replace(/\D/g, "");
-        if (value.length <= 3) {
-            setCvv(value);
-        }
-    };
+    // function handleChoosenPaymentGatway() {
+    //     if (selectedMethod === "telr") return null;
+    //     if (selectedMethod !== "telr")
+    //     // 1. if payment === telr.  gateway url in store = null
+    //     // 2. if payment !=== telr. gateway url in store  = choosen url (Tabby, Tamara, Cyrpto)
+    //     // 3. if !url button = display none
+    // }
 
     return (
         <div className="space-y-6 flex-1 mt-1">
             {/* Payment Method Selection */}
-            <div className="space-y-4">
-                <div className="flex items-center gap-4 mb-4 ">
+            <div className="space-y-4 mt-15">
+                <div className="items-center gap-4 mb-4 hidden sm:flex">
                     <BackWardButtonWithDirections onClick={backTo} />
-                    <h2 className=" capitalize  font-semibold text-xl">
-                        {p("select_payment_method")}
-                    </h2>
-                    <div></div>
+                    <BookingPagePaymentTitle t={p} />
                 </div>
-                <TopMobileSection ticket={ticket}>
+                <TopMobileSection t={t} ticket={ticket}>
                     <div className="flex items-center gap-4">
                         <BackWardButtonWithDirections onClick={backTo} />
                         <div>
-                            <h2 className="text-lg font-semibold capitalize ">
-                                {p("select_payment_method")}
-                            </h2>
-                            <div className="capitalize flex items-center gap-2 text-xs text-muted-foreground truncate">
-                                <span>{p("secured_payments")}</span>
-                            </div>
+                            <BookingPagePaymentTitle t={p} />
+                            <BookingPagePaymentSubTitle t={p} />
                         </div>
                     </div>
                 </TopMobileSection>
@@ -120,279 +105,191 @@ export default function PaymentSection({ onConfirmPayment, backTo, loading }) {
 
                 {/* Pay with Loyalty  Points */}
                 <PayWithLoyaltyPoints />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 sm:mt-auto">
-                    {paymentMethods.map((method) => {
-                        const Icon = method.icon;
-                        const isSelected = selectedMethod === method.id;
-                        return (
-                            <button
-                                key={method.id}
-                                onClick={() => setSelectedMethod(method.id)}
-                                className={cn(
-                                    "p-2 rounded-lg border-2 transition-all text-left rtl:text-right",
-                                    isSelected
-                                        ? "border-accent-500 bg-accent-50 dark:bg-blue-950/50"
-                                        : "border-gray-200 dark:border-gray-700 hover:border-blue-300"
-                                )}
-                            >
-                                <div className="flex items-center gap-4 ">
-                                    <div
-                                        className={cn(
-                                            "p-2 rounded-lg shrink-0",
-                                            method.color === "blue" &&
-                                                "bg-accent-100 dark:bg-accent-900",
-                                            method.color === "green" &&
-                                                "bg-green-100 dark:bg-green-900",
-                                            method.color === "purple" &&
-                                                "bg-purple-100 dark:bg-purple-900",
-                                            method.color === "orange" &&
-                                                "bg-orange-100 dark:bg-orange-900"
-                                        )}
-                                    >
-                                        {method.img ? (
-                                            <Image
-                                                src={method.img}
-                                                alt={` payment with ${method.id}`}
-                                                className={method.class}
-                                                width={method.width || 40}
-                                                height={method.height || 40}
-                                                quality={100}
-                                            />
-                                        ) : (
-                                            <Icon
-                                                className={cn(
-                                                    "w-6 h-6",
-                                                    method.color === "blue" &&
-                                                        "text-accent-600 dark:text-accent-400",
-                                                    method.color === "green" &&
-                                                        "text-green-600 dark:text-green-400",
-                                                    method.color === "purple" &&
-                                                        "text-purple-600 dark:text-purple-400",
-                                                    method.color === "orange" &&
-                                                        "text-orange-600 dark:text-orange-400"
-                                                )}
-                                            />
-                                        )}
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-2 mb-0 ">
-                                            <h4 className="font-semibold">
-                                                {p(`${method.id}`)}
-                                            </h4>
-                                            {isSelected && (
-                                                <Check className="w-5 h-5 text-accent-600" />
-                                            )}
-                                        </div>
-                                        <p className="text-sm text-muted-foreground">
-                                            {method.id === "card" ? (
-                                                <div className="flex items-center gap-2">
-                                                    <Image
-                                                        src="/currencies/visa.svg"
-                                                        alt="card payment with visa"
-                                                        width={30}
-                                                        height={30}
-                                                        quality={100}
-                                                    />
-                                                    <Image
-                                                        src="/currencies/mastercard.svg"
-                                                        alt="card payment with mastercard"
-                                                        width={30}
-                                                        height={30}
-                                                        quality={100}
-                                                    />
-                                                    <Image
-                                                        src="/currencies/maestro.svg"
-                                                        alt="card payment with maestro"
-                                                        width={30}
-                                                        height={30}
-                                                        quality={100}
-                                                    />
-                                                    <Image
-                                                        src="/currencies/mada.svg"
-                                                        alt="card payment with mada"
-                                                        width={40}
-                                                        height={40}
-                                                        quality={100}
-                                                    />
-                                                    <Image
-                                                        src="/currencies/jcb.svg"
-                                                        alt="card payment with jcb"
-                                                        width={25}
-                                                        height={25}
-                                                        quality={100}
-                                                    />
-                                                    <Image
-                                                        src="/currencies/amex.svg"
-                                                        alt="card payment with american-express"
-                                                        width={30}
-                                                        height={30}
-                                                        quality={100}
-                                                    />
-                                                </div>
-                                            ) : (
-                                                p(`${method.id}_description`)
-                                            )}
-                                        </p>
-                                    </div>
-                                </div>
-                            </button>
-                        );
-                    })}
-                </div>
             </div>
 
+            <GateWays
+                paymentMethods={paymentMethods}
+                selectedMethod={selectedMethod}
+                setSelectedMethod={setSelectedMethod}
+                supportedGateways={supportedGateways}
+                cardsAccepted={cards_accepted}
+                t={p}
+            />
+
             {/* Payment Details Form */}
-            {/* <div className="bg-white dark:bg-gray-800 rounded-lg border border-border p-6">
-                <h3 className="mb-6 pb-4 border-b border-border rtl:text-right">
-                    Payment Details
-                </h3>
-
-                {selectedMethod === "card" && (
-                    <div className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="cardNumber">Card Number</Label>
-                            <Input
-                                id="cardNumber"
-                                placeholder="1234 5678 9012 3456"
-                                value={formatCardNumber(cardNumber)}
-                                onChange={handleCardNumberChange}
-                                className="h-12 font-mono"
-                            />
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="cardName">Cardholder Name</Label>
-                            <Input
-                                id="cardName"
-                                placeholder="JOHN SMITH"
-                                value={cardName}
-                                onChange={(e) =>
-                                    setCardName(e.target.value.toUpperCase())
-                                }
-                                className="h-12"
-                            />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="expiry">Expiry Date</Label>
-                                <Input
-                                    id="expiry"
-                                    placeholder="MM/YY"
-                                    value={expiryDate}
-                                    onChange={handleExpiryChange}
-                                    className="h-12"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="cvv">CVV</Label>
-                                <Input
-                                    id="cvv"
-                                    type="password"
-                                    placeholder="123"
-                                    value={cvv}
-                                    onChange={handleCvvChange}
-                                    className="h-12"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {selectedMethod === "tabby" && (
-                    <div className="text-center py-8">
-                        <div className="bg-green-50 dark:bg-green-950 p-6 rounded-lg inline-block">
-                            <Wallet className="w-12 h-12 text-green-600 dark:text-green-400 mx-auto mb-4" />
-                            <h4 className="mb-2">Pay in 4 installments</h4>
-                            <p className="text-sm text-muted-foreground mb-4">
-                                {currency} {(totalAmount / 4).toFixed(2)} every
-                                2 weeks
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                                No interest, no fees
-                            </p>
-                        </div>
-                    </div>
-                )}
-
-                {selectedMethod === "tamara" && (
-                    <div className="text-center py-8">
-                        <div className="bg-purple-50 dark:bg-purple-950 p-6 rounded-lg inline-block">
-                            <Wallet className="w-12 h-12 text-purple-600 dark:text-purple-400 mx-auto mb-4" />
-                            <h4 className="mb-2">Split into 3 payments</h4>
-                            <p className="text-sm text-muted-foreground mb-4">
-                                {currency} {(totalAmount / 3).toFixed(2)} per
-                                month
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                                0% interest
-                            </p>
-                        </div>
-                    </div>
-                )}
-
-                {selectedMethod === "crypto" && (
-                    <div className="text-center py-8">
-                        <div className="bg-orange-50 dark:bg-orange-950 p-6 rounded-lg inline-block">
-                            <Bitcoin className="w-12 h-12 text-orange-600 dark:text-orange-400 mx-auto mb-4" />
-                            <h4 className="mb-2">Pay with Cryptocurrency</h4>
-                            <p className="text-sm text-muted-foreground mb-4">
-                                Bitcoin, Ethereum, USDT accepted
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                                Instant confirmation
-                            </p>
-                        </div>
-                    </div>
-                )}
-            </div> */}
-
+            {selectedMethod === "card" &&
+                supportedGateways.includes("telr") && <TelrIframe />}
             {/* Confirm Payment Button */}
             <PaymentButton
                 onConfirmPayment={onConfirmPayment}
                 loading={loading}
-                hiddenOnMobile={true}
+                isTelrCard={
+                    selectedMethod === "card" &&
+                    supportedGateways.includes("telr")
+                }
             />
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-border shadow-lg z-50">
-                <div className="p-3">
-                    <FareSummaryDialog />
-                    <PaymentButton
-                        onConfirmPayment={onConfirmPayment}
-                        loading={loading}
-                    />
-                </div>
-            </div>
+
             <TimeoutPopup timeoutMinutes={12} redirectLink={searchURL} />
         </div>
     );
 }
 
-function PaymentButton({ onConfirmPayment, loading, hiddenOnMobile = false }) {
+function PaymentButton({ onConfirmPayment, loading, isTelrCard }) {
     const { getTotalPrice } = useBookingStore();
     const totalAmount = getTotalPrice();
-    const { formatPrice } = useCurrencyStore();
+    const { formatPrice } = useCurrency();
     const p = useTranslations("Payment");
+    if (isTelrCard) return null;
     return (
-        <Button
-            onClick={onConfirmPayment}
-            className={`py-5 sm:py-7 sm:text-lg font-semibold
+        <div className=" fixed bottom-0 left-0 right-0 sm:relative bg-white dark:bg-gray-800 border-t border-border shadow-lg z-50 ">
+            <div className="p-3">
+                <div className="sm:hidden">
+                    <FareSummaryDialog />
+                </div>
+                <Button
+                    onClick={onConfirmPayment}
+                    className={cn(
+                        `py-5 sm:py-7 sm:text-lg font-semibold
                     bg-gradient-to-r from-primary-700 to-accent-400
                     hover:from-primary-600 hover:to-accent-500
                     text-white shadow-md hover:shadow-lg
-                     duration-300 cursor-pointer rounded-sm w-full transition-colors gap-4 ${
-                         hiddenOnMobile && "hidden sm:flex "
-                     }`}
-            size="lg"
-            disabled={loading} // أضف prop للتحميل
-        >
-            <span>
-                {loading ? (
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                ) : (
-                    p("pay_now")
-                )}
-            </span>
-            {formatPrice(totalAmount, "white")}
-        </Button>
+                     duration-300 cursor-pointer rounded-sm w-full transition-colors gap-4  `
+                    )}
+                    size="lg"
+                    disabled={loading}
+                >
+                    <span>
+                        {loading ? (
+                            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        ) : (
+                            p("pay_now")
+                        )}
+                    </span>
+                    {formatPrice(totalAmount, "white")}
+                </Button>
+            </div>
+        </div>
+    );
+}
+
+function TelrIframe({ src }) {
+    if (!src) return null;
+    return (
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-border p-4 min-h-6">
+            <h3 className="mb-6 pb-4 border-b border-border rtl:text-right">
+                Payment Details
+            </h3>
+
+            <iframe
+                src={src}
+                width="100%"
+                height="300px"
+                style={{
+                    border: "none",
+                    borderRadius: "0",
+                    margin: "0",
+                }}
+            ></iframe>
+        </div>
+    );
+}
+
+function GateWays({
+    paymentMethods,
+    selectedMethod,
+    setSelectedMethod,
+    supportedGateways,
+    cardsAccepted,
+    t,
+}) {
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 sm:mt-auto">
+            {paymentMethods.map((method) => {
+                const Icon = method.icon;
+                const isSelected = selectedMethod === method.id;
+                if (!supportedGateways.includes(method.name)) return null;
+                return (
+                    <button
+                        key={method.id}
+                        onClick={() => setSelectedMethod(method.id)}
+                        className={cn(
+                            "p-2 rounded-lg border-2 transition-all text-left rtl:text-right",
+                            isSelected
+                                ? "border-accent-500 bg-accent-50 dark:bg-blue-950/50"
+                                : "border-gray-200 dark:border-gray-700 hover:border-blue-300"
+                        )}
+                    >
+                        <div className="flex items-center gap-4 ">
+                            <div
+                                className={cn(
+                                    "p-2 rounded-lg shrink-0",
+                                    method.color === "blue" &&
+                                        "bg-accent-100 dark:bg-accent-900",
+                                    method.color === "green" &&
+                                        "bg-green-100 dark:bg-green-900",
+                                    method.color === "purple" &&
+                                        "bg-purple-100 dark:bg-purple-900",
+                                    method.color === "orange" &&
+                                        "bg-orange-100 dark:bg-orange-900"
+                                )}
+                            >
+                                {method.img ? (
+                                    <Image
+                                        src={method.img}
+                                        alt={` payment with ${method.id}`}
+                                        className={method.class}
+                                        width={method.width || 40}
+                                        height={method.height || 40}
+                                        quality={100}
+                                    />
+                                ) : (
+                                    <Icon
+                                        className={cn(
+                                            "w-6 h-6",
+                                            method.color === "blue" &&
+                                                "text-accent-600 dark:text-accent-400",
+                                            method.color === "green" &&
+                                                "text-green-600 dark:text-green-400",
+                                            method.color === "purple" &&
+                                                "text-purple-600 dark:text-purple-400",
+                                            method.color === "orange" &&
+                                                "text-orange-600 dark:text-orange-400"
+                                        )}
+                                    />
+                                )}
+                            </div>
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-0 ">
+                                    <h4 className="font-semibold">
+                                        {t(`${method.id}`)}
+                                    </h4>
+                                    {isSelected && (
+                                        <Check className="w-5 h-5 text-accent-600" />
+                                    )}
+                                </div>
+                                <p className="text-sm text-muted-foreground">
+                                    {method.id === "card" ? (
+                                        <div className="flex items-center gap-2">
+                                            {cardsAccepted.map((c, index) => (
+                                                <Image
+                                                    src={`/currencies/${c.image}`}
+                                                    alt={`card payment accepted with ${c.card_name}`}
+                                                    width={30}
+                                                    height={30}
+                                                    quality={100}
+                                                    key={index}
+                                                />
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        t(`${method.id}_description`)
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+                    </button>
+                );
+            })}
+        </div>
     );
 }

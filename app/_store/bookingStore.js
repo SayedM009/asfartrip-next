@@ -106,6 +106,12 @@ const useBookingStore = create(
             setSessionId: (newSessionId) => set({ sessionId: newSessionId }),
             setTempId: (newTempId) => set({ tempId: newTempId }),
             setPaymentMethod: (paymentMethod) => set({ paymentMethod }),
+            setGateway: (data) =>
+                set({
+                    gateway: {
+                        ifrurl: data.ifrurl ?? null,
+                    },
+                }),
             setSpecialRequest: (request) => set({ specialRequest: request }),
             setCouponCode: (couponCode) => set({ couponCode }),
             setCart: (newCart) => set({ cart: newCart }),
@@ -224,10 +230,9 @@ const useBookingStore = create(
             },
 
             setUserId: (id) => set({ userId: id || 0 }),
-            setBookingData: (data) =>
+            setBookingRef: (data) =>
                 set({
-                    bookingReference: data.booking_reference || "",
-                    gateway: data.gateway || null,
+                    bookingReference: data || "",
                 }),
 
             buildPassengerFullDetails: (otherPassengers) => {
@@ -283,192 +288,6 @@ const useBookingStore = create(
 
                 return btoa(JSON.stringify(structure));
             },
-
-            // === الـ Payload النهائي (الصحيح 100%) ===
-            // getFinalPayload: () => {
-            //     const state = get();
-            //     const { travelers, contactInfo, sessionId, tempId } = state;
-            //     const cid = String(tempId || "");
-
-            //     // === دوال مساعدة ===
-            //     const pad = (n) => n.toString().padStart(2, "0");
-            //     const toDDMMYYYY = (d) => {
-            //         if (!d) return "";
-            //         const dt = new Date(d);
-            //         return `${pad(dt.getDate())}/${pad(
-            //             dt.getMonth() + 1
-            //         )}/${dt.getFullYear()}`;
-            //     };
-            //     const upper = (s) => (s || "").toUpperCase();
-            //     const genderFrom = (title) =>
-            //         (title || "").toLowerCase().includes("mr") ||
-            //         (title || "").toLowerCase().includes("master")
-            //             ? "Male"
-            //             : "Female";
-            //     const code2 = (c) => upper((c || "").substring(0, 2));
-
-            //     // === إعادة تصنيف حسب العمر ===
-            //     const now = new Date();
-            //     const getAge = (dob) => {
-            //         if (!dob) return 0;
-            //         const birth = new Date(dob);
-            //         let age = now.getFullYear() - birth.getFullYear();
-            //         const m = now.getMonth() - birth.getMonth();
-            //         if (m < 0 || (m === 0 && now.getDate() < birth.getDate()))
-            //             age--;
-            //         return age;
-            //     };
-
-            //     const classify = (t) => {
-            //         const age = getAge(t.dateOfBirth);
-            //         if (age >= 12) return "Adult";
-            //         if (age >= 2) return "Child";
-            //         return "Infant";
-            //     };
-
-            //     // إنشاء نسخ من المسافرين مع التصنيف الجديد
-            //     const classifiedTravelers = travelers.map((t) => ({
-            //         ...t,
-            //         classifiedType: classify(t),
-            //     }));
-
-            //     const adults = classifiedTravelers.filter(
-            //         (t) => t.classifiedType === "Adult"
-            //     );
-            //     const childs = classifiedTravelers.filter(
-            //         (t) => t.classifiedType === "Child"
-            //     );
-            //     const infants = classifiedTravelers.filter(
-            //         (t) => t.classifiedType === "Infant"
-            //     );
-
-            //     const lead = adults[0] || classifiedTravelers[0];
-            //     const otherPassengers = [
-            //         ...adults.slice(1),
-            //         ...childs,
-            //         ...infants,
-            //     ];
-
-            //     // === TravelerDetails (بـ arrays) ===
-            //     const TD = {
-            //         housenum: "786",
-            //         zip: "20772",
-            //         city: "Dubai",
-            //         country_code: contactInfo.countryCode || "+971",
-            //         mobile: contactInfo.phone || "",
-            //         email: contactInfo.email || "",
-            //         street_address: "Al Garhoud",
-            //         country: "AE",
-            //         total: btoa(String(state.getTotalPrice() || "0")),
-            //         tripdate: new Date()
-            //             .toLocaleDateString("en-GB")
-            //             .replace(/\//g, "-"),
-            //         cart_id: cid,
-            //         cid: btoa(JSON.stringify(["FLIGHT", cid])),
-            //     };
-
-            //     // المسافر الرئيسي
-            //     TD[`selTitle${cid}`] = lead.title || "";
-            //     TD[`first_name${cid}`] = upper(lead.firstName);
-            //     TD[`last_name${cid}`] = upper(lead.lastName);
-            //     TD[`passport_no${cid}`] = lead.passportNumber || "";
-            //     TD[`issued_country${cid}`] = code2(lead.nationality);
-            //     TD[`selGender${cid}`] = genderFrom(lead.title);
-            //     TD[`txtdob${cid}`] = toDDMMYYYY(lead.dateOfBirth);
-            //     TD[`txtped${cid}`] = toDDMMYYYY(lead.passportExpiry);
-
-            //     // تهيئة arrays للمسافرين الإضافيين
-            //     const arrays = [
-            //         "pselTitle",
-            //         "pfirst_name",
-            //         "plast_name",
-            //         "ppassport_no",
-            //         "pissued_country",
-            //         "ptxtdob",
-            //         "ptxtped",
-            //         "pselGender",
-            //     ];
-            //     arrays.forEach((k) => (TD[`${k}${cid}`] = []));
-
-            //     otherPassengers.forEach((p) => {
-            //         TD[`pselTitle${cid}`].push(p.title || "");
-            //         TD[`pfirst_name${cid}`].push(upper(p.firstName));
-            //         TD[`plast_name${cid}`].push(upper(p.lastName));
-            //         TD[`ppassport_no${cid}`].push(p.passportNumber || "");
-            //         TD[`pissued_country${cid}`].push(code2(p.nationality));
-            //         TD[`ptxtdob${cid}`].push(toDDMMYYYY(p.dateOfBirth));
-            //         TD[`ptxtped${cid}`].push(toDDMMYYYY(p.passportExpiry));
-            //         TD[`pselGender${cid}`].push(genderFrom(p.title));
-            //     });
-
-            //     // === بيانات العميل ===
-            //     let GUEST_FIRSTNAME = upper(lead.firstName);
-            //     let GUEST_LASTNAME = upper(lead.lastName);
-            //     let leadpax = `${GUEST_FIRSTNAME} ${GUEST_LASTNAME}`;
-
-            //     if (
-            //         contactInfo.bookingForSomeoneElse &&
-            //         contactInfo.bookerName?.trim()
-            //     ) {
-            //         const names = contactInfo.bookerName
-            //             .trim()
-            //             .toUpperCase()
-            //             .split(" ");
-            //         GUEST_FIRSTNAME = names[0] || GUEST_FIRSTNAME;
-            //         GUEST_LASTNAME = names.slice(1).join(" ") || GUEST_LASTNAME;
-            //         leadpax = contactInfo.bookerName.toUpperCase();
-            //     }
-
-            //     // === passenger_full_details (فقط عند وجود مسافرين إضافيين) ===
-            //     let passenger_full_details = "";
-            //     if (otherPassengers.length > 0) {
-            //         // إنشاء نسخ مع أرقام جديدة بدون تعديل الـ original
-            //         let childIdx = 1,
-            //             infantIdx = 1,
-            //             adultIdx = 2;
-
-            //         const numberedPassengers = otherPassengers.map((p) => {
-            //             let newNumber;
-            //             if (p.classifiedType === "Adult")
-            //                 newNumber = adultIdx++;
-            //             else if (p.classifiedType === "Child")
-            //                 newNumber = childIdx++;
-            //             else if (p.classifiedType === "Infant")
-            //                 newNumber = infantIdx++;
-
-            //             return {
-            //                 ...p,
-            //                 travelerType: p.classifiedType,
-            //                 travelerNumber: newNumber,
-            //             };
-            //         });
-
-            //         passenger_full_details =
-            //             state.buildPassengerFullDetails(numberedPassengers);
-            //     }
-
-            //     return {
-            //         TravelerDetails: TD,
-            //         passenger_full_details,
-            //         GUEST_FIRSTNAME,
-            //         GUEST_LASTNAME,
-            //         GUEST_EMAIL: contactInfo.email || "admin@asfartrip.com",
-            //         GUEST_PHONE: contactInfo.phone || "97143409933",
-            //         leadpax,
-            //         session_id: sessionId,
-            //         temp_id: tempId,
-            //         cid,
-            //         transaction_status: "PROCESS",
-            //         payment_method: "Payment Gateway",
-            //         booking_status: "PROCESS",
-            //         currency: "AED",
-            //         rate: 1,
-            //         payment_status: 0,
-            //         amount: state.getTotalPrice(),
-            //         user_type: 0,
-            //         user_id: state.userId || 0,
-            //     };
-            // },
 
             getFinalPayload: () => {
                 const state = get();

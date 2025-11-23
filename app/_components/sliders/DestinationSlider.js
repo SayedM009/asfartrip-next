@@ -115,17 +115,6 @@ export function DestinationSlider() {
                 <div>
                     <div className="flex items-center sm:mb-2 gap-2">
                         <Airpaloon width={36} height={36} />
-                        {/* <Image
-                                // src="/icons/globe.gif"
-                                src="/icons/globe.svg"
-                                alt="Destination dream trip"
-                                width={30}
-                                height={30}
-                                // unoptimized
-                                priority
-                                fetchPriority="high"
-                                loading="eager"
-                            /> */}
                         <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
                             {t("title")}
                         </h2>
@@ -175,7 +164,7 @@ export function DestinationSlider() {
                         scrollSnapType: "x mandatory",
                     }}
                 >
-                    {destinations.map((card) => (
+                    {destinations.map((card, i) => (
                         <div
                             key={card.id}
                             className="flex-shrink-0 w-[80vw] sm:w-72 lg:w-80"
@@ -193,9 +182,9 @@ export function DestinationSlider() {
                                     alt={`${card.city}, ${card.country}`}
                                     fill
                                     className="object-cover"
-                                    priority
-                                    fetchPriority="high"
-                                    loading="eager"
+                                    priority={i < 2}
+                                    fetchPriority={i < 2 ? "high" : "auto"}
+                                    loading={i < 2 ? "eager" : "lazy"}
                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 />
 

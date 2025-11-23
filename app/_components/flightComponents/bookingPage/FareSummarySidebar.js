@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Info, Loader2, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FlightDetailsDialog } from "../flightSearchNavWrapper/FlightDetailsDialog";
 import {
     Tooltip,
     TooltipContent,
@@ -14,11 +13,12 @@ import { useTranslations } from "use-intl";
 import ChevronBasedOnLanguage from "../../ui/ChevronBasedOnLanguage";
 import useBookingStore from "@/app/_store/bookingStore";
 import AnimatedPrice from "../../ui/AnimatedPrice";
-import { useCurrencyStore } from "@/app/_store/useCurrencyStore";
+import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
+import { FlightDetailsDialog } from "@/app/_modules/flight/results/components/organism/FlightDetailsDialog";
 
 export default function FareSummarySidebar({ onProceedToPayment, loading }) {
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
-    const { formatPrice } = useCurrencyStore();
+    const { formatPrice } = useCurrency();
     const { formatBaggage } = useFormatBaggage();
     const f = useTranslations("Flight");
 

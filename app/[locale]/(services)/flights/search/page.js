@@ -1,11 +1,12 @@
-import FlightSearch from "@/app/_components/flightComponents/flightSearchNavWrapper/FlightSearch";
-import FlightSearchNavWrapper from "@/app/_components/flightComponents/flightSearchNavWrapper/FlightSearchNavWrapper";
-
 // Generate SEO
 import Script from "next/script";
 import { getDictionary } from "@/app/_libs/getDictionary";
 import { generatePageMetadata, buildWebPageJsonLd } from "@/app/_libs/seo";
 import { DEFAULT_LOCALE } from "@/app/_config/i18n";
+import { FlightSearch } from "@/app/_modules/flight/results";
+import Navbar from "@/app/_components/layout/Navbar";
+import FlightSearchWrapper from "@/app/_modules/flight/results/components/organism/FlightSearchNavWrapper";
+
 export async function generateMetadata({ params }) {
     const locale = params?.locale || DEFAULT_LOCALE;
     const dict = await getDictionary(locale);
@@ -42,7 +43,10 @@ async function Page({ searchParams, params }) {
                 strategy="afterInteractive"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-            <FlightSearchNavWrapper />
+            <div className="hidden sm:block">
+                <Navbar />
+            </div>
+            <FlightSearchWrapper />
             <FlightSearch parsedSearchObject={parsedSearchObject} />
         </>
     );
