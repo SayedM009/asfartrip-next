@@ -1,6 +1,6 @@
 import { Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import FareSummaryDialog from "@/app/_components/flightComponents/bookingPage/FareSummaryDialog";
+import FareSummaryDialog from "../organism/FareSummaryDialog";
 import ChevronBasedOnLanguage from "@/app/_components/ui/ChevronBasedOnLanguage";
 
 export default function MobileBottomBar({

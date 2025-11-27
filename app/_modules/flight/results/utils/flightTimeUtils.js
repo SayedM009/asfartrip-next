@@ -6,14 +6,7 @@ import { format, parseISO, differenceInMinutes } from "date-fns";
  * Format ISO date string to specific time pattern
  * default: "HH:mm"
  */
-export function formatTime(isoString, pattern = "HH:mm") {
-    if (!isoString) return "";
-    try {
-        return format(parseISO(isoString), pattern);
-    } catch {
-        return "";
-    }
-}
+
 
 /**
  * Calculate total duration of a journey from segments array

@@ -1,6 +1,6 @@
 # 🚀 Gradual Migration Plan - Step by Step
 
-## 📋 Current Situation
+##  Current Situation
 
 **Main File:** `FlightSearchWrapper.jsx`
 
@@ -10,7 +10,7 @@ import { FlightSearchFormDesktop } from "./desktop/FlightSearchFromDesktop";
 import { FlightSearchForm } from "./mobile/FlightSearchFormMobile";
 ```
 
-**Status:** ✅ Found 1 main file to migrate
+**Status:**  Found 1 main file to migrate
 
 ---
 

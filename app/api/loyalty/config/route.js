@@ -39,17 +39,17 @@ export async function GET() {
         .substring(2, 8)}`;
 
     try {
-        // ✅ Check cache first
+        //  Check cache first
         const cacheKey = "LOYALTY_CONFIG";
         const cached = CACHE.get(cacheKey);
         if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
             console.log(
-                `💾 [${new Date().toISOString()}] [${requestId}] Returning cached loyalty config`
+                `[${new Date().toISOString()}] [${requestId}] Returning cached loyalty config`
             );
             return NextResponse.json(cached.data);
         }
 
-        // ✅ Prepare auth
+        //  Prepare auth
         const username = process.env.TP_USERNAME;
         const password = process.env.TP_PASSWORD;
 
@@ -61,17 +61,16 @@ export async function GET() {
             "base64"
         );
 
-        // ✅ External API endpoint (استبدل بالرابط الصحيح من الـ loyalty system)
+        //  External API endpoint (استبدل بالرابط الصحيح من الـ loyalty system)
         const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/loyalty/config`;
 
-        // ✅ Fetch from upstream
+        //  Fetch from upstream
         const response = await fetchLoyaltyConfig(basicAuth, apiUrl);
 
         if (!response.ok) {
             const text = await response.text();
             console.error(
-                `❌ [${new Date().toISOString()}] [${requestId}] API error: ${
-                    response.status
+                ` [${new Date().toISOString()}] [${requestId}] API error: ${response.status
                 } - ${text}`
             );
             return NextResponse.json(
@@ -85,17 +84,17 @@ export async function GET() {
 
         const data = await response.json();
 
-        // ✅ Cache it
+        //  Cache it
         CACHE.set(cacheKey, { data, timestamp: Date.now() });
 
         console.log(
-            `✅ [${new Date().toISOString()}] [${requestId}] Loyalty config fetched successfully`
+            ` [${new Date().toISOString()}] [${requestId}] Loyalty config fetched successfully`
         );
 
         return NextResponse.json(data);
     } catch (error) {
         console.error(
-            `❌ [${new Date().toISOString()}] [${requestId}] Critical error:`,
+            ` [${new Date().toISOString()}] [${requestId}] Critical error:`,
             error.message
         );
         return NextResponse.json(

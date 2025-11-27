@@ -7,8 +7,7 @@ import {
 } from "@/components/ui/select";
 import { useTranslations } from "next-intl";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
-import { CABIN_CLASSES } from "../../constants";
-
+    
 /**
  * ClassSelector - Molecule Component
  * Dropdown selector for cabin class (Economy, Business, First)

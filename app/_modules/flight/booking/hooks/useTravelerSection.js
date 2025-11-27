@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback } from "react";
 import { calcAge } from "../utils/calcAge";
 import { travelerAgeRules } from "../config/travelerRules";
-import useBookingStore from "@/app/_store/bookingStore";
+import useBookingStore from "../store/bookingStore";
 
 export function useTravelerSection(
     travelerNumber,
@@ -209,7 +209,10 @@ export function useTravelerSection(
         ageError,
         minDate,
         maxDate,
-        setAccordionValue,
+        setAccordionValue: (val) => {
+            setAccordionValue(val);
+            if (val === "open") setIsLocked(false);
+        },
         handleFieldChange,
         handleSavedTravelerSelect,
         saveTraveler,

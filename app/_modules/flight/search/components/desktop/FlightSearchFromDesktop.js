@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { LucideLoader, Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { safeParse } from "@/app/_helpers/safeParse";
@@ -82,7 +82,7 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
         }
 
         toast.success(t("operations.searching"), {
-            icon: <LucideLoader className="size-5 animate-spin" />,
+            icon: <Loader2 className="size-5 animate-spin" />,
         });
 
         let searchObject;

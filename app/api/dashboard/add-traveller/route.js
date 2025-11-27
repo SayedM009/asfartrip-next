@@ -49,7 +49,7 @@ export async function POST(req) {
             data,
         });
     } catch (error) {
-        console.error("❌ Error in save-user-traveller route:", error);
+        console.error(" Error in save-user-traveller route:", error);
         return NextResponse.json(
             { success: false, message: "Internal Server Error" },
             { status: 500 }

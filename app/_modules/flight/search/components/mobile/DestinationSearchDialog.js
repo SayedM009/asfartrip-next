@@ -12,43 +12,16 @@ import { Input } from "@/components/ui/input";
 import { LucideSearch, PlaneIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import { searchAirports } from "../../services/searchAirports";
+import {
+    popularCities,
+    destinationsByRegion,
+} from "../../constants/popularDestinations";
+import SpinnerMini from "@/app/_components/ui/SpinnerMini";
 
-const popularCities = [
-    { city: "cairo", label_code: "CAI", country: "EGYPT" },
-    { city: "manila", label_code: "MNL", country: "PHILIPPINES" },
-    { city: "sharjah", label_code: "SHJ", country: "UAE" },
-    { city: "london", label_code: "LON", country: "UK" },
-    { city: "dubai", label_code: "DXB", country: "UAE" },
-    { city: "jeddah", label_code: "JED", country: "SAUDI_ARABIA" },
-];
-
-const destinationsByRegion = {
-    asia: [
-        { city: "dubai", label_code: "DXB", country: "UAE" },
-        { city: "abu dhabi", label_code: "AUH", country: "UAE" },
-        { city: "sharjah", label_code: "SHJ", country: "UAE" },
-        { city: "kochi", label_code: "COK", country: "INDIA" },
-        { city: "kozhikode", label_code: "CCJ", country: "INDIA" },
-        { city: "manila", label_code: "MNL", country: "PHILIPPINES" },
-    ],
-    europe: [
-        { city: "london", label_code: "LON", country: "UK" },
-        { city: "madrid", label_code: "MAD", country: "SPAIN" },
-        { city: "milan", label_code: "MIL", country: "ITALY" },
-        { city: "tbilisi", label_code: "TBS", country: "GEORGIA" },
-        { city: "paris", label_code: "PAR", country: "FRANCE" },
-        { city: "amsterdam", label_code: "AMS", country: "NETHERLANDS" },
-    ],
-    africa: [
-        { city: "cairo", label_code: "CAI", country: "EGYPT" },
-        { city: "south africa", label_code: "JNB", country: "SOUTH_AFRICA" },
-        { city: "alexandria", label_code: "HBE", country: "EGYPT" },
-        { city: "casablanca", label_code: "CMN", country: "MOROCCO" },
-        { city: "tunis", label_code: "TUN", country: "TUNISIA" },
-        { city: "algiers", label_code: "ALG", country: "ALGERIA" },
-    ],
-};
+// Popular destinations data imported from shared constants file
+// See: constants/popularDestinations.js
 
 function DestinationSearchDialog({
     destination,
@@ -58,14 +31,52 @@ function DestinationSearchDialog({
     sessionKey,
 }) {
     const [results, setResults] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const searchDirection = locale == "en" ? "left-3" : "right-3";
     const t = useTranslations("Flight");
 
-    async function handleSearch(value) {
-        if (!value) return setResults([]);
-        if (value.length <= 2) return setResults([]);
-        const data = await searchAirports(value);
-        setResults(data);
+    /**
+     * Debounced airport search - reduces API calls by waiting 350ms after user stops typing
+     * Applies validation to filter out incomplete/invalid airports
+     */
+    const debouncedSearch = useDebouncedCallback(async (value) => {
+        if (!value || value.length <= 2) {
+            setResults([]);
+            setIsLoading(false);
+            return;
+        }
+
+        try {
+            const data = await searchAirports(value);
+
+            // Filter invalid / incomplete results (same as desktop)
+            const validResults = data.filter(
+                (d) =>
+                    d.label_code?.length === 3 &&
+                    d.city &&
+                    d.country &&
+                    !d.city.toLowerCase().includes("test")
+            );
+
+            setResults(validResults);
+        } catch (error) {
+            console.error("Error searching airports:", error);
+            setResults([]);
+        } finally {
+            setIsLoading(false);
+        }
+    }, 350);
+
+    function handleSearch(value) {
+        if (!value || value.length <= 2) {
+            setResults([]);
+            setIsLoading(false);
+            return;
+        }
+
+        setIsLoading(true);
+        setResults([]); // clear old results immediately
+        debouncedSearch(value);
     }
 
     function handleSelectedDestinationFromAPI(value) {
@@ -119,7 +130,7 @@ function DestinationSearchDialog({
                 <DialogHeader>
                     <DialogTitle></DialogTitle>
                     <DialogDescription className="mt-8">
-                        <div className="relative w-full max-w-sm">
+                        <div className="relative w-full">
                             <Input
                                 type="search"
                                 placeholder={t("search_by_city_airport")}
@@ -131,7 +142,11 @@ function DestinationSearchDialog({
                                 size={20}
                             />
                         </div>
-                        {!results.length ? (
+                        {isLoading ? (
+                            <div className="p-4 text-center flex items-center justify-center h-56">
+                                <SpinnerMini />
+                            </div>
+                        ) : !results.length ? (
                             <PreparedResultsList
                                 onSelect={handleSelectedDestinationFromRegion}
                             />

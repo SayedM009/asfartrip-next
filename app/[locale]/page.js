@@ -1,6 +1,7 @@
+
 // Sliders
 import { DestinationSlider } from "../_components/sliders/DestinationSlider";
-import { FlightsSlider } from "../_components/sliders/FlightsSlider";
+import FlightsSlider from "@/app/_modules/flight/presentation/components/organism/FlightsSlider";
 import { HotelsSlider } from "../_components/sliders/HotelsSlider";
 
 // Components

@@ -10,11 +10,7 @@ import { AlertCircle } from "lucide-react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 
 // WhiteLabe config Context
-import {
-    getWebsiteConfig,
-    WebsiteConfigProvider,
-    getDirectionForLocale,
-} from "../_modules/config";
+import { getWebsiteConfig, WebsiteConfigProvider } from "../_modules/config";
 
 export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
@@ -24,8 +20,6 @@ export default async function RootLayout({ children, params }) {
     const { locale } = await params;
     const conditions = locale === "ar";
     const messages = await getMessages();
-
-    // SSR: جلب الـ config مرة واحدة من /api/config
     const config = await getWebsiteConfig();
 
     return (
@@ -34,7 +28,7 @@ export default async function RootLayout({ children, params }) {
             dir={conditions ? "rtl" : "ltr"}
             suppressHydrationWarning
         >
-            <body className={`${cairo.className}`}>
+            <body className={`${cairo.className} antialiased`}>
                 <AuthProvider>
                     <WebsiteConfigProvider config={config}>
                         <NextIntlClientProvider

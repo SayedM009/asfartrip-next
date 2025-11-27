@@ -60,7 +60,7 @@ export async function setApiToken(token) {
     });
 
     console.log(
-        `✅ [${new Date().toISOString()}] Token set successfully (expires in ${TOKEN_EXPIRY}s)`
+        ` [${new Date().toISOString()}] Token set successfully (expires in ${TOKEN_EXPIRY}s)`
     );
     return true;
 }
@@ -81,7 +81,7 @@ export async function clearAPIToken() {
     const cookieStore = await cookies();
     cookieStore.delete("api_token");
     cookieStore.delete("api_token_timestamp");
-    console.log(`🗑️ [${new Date().toISOString()}] Token cleared`);
+    console.log(` [${new Date().toISOString()}] Token cleared`);
 }
 
 /**
@@ -104,8 +104,7 @@ async function isTokenExpired() {
 
     if (isExpired) {
         console.log(
-            `⏰ [${new Date().toISOString()}] Token expired (age: ${tokenAge}s / max: ${
-                TOKEN_EXPIRY - TOKEN_REFRESH_BUFFER
+            `⏰ [${new Date().toISOString()}] Token expired (age: ${tokenAge}s / max: ${TOKEN_EXPIRY - TOKEN_REFRESH_BUFFER
             }s)`
         );
     }
@@ -148,13 +147,13 @@ async function refreshToken() {
             await setApiToken(newToken);
 
             console.log(
-                `✅ [${new Date().toISOString()}] Token refreshed successfully`
+                ` [${new Date().toISOString()}] Token refreshed successfully`
             );
 
             return newToken;
         } catch (error) {
             console.error(
-                `❌ [${new Date().toISOString()}] Token refresh failed:`,
+                ` [${new Date().toISOString()}] Token refresh failed:`,
                 error.message
             );
             throw error;
@@ -191,19 +190,19 @@ export async function getValidToken() {
 
         if (expired) {
             console.log(
-                `⚠️ [${new Date().toISOString()}] Token expired, refreshing...`
+                ` [${new Date().toISOString()}] Token expired, refreshing...`
             );
             token = await refreshToken();
             return token;
         }
 
         console.log(
-            `✅ [${new Date().toISOString()}] Using existing valid token`
+            ` [${new Date().toISOString()}] Using existing valid token`
         );
         return token;
     } catch (error) {
         console.error(
-            `❌ [${new Date().toISOString()}] getValidToken error:`,
+            ` [${new Date().toISOString()}] getValidToken error:`,
             error.message
         );
         throw new Error("Failed to get valid authentication token");

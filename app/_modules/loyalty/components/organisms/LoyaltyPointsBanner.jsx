@@ -102,7 +102,7 @@ export default function LoyaltyPointsBanner({ price }) {
 //         calculatePoints,
 //     ]);
 
-//     // ✅ Skeleton Loader أثناء التحميل
+//     //  Skeleton Loader أثناء التحميل
 //     if (isLoading || status === "loading") {
 //         return (
 //             <div className="p-6 sm:mb-5 rounded-lg relative flex items-center justify-between bg-gray-200 dark:bg-gray-800 animate-pulse">

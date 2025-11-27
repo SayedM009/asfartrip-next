@@ -17,7 +17,7 @@ import FlightSearchFormNew from "./FlightSearchFormNew";
  */
 
 // Feature Flag - Change to true to test new components
-const USE_NEW_COMPONENTS = true; // ✅ Testing new components!
+const USE_NEW_COMPONENTS = true; //  Testing new components!
 
 export default function FlightSearchWrapper() {
     const [isMobile, setIsMobile] = useState(false);
@@ -46,8 +46,8 @@ export default function FlightSearchWrapper() {
 /**
  * Migration Progress:
  * 
- * ✅ Phase 1: Created new components (atoms, molecules, organisms)
- * ✅ Phase 2: Created FlightSearchFormNew (desktop)
+ *  Phase 1: Created new components (atoms, molecules, organisms)
+ *  Phase 2: Created FlightSearchFormNew (desktop)
  * 🔄 Phase 3: Testing new components (current)
  * ⏳ Phase 4: Migrate mobile components
  * ⏳ Phase 5: Remove old components

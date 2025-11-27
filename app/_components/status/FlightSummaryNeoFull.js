@@ -24,7 +24,6 @@ export default function FlightSummaryNeoFull({ data }) {
     const PNR = searchParams.get("PNR");
     const { travelers } = useBookingStore();
 
-    console.log(data.BookingData);
 
     return (
         <motion.div

@@ -17,8 +17,8 @@ export const offers = [
             ar: "رحلة طيران + ٣ ليالي فندق مطل على النيل",
         },
         image: {
-            en: "https://images.pexels.com/photos/1796726/pexels-photo-1796726.jpeg",
-            ar: "https://images.pexels.com/photos/1796726/pexels-photo-1796726.jpeg",
+            en: "/hot_offers/asfar-friday.png",
+            ar: "/hot_offers/asfar-friday.png",
         },
         origin: {
             code: "DXB",

@@ -24,6 +24,7 @@ export default function FlightTicket({
     isFastest,
     isCheapest,
 }) {
+
     const { formatPrice } = useCurrency();
     const { isRTL } = useCheckLocal();
     const t = useTranslations("Flight");
@@ -55,6 +56,8 @@ export default function FlightTicket({
         onSelect?.();
     };
 
+    console.log(ticket)
+
     return (
         <>
             <Card
@@ -63,52 +66,49 @@ export default function FlightTicket({
                 hover:shadow-lg transition-all duration-300 sm:cursor-default pt-3 pb-0 dark:shadow-gray-600
                 ${
                     isCheapest
-                        ? "border-3 border-green-500"
+                        ? "border-[3px] border-green-500"
                         : isFastest
-                        ? "border-3 border-accent-400"
+                        ? "border-[3px] border-accent-400"
                         : "border border-transparent"
                 }
                 relative
                 `}
             >
                 <CardContent className="p-0 cursor-pointer">
-                    {/* CHEAPEST Label */}
-                    {isCheapest && (
+                    {/* LABELS CONTAINER */}
+                    {(isCheapest || isFastest) && (
                         <div
-                            className={`absolute ${
+                            className={`absolute top-[-2px] z-10 flex gap-1 ${
                                 isRTL ? "left-[-2px]" : "right-[-2px]"
-                            } top-[-2px] z-10`}
+                            }`}
                         >
-                            <span
-                                className={`bg-green-500 text-white text-[10px] font-semibold p-2 uppercase ${
-                                    isRTL ? "rounded-tl-lg" : "rounded-tr-lg"
-                                }`}
-                            >
-                                {t("filters.cheapest")}
-                            </span>
-                        </div>
-                    )}
+                            
+                            
 
-                    {/* FASTEST Label */}
-                    {isFastest && (
-                        <div
-                            className={`absolute ${
-                                isCheapest
-                                    ? `${
-                                          isRTL ? "left-[-2px]" : "right-[-2px]"
-                                      } top-[-2px]`
-                                    : `${
-                                          isRTL ? "left-[-2px]" : "right-[-2px]"
-                                      } top-[-2px]`
-                            } z-10`}
-                        >
-                            <span
-                                className={`bg-accent-400 text-white text-[10px] font-semibold p-2 uppercase ${
-                                    isRTL ? "rounded-tl-lg" : "rounded-tr-lg"
-                                }`}
-                            >
-                                {t("filters.fastest")}
-                            </span>
+                            {/* FASTEST Label */}
+                            {isFastest && (
+                                <span
+                                    className={`bg-accent-400 text-white text-[10px] font-semibold p-2 uppercase ${
+                                        isRTL
+                                            ? "rounded-tl-lg rounded-br-lg"
+                                            : "rounded-tr-lg rounded-bl-lg"
+                                    }`}
+                                >
+                                    {t("filters.fastest")}
+                                </span>
+                            )}
+                            {/* CHEAPEST Label */}
+                            {isCheapest && (
+                                <span
+                                    className={`bg-green-500 text-white text-[10px] font-semibold p-2 uppercase ${
+                                        isRTL
+                                            ? "rounded-tl-lg rounded-br-lg"
+                                            : "rounded-tr-lg rounded-bl-lg"
+                                    }`}
+                                >
+                                    {t("filters.cheapest")}
+                                </span>
+                            )}
                         </div>
                     )}
 

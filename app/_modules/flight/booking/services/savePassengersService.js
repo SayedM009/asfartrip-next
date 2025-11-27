@@ -1,9 +1,4 @@
 import { baseUrl } from "@/app/_config/constants";
-
-/**
- * Save Passengers API
- * Part of Booking Feature Services
- */
 export async function savePassengers(payload) {
     try {
         const formData = new URLSearchParams();

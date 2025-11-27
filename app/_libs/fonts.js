@@ -11,6 +11,7 @@ export const openSans = Open_Sans({
 });
 
 export const cairo = Cairo({
+    weight: ["400", "500", "600", "700"],
     subsets: ["latin"],
 });
 

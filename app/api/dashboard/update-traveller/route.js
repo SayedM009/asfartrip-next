@@ -40,7 +40,7 @@ export async function POST(req) {
             data,
         });
     } catch (error) {
-        console.error("❌ Error updating traveller:", error.message);
+        console.error(" Error updating traveller:", error.message);
         return NextResponse.json(
             { error: error.message || "Internal server error" },
             { status: 500 }

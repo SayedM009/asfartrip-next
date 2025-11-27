@@ -34,6 +34,7 @@ const useBookingStore = create(
             },
 
             userId: 0,
+            userType: "",
             bookingReference: "",
             gateway: null,
             isDataModified: false,
@@ -43,8 +44,12 @@ const useBookingStore = create(
                 return: [],
             },
             sameBookingURL: "",
+            priceChangeData: null,
 
             // ================= Helpers =================
+            setPriceChangeData: (data) => set({ priceChangeData: data }),
+            clearPriceChangeData: () => set({ priceChangeData: null }),
+
             setSameBookingURL: (url) => set({ sameBookingURL: url }),
 
             setBaggageData: (newData) =>
@@ -128,29 +133,29 @@ const useBookingStore = create(
                     travelers: state.travelers.map((t) =>
                         t.travelerNumber === travelerNumber
                             ? {
-                                  ...t,
-                                  ...data,
-                                  dateOfBirth:
-                                      data.dateOfBirth !== undefined
-                                          ? data.dateOfBirth
-                                              ? typeof data.dateOfBirth ===
+                                ...t,
+                                ...data,
+                                dateOfBirth:
+                                    data.dateOfBirth !== undefined
+                                        ? data.dateOfBirth
+                                            ? typeof data.dateOfBirth ===
                                                 "string"
-                                                  ? new Date(data.dateOfBirth)
-                                                  : data.dateOfBirth
-                                              : t.dateOfBirth
-                                          : t.dateOfBirth,
-                                  passportExpiry:
-                                      data.passportExpiry !== undefined
-                                          ? data.passportExpiry
-                                              ? typeof data.passportExpiry ===
+                                                ? new Date(data.dateOfBirth)
+                                                : data.dateOfBirth
+                                            : t.dateOfBirth
+                                        : t.dateOfBirth,
+                                passportExpiry:
+                                    data.passportExpiry !== undefined
+                                        ? data.passportExpiry
+                                            ? typeof data.passportExpiry ===
                                                 "string"
-                                                  ? new Date(
-                                                        data.passportExpiry
-                                                    )
-                                                  : data.passportExpiry
-                                              : t.passportExpiry
-                                          : t.passportExpiry,
-                              }
+                                                ? new Date(
+                                                    data.passportExpiry
+                                                )
+                                                : data.passportExpiry
+                                            : t.passportExpiry
+                                        : t.passportExpiry,
+                            }
                             : t
                     ),
                     isDataModified: true,
@@ -193,7 +198,7 @@ const useBookingStore = create(
                     state.addOns.baggagePrice + state.addOns.mealPrice;
                 const insuranceTotal =
                     state.selectedInsurance?.premium *
-                        state.getTotalPassengers() || 0;
+                    state.getTotalPassengers() || 0;
                 return basePrice + addOnsTotal + insuranceTotal;
             },
 
@@ -211,7 +216,7 @@ const useBookingStore = create(
             getAddOnsTotal: () =>
                 get().addOns.baggagePrice + get().addOns.mealPrice,
 
-            // ================= Validation helpers (لو حابب تستخدمهم) =================
+            // ================= Validation helpers  =================
             validateAllTravelers: () =>
                 get().travelers.every(
                     (t) =>
@@ -240,6 +245,7 @@ const useBookingStore = create(
 
             // ================= Booking meta =================
             setUserId: (id) => set({ userId: id || 0 }),
+            setUserType: (type) => set({ userType: type || "" }),
 
             setBookingRef: (data) =>
                 set({
@@ -268,8 +274,8 @@ const useBookingStore = create(
                 const code2 = (c) => upper((c || "").substring(0, 2));
                 const getGender = (title) =>
                     (title || "").toLowerCase().includes("mr") ||
-                    (title || "").toLowerCase().includes("master") ||
-                    (title || "").toLowerCase().includes("mstr")
+                        (title || "").toLowerCase().includes("master") ||
+                        (title || "").toLowerCase().includes("mstr")
                         ? "Male"
                         : "Female";
 
@@ -285,9 +291,8 @@ const useBookingStore = create(
                 };
 
                 otherPassengers.forEach((p) => {
-                    const typeKey = `${p.travelerType.toLowerCase()}s${
-                        p.travelerNumber
-                    }`;
+                    const typeKey = `${p.travelerType.toLowerCase()}s${p.travelerNumber
+                        }`;
                     structure.title.push({ [typeKey]: p.title || "" });
                     structure.first.push({ [typeKey]: upper(p.firstName) });
                     structure.last.push({ [typeKey]: upper(p.lastName) });
@@ -333,7 +338,7 @@ const useBookingStore = create(
                 const upper = (s) => (s || "").toUpperCase();
                 const genderFrom = (title) =>
                     (title || "").toLowerCase().includes("mr") ||
-                    (title || "").toLowerCase().includes("master")
+                        (title || "").toLowerCase().includes("master")
                         ? "Male"
                         : "Female";
                 const code2 = (c) => upper((c || "").substring(0, 2));
@@ -458,7 +463,7 @@ const useBookingStore = create(
                     leadpax = `${GUEST_FIRSTNAME} ${GUEST_LASTNAME}`;
                 }
 
-                // ==== passenger_full_details (نفس المنطق القديم 100%) ====
+                // ==== passenger_full_details ====
                 let passenger_full_details = "";
 
                 if (otherPassengers.length > 0) {
@@ -505,7 +510,7 @@ const useBookingStore = create(
                     rate: 1,
                     payment_status: 0,
                     amount: state.getTotalPrice(),
-                    user_type: 0,
+                    user_type: state.userType,
                     user_id: state.userId || 0,
                 };
 
@@ -527,7 +532,8 @@ const useBookingStore = create(
             },
 
             // ================= Clear =================
-            clearBookingData: () =>
+            clearBookingData: () => {
+                console.log("🧹 clearBookingData called - clearing old booking data");
                 set({
                     selectedInsurance: {},
                     insurancePlans: [],
@@ -543,7 +549,9 @@ const useBookingStore = create(
                         outward: null,
                         return: null,
                     },
-                }),
+                    searchURL: ""
+                });
+            },
         }),
         {
             name: "booking-storage",
@@ -558,12 +566,14 @@ const useBookingStore = create(
                 selectedInsurance: state.selectedInsurance,
                 insurancePlans: state.insurancePlans,
                 userId: state.userId,
+                userType: state.userType,
                 bookingReference: state.bookingReference,
                 gateway: state.gateway,
                 isDataModified: state.isDataModified,
                 searchURL: state.searchURL,
                 baggageData: state.baggageData,
                 sameBookingURL: state.sameBookingURL,
+                priceChangeData: state.priceChangeData,
             }),
         }
     )

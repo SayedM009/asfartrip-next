@@ -4,138 +4,17 @@ import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { MapPin, Plane } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useDebouncedCallback } from "use-debounce";
 import SwapButton from "@/app/_components/ui/SwapButton";
 import DestinationsContent from "./DestinationsContent";
 import { searchAirports } from "../../services/searchAirports";
+import {
+    popularDestinationsGCC,
+    popularInternationalDestinations,
+} from "../../constants/popularDestinations";
 
-// ========================
-// Popular Destinations Data
-// ========================
-const popularDestinationsGCC = [
-    {
-        label_code: "DXB",
-        city: "Dubai",
-        country: "United Arab Emirates",
-        airport: "Dubai International Airport",
-    },
-    {
-        label_code: "AUH",
-        city: "Abu Dhabi",
-        country: "United Arab Emirates",
-        airport: "Zayed International Airport",
-    },
-    {
-        label_code: "SHJ",
-        city: "Sharjah",
-        country: "United Arab Emirates",
-        airport: "Sharjah International Airport",
-    },
-    {
-        label_code: "DOH",
-        city: "Doha",
-        country: "Qatar",
-        airport: "Hamad International Airport",
-    },
-    {
-        label_code: "BAH",
-        city: "Manama",
-        country: "Bahrain",
-        airport: "Bahrain International Airport",
-    },
-    {
-        label_code: "RUH",
-        city: "Riyadh",
-        country: "Saudi Arabia",
-        airport: "King Khalid International Airport",
-    },
-    {
-        label_code: "JED",
-        city: "Jeddah",
-        country: "Saudi Arabia",
-        airport: "King Abdulaziz International Airport",
-    },
-    {
-        label_code: "DMM",
-        city: "Dammam",
-        country: "Saudi Arabia",
-        airport: "King Fahd International Airport",
-    },
-    {
-        label_code: "MCT",
-        city: "Muscat",
-        country: "Oman",
-        airport: "Muscat International Airport",
-    },
-    {
-        label_code: "KWI",
-        city: "Kuwait City",
-        country: "Kuwait",
-        airport: "Kuwait International Airport",
-    },
-];
-
-const popularInternationalDestinations = [
-    {
-        label_code: "CAI",
-        city: "Cairo",
-        country: "Egypt",
-        airport: "Cairo International Airport",
-    },
-    {
-        label_code: "IST",
-        city: "Istanbul",
-        country: "Turkey",
-        airport: "Istanbul Airport",
-    },
-    {
-        label_code: "BOM",
-        city: "Mumbai",
-        country: "India",
-        airport: "Chhatrapati Shivaji International Airport",
-    },
-    {
-        label_code: "LHR",
-        city: "London",
-        country: "United Kingdom",
-        airport: "Heathrow Airport",
-    },
-    {
-        label_code: "MNL",
-        city: "Manila",
-        country: "Philippines",
-        airport: "Ninoy Aquino International Airport",
-    },
-    {
-        label_code: "LHE",
-        city: "Lahore",
-        country: "Pakistan",
-        airport: "Allama Iqbal International Airport",
-    },
-    {
-        label_code: "CMB",
-        city: "Colombo",
-        country: "Sri Lanka",
-        airport: "Bandaranaike International Airport",
-    },
-    {
-        label_code: "KTM",
-        city: "Kathmandu",
-        country: "Nepal",
-        airport: "Tribhuvan International Airport",
-    },
-    {
-        label_code: "DAC",
-        city: "Dhaka",
-        country: "Bangladesh",
-        airport: "Hazrat Shahjalal International Airport",
-    },
-    {
-        label_code: "SIN",
-        city: "Singapore",
-        country: "Singapore",
-        airport: "Changi Airport",
-    },
-];
+// Popular destinations data imported from shared constants file
+// See: constants/popularDestinations.js
 
 // ========================
 // Main Component
@@ -155,39 +34,58 @@ export default function MainSearchForm({
     const [destinationSearch, setDestinationSearch] = useState("");
     const [departureResults, setDepartureResults] = useState([]);
     const [destinationResults, setDestinationResults] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isDepartureLoading, setIsDepartureLoading] = useState(false);
+    const [isDestinationLoading, setIsDestinationLoading] = useState(false);
     const t = useTranslations("Flight");
 
     // ========================
-    // Search Handler
+    // Debounced Search Handler
     // ========================
-    const handleSearch = async (value, onSearch, onResults) => {
+    /**
+     * Debounced airport search - reduces API calls by waiting 350ms after user stops typing
+     * Applies validation to filter out incomplete/invalid airports
+     */
+    const debouncedSearch = useDebouncedCallback(async (value, onResults, setLoading) => {
+        if (!value || value.length <= 2) {
+            onResults([]);
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const data = await searchAirports(value);
+
+            // Filter invalid / incomplete results
+            const validResults = data.filter(
+                (d) =>
+                    d.label_code?.length === 3 &&
+                    d.city &&
+                    d.country &&
+                    !d.city.toLowerCase().includes("test")
+            );
+
+            onResults(validResults);
+        } catch (error) {
+            console.error("Error searching airports:", error);
+            onResults([]);
+        } finally {
+            setLoading(false);
+        }
+    }, 350);
+
+    /**
+     * Handle search input change
+     */
+    const handleSearch = (value, onSearch, onResults, setLoading) => {
         onSearch(value);
 
         if (value && value.length > 2) {
-            try {
-                setIsLoading(true);
-                onResults([]); // clear old results first
-                const data = await searchAirports(value);
-
-                // Filter invalid / incomplete results
-                const validResults = data.filter(
-                    (d) =>
-                        d.label_code?.length === 3 &&
-                        d.city &&
-                        d.country &&
-                        !d.city.toLowerCase().includes("test")
-                );
-
-                onResults(validResults);
-            } catch (error) {
-                console.error("Error searching airports:", error);
-                onResults([]);
-            } finally {
-                setIsLoading(false);
-            }
+            setLoading(true);
+            onResults([]); // clear old results immediately
+            debouncedSearch(value, onResults, setLoading);
         } else {
             onResults([]);
+            setLoading(false);
         }
     };
 
@@ -228,7 +126,8 @@ export default function MainSearchForm({
                                         handleSearch(
                                             e.target.value,
                                             setDepartureSearch,
-                                            setDepartureResults
+                                            setDepartureResults,
+                                            setIsDepartureLoading
                                         )
                                     }
                                     placeholder={t(
@@ -270,7 +169,7 @@ export default function MainSearchForm({
                         onIsSearching={setIsSearchingDeparture}
                         popularDestinations={popularDestinationsGCC}
                         sessionKey="departure"
-                        isLoading={isLoading}
+                        isLoading={isDepartureLoading}
                     />
                 </Popover>
             </div>
@@ -306,7 +205,8 @@ export default function MainSearchForm({
                                         handleSearch(
                                             e.target.value,
                                             setDestinationSearch,
-                                            setDestinationResults
+                                            setDestinationResults,
+                                            setIsDestinationLoading
                                         )
                                     }
                                     placeholder={t(
@@ -352,7 +252,7 @@ export default function MainSearchForm({
                         onIsSearching={setIsSearchingDestination}
                         popularDestinations={popularInternationalDestinations}
                         sessionKey="destination"
-                        isLoading={isLoading}
+                        isLoading={isDestinationLoading}
                     />
                 </Popover>
             </div>

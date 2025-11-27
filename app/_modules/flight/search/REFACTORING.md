@@ -5,11 +5,11 @@
 ```
 search/
 ├── components/
-│   ├── atoms/              ✅ Created - Small, reusable components
+│   ├── atoms/               Created - Small, reusable components
 │   │   ├── TripTypeButton.jsx
 │   │   └── index.js
 │   │
-│   ├── molecules/          ✅ Created - Combinations of atoms
+│   ├── molecules/           Created - Combinations of atoms
 │   │   ├── TripTypeSelector.jsx
 │   │   └── index.js
 │   │
@@ -19,23 +19,23 @@ search/
 │   ├── templates/          🔄 To be created - Page layouts
 │   │   └── (Coming soon)
 │   │
-│   ├── desktop/            ⚠️ Legacy - Will be refactored
-│   └── mobile/             ⚠️ Legacy - Will be refactored
+│   ├── desktop/             Legacy - Will be refactored
+│   └── mobile/              Legacy - Will be refactored
 │
-├── constants/              ✅ Created - Shared constants
+├── constants/               Created - Shared constants
 │   ├── tripTypes.js
 │   ├── cabinClasses.js
 │   ├── passengerTypes.js
 │   └── index.js
 │
-├── hooks/                  ✅ Existing
-├── logic/                  ✅ Existing (Well organized!)
-└── services/               ✅ Existing
+├── hooks/                   Existing
+├── logic/                   Existing (Well organized!)
+└── services/                Existing
 ```
 
 ## 🎯 Migration Status
 
-### ✅ Completed
+###  Completed
 1. **Constants Layer**
    - `tripTypes.js` - Trip type constants and labels
    - `cabinClasses.js` - Cabin class constants
@@ -50,7 +50,7 @@ search/
 ### 🔄 In Progress
 - Creating more atoms and molecules from existing components
 
-### 📋 Next Steps
+###  Next Steps
 1. Extract more atoms from `PassengersAndClass.js`:
    - `PassengerCounter.jsx`
    - `ClassOption.jsx`
@@ -93,7 +93,7 @@ if (tripType === TRIP_TYPES.ONE_WAY) {
 }
 ```
 
-## ⚠️ Important Notes
+##  Important Notes
 
 - **Legacy files are NOT deleted** - They still work!
 - **Gradual migration** - New components work alongside old ones

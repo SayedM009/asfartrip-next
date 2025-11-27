@@ -35,7 +35,14 @@ export async function GET() {
             cache: "no-store",
         });
 
+        console.log(res)
+
         if (!res.ok) {
+            console.error(" Upstream API error:", {
+                status: res.status,
+                statusText: res.statusText,
+                url: `${url}/api/website/${targetDomain}`,
+            });
             return NextResponse.json(
                 {
                     status: "error",
@@ -47,8 +54,18 @@ export async function GET() {
 
         const data = await res.json();
 
+        console.log(" Website config loaded successfully:", {
+            status: data.status,
+            hasData: !!data.data,
+            domain: targetDomain,
+        });
+
         return NextResponse.json(data);
     } catch (error) {
+        console.error(" Config API error:", {
+            message: error.message,
+            stack: error.stack,
+        });
         return NextResponse.json(
             {
                 status: "error",

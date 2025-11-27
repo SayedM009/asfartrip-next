@@ -1,6 +1,5 @@
-// app/_modules/flights/booking/services/cartService.js
 
-import { baseUrl } from "@/app/_config/constants"; // لو عندك مكان مختلف قولي أعدّله لك
+import { baseUrl } from "@/app/_config/constants";
 
 export async function getCart(sessionId) {
     const res = await fetch(`${baseUrl}/api/flight/get-cart`, {

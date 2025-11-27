@@ -7,11 +7,9 @@ import {
     MessageCircle,
     Mail,
     MapPin,
-    Instagram,
-    Facebook,
-    Music2,
     HeadphonesIcon,
 } from "lucide-react";
+import SocialMedia from "../../SocialMedia";
 
 export default function ContactUs() {
     const c = useTranslations("ContactPage");
@@ -43,26 +41,7 @@ export default function ContactUs() {
         },
     ];
 
-    const socialLinks = [
-        {
-            icon: Instagram,
-            name: c("social_instagram"),
-            url: "https://www.instagram.com/asfartrip_official/",
-            ariaLabel: c("social_instagram"),
-        },
-        {
-            icon: Facebook,
-            name: c("social_facebook"),
-            url: "https://www.facebook.com/Asfartrip",
-            ariaLabel: c("social_facebook"),
-        },
-        {
-            icon: Music2,
-            name: c("social_tiktok"),
-            url: "https://www.tiktok.com/@asfartrip",
-            ariaLabel: c("social_tiktok"),
-        },
-    ];
+
 
     // =================== ILLUSTRATION ===================
     function ContactIllustration() {
@@ -282,29 +261,7 @@ export default function ContactUs() {
                         {c("social_subtitle")}
                     </p>
 
-                    <div className="flex items-center justify-center gap-4 lg:gap-6">
-                        {socialLinks.map((social, index) => {
-                            const Icon = social.icon;
-                            return (
-                                <motion.a
-                                    key={social.name}
-                                    href={social.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label={social.ariaLabel}
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{
-                                        duration: 0.4,
-                                        delay: 0.3 + index * 0.1,
-                                    }}
-                                    className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl bg-gray-50 dark:bg-gray-900 flex items-center justify-center hover:bg-[#e86b1e] hover:scale-110 transition-all duration-300 group"
-                                >
-                                    <Icon className="w-7 h-7 lg:w-9 lg:h-9 text-gray-700 dark:text-gray-300 group-hover:text-white transition-colors duration-300" />
-                                </motion.a>
-                            );
-                        })}
-                    </div>
+                    <SocialMedia />
                 </section>
 
                 {/* MAP */}

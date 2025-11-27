@@ -1,4 +1,4 @@
-import ProfileOnMobile from "@/app/_components/profile/mobile/ProfileOnMobile";
+import ProfileOnMobile from "@/app/_modules/profile/components/templates/ProfileMobileTemplate";
 import useIsDevice from "@/app/_hooks/useIsDevice";
 
 // Generate SEO

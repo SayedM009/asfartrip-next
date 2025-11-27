@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
     try {
-        // ✅ الخطوة الصحيحة: قراءة الـ body كنص
+        //  الخطوة الصحيحة: قراءة الـ body كنص
         const rawBody = await req.text();
         const params = new URLSearchParams(rawBody);
         const user_id = params.get("user_id");
@@ -46,7 +46,7 @@ export async function POST(req) {
             data,
         });
     } catch (error) {
-        console.error("❌ Error deleting traveller:", error.message);
+        console.error(" Error deleting traveller:", error.message);
         return NextResponse.json(
             { error: error.message || "Internal server error" },
             { status: 500 }

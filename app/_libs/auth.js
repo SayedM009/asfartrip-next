@@ -7,13 +7,13 @@ const API_BASE_URL =
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
-        // 🟢 تسجيل الدخول باستخدام Google
+
         Google({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         }),
 
-        // 🟠 تسجيل الدخول عبر البريد والـ OTP
+
         CredentialsProvider({
             name: "Email",
             credentials: {
@@ -65,17 +65,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     });
 
                     const data = await res.json();
-                    console.log("🟢 Google server response:", data);
+                    console.log(" Google server response:", data);
 
                     if (res.ok && data?.status) {
                         account.serverData = data;
                         return true;
                     } else {
-                        console.error("❌ Google API login failed:", data);
+                        console.error(" Google API login failed:", data);
                         return false;
                     }
                 } catch (err) {
-                    console.error("🔥 Error calling API:", err.message);
+                    console.error("Error calling API:", err.message);
                     return false;
                 }
             }

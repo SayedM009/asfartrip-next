@@ -3,17 +3,18 @@
 import { Clock } from "lucide-react";
 import { calculateLayoverTime } from "../../utils/flightTimeUtils";
 import { useTranslations } from "next-intl";
+import { useAirportTranslation } from "@/app/_hooks/useAirportTranslation";
 
 export default function LayoverNotice({ segment, nextSegment }) {
     const t = useTranslations("Flight");
-
+const { getCityName } = useAirportTranslation();
     return (
         <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg border border-amber-200 dark:border-amber-800">
             <div className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
                 <Clock className="h-4 w-4" />
                 <span className="font-medium">
                     {t(`dialog.layover`, {
-                        city: segment.Destination,
+                        city: getCityName(segment.Destination) || segment.Destination,
                         time: calculateLayoverTime(
                             segment.ArrivalTime,
                             nextSegment.DepartureTime,

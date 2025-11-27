@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PassengerClassModal } from "./PassengerClassModal";
-import { User, Users, Baby, LucideLoader } from "lucide-react";
+import { User, Users, Baby, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { safeParse } from "@/app/_helpers/safeParse";
 import { useRouter } from "@/i18n/navigation";
@@ -47,14 +47,6 @@ export function FlightSearchForm({ closeModal }) {
         );
         setTravelClass(sessionStorage.getItem("travelClass") || "economy");
         setPassengers(
-            safeParse(sessionStorage.getItem("flightPassengers"), {
-                adults: 1,
-                children: 0,
-                infants: 0,
-            })
-        );
-
-        console.log(
             safeParse(sessionStorage.getItem("flightPassengers"), {
                 adults: 1,
                 children: 0,
@@ -123,7 +115,7 @@ export function FlightSearchForm({ closeModal }) {
         }
 
         toast.success(t("operations.searching"), {
-            icon: <LucideLoader className="size-5 animate-spin" />,
+            icon: <Loader2 className="size-5 animate-spin" />,
         });
 
         let searchObject;
@@ -173,18 +165,16 @@ export function FlightSearchForm({ closeModal }) {
                                 style={{
                                     left:
                                         tripType === "oneway"
-                                            ? `${
-                                                  locale === "en"
-                                                      ? "4px"
-                                                      : "calc(50% + 2px)"
-                                              }`
+                                            ? `${locale === "en"
+                                                ? "4px"
+                                                : "calc(50% + 2px)"
+                                            }`
                                             : tripType === "roundtrip"
-                                            ? `${
-                                                  locale === "en"
-                                                      ? "calc(50% + 2px)"
-                                                      : "4px"
-                                              }`
-                                            : "",
+                                                ? `${locale === "en"
+                                                    ? "calc(50% + 2px)"
+                                                    : "4px"
+                                                }`
+                                                : "",
 
                                     width: "calc(50% - 6px)",
                                 }}
@@ -194,21 +184,19 @@ export function FlightSearchForm({ closeModal }) {
                             <div className="relative grid grid-cols-2 h-full ">
                                 <button
                                     onClick={() => handleTripType("oneway")}
-                                    className={`text-sm font-semibold transition-colors duration-200 rounded-md ${
-                                        tripType === "oneway"
-                                            ? "text-gray-900"
-                                            : "text-gray-600"
-                                    }`}
+                                    className={`text-sm font-semibold transition-colors duration-200 rounded-md ${tripType === "oneway"
+                                        ? "text-gray-900"
+                                        : "text-gray-600"
+                                        }`}
                                 >
                                     {t("one_way")}
                                 </button>
                                 <button
                                     onClick={() => handleTripType("roundtrip")}
-                                    className={`text-sm font-semibold transition-colors duration-200 rounded-md ${
-                                        tripType === "roundtrip"
-                                            ? "text-gray-900"
-                                            : "text-gray-600"
-                                    }`}
+                                    className={`text-sm font-semibold transition-colors duration-200 rounded-md ${tripType === "roundtrip"
+                                        ? "text-gray-900"
+                                        : "text-gray-600"
+                                        }`}
                                 >
                                     {t("round_trip")}
                                 </button>

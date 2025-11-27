@@ -1,37 +1,5 @@
-// app/api/getCart/route.js
 import { NextResponse } from "next/server";
-import {
-    loginWithExistsCredintials,
-    clearAPIToken,
-} from "@/app/_libs/token-manager";
-
-const REQUEST_TIMEOUT = 30000; // 30 ثانية كحد أقصى
-
-async function makeCartRequest(requestData, basicAuth, apiUrl) {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
-
-    try {
-        const response = await fetch(apiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                Authorization: `Basic ${basicAuth}`,
-            },
-            body: new URLSearchParams(requestData),
-            signal: controller.signal,
-        });
-
-        clearTimeout(timeoutId);
-        return response;
-    } catch (error) {
-        clearTimeout(timeoutId);
-        if (error.name === "AbortError") {
-            throw new Error("Cart request timeout - please try again");
-        }
-        throw error;
-    }
-}
+import { flightService } from "@/app/_services/flight-service";
 
 export async function POST(req) {
     const requestId = `CART_${Date.now()}_${Math.random()
@@ -49,50 +17,45 @@ export async function POST(req) {
             );
         }
 
-        // Always get a fresh token for each cart request to avoid reuse issues
+        // SIMULATION: Handle Simulated Session
+        if (sessionId === "SIMULATED_SESSION") {
+            console.log(` [${new Date().toISOString()}] [${requestId}] Returning Simulated Cart`);
+            return NextResponse.json({
+                status: "success",
+                data: {
+                    Status: "Success",
+                    Message: null,
+                    CartId: "SIMULATED_CART_ID",
+                    TotalPrice: 150,
+                    Currency: "SAR",
+                    Passengers: [
+                        {
+                            Type: "Adult",
+                            Quantity: 1,
+                            BasePrice: 120,
+                            TaxPrice: 30,
+                            TotalPrice: 150
+                        }
+                    ],
+                    Segments: [] // Add dummy segments if needed for UI to not crash
+                },
+                requestId: requestId,
+            });
+        }
+
         console.log(
-            `🔐 [${new Date().toISOString()}] [${requestId}] Getting fresh token...`
+            ` [${new Date().toISOString()}] [${requestId}] Get Cart request received for session: ${sessionId}`
         );
-        let token = await loginWithExistsCredintials();
 
-        const username = process.env.TP_USERNAME;
-        const password = process.env.TP_PASSWORD;
-        const basicAuth = Buffer.from(`${username}:${password}`).toString(
-            "base64"
-        );
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/flight/getCart`;
+        const data = await flightService.getCart(sessionId, requestId);
 
-        let requestData = {
-            session_id: sessionId,
-            api_token: token,
-        };
-
-        let response = await makeCartRequest(requestData, basicAuth, apiUrl);
-
-        // Retry if token invalid
-        if (response.status === 401 || response.status === 403) {
-            console.log(
-                `⚠️ [${new Date().toISOString()}] [${requestId}] Auth failed, retrying with new token...`
-            );
-            await clearAPIToken();
-            token = await loginWithExistsCredintials();
-            requestData.api_token = token;
-            response = await makeCartRequest(requestData, basicAuth, apiUrl);
-        }
-
-        if (!response.ok) {
-            const errorText = await response
-                .text()
-                .catch(() => "Unknown error");
-            return NextResponse.json(
-                { error: errorText, status: response.status },
-                { status: response.status }
-            );
-        }
-
-        const data = await response.json();
         return NextResponse.json({ status: "success", data, requestId });
+
     } catch (error) {
+        console.error(
+            ` [${new Date().toISOString()}] [${requestId}] Cart Error:`,
+            error.message
+        );
         return NextResponse.json(
             { error: error.message || "Internal server error", requestId },
             { status: 500 }

@@ -93,11 +93,12 @@ export default function PromotionalSlider() {
                     )}
                     onScroll={updateScrollButtons}
                 >
-                    {offers.map((offer) => (
+                    {offers.map((offer, index) => (
                         <SliderCard
                             key={offer.id}
                             offer={offer}
                             locale={locale}
+                            index={index}
                         />
                     ))}
                 </div>

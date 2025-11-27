@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Dialog,
     DialogContent,
@@ -45,6 +45,15 @@ export function PassengerClassModal({
     // Temp state for UI
     const [tempPassengers, setTempPassengers] = useState(passengers);
     const [tempClass, setTempClass] = useState(travelClass.toLowerCase() || "economy");
+
+    // Sync temp state with props when dialog opens
+    // This ensures the dialog shows the current stored values, not the initial defaults
+    useEffect(() => {
+        if (isOpen) {
+            setTempPassengers(passengers);
+            setTempClass(travelClass.toLowerCase() || "economy");
+        }
+    }, [isOpen, passengers, travelClass]);
 
     const total =
         tempPassengers.adults +
@@ -92,16 +101,14 @@ export function PassengerClassModal({
     };
 
     const applyChanges = () => {
-        console.log(tempPassengers)
         onPassengersChange(tempPassengers);
         sessionStorage.setItem(
             "flightPassengers",
             JSON.stringify(tempPassengers)
         );
-        
-        console.log(tempClass)
+
         onClassChange(tempClass);
-        
+
         sessionStorage.setItem("travelClass", tempClass);
 
         setIsOpen(false);

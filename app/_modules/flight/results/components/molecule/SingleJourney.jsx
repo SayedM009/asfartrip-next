@@ -1,11 +1,10 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
 import { formatTime, calculateTotalDuration } from "../../utils/flightTime";
 import { calculateTotalLayover } from "../../utils/flightLayover";
-import { isNextDay } from "../../utils/flightHelpers";
-import { useTranslations } from "next-intl";
+import { DayDifferenceSup } from "./DayDifferenceSup";
+
 
 export default function SingleJourney({ segments, t, formatDate, isReturn }) {
     const firstSeg = segments[0];
@@ -21,7 +20,7 @@ export default function SingleJourney({ segments, t, formatDate, isReturn }) {
                         {formatTime(firstSeg.DepartureTime)}
                     </div>
                     <div className="text-xs text-muted-foreground">
-                        <span className="font-bold">{firstSeg.Origin}</span>{" "}
+                        <span className="font-bold">{ firstSeg.Origin}</span>{" "}
                         {formatDate(firstSeg.DepartureTime)}
                     </div>
                 </div>
@@ -44,17 +43,14 @@ export default function SingleJourney({ segments, t, formatDate, isReturn }) {
                 <div className="text-center min-w-0">
                     <div className="text-xl font-bold flex justify-center">
                         {formatTime(lastSeg.ArrivalTime)}
-                        {isNextDay(
-                            firstSeg.DepartureTime,
-                            lastSeg.ArrivalTime
-                        ) && (
-                            <sup className="text-xs text-destructive ml-1">
-                                +1
-                            </sup>
-                        )}
+                        {DayDifferenceSup({
+                            dep: firstSeg.DepartureTime,
+                            arr: lastSeg.ArrivalTime,
+                        })}
+                        
                     </div>
                     <div className="text-xs text-muted-foreground">
-                        <span className="font-bold">{lastSeg.Destination}</span>{" "}
+                        <span className="font-bold">{ lastSeg.Destination}</span>{" "}
                         {formatDate(lastSeg.ArrivalTime)}
                     </div>
                 </div>
@@ -72,7 +68,7 @@ export default function SingleJourney({ segments, t, formatDate, isReturn }) {
                         {formatTime(firstSeg.DepartureTime)}
                     </div>
                     <div className="text-xs text-muted-foreground">
-                        <span className="font-bold">{firstSeg.Origin}</span>{" "}
+                        <span className="font-bold">{ firstSeg.Origin}</span>{" "}
                         {formatDate(firstSeg.DepartureTime)}
                     </div>
                 </div>
@@ -116,14 +112,11 @@ export default function SingleJourney({ segments, t, formatDate, isReturn }) {
                 <div className="text-center">
                     <div className="text-xl font-bold flex justify-center">
                         {formatTime(lastSeg.ArrivalTime)}
-                        {isNextDay(
-                            firstSeg.DepartureTime,
-                            lastSeg.ArrivalTime
-                        ) && (
-                            <sup className="text-xs text-destructive ml-1">
-                                +1
-                            </sup>
-                        )}
+                        {DayDifferenceSup({
+                            dep: firstSeg.DepartureTime,
+                            arr: lastSeg.ArrivalTime,
+                        })}
+                        
                     </div>
                     <div className="text-xs text-muted-foreground">
                         <span className="font-bold">{lastSeg.Destination}</span>{" "}

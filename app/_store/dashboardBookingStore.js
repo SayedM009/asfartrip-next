@@ -18,7 +18,7 @@ export const useDashboardBookingsStore = create((set, get) => ({
         const cache = get().dataCache[tab];
         const FIVE_MINUTES = 5 * 60 * 1000;
 
-        // ✅ تحقق لو فيه بيانات حديثة في الكاش
+        //  تحقق لو فيه بيانات حديثة في الكاش
         if (cache && now - cache.timestamp < FIVE_MINUTES) {
             const { flight, hotel, insurance, total } = cache.data;
             set({
@@ -58,7 +58,7 @@ export const useDashboardBookingsStore = create((set, get) => ({
             const { flight, hotel, insurance, total } = result.data;
             const fetchedData = { flight, hotel, insurance, total };
 
-            // ✅ حفظ البيانات في الكاش
+            //  حفظ البيانات في الكاش
             set((state) => ({
                 flightBookings: flight,
                 hotelBookings: hotel,
@@ -80,7 +80,7 @@ export const useDashboardBookingsStore = create((set, get) => ({
         }
     },
 
-    // ✅ لإعادة التحديث يدويًا (Pull to refresh)
+    //  لإعادة التحديث يدويًا (Pull to refresh)
     refreshBookings: async (user_id, user_type, tab = "completed") => {
         set((state) => ({
             dataCache: { ...state.dataCache, [tab]: undefined },

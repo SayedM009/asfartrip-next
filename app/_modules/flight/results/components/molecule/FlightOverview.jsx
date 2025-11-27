@@ -1,6 +1,7 @@
 "use client";
 import { AlertCircle } from "lucide-react";
 import ChevronBasedOnLanguage from "@/app/_components/ui/ChevronBasedOnLanguage";
+import { useAirportTranslation } from "@/app/_hooks/useAirportTranslation";
 
 export default function FlightOverview({
     t,
@@ -16,14 +17,20 @@ export default function FlightOverview({
     formatPrice,
     TotalPrice,
 }) {
+    const { getCityName } = useAirportTranslation();
+    
+    // Get translated city names from airport codes
+    const translatedDepartureCity = getCityName(firstSegment.Origin) || departureCity;
+    const translatedDestinationCity = getCityName(lastSegment.Destination) || destinationCity;
+    
     return (
         <div className="bg-muted/50 rounded-lg p-4">
             <div className="flex items-start justify-between mb-4">
                 <div>
                     <h3 className="font-semibold flex items-center gap-2 capitalize">
-                        {departureCity}
+                        {translatedDepartureCity}
                         <ChevronBasedOnLanguage icon="arrow" />
-                        {destinationCity}
+                        {translatedDestinationCity}
 
                         {isRoundTrip && (
                             <span className="ml-2 text-sm font-normal">

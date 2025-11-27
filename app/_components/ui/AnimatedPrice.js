@@ -18,9 +18,8 @@ export default function AnimatedPrice({
 
     const isImageCurrency =
         currentCurrency === "AED" || currentCurrency === "SAR";
-    const iconSrc = `/currencies/${color}/${
-        currentCurrency === "AED" ? "uae.svg" : "saudi.svg"
-    }`;
+    const iconSrc = `/currencies/${color}/${currentCurrency === "AED" ? "uae.svg" : "saudi.svg"
+        }`;
 
     return (
         <div className={`inline-flex items-center gap-1 ${className}`}>
@@ -30,7 +29,6 @@ export default function AnimatedPrice({
                 duration={duration}
                 delay={delay}
                 separator=","
-                onEnd={() => console.log("✅ Count animation finished")}
                 className="font-semibold"
             />
             {isImageCurrency ? (

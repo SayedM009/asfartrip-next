@@ -2,13 +2,16 @@
 
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { formatTime, formatSegmentDuration } from "../../utils/flightTimeUtils";
+import {  formatSegmentDuration } from "../../utils/flightTimeUtils";
 import { useTranslations } from "next-intl";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
+import { useAirportTranslation } from "@/app/_hooks/useAirportTranslation";
+import { formatTime } from "../../utils/flightTime";
 
 export default function SegmentCard({ segment }) {
     const t = useTranslations("Flight");
     const formatDate = useDateFormatter();
+    const { getCityName, getAirportName } = useAirportTranslation();
 
     return (
         <div className="border rounded-lg px-2 py-4 sm:p-4">
@@ -61,7 +64,7 @@ export default function SegmentCard({ segment }) {
                     {/* Origin */}
                     <div>
                         <div className="font-medium flex items-center gap-2">
-                            {segment.Origin}
+                            {getCityName(segment.Origin) || segment.Origin}
                             {segment.OriginTerminal && (
                                 <span className="text-sm text-muted-foreground">
                                     {t("dialog.terminal")}{" "}
@@ -70,7 +73,7 @@ export default function SegmentCard({ segment }) {
                             )}
                         </div>
                         <div className="text-sm text-muted-foreground">
-                            {segment.OriginAirport}
+                            {getAirportName(segment.Origin) || segment.OriginAirport}
                         </div>
                     </div>
 
@@ -107,7 +110,7 @@ export default function SegmentCard({ segment }) {
                     {/* Destination */}
                     <div>
                         <div className="font-medium flex items-center gap-2">
-                            {segment.Destination}
+                            {getCityName(segment.Destination) || segment.Destination}
                             {segment.DestinationTerminal && (
                                 <span className="text-sm text-muted-foreground">
                                     {t("dialog.terminal")}{" "}
@@ -116,7 +119,7 @@ export default function SegmentCard({ segment }) {
                             )}
                         </div>
                         <div className="text-sm text-muted-foreground">
-                            {segment.DestinationAirport}
+                            {getAirportName(segment.Destination) || segment.DestinationAirport}
                         </div>
                     </div>
                 </div>

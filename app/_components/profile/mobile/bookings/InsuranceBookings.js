@@ -72,18 +72,16 @@ export default function InsuranceBookings() {
                                     whileHover={{ scale: 1.01 }}
                                     className="rounded-2xl bg-white dark:bg-[#1c1c1e] border border-gray-100 dark:border-neutral-800 overflow-hidden shadow-sm"
                                 >
-                                    {console.log(insuranceBookings)}
                                     {/* Header Row */}
                                     <div
-                                        className={`flex items-center justify-between px-4 py-2 text-xs font-semibold ${
-                                            b.booking_status === "CREATED"
+                                        className={`flex items-center justify-between px-4 py-2 text-xs font-semibold ${b.booking_status === "CREATED"
                                                 ? "bg-green-50 text-green-700"
                                                 : b.booking_status ===
-                                                      "CANCELLED" ||
-                                                  b.booking_status === null
-                                                ? "bg-red-50 text-red-600"
-                                                : "bg-yellow-50 text-yellow-700"
-                                        }`}
+                                                    "CANCELLED" ||
+                                                    b.booking_status === null
+                                                    ? "bg-red-50 text-red-600"
+                                                    : "bg-yellow-50 text-yellow-700"
+                                            }`}
                                     >
                                         <div className="flex items-center gap-2">
                                             <span className="uppercase">

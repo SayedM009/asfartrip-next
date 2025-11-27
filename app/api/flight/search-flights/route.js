@@ -1,45 +1,11 @@
 import { NextResponse } from "next/server";
-import {
-    clearAPIToken,
-    loginWithExistsCredintials,
-} from "@/app/_libs/token-manager";
-
-// Request timeout: 30 seconds
-const REQUEST_TIMEOUT = 30000;
+import { flightService } from "@/app/_services/flight-service";
 
 // Simple in-memory cache
 const CACHE = new Map();
 const CACHE_TTL = 3 * 60 * 1000; // 3 minutes
 
-async function makeFlightSearchRequest(requestData, basicAuth, apiUrl) {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
-
-    try {
-        const response = await fetch(apiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                Authorization: `Basic ${basicAuth}`,
-            },
-            body: new URLSearchParams(requestData),
-            signal: controller.signal,
-        });
-
-        clearTimeout(timeoutId);
-        return response;
-    } catch (error) {
-        clearTimeout(timeoutId);
-
-        if (error.name === "AbortError") {
-            throw new Error("Request timeout - please try again");
-        }
-
-        throw error;
-    }
-}
-
-function prepareRequestData(params, token) {
+function prepareRequestData(params) {
     const requestData = {
         origin: params.origin,
         destination: params.destination,
@@ -49,7 +15,6 @@ function prepareRequestData(params, token) {
         INF: params.INF || 0,
         class: `${params.class[0].toUpperCase()}${params.class.slice(1)}`,
         type: params.type || "O",
-        api_token: token,
     };
 
     if (params.type === "R" && params.return_date) {
@@ -76,101 +41,40 @@ export async function POST(req) {
         .substr(2, 9)}`;
 
     try {
-        const params = await req.json();
+        const body = await req.json();
+        const { force_refresh, ...params } = body;
+
         validateParams(params);
 
-        // Generate cache key based on search params
+        // Generate cache key based on search params (excluding force_refresh)
         const cacheKey = JSON.stringify(params);
         const cached = CACHE.get(cacheKey);
 
-        if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+        if (!force_refresh && cached && Date.now() - cached.timestamp < CACHE_TTL) {
             console.log(
-                `💾 [${new Date().toISOString()}] [${requestId}] Returning cached results`
+                ` [${new Date().toISOString()}] [${requestId}] Returning cached results`
             );
             return NextResponse.json(cached.data);
         }
 
-        // Always get a fresh token for each search to avoid reuse issues
         console.log(
-            `🔐 [${new Date().toISOString()}] [${requestId}] Getting fresh token...`
-        );
-        let token = await loginWithExistsCredintials();
-
-        const username = process.env.TP_USERNAME;
-        const password = process.env.TP_PASSWORD;
-
-        if (!username || !password) {
-            throw new Error("Missing API credentials configuration");
-        }
-
-        const basicAuth = Buffer.from(`${username}:${password}`).toString(
-            "base64"
-        );
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/flight/search`;
-
-        let requestData = prepareRequestData(params, token);
-
-        let response = await makeFlightSearchRequest(
-            requestData,
-            basicAuth,
-            apiUrl
+            ` [${new Date().toISOString()}] [${requestId}] Initiating flight search... ${force_refresh ? '(Cache forced refresh)' : ''}`
         );
 
-        // Keep retry logic as fallback, though unlikely with fresh token
-        if (response.status === 401 || response.status === 403) {
-            console.log(
-                `⚠️ [${new Date().toISOString()}] [${requestId}] Auth failed, retrying with new token...`
-            );
-            await clearAPIToken(); // Clean up if any old cookies
-            const newToken = await loginWithExistsCredintials();
-
-            if (!newToken) {
-                throw new Error("Failed to obtain new authentication token");
-            }
-
-            requestData.api_token = newToken;
-            response = await makeFlightSearchRequest(
-                requestData,
-                basicAuth,
-                apiUrl
-            );
-        }
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            let errorMessage = "Failed to search flights";
-
-            try {
-                const errorJson = JSON.parse(errorText);
-                errorMessage =
-                    errorJson.message || errorJson.error || errorMessage;
-            } catch {}
-
-            console.error(
-                `❌ [${new Date().toISOString()}] [${requestId}] API error: ${
-                    response.status
-                } - ${errorMessage}`
-            );
-
-            return NextResponse.json(
-                { error: errorMessage, requestId, status: response.status },
-                { status: response.status }
-            );
-        }
-
-        const data = await response.json();
+        const requestData = prepareRequestData(params);
+        const data = await flightService.searchFlights(requestData, requestId);
 
         // Save to cache
         CACHE.set(cacheKey, { data, timestamp: Date.now() });
 
         console.log(
-            `✅ [${new Date().toISOString()}] [${requestId}] Flight search successful`
+            ` [${new Date().toISOString()}] [${requestId}] Flight search successful`
         );
 
         return NextResponse.json(data);
     } catch (error) {
         console.error(
-            `❌ [${new Date().toISOString()}] [${requestId}] Critical error:`,
+            ` [${new Date().toISOString()}] [${requestId}] Search Error:`,
             error.message
         );
         return NextResponse.json(

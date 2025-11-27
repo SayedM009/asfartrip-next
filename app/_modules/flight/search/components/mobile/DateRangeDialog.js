@@ -48,8 +48,8 @@ function DateRangeDialog({
                             <div className="font-semibold dark:text-gray-50">
                                 {range?.from
                                     ? formatDate(range.from, {
-                                          pattern,
-                                      })
+                                        pattern,
+                                    })
                                     : t("departure_date")}
                             </div>
                         </div>
@@ -62,8 +62,8 @@ function DateRangeDialog({
                             <div className="font-semibold dark:text-gray-50">
                                 {range?.to
                                     ? formatDate(range.from, {
-                                          pattern,
-                                      })
+                                        pattern,
+                                    })
                                     : t("return_date")}
                             </div>
                         </div>
@@ -73,15 +73,15 @@ function DateRangeDialog({
                         <div className="font-semibold dark:text-gray-50">
                             {departDate
                                 ? formatDate(departDate, {
-                                      pattern,
-                                  })
+                                    pattern,
+                                })
                                 : t("departure_date")}
                         </div>
                     </div>
                 )}
             </DialogTrigger>
 
-            <DialogContent className="h-full w-full max-w-none overflow-y-scroll border-0 rounded-none ">
+            <DialogContent className="h-full w-full max-w-none overflow-y-scroll border-0 rounded-none flex flex-col items-center ">
                 <DialogHeader>
                     <DialogTitle>{t("select_date")}</DialogTitle>
                 </DialogHeader>
@@ -93,7 +93,7 @@ function DateRangeDialog({
                         onSelect={(val) => {
                             handleSelectRangeDateWithSession?.(val);
                         }}
-                        className="rounded-lg w-full"
+                        className="rounded-lg w-full "
                         numberOfMonths={12}
                         hideNavigation
                         locale={dateLocale}

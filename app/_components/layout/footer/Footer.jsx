@@ -4,7 +4,7 @@ import CompanyInfo from "./CompanyInfo";
 import QuickLinks from "./QuickLinks";
 import ServicesLinks from "./ServicesLinks";
 import LegalLinks from "./LegalLinks";
-import PaymentIcons from "./PaymentIcons";
+import CardsAccepted from "./CardsAccepted";
 import { Separator } from "@/components/ui/separator";
 // import useIsDevice from "@/app/_hooks/useIsDevice";
 import { useTranslations } from "next-intl";
@@ -15,7 +15,7 @@ export default function Footer() {
 
     return (
         <footer className="text-muted-foreground hidden md:block border-t">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className=" py-12">
                 {/* Top Footer Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
                     <CompanyInfo />
@@ -32,7 +32,7 @@ export default function Footer() {
                         &copy; {new Date().getFullYear()}{" "}
                         {t("copy_right.website")} {t("copy_right.text")}
                     </p>
-                    <PaymentIcons />
+                    <CardsAccepted />
                 </div>
             </div>
         </footer>

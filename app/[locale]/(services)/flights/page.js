@@ -1,5 +1,5 @@
 // Sliders
-import { FlightsSlider } from "@/app/_components/sliders/FlightsSlider";
+import FlightsSlider from "@/app/_modules/flight/presentation/components/organism/FlightsSlider";
 
 // Components
 import Navbar from "@/app/_components/layout/Navbar";

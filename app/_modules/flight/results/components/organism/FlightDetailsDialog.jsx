@@ -16,7 +16,6 @@ import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
-import useBookingStore from "@/app/_store/bookingStore";
 // === HOOKS & STATES ===
 import { useFormatBaggage } from "../../hooks/useFormatBaggage";
 
@@ -30,6 +29,7 @@ import ContinueFooter from "../molecule/ContinueFooter";
 import { calculateTotalDuration } from "../../utils/flightTimeUtils";
 // === services ===
 import { checkAirPricing } from "../../services/airPricingService";
+import useBookingStore from "../../../booking/store/bookingStore";
 
 export function FlightDetailsDialog({
     ticket,
@@ -50,11 +50,11 @@ export function FlightDetailsDialog({
         JSON.parse(searchParams.get("cities")) || {};
 
     const departureCity =
-        departure?.city || JSON.parse(sessionStorage.getItem("departure")).city;
+        departure?.city || JSON.parse(sessionStorage.getItem("departure"))?.city;
 
     const destinationCity =
         destination?.city ||
-        JSON.parse(sessionStorage.getItem("destination")).city;
+        JSON.parse(sessionStorage.getItem("destination"))?.city;
 
     const {
         TotalPrice,
@@ -89,6 +89,7 @@ export function FlightDetailsDialog({
         clearBookingData,
         setSearchURL,
         setBaggageData,
+        setPriceChangeData,
     } = useBookingStore();
 
     const handleContinue = async () => {
@@ -108,13 +109,18 @@ export function FlightDetailsDialog({
         }
 
         switch (pricingData.status) {
-            case "success":
+            case "success": {
                 clearBookingData();
-                setTicket(ticket);
+                setTicket(ticket)
                 setSearchInfo(searchInfo);
                 setSessionId(pricingData.data.sessionId);
                 setTempId(pricingData.data.tempId);
-                setSearchURL(window.location.href);
+
+                
+                //  Save the current search results URL so user can return if booking fails
+                const currentSearchURL = window.location.href;
+                
+                setSearchURL(currentSearchURL);
 
                 setBaggageData({
                     outward:
@@ -129,17 +135,43 @@ export function FlightDetailsDialog({
                     `/flights/booking?session_id=${pricingData.data.sessionId}&temp_id=${pricingData.data.tempId}`
                 );
                 break;
+            }
 
-            case "price_changed":
-                setPricingError(
-                    `Price changed from ${formatPrice(
-                        pricingData.data.oldPrice
-                    )} to ${formatPrice(pricingData.data.newPrice)}.`
+            case "price_changed": {
+                clearBookingData();
+                
+                // Update ticket with new price
+                const updatedTicket = {
+                    ...ticket,
+                    TotalPrice: pricingData.data.newPrice,
+                    BasePrice: pricingData.data.basePrice,
+                    Taxes: pricingData.data.taxPrice
+                };
+
+                setTicket(updatedTicket);
+                setSearchInfo(searchInfo);
+                setSessionId(pricingData.data.sessionId);
+                setTempId(pricingData.data.tempId);
+                
+                // Set price change data for the popup
+                setPriceChangeData({
+                    oldPrice: pricingData.data.oldPrice,
+                    newPrice: pricingData.data.newPrice,
+                    currency: pricingData.data.currency
+                });
+
+                // Save search URL
+                const currentSearchURL = window.location.href;
+                setSearchURL(currentSearchURL);
+
+                router.push(
+                    `/flights/booking?session_id=${pricingData.data.sessionId}&temp_id=${pricingData.data.tempId}`
                 );
                 break;
+            }
 
             case "not_available":
-                router.push("/price-not-found");
+                router.push("/flights/price-not-found");
                 break;
 
             default:

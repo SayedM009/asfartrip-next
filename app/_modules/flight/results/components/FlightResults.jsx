@@ -243,6 +243,7 @@ const FlightResults = ({ flights = [], searchParams }) => {
             }
         }
 
+
         return {
             cheapestIndex: cheapestIdx,
             fastestIndex: fastestIdx,
@@ -378,7 +379,11 @@ const FlightResults = ({ flights = [], searchParams }) => {
                     <div className="grid gap-3">
                         <FlightTicketsList
                             filteredAndSortedFlights={visibleFlights}
-                            searchParams={searchParams}
+                            searchObject={searchParams}
+                            cheapestIndex={cheapestIndex}
+                            fastestIndex={fastestIndex}
+                            filterBy={filterBy}
+                            resetFilters={resetFilters}
                         />
                         {visibleCount < filteredAndSortedFlights.length && (
                             <div

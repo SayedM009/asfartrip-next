@@ -1,4 +1,4 @@
-# ⚠️ DANGER: Old Code Removal Script
+#  DANGER: Old Code Removal Script
 
 ## WARNING
 **DO NOT RUN THIS unless you are 100% sure!**
@@ -37,8 +37,8 @@ git checkout main
 ### **Step 2: Verify No Imports**
 ```bash
 # Search for any remaining imports from old code
-grep -r "from.*desktop" app/ || echo "✅ No desktop imports found"
-grep -r "from.*mobile" app/ || echo "✅ No mobile imports found"
+grep -r "from.*desktop" app/ || echo " No desktop imports found"
+grep -r "from.*mobile" app/ || echo " No mobile imports found"
 
 # If any found, DO NOT PROCEED!
 ```

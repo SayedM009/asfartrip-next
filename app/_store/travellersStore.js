@@ -17,7 +17,7 @@ const useTravellersStore = create(
                     set({ travellers: data, isLoading: false });
                     return data;
                 } catch (err) {
-                    console.error("❌ Error fetching travellers:", err);
+                    console.error(" Error fetching travellers:", err);
                     set({ error: err.message, isLoading: false });
                     return null;
                 }

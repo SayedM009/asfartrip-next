@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useCallback } from "react";
 import { parseISO, isBefore } from "date-fns";
-import useTravellersStore from "@/app/_store/travellersStore";
+import useTravellersStore from "@/app/_modules/profile/store/travellersStore";
 import useAuthStore from "@/app/_modules/auth/store/authStore";
 
 export function useSavedTravelers() {

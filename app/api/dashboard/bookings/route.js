@@ -38,7 +38,7 @@ export async function POST(req) {
             cache: "no-store",
         });
 
-        // ✅ نتأكد إن في body قبل نحاول نحوله JSON
+        //  نتأكد إن في body قبل نحاول نحوله JSON
         const text = await response.text();
         let data;
         try {

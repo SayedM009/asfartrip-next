@@ -99,7 +99,7 @@ import { TripTypeSelector } from '../molecules';
 <TripTypeSelector tripType={tripType} setTripType={setTripType} />
 ```
 
-## ✅ Benefits of New Structure
+##  Benefits of New Structure
 
 ### 1. **Reusability**
 ```javascript
@@ -149,7 +149,7 @@ import { TripTypeSelector } from '../molecules';
 import TripTypeSelector from '../molecules/TripTypeSelector';
 ```
 
-## 📋 Migration Checklist
+##  Migration Checklist
 
 When migrating a component:
 

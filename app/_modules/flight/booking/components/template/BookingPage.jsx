@@ -22,19 +22,21 @@ import BookingPageTravellerInfoSubTitle from "../molecule/BookingPageTravellerIn
 import MobileBottomBar from "../molecule/MobileBottomBar";
 import BookingPageTravellerInfoTitle from "../atoms/BookingPageTravellerInfoTitle";
 import TopMobileSection from "../organism/TopMobileSection";
+import PaymentSection from "../organism/PaymentSection";
+import FareSummarySidebar from "../organism/FareSummarySidebar";
+import InsuranceSelection from "../molecule/InsuranceSelection";
+import AddOn from "../molecule/AddOn";
+import TicketExpired from "../atoms/TicketExpired";
+import PriceChangeDialog from "../molecule/PriceChangeDialog";
 
-// باقي مكونات البوكنج (لسه من مكانها القديم)
-import PaymentSection from "@/app/_components/flightComponents/bookingPage/PaymentSection";
-import FareSummarySidebar from "@/app/_components/flightComponents/bookingPage/FareSummarySidebar";
-import { InsuranceSelection } from "@/app/_components/flightComponents/bookingPage/InsuranceSelection";
-import AddOn from "@/app/_components/flightComponents/bookingPage/AddOn";
-import TicketExpired from "@/app/_components/flightComponents/bookingPage/TicketExpired";
-
-// Atoms / Layout
+// Components
 import TimeoutPopup from "@/app/_components/ui/TimeoutPopup";
 import { BackWardButtonWithDirections } from "@/app/_components/layout/BackwardButton";
 
-export default function BookingPage({ isLogged, cart: initialCart, userId }) {
+
+
+
+export default function BookingPage({ isLogged, cart: initialCart, userId, userType }) {
     const [currentStep, setCurrentStep] = useState(2);
     const travelerRefs = useRef([]);
     const t = useTranslations("Flight");
@@ -48,10 +50,12 @@ export default function BookingPage({ isLogged, cart: initialCart, userId }) {
 
     const totalPassengers = getTotalPassengers();
 
+    console.log("1- from BookingPage userType", userType)
     // init (userId + cart + insurance)
     useBookingInitialization({
         isLogged,
         userId,
+        userType,
         initialCart,
     });
 
@@ -66,6 +70,7 @@ export default function BookingPage({ isLogged, cart: initialCart, userId }) {
         setErrorModalOpen,
         handleProceedToPayment,
         handleConfirmPayment,
+        telrIframeUrl, // Get Telr iframe URL from hook
     } = usePaymentFlow({
         contactInfo,
         travelerRefs,
@@ -91,6 +96,7 @@ export default function BookingPage({ isLogged, cart: initialCart, userId }) {
                         onConfirmPayment={handleConfirmPayment}
                         backTo={() => setCurrentStep(2)}
                         loading={loading}
+                        iframeSrc={telrIframeUrl}
                     />
 
                     <div className="hidden lg:block lg:w-96">
@@ -199,6 +205,10 @@ export default function BookingPage({ isLogged, cart: initialCart, userId }) {
 
             {/* Error Modal Placeholder */}
             {errorModalOpen && <div className="hidden">{errorMessage}</div>}
+
+            {/* Price Change Dialog */}
+            <PriceChangeDialog />
         </div>
     );
 }
+

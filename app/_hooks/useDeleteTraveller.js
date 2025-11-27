@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import useTravellersStore from "../_store/travellersStore";
+import useTravellersStore from "@/app/_modules/profile/store/travellersStore";
 import { toast } from "sonner";
 
 export function useDeleteTraveller() {
@@ -45,14 +45,14 @@ export function useDeleteTraveller() {
 
             toast.success(
                 p("delete_traveller_success", { traveller: travellerName }) ||
-                    "Traveller deleted successfully"
+                "Traveller deleted successfully"
             );
 
             await fetchTravellers(userId);
 
             if (onClose) onClose();
         } catch (error) {
-            console.error("❌ delete traveller error:", error.message);
+            console.error(" delete traveller error:", error.message);
             toast.error(
                 p("delete_traveller_failed") || "Failed to delete traveller"
             );

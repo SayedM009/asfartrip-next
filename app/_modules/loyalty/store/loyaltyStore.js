@@ -22,7 +22,7 @@ const useLoyaltyStore = create((set, get) => ({
             set({ config: data, isLoading: false });
             return data;
         } catch (err) {
-            console.error("❌ Error loading loyalty config:", err);
+            console.error(" Error loading loyalty config:", err);
             set({ error: err.message, isLoading: false });
             return null;
         }
@@ -35,7 +35,7 @@ const useLoyaltyStore = create((set, get) => ({
             set({ tier: { ...data, user_id: userId }, isLoading: false });
             return data;
         } catch (err) {
-            console.error("❌ Error loading user tier:", err);
+            console.error(" Error loading user tier:", err);
             set({ error: err.message, isLoading: false });
             return null;
         }
@@ -45,11 +45,11 @@ const useLoyaltyStore = create((set, get) => ({
         const now = Date.now();
         const last = get().lastBalanceFetch;
         if (now - last < BALANCE_TTL) {
-            console.log("💾 Using cached balance");
+            console.log(" Using cached balance");
             return get().balance;
         }
         try {
-            console.log("🔄 Fetching fresh balance from API...");
+            console.log("Fetching fresh balance from API...");
             set({ isLoading: true, error: null });
             const data = await getUserBalance(userId);
             const points = parseFloat(data?.points_balance || 0);
@@ -60,7 +60,7 @@ const useLoyaltyStore = create((set, get) => ({
             });
             return points;
         } catch (err) {
-            console.error("❌ Error loading user balance:", err);
+            console.error(" Error loading user balance:", err);
             set({ error: err.message, isLoading: false });
             return 0;
         }

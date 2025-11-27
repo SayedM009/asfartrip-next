@@ -108,7 +108,7 @@ export default function EmailInput({ parentSetOpen }) {
                                     onChange={(val) => setOtp(val)}
                                     disabled={isVerifying}
                                 >
-                                    <InputOTPGroup>
+                                    <InputOTPGroup dir="ltr">
                                         {Array.from({ length: OTPLENGTH }).map(
                                             (_, i) => (
                                                 <InputOTPSlot
@@ -128,7 +128,7 @@ export default function EmailInput({ parentSetOpen }) {
                                 {otpError && <ErrorMessage error={otpError} />}
 
                                 <Button
-                                    className="mt-4 w-full py-5"
+                                    className="mt-4 w-50 py-5"
                                     onClick={handleVerifyOtp}
                                     disabled={isVerifying}
                                 >

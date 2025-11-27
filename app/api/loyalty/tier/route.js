@@ -48,17 +48,17 @@ export async function GET(req) {
             throw new Error("Missing required parameter: user_id");
         }
 
-        // ✅ تحقق من الكاش أولًا
+        //  تحقق من الكاش أولًا
         const cacheKey = `TIER_${userId}`;
         const cached = CACHE.get(cacheKey);
         if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
             console.log(
-                `💾 [${new Date().toISOString()}] [${requestId}] Returning cached tier for user ${userId}`
+                ` [${new Date().toISOString()}] [${requestId}] Returning cached tier for user ${userId}`
             );
             return NextResponse.json(cached.data);
         }
 
-        // ✅ إعداد بيانات المصادقة
+        //  إعداد بيانات المصادقة
         const username = process.env.TP_USERNAME;
         const password = process.env.TP_PASSWORD;
 
@@ -70,20 +70,17 @@ export async function GET(req) {
             "base64"
         );
 
-        // ✅ بناء رابط الـ API الخارجي
-        console.log(userId);
-        const apiUrl = `${
-            process.env.NEXT_PUBLIC_API_BASE_URL
-        }/api/loyalty/tier?user_id=${encodeURIComponent(userId)}`;
+        //  بناء رابط الـ API الخارجي
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL
+            }/api/loyalty/tier?user_id=${encodeURIComponent(userId)}`;
 
-        // ✅ تنفيذ الطلب
+        //  تنفيذ الطلب
         const response = await fetchUserTier(basicAuth, apiUrl);
 
         if (!response.ok) {
             const text = await response.text();
             console.error(
-                `❌ [${new Date().toISOString()}] [${requestId}] API error: ${
-                    response.status
+                ` [${new Date().toISOString()}] [${requestId}] API error: ${response.status
                 } - ${text}`
             );
             return NextResponse.json(
@@ -94,17 +91,17 @@ export async function GET(req) {
 
         const data = await response.json();
 
-        // ✅ حفظ النتيجة في الكاش
+        //  حفظ النتيجة في الكاش
         CACHE.set(cacheKey, { data, timestamp: Date.now() });
 
         console.log(
-            `✅ [${new Date().toISOString()}] [${requestId}] Loyalty tier fetched successfully for user ${userId}`
+            ` [${new Date().toISOString()}] [${requestId}] Loyalty tier fetched successfully for user ${userId}`
         );
 
         return NextResponse.json(data);
     } catch (error) {
         console.error(
-            `❌ [${new Date().toISOString()}] [${requestId}] Critical error:`,
+            ` [${new Date().toISOString()}] [${requestId}] Critical error:`,
             error.message
         );
         return NextResponse.json(
