@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import useTravellersStore from "@/app/_modules/profile/store/travellersStore";
@@ -27,7 +27,7 @@ export function useTravelerDialogLogic({
         passportExpiry: "",
     });
 
-    const resetForm = () => {
+    const resetForm = useCallback(() => {
         setFormTraveler({
             title: "",
             firstName: "",
@@ -38,7 +38,7 @@ export function useTravelerDialogLogic({
             passportExpiry: "",
         });
         setShowValidation(false);
-    };
+    }, []);
 
     useEffect(() => {
         if (traveller) {
