@@ -1,5 +1,5 @@
 "use client";
-import "@/app/[locale]./globals.css";
+import "@/app/[locale]/globals.css";
 import Link from "next/link";
 import FuzzyText from "@/components/FuzzyText";
 import ElectricBorder from "@/components/ElectricBorder";
