@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getValidToken } from "@/app/_libs/token-manager";
 
 /**
- * POST /api/payment/check-telr
+ * POST telr
  * Checks the status of a Telr payment transaction
  * 
  * Request body:

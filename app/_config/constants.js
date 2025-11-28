@@ -1,2 +1,2 @@
-export const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+// This file previously exported baseUrl which is no longer needed.
+// All internal API calls now use relative paths like "/api/..."

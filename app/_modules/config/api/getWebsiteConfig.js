@@ -1,17 +1,19 @@
-export async function getWebsiteConfig() {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
+const baseUrl =
+    process.env.VERCEL_URL
+        ? process.env.VERCEL_URL
+        : process.env.NEXT_PUBLIC_SITE_URL ||
+        "http://localhost:3000";
+
+export async function getWebsiteConfig() {
     const res = await fetch(`${baseUrl}/api/config`, {
         cache: "no-store",
     });
 
     const json = await res.json();
 
-    console.log(json)
-
-
     if (!json || json.status !== "success") {
-        throw new Error("Failed to load website config");
+        throw new Error(json?.message || "Failed to load website config");
     }
 
     return json.data;

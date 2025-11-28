@@ -3,8 +3,6 @@
  * Handles fetching flight booking details for status page
  */
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
-
 /**
  * Get flight booking details
  * @param {string} booking_reference - Booking reference
@@ -12,14 +10,25 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
  */
 export async function getFlightBookingDetails(booking_reference) {
     try {
-        const res = await fetch(`${baseUrl}/api/flight/get-booking`, {
+        const res = await fetch("/api/flight/get-booking", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ booking_reference }),
         });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Failed to get booking");
+        const text = await res.text();
+        let data;
+
+        try {
+            data = JSON.parse(text);
+        } catch (error) {
+            throw new Error(`Invalid JSON from /api/flight/get-booking: ${text.substring(0, 200)}`);
+        }
+
+        if (!res.ok) {
+            throw new Error(data.error || data.message || "Failed to get booking");
+        }
+
         return data;
     } catch (err) {
         console.error("getFlightBookingDetails error:", err.message);

@@ -1,12 +1,23 @@
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 import { encodeBase64 } from "@/app/_helpers/codeBase64";
 
 export async function getLoyaltyConfig() {
-    const res = await fetch(`${baseUrl}/api/loyalty/config`, {
+    const res = await fetch("/api/loyalty/config", {
         cache: "no-store",
     });
-    if (!res.ok) throw new Error("Failed to load loyalty config");
-    const json = await res.json();
+
+    const text = await res.text();
+    let json;
+
+    try {
+        json = JSON.parse(text);
+    } catch (error) {
+        throw new Error(`Invalid JSON from /api/loyalty/config: ${text.substring(0, 200)}`);
+    }
+
+    if (!res.ok) {
+        throw new Error(json.error || json.message || "Failed to load loyalty config");
+    }
+
     return json.data;
 }
 
@@ -16,7 +27,16 @@ export async function getUserTier(userId) {
         `/api/loyalty/tier?user_id=${encodeURIComponent(encodedId)}`,
         { cache: "no-store" }
     );
-    const json = await res.json();
+
+    const text = await res.text();
+    let json;
+
+    try {
+        json = JSON.parse(text);
+    } catch (error) {
+        throw new Error(`Invalid JSON from /api/loyalty/tier: ${text.substring(0, 200)}`);
+    }
+
     return json.data;
 }
 
@@ -26,6 +46,15 @@ export async function getUserBalance(userId) {
         `/api/loyalty/balance?user_id=${encodeURIComponent(encodedId)}`,
         { cache: "no-store" }
     );
-    const json = await res.json();
+
+    const text = await res.text();
+    let json;
+
+    try {
+        json = JSON.parse(text);
+    } catch (error) {
+        throw new Error(`Invalid JSON from /api/loyalty/balance: ${text.substring(0, 200)}`);
+    }
+
     return json.data;
 }

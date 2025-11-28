@@ -14,7 +14,7 @@ export async function POST(req) {
 
         const basicAuth = btoa(`${username}:${password}`);
 
-        const apiRes = await fetch(`${baseUrl}/api/dashboard/update_profile`, {
+        const apiRes = await fetch(`${baseUrl}_profile`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",

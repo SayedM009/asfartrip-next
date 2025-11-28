@@ -1,6 +1,10 @@
 // 1. Search airports
 // const API = process.env.NEXT_PUBLIC_APP_API_BASE_URL;
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+const baseUrl =
+    process.env.VERCEL_URL
+        ? process.env.VERCEL_URL
+        : process.env.NEXT_PUBLIC_SITE_URL ||
+        "http://localhost:3000";
 
 
 

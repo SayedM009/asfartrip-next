@@ -3,7 +3,11 @@
  * Handles common booking operations across all modules (Flight, Hotel, Insurance, etc.)
  */
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
+const baseUrl =
+    process.env.VERCEL_URL
+        ? process.env.VERCEL_URL
+        : process.env.NEXT_PUBLIC_SITE_URL ||
+        "http://localhost:3000";
 
 /**
  * Send voucher/ticket to customer email

@@ -1,5 +1,9 @@
 
-import { baseUrl } from "@/app/_config/constants";
+const baseUrl =
+    process.env.VERCEL_URL
+        ? process.env.VERCEL_URL
+        : process.env.NEXT_PUBLIC_SITE_URL ||
+        "http://localhost:3000";
 
 export async function getCart(sessionId) {
     const res = await fetch(`${baseUrl}/api/flight/get-cart`, {
