@@ -17,10 +17,12 @@ export async function GET() {
 
         // Use the host from the request, or fallback to demo for localhost
         // You can add more local/dev domains to this check if needed
-        const targetDomain =
-            host && !host.includes("localhost")
-                ? host
-                : "whitelabel-demo.asfartrip.com";
+        // const targetDomain =
+        //     host && !host.includes("localhost")
+        //         ? host
+        //         : "whitelabel-demo.asfartrip.com";
+
+        const targetDomain = "whitelabel-demo.asfartrip.com";
 
         const basicAuth = Buffer.from(`${username}:${password}`).toString(
             "base64"
