@@ -101,7 +101,7 @@ function MoreButton() {
             >
                 <DialogHeader>
                     {/* Dialog Title */}
-                    <DialogTitle className="shadow-lg w-full pb-5 capitalize">
+                    <DialogTitle className="shadow-lg w-full pb-5 capitalize text-center">
                         {t("more")}
                     </DialogTitle>
                     <DialogDescription>
@@ -137,11 +137,10 @@ function MoreButton() {
                             {HELPER_LINKS.map((link, index) => (
                                 <Link
                                     key={link.title}
-                                    className={`flex  py-3 border-b-1  w-full justify-between dark:text-gray-50  ${
-                                        index + 1 < HELPER_LINKS.length
-                                            ? "border-gray-300 dark:border-gray-100 "
-                                            : ""
-                                    }`}
+                                    className={`flex  py-3 border-b-1  w-full justify-between dark:text-gray-50  ${index + 1 < HELPER_LINKS.length
+                                        ? "border-gray-300 dark:border-gray-100 "
+                                        : ""
+                                        }`}
                                     onClick={() => setOpen(false)}
                                     href={link.path}
                                 >
@@ -158,9 +157,9 @@ function MoreButton() {
                     </DialogDescription>
                 </DialogHeader>
                 {/* Sign out  */}
-                <DialogFooter className="flex items-center">
+                {/* <DialogFooter className="flex items-center">
                     <SignOutButton />
-                </DialogFooter>
+                </DialogFooter> */}
             </DialogContent>
         </Dialog>
     );

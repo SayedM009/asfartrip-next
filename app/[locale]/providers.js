@@ -21,7 +21,7 @@ function LoyaltyInitializer() {
         } else if (status === "unauthenticated") {
             clearUser();
         }
-    }, [status, session?.user?.id]);
+    }, [status, session?.user?.id, setUser, setSession, clearUser, fetchConfig, fetchTier, fetchBalance, session]);
 
     return null;
 }

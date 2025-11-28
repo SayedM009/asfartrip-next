@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 
 export default function SortOptionCard({
@@ -13,7 +12,6 @@ export default function SortOptionCard({
     textColor,
 }) {
     const { formatPrice } = useCurrency();
-
     return (
         <button
             onClick={onClick}

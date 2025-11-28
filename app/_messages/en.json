@@ -1708,14 +1708,14 @@
             "inbound_baggage": "Inbound Baggage",
             "no_baggage": "No Baggage",
             "infant_baggage_note": "According to airline regulations, infants are not allowed to add extra baggage",
-            "details":"Details",
-            "baggage":"Baggage",
-            "personal_item":"Personal Item",
-            "cabin_baggage":"Cabin Baggage",
-            "checked_baggage":"Checked Baggage",
-            "extra_baggage":"Extra Baggage",
-            "base_fare":"Base Fare",
-            "flight_summary":"Flight Summary"
+            "details": "Details",
+            "baggage": "Baggage",
+            "personal_item": "Personal Item",
+            "cabin_baggage": "Cabin Baggage",
+            "checked_baggage": "Checked Baggage",
+            "extra_baggage": "Extra Baggage",
+            "base_fare": "Base Fare",
+            "flight_summary": "Flight Summary"
         },
         "insurance": {
             "title": "Travel Insurance",
@@ -2263,5 +2263,30 @@
         "payment_method": "Payment Method",
         "meals": "Meals",
         "insurance": "Insurance"
+    },
+    "PaymentPage": {
+        "aiAgentCoordinating": "Our AI agent is coordinating with the payment gateway and airline systems.",
+        "paymentDeductedProcessing": "Your payment has been deducted successfully. We are processing your ticket and it will be sent to your email within maximum 3 hours.",
+        "finalizingItinerary": "Finalizing your itinerary and preparing e-ticket details…",
+        "retryPayment": "Retry Payment",
+        "sameBooking": "Same Booking",
+        "newSearch": "New Search",
+        "poweredByAi": "Powered by AI · Real-time orchestration · Secure gateway",
+        "verifyingPayment": "Verifying your payment…",
+        "stepPaymentVerified": "1. Payment Verified",
+        "stepBookingConfirmed": "2. Booking Confirmed",
+        "stepTicketIssuance": "3. Ticket Issuance",
+        "missingBookingRef": "Missing booking reference.",
+        "checkingPaymentStatus": "Checking payment status…",
+        "paymentFailedCancelled": "Payment failed or cancelled.",
+        "paymentSuccessConfirming": "Payment successful. Confirming the booking…",
+        "bookingConfirmedIssuing": "Booking confirmed. Issuing ticket…",
+        "ticketIssuedRedirecting": "Ticket issued successfully. Redirecting…",
+        "ticketAlreadyIssuedRedirecting": "Your ticket is already issued. Redirecting…",
+        "paymentReceivedTicketPending": "Payment received successfully. Your ticket will be issued within 3 hours.",
+        "recheckingPaymentStatus": "Rechecking payment status...",
+        "unableToDetermineStatus": "Unable to determine payment status.",
+        "networkIssueRetrying": "Network issue. Retrying...",
+        "networkError": "Network error. Please try again."
     }
 }

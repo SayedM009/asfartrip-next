@@ -19,8 +19,8 @@ export default function DestinationsContent({
     const filteredObj = search
         ? results
         : popularDestinations.filter((dest) =>
-              dest.city.toLowerCase().includes(search.toLowerCase())
-          );
+            dest.city.toLowerCase().includes(search.toLowerCase())
+        );
 
     const { locale, isRTL } = useCheckLocal();
     const dir = isRTL ? "rtl" : "ltr";
@@ -30,15 +30,6 @@ export default function DestinationsContent({
         // Validate before save
         if (dest && dest.label_code?.length === 3 && dest.city) {
             onDestination(dest);
-            sessionStorage.setItem(
-                sessionKey,
-                JSON.stringify({
-                    city: dest.city.trim(),
-                    label_code: dest.label_code.toUpperCase(),
-                    country: dest.country,
-                    airport: dest.airport,
-                })
-            );
         }
 
         onSearch("");
@@ -66,13 +57,13 @@ export default function DestinationsContent({
                                 onClick={() => handleSelect(dest)}
                                 className="w-full p-3 text-left hover:bg-muted rounded-md border-b last:border-0 cursor-pointer"
                                 role="option"
+                                aria-selected="false"
                             >
                                 <div className="flex items-center justify-between gap-2">
                                     <div className="flex flex-col items-start">
                                         <div
-                                            className={`font-medium ${
-                                                locale === "ar" && "text-right"
-                                            }`}
+                                            className={`font-medium ${locale === "ar" && "text-right"
+                                                }`}
                                         >
                                             {dest.city},{" "}
                                             {dest.country.split("-").at(0)}

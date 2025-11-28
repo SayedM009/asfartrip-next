@@ -1,14 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PassengerClassModal } from "./PassengerClassModal";
 import { User, Users, Baby, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { safeParse } from "@/app/_helpers/safeParse";
+import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
 
 import SwapButton from "@/app/_components/ui/SwapButton";
@@ -16,44 +12,32 @@ import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import DateRangeDialog from "./DateRangeDialog";
 import DestinationSearchDialog from "./DestinationSearchDialog";
 
-export function FlightSearchForm({ closeModal }) {
-    const [tripType, setTripType] = useState("roundtrip");
-    const [departure, setDeparture] = useState("");
-    const [destination, setDestination] = useState("");
-    const [departDate, setDepartDate] = useState(null);
-    const [range, setRange] = useState({ from: null, to: null });
-    const [passengers, setPassengers] = useState({
-        adults: 1,
-        children: 0,
-        infants: 0,
-    });
-    const [travelClass, setTravelClass] = useState("economy");
+// Shared Logic Hooks
+import { useTripType } from "../../hooks/useTripType";
+import { useDateSelection } from "../../hooks/useDateSelection";
+import { usePassengerLogic } from "../../hooks/usePassengerLogic";
+import { useTravelClass } from "../../hooks/useTravelClass";
+import { useSearchValidation } from "../../hooks/useSearchValidation";
+import { useSessionPersistence } from "../../hooks/useSessionPersistence";
+import { SESSION_KEYS } from "../../constants/sessionKeys";
+import { buildFlightSearchObject } from "../../utils/buildSearchObject";
+import { normalizeClassName } from "../../utils/formatters";
 
+export function FlightSearchForm({ closeModal }) {
     const { locale } = useCheckLocal();
     const t = useTranslations("Flight");
     const router = useRouter();
 
-    // Avoid getting sessionStorage on server to skip an error
-    useEffect(() => {
-        setTripType(sessionStorage.getItem("tripType") || "roundtrip");
-        setDeparture(safeParse(sessionStorage.getItem("departure"), ""));
-        setDestination(safeParse(sessionStorage.getItem("destination"), ""));
-        setDepartDate(safeParse(sessionStorage.getItem("departureDate"), null));
-        setRange(
-            safeParse(sessionStorage.getItem("rangeDate"), {
-                from: null,
-                to: null,
-            })
-        );
-        setTravelClass(sessionStorage.getItem("travelClass") || "economy");
-        setPassengers(
-            safeParse(sessionStorage.getItem("flightPassengers"), {
-                adults: 1,
-                children: 0,
-                infants: 0,
-            })
-        );
-    }, []);
+    // Unified State Hooks
+    const { tripType, setTripType } = useTripType();
+    const { departDate, setDepartDate, range, setRange } = useDateSelection();
+    const { passengers, setPassengers } = usePassengerLogic();
+    const { travelClass, setTravelClass } = useTravelClass();
+    const { validateSearch } = useSearchValidation();
+
+    // Airport state - unified default as empty object
+    const [departure, setDeparture] = useSessionPersistence(SESSION_KEYS.DEPARTURE, {});
+    const [destination, setDestination] = useSessionPersistence(SESSION_KEYS.DESTINATION, {});
 
     // Functions
     const swapCities = () => {
@@ -62,87 +46,31 @@ export function FlightSearchForm({ closeModal }) {
         setDestination(temp);
     };
 
-    const getClassDisplayName = (className) => {
-        switch (className) {
-            case "economy":
-                return "economy";
-            case "business":
-                return "business";
-            case "first":
-                return "first";
-            default:
-                return "economy";
-        }
-    };
-
-    function handleTripType(type) {
-        setTripType(type);
-        sessionStorage.setItem("tripType", type);
-    }
-
     function handleSearch() {
-        if (
-            departure &&
-            destination &&
-            departure?.label_code === destination?.label_code
-        ) {
-            toast.error(t("errors.same_city", { city: departure?.city }));
-            return;
-        }
+        const isValid = validateSearch({
+            departure,
+            destination,
+            tripType,
+            departDate,
+            range,
+            passengers
+        });
 
-        if (!departure) {
-            toast.error(t("errors.departure_required"));
-            return;
-        }
-
-        if (!destination) {
-            toast.error(t("errors.destination_required"));
-            return;
-        }
-
-        if (tripType === "oneway") {
-            if (!departDate) {
-                toast.error(t("errors.departure_date_required"));
-                return;
-            }
-        }
-
-        if (tripType === "roundtrip") {
-            if (!range?.from || !range?.to) {
-                toast.error(t("errors.return_date_required"));
-                return;
-            }
-        }
+        if (!isValid) return;
 
         toast.success(t("operations.searching"), {
             icon: <Loader2 className="size-5 animate-spin" />,
         });
 
-        let searchObject;
-        if (tripType === "oneway") {
-            searchObject = {
-                origin: departure.label_code,
-                destination: destination.label_code,
-                depart_date: format(departDate, "dd-MM-yyyy"),
-                ADT: passengers.adults,
-                CHD: passengers.children,
-                INF: passengers.infants,
-                class: travelClass,
-                type: "O",
-            };
-        } else if (tripType === "roundtrip") {
-            searchObject = {
-                origin: departure.label_code,
-                destination: destination.label_code,
-                depart_date: format(range.from, "dd-MM-yyyy"),
-                return_date: format(range.to, "dd-MM-yyyy"),
-                ADT: passengers.adults,
-                CHD: passengers.children,
-                INF: passengers.infants,
-                class: travelClass,
-                type: "R",
-            };
-        }
+        const searchObject = buildFlightSearchObject({
+            tripType,
+            departure,
+            destination,
+            departDate,
+            range,
+            passengers,
+            travelClass,
+        });
 
         const params = new URLSearchParams();
         params.set("searchObject", JSON.stringify(searchObject));
@@ -183,7 +111,7 @@ export function FlightSearchForm({ closeModal }) {
                             {/* Tab buttons */}
                             <div className="relative grid grid-cols-2 h-full ">
                                 <button
-                                    onClick={() => handleTripType("oneway")}
+                                    onClick={() => setTripType("oneway")}
                                     className={`text-sm font-semibold transition-colors duration-200 rounded-md ${tripType === "oneway"
                                         ? "text-gray-900"
                                         : "text-gray-600"
@@ -192,7 +120,7 @@ export function FlightSearchForm({ closeModal }) {
                                     {t("one_way")}
                                 </button>
                                 <button
-                                    onClick={() => handleTripType("roundtrip")}
+                                    onClick={() => setTripType("roundtrip")}
                                     className={`text-sm font-semibold transition-colors duration-200 rounded-md ${tripType === "roundtrip"
                                         ? "text-gray-900"
                                         : "text-gray-600"
@@ -200,15 +128,6 @@ export function FlightSearchForm({ closeModal }) {
                                 >
                                     {t("round_trip")}
                                 </button>
-                                {/* Multi cities */}
-                                {/* <button
-                  onClick={() => setTripType("multicity")}
-                  className={`text-sm font-medium transition-colors duration-200 rounded-md ${
-                    tripType === "multicity" ? "text-gray-900" : "text-gray-600"
-                  }`}
-                >
-                  Multi-city
-                </button> */}
                             </div>
                         </div>
 
@@ -227,21 +146,6 @@ export function FlightSearchForm({ closeModal }) {
 
                                     {/* Swap Button */}
                                     <SwapButton callBack={swapCities} />
-                                    {/* <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={swapCities}
-                                        className="mx-3 h-8 w-8 rounded-full hover:bg-blue-50 border-1 border-gray-300 relative"
-                                        aria-label="Switch destination values"
-                                    >
-                                        <RefreshCcw
-                                            className={`cursor-pointer text-primary-900 transition-transform ${
-                                                spinning
-                                                    ? "animate-spin duration-75"
-                                                    : ""
-                                            }`}
-                                        />
-                                    </Button> */}
 
                                     {/* To City - Clickable */}
                                     <DestinationSearchDialog
@@ -252,24 +156,6 @@ export function FlightSearchForm({ closeModal }) {
                                         sessionKey="destination"
                                     />
                                 </div>
-                            </div>
-
-                            {/* Hidden inputs for actual functionality */}
-                            <div className="sr-only">
-                                <Input
-                                    value={departure}
-                                    onChange={(e) =>
-                                        setDeparture(e.target.value)
-                                    }
-                                    placeholder="From"
-                                />
-                                <Input
-                                    value={destination}
-                                    onChange={(e) =>
-                                        setDestination(e.target.value)
-                                    }
-                                    placeholder="To"
-                                />
                             </div>
                         </div>
 
@@ -296,7 +182,7 @@ export function FlightSearchForm({ closeModal }) {
                                 <div className="flex-1 flex justify-start">
                                     <div className="text-sm  font-semibold capitalize">
                                         {t(
-                                            `ticket_class.${getClassDisplayName(
+                                            `ticket_class.${normalizeClassName(
                                                 travelClass
                                             )}`
                                         )}

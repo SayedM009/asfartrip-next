@@ -56,7 +56,6 @@ export default function FlightTicket({
         onSelect?.();
     };
 
-    console.log(ticket)
 
     return (
         <>
@@ -170,16 +169,14 @@ export default function FlightTicket({
                             </div>
 
                             {/* Price */}
-                            <div className="flex flex-col items-center gap-1.5">
-                                <div className="text-xs text-muted-foreground">
+                            <div className="flex flex-col items-center gap-0.5">
+                                <div className="text-[10px] md:text-xs text-muted-foreground">
                                     {t("total_price")}
                                 </div>
 
-                                <div className="font-bold text-accent-500 text-2xl">
-                                    {formatPrice(TotalPrice)}
+                                <div className="font-extrabold text-accent-500 ">
+                                    {formatPrice(TotalPrice, "orange", 20, "text-3xl ")}
                                 </div>
-
-                                <LoyaltyPoints price={TotalPrice} />
 
                                 {/* Desktop Select Button */}
                                 <div className="hidden sm:block">
@@ -193,6 +190,10 @@ export default function FlightTicket({
                                         {t("select_flight")}
                                     </Button>
                                 </div>
+
+                                <LoyaltyPoints price={TotalPrice} />
+
+                                
                             </div>
                         </div>
                     </div>

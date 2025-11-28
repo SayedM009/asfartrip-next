@@ -152,7 +152,7 @@ export default function MainSearchForm({
                             ) : (
                                 <div className="h-12 bg-input-background dark:bg-input-background/5 rounded-md border-0 rtl:pr-10 py-2 pl-10 flex items-center">
                                     <span className="font-medium text-foreground capitalize">
-                                        {departure.city ||
+                                        {departure?.city ||
                                             t("operations.departure_search")}
                                     </span>
                                 </div>
@@ -235,7 +235,7 @@ export default function MainSearchForm({
                             ) : (
                                 <div className="h-12 bg-input-background dark:bg-input-background/5 rounded-md border-0 rtl:pr-10 py-2 pl-10 flex items-center">
                                     <span className="font-medium text-foreground capitalize">
-                                        {destination.city ||
+                                        {destination?.city ||
                                             t("operations.destination_search")}
                                     </span>
                                 </div>

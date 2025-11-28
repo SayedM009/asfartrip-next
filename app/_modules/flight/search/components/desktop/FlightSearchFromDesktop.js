@@ -1,12 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Loader2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
-import { safeParse } from "@/app/_helpers/safeParse";
 import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
-import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
 
 import TripType from "./TripType";
@@ -14,102 +12,56 @@ import MainSearchForm from "./MainSearchForm";
 import Dates from "./Date";
 import PassengersAndClass from "./PassengersAndClass";
 
+// Shared Logic Hooks
+import { useTripType } from "../../hooks/useTripType";
+import { useDateSelection } from "../../hooks/useDateSelection";
+import { usePassengerLogic } from "../../hooks/usePassengerLogic";
+import { useTravelClass } from "../../hooks/useTravelClass";
+import { useSearchValidation } from "../../hooks/useSearchValidation";
+import { useSessionPersistence } from "../../hooks/useSessionPersistence";
+import { SESSION_KEYS } from "../../constants/sessionKeys";
+import { buildFlightSearchObject } from "../../utils/buildSearchObject";
+
 export function FlightSearchFormDesktop({ isLabel = true }) {
-    const [tripType, setTripType] = useState("roundtrip");
-    const [departure, setDeparture] = useState({});
-    const [destination, setDestination] = useState({});
-    const [departDate, setDepartDate] = useState(undefined > new Date());
-    const [range, setRange] = useState({ from: null, to: null });
-    const [passengers, setPassengers] = useState({
-        adults: 1,
-        children: 0,
-        infants: 0,
-    });
-    const [travelClass, setTravelClass] = useState("Economy");
     const t = useTranslations("Flight");
     const router = useRouter();
 
-    // Avoid getting sessionStorage on server to skip an error
-    useEffect(() => {
-        setTripType(sessionStorage.getItem("tripType") || "roundtrip");
-        setDeparture(safeParse(sessionStorage.getItem("departure"), ""));
-        setDestination(safeParse(sessionStorage.getItem("destination"), ""));
-        setDepartDate(safeParse(sessionStorage.getItem("departureDate"), null));
-        setRange(
-            safeParse(sessionStorage.getItem("rangeDate"), {
-                from: null,
-                to: null,
-            })
-        );
-        setTravelClass(sessionStorage.getItem("travelClass") || "Economy");
-        setPassengers(
-            safeParse(sessionStorage.getItem("flightPassengers"), {
-                adults: 1,
-                children: 0,
-                infants: 0,
-            })
-        );
-    }, []);
+    // Unified State Hooks
+    const { tripType, setTripType } = useTripType();
+    const { departDate, setDepartDate, range, setRange } = useDateSelection();
+    const { passengers, setPassengers } = usePassengerLogic();
+    const { travelClass, setTravelClass } = useTravelClass();
+    const { validateSearch } = useSearchValidation();
+
+    // Airport state - unified default as empty object
+    const [departure, setDeparture] = useSessionPersistence(SESSION_KEYS.DEPARTURE, {});
+    const [destination, setDestination] = useSessionPersistence(SESSION_KEYS.DESTINATION, {});
 
     async function handleSearch() {
-        if (departure && destination && departure?.city === destination?.city) {
-            toast.error(t("errors.same_city", { city: departure?.city }));
-            return;
-        }
+        const isValid = validateSearch({
+            departure,
+            destination,
+            tripType,
+            departDate,
+            range,
+            passengers
+        });
 
-        if (!departure) {
-            toast.error(t("errors.departure_required"));
-            return;
-        }
-
-        if (!destination) {
-            toast.error(t("errors.destination_required"));
-            return;
-        }
-
-        if (tripType === "oneway") {
-            if (!departDate) {
-                toast.error(t("errors.departure_date_required"));
-                return;
-            }
-        }
-
-        if (tripType === "roundtrip") {
-            if (!range?.from || !range?.to) {
-                toast.error(t("errors.return_date_required"));
-                return;
-            }
-        }
+        if (!isValid) return;
 
         toast.success(t("operations.searching"), {
             icon: <Loader2 className="size-5 animate-spin" />,
         });
 
-        let searchObject;
-        if (tripType === "oneway") {
-            searchObject = {
-                origin: departure.label_code,
-                destination: destination.label_code,
-                depart_date: format(departDate, "dd-MM-yyyy"),
-                ADT: passengers.adults,
-                CHD: passengers.children,
-                INF: passengers.infants,
-                class: travelClass,
-                type: "O",
-            };
-        } else if (tripType === "roundtrip") {
-            searchObject = {
-                origin: departure.label_code,
-                destination: destination.label_code,
-                depart_date: format(range.from, "dd-MM-yyyy"),
-                return_date: format(range.to, "dd-MM-yyyy"),
-                ADT: passengers.adults,
-                CHD: passengers.children,
-                INF: passengers.infants,
-                class: travelClass,
-                type: "R",
-            };
-        }
+        const searchObject = buildFlightSearchObject({
+            tripType,
+            departure,
+            destination,
+            departDate,
+            range,
+            passengers,
+            travelClass,
+        });
 
         const params = new URLSearchParams();
         params.set("searchObject", JSON.stringify(searchObject));
@@ -158,7 +110,6 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
                                 {/* Search Button - Redesigned */}
                                 <div className="flex-shrink-0">
                                     <Button
-                                        // className="h-12 px-8 bg-primary hover:bg-primary/90 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer"
                                         className="h-12 lg:ps-6 lg:pe-8 bg-accent-500 hover:bg-accent-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer gap-2"
                                         onClick={handleSearch}
                                     >

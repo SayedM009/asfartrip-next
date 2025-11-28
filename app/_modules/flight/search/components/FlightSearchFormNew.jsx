@@ -1,12 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Loader2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
-import { safeParse } from "@/app/_helpers/safeParse";
 import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
-import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
 
 // ✨ NEW: Import new atomic components
@@ -15,118 +13,67 @@ import PassengerClassPicker from "./organisms/PassengerClassPicker";
 import DatePicker from "./organisms/DatePicker";
 import MainSearchForm from "./desktop/MainSearchForm"; // Keep this for now (destinations)
 
+// ✅ NEW: Import shared hooks (same as old components)
+import { useTripType } from "../hooks/useTripType";
+import { useDateSelection } from "../hooks/useDateSelection";
+import { usePassengerLogic } from "../hooks/usePassengerLogic";
+import { useTravelClass } from "../hooks/useTravelClass";
+import { useSearchValidation } from "../hooks/useSearchValidation";
+import { useSessionPersistence } from "../hooks/useSessionPersistence";
+import { SESSION_KEYS } from "../constants/sessionKeys";
+import { buildFlightSearchObject } from "../utils/buildSearchObject";
+
 /**
- * FlightSearchFormNew - NEW VERSION
- * Uses the new atomic design components
+ * FlightSearchFormNew - NEW VERSION (FIXED)
+ * Uses the new atomic design components + shared hooks architecture
  * This is a drop-in replacement for FlightSearchFormDesktop
+ * UI: 100% identical, Logic: Uses shared hooks
  */
 export default function FlightSearchFormNew({ isLabel = true }) {
-    // =============================
-    // State Management (Same as old)
-    // =============================
-    const [tripType, setTripType] = useState("roundtrip");
-    const [departure, setDeparture] = useState({});
-    const [destination, setDestination] = useState({});
-    const [departDate, setDepartDate] = useState(new Date());
-    const [range, setRange] = useState({ from: null, to: null });
-    const [passengers, setPassengers] = useState({
-        adults: 1,
-        children: 0,
-        infants: 0,
-    });
-    const [travelClass, setTravelClass] = useState("Economy");
-    
     const t = useTranslations("Flight");
     const router = useRouter();
 
     // =============================
-    // Load from sessionStorage
+    // ✅ FIXED: Use Shared Hooks (same as old components)
     // =============================
-    useEffect(() => {
-        setTripType(sessionStorage.getItem("tripType") || "roundtrip");
-        setDeparture(safeParse(sessionStorage.getItem("departure"), ""));
-        setDestination(safeParse(sessionStorage.getItem("destination"), ""));
-        setDepartDate(safeParse(sessionStorage.getItem("departureDate"), null));
-        setRange(
-            safeParse(sessionStorage.getItem("rangeDate"), {
-                from: null,
-                to: null,
-            })
-        );
-        setTravelClass(sessionStorage.getItem("travelClass") || "Economy");
-        setPassengers(
-            safeParse(sessionStorage.getItem("flightPassengers"), {
-                adults: 1,
-                children: 0,
-                infants: 0,
-            })
-        );
-    }, []);
+    const { tripType, setTripType } = useTripType();
+    const { departDate, setDepartDate, range, setRange } = useDateSelection();
+    const { passengers, setPassengers } = usePassengerLogic();
+    const { travelClass, setTravelClass } = useTravelClass();
+    const { validateSearch } = useSearchValidation();
+
+    // Airport state - unified default as empty object
+    const [departure, setDeparture] = useSessionPersistence(SESSION_KEYS.DEPARTURE, {});
+    const [destination, setDestination] = useSessionPersistence(SESSION_KEYS.DESTINATION, {});
 
     // =============================
-    // Search Handler (Same as old)
+    // ✅ FIXED: Use Shared Search Handler
     // =============================
     async function handleSearch() {
-        // Validation
-        if (departure && destination && departure?.city === destination?.city) {
-            toast.error(t("errors.same_city", { city: departure?.city }));
-            return;
-        }
+        const isValid = validateSearch({
+            departure,
+            destination,
+            tripType,
+            departDate,
+            range,
+            passengers
+        });
 
-        if (!departure) {
-            toast.error(t("errors.departure_required"));
-            return;
-        }
-
-        if (!destination) {
-            toast.error(t("errors.destination_required"));
-            return;
-        }
-
-        if (tripType === "oneway") {
-            if (!departDate) {
-                toast.error(t("errors.departure_date_required"));
-                return;
-            }
-        }
-
-        if (tripType === "roundtrip") {
-            if (!range?.from || !range?.to) {
-                toast.error(t("errors.return_date_required"));
-                return;
-            }
-        }
+        if (!isValid) return;
 
         toast.success(t("operations.searching"), {
             icon: <Loader2 className="size-5 animate-spin" />,
         });
 
-        // Build search object
-        let searchObject;
-        if (tripType === "oneway") {
-            searchObject = {
-                origin: departure.label_code,
-                destination: destination.label_code,
-                depart_date: format(departDate, "dd-MM-yyyy"),
-                ADT: passengers.adults,
-                CHD: passengers.children,
-                INF: passengers.infants,
-                class: travelClass,
-                type: "O",
-            };
-        } else if (tripType === "roundtrip") {
-            searchObject = {
-                origin: departure.label_code,
-                destination: destination.label_code,
-                depart_date: format(range.from, "dd-MM-yyyy"),
-                return_date: format(range.to, "dd-MM-yyyy"),
-                ADT: passengers.adults,
-                CHD: passengers.children,
-                INF: passengers.infants,
-                class: travelClass,
-                type: "R",
-            };
-        }
+        const searchObject = buildFlightSearchObject({
+            tripType,
+            departure,
+            destination,
+            departDate,
+            range,
+            passengers,
+            travelClass,
+        });
 
         const params = new URLSearchParams();
         params.set("searchObject", JSON.stringify(searchObject));
@@ -134,23 +81,22 @@ export default function FlightSearchFormNew({ isLabel = true }) {
         router.push(`/flights/search?${params.toString()}`);
     }
 
-    // =============================
-    // Render (Using NEW components!)
-    // =============================
     return (
         <div className="bg-background">
             <div>
-                <div className="mx-auto">
+                <div className=" mx-auto">
+                    {/* Search Form */}
                     <Card className="border shadow-sm">
                         <CardContent className="p-4">
-                            {/* ✨ NEW: TripTypeSelector */}
+                            {/* ✨ NEW: Trip Type Selector (Atomic) */}
                             <TripTypeSelector
                                 tripType={tripType}
-                                setTripType={setTripType}
+                                onChange={setTripType}
                             />
 
+                            {/* Main Search Form - All fields on one line */}
                             <div className="flex gap-3 items-end flex-wrap">
-                                {/* Keep MainSearchForm for now (destinations) */}
+                                {/* ✨ Keep old MainSearchForm for now (destinations) */}
                                 <MainSearchForm
                                     departure={departure}
                                     setDeparture={setDeparture}
@@ -159,26 +105,26 @@ export default function FlightSearchFormNew({ isLabel = true }) {
                                     isLabel={isLabel}
                                 />
 
-                                {/* ✨ NEW: DatePicker (replaces Dates) */}
+                                {/* ✨ NEW: Date Picker (Atomic) */}
                                 <DatePicker
                                     tripType={tripType}
                                     departDate={departDate}
-                                    setDepartDate={setDepartDate}
+                                    onDepartDateChange={setDepartDate}
                                     range={range}
-                                    setRange={setRange}
-                                    showLabel={isLabel}
+                                    onRangeDateChange={setRange}
+                                    isLabel={isLabel}
                                 />
 
-                                {/* ✨ NEW: PassengerClassPicker (replaces PassengersAndClass) */}
+                                {/* ✨ NEW: Passengers & Class (Atomic) */}
                                 <PassengerClassPicker
                                     passengers={passengers}
-                                    setPassengers={setPassengers}
+                                    onPassengersChange={setPassengers}
                                     travelClass={travelClass}
-                                    setTravelClass={setTravelClass}
-                                    showLabel={isLabel}
+                                    onClassChange={setTravelClass}
+                                    isLabel={isLabel}
                                 />
 
-                                {/* Search Button (Same as old) */}
+                                {/* Search Button - Redesigned */}
                                 <div className="flex-shrink-0">
                                     <Button
                                         className="h-12 lg:ps-6 lg:pe-8 bg-accent-500 hover:bg-accent-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer gap-2"

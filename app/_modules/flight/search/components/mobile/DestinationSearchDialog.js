@@ -85,14 +85,6 @@ function DestinationSearchDialog({
             label_code: value.label_code,
             country: value.country,
         });
-        sessionStorage.setItem(
-            sessionKey,
-            JSON.stringify({
-                city: value.city,
-                label_code: value.label_code,
-                country: value.country,
-            })
-        );
     }
 
     function handleSelectedDestinationFromRegion(value) {
@@ -101,14 +93,6 @@ function DestinationSearchDialog({
             label_code: value.label_code,
             country: value.country,
         });
-        sessionStorage.setItem(
-            sessionKey,
-            JSON.stringify({
-                city: value.city,
-                label_code: value.label_code,
-                country: value.country,
-            })
-        );
     }
     return (
         <Dialog

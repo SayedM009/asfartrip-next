@@ -2,15 +2,15 @@
 
 export const offers = [
     {
-        id: "cairo-winter-escape",
-        slug: "dubai-to-cairo-winter-escape",
+        id: "asfar-friday",
+        slug: "asfar-friday",
         validity: {
             from: "2025-12-01",
             to: "2026-02-28",
         },
         title: {
-            en: "Winter Escape to Cairo",
-            ar: "هروب شتوي إلى القاهرة",
+            en: "Asfar Friday",
+            ar: "جمعة أسفار",
         },
         subtitle: {
             en: "Flight + 3 nights hotel with Nile view",
@@ -25,8 +25,8 @@ export const offers = [
             city: { en: "Dubai", ar: "دبي" },
         },
         destination: {
-            code: "CAI",
-            city: { en: "Cairo", ar: "القاهرة" },
+            code: "XXX",
+            city: { en: "Anywhere", ar: "أي مكان" },
         },
         priceFrom: {
             amount: 1499,
@@ -71,8 +71,8 @@ export const offers = [
             ar: "رحلات مباشرة + ٤ ليالي في تقسيم",
         },
         image: {
-            en: "https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg",
-            ar: "https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg",
+            en: "/hot_offers/busisness.jpg",
+            ar: "/hot_offers/busisness.jpg",
         },
         origin: {
             code: "RUH",
@@ -123,8 +123,8 @@ export const offers = [
             ar: "٥ ليالي في فيلا فوق الماء + مواصلات خاصة",
         },
         image: {
-            en: "https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg",
-            ar: "https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg",
+            en: "/hot_offers/etihad.png",
+            ar: "/hot_offers/etihad.png",
         },
         origin: {
             code: "DXB",
@@ -175,8 +175,8 @@ export const offers = [
             ar: "هروب رومانسي مع فندق مطل على برج إيفل",
         },
         image: {
-            en: "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg",
-            ar: "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg",
+            en: "/hot_offers/tabby.jpg",
+            ar: "/hot_offers/tabby.jpg",
         },
         origin: {
             code: "JED",
@@ -225,8 +225,8 @@ export const offers = [
             ar: "باقة اقتصادية مع إفطار يومي",
         },
         image: {
-            en: "https://images.pexels.com/photos/2341830/pexels-photo-2341830.jpeg",
-            ar: "https://images.pexels.com/photos/2341830/pexels-photo-2341830.jpeg",
+            en: "/hot_offers/UAE.jpg",
+            ar: "/hot_offers/UAE.jpg",
         },
         origin: {
             code: "DXB",

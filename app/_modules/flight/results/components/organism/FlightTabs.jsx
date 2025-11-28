@@ -56,12 +56,12 @@ export default function FlightTabs({
                 onValueChange={handleValueChange}
                 className="w-full shadow rounded-full"
             >
-                <TabsList className="grid grid-cols-3 w-full">
+                <TabsList className="grid grid-cols-3 w-full bg-background border p-0">
                     {/* Trip Time Tab */}
                     <TabsTrigger
                         value="triptime"
                         onPointerDown={makePreemptiveHandler("triptime")}
-                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-accent-500 rounded-full"
+                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-accent-500 rounded-lg "
                     >
                         <SunIcon className="size-5" />
                         <span className="text-sm">
@@ -73,7 +73,7 @@ export default function FlightTabs({
                     <TabsTrigger
                         value="airline"
                         onPointerDown={makePreemptiveHandler("airline")}
-                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-accent-500 rounded-full"
+                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-accent-500 rounded-lg"
                     >
                         <PlaneIcon className="size-5" />
                         <span className="text-sm">
@@ -85,7 +85,7 @@ export default function FlightTabs({
                     <TabsTrigger
                         value="direct"
                         onPointerDown={makePreemptiveHandler("direct")}
-                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-accent-500 rounded-full"
+                        className="data-[state=active]:bg-accent-100 data-[state=active]:text-accent-500 rounded-lg"
                     >
                         <ArrowRightCircleIcon className="size-5" />
                         <span className="text-sm">{t("filters.direct")}</span>
@@ -97,7 +97,7 @@ export default function FlightTabs({
                Airline Sub-Tabs
             -------------------------------- */}
             {filterBy === "airline" && (
-                <div className="flex gap-4 mt-3 overflow-x-scroll no-scrollbar">
+                <div className="flex gap-4 mt-3 overflow-x-scroll no-scrollbar ">
                     {airlines.map((code) => (
                         <button
                             key={code}
@@ -111,7 +111,7 @@ export default function FlightTabs({
                             className={clsx(
                                 "px-3 pt-2 pb-1 rounded-xl border text-sm flex items-center gap-2 flex-col min-w-20",
                                 selectedAirlines.includes(code) &&
-                                    "bg-accent-100"
+                                    "bg-accent-500 text-white"
                             )}
                         >
                             <Image
@@ -121,6 +121,7 @@ export default function FlightTabs({
                                 width={30}
                                 height={30}
                             />
+                            
                             <span className="text-xs">{code}</span>
                         </button>
                     ))}
@@ -145,7 +146,7 @@ export default function FlightTabs({
                             className={clsx(
                                 "px-2 py-1 rounded-xl border text-xs flex flex-col items-center gap-2",
                                 selectedTripTimes.includes(t.id) &&
-                                    "bg-accent-100 dark:bg-accent-500"
+                                    "bg-accent-500 text-white"
                             )}
                         >
                             <span>{t.icon}</span>

@@ -1,7 +1,6 @@
-// app/_modules/flights/results/components/FlightResults.jsx
 "use client";
 
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 
@@ -17,19 +16,17 @@ import {
     hasStopoverAirport,
 } from "../utils/flightDurations";
 
-import {
-    getOutboundSegments,
-    getReturnSegments,
-} from "../utils/flightSegmentation";
+import { getOutboundSegments } from "../utils/flightSegmentation";
+import { CloudMoonIcon, Sun, Sunrise, Sunset } from "lucide-react";
 
 import FlightTabs from "./organism/FlightTabs";
 import FlightFilters from "./FlightFilters";
 import FloatingSortFilter from "./organism/FloatingSortFilter";
 import DesktopSortBar from "./molecule/DesktopSortBar";
 
+
 const FlightResults = ({ flights = [], searchParams }) => {
     const f = useTranslations("Flight");
-
     const [filterBy, setFilterBy] = useState("all");
     const [sortBy, setSortBy] = useState("price");
     const [selectedAirlines, setSelectedAirlines] = useState([]);
@@ -48,11 +45,11 @@ const FlightResults = ({ flights = [], searchParams }) => {
         {
             id: "before6",
             label: f("before"),
-            icon: <></> /* icon handled in tabs */,
+            icon: <CloudMoonIcon />
         },
-        { id: "morning", label: "06:00 - 12:00", icon: <></> },
-        { id: "afternoon", label: "12:00 - 18:00", icon: <></> },
-        { id: "evening", label: f("after"), icon: <></> },
+        { id: "morning", label: "06:00 - 12:00", icon: <Sunrise />},
+        { id: "afternoon", label: "12:00 - 18:00", icon: <Sun/> },
+        { id: "evening", label: f("after"), icon: <Sunset/> },
     ];
 
     // ======================

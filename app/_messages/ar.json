@@ -206,7 +206,7 @@
         "social_facebook": "فيسبوك",
         "social_tiktok": "تيك توك",
         "social_twitter": "منصة إكس",
-        "social_whatsapp":"وتساب"
+        "social_whatsapp": "وتساب"
     },
     "FAQPage": {
         "metaTitle": "الأسئلة الشائعة | AsfarTrip | مساعدة ودعم حجوزات السفر",
@@ -708,7 +708,7 @@
         "h": "س",
         "m": "د",
         "stop": "توقف",
-        "total_price": "إجمالى المبلغ",
+        "total_price": "إجمالى السعر",
         "select_flight": "إختر الرحلة",
         "city": " المدينة",
         "airport": " المطار",
@@ -863,7 +863,7 @@
             "flight_conditions": "شروط الرحلة",
             "base_price": "السعر الأساسي",
             "taxes_fees": "الضرائب والرسوم",
-            "total_price": "إجمالي المبلغ",
+            "total_price": "إجمالي السعر",
             "pieces": "عدد القطع",
             "continue": "المتابعة إلى الحجز",
             "outbound_flight": "رحلة الذهاب",
@@ -1718,16 +1718,16 @@
             "inbound_baggage": "حقائب العودة",
             "no_baggage": "لا توجد أمتعة",
             "infant_baggage_note": "وفقاً لقوانين الطيران، لا يُسمح للرضع بإضافة أمتعة إضافية",
-            "flight_summary":"ملخص الرحلة",
-            "details":"تفاصيل",
-            "baggage":"الأمتعة",
-            "personal_item":"الأمتعة الشخصية",
-            "cabin_baggage":"حقيبة اليد",
-            "checked_baggage":"الحقائب المسجلة",
-            "extra_baggage":"الحقائب الإضافية",
-            "base_fare":"السعر الأساسي",
-            "taxes_and_fees":"الرسوم والضرائب",
-            "total_fare":"المجموع"
+            "flight_summary": "ملخص الرحلة",
+            "details": "تفاصيل",
+            "baggage": "الأمتعة",
+            "personal_item": "الأمتعة الشخصية",
+            "cabin_baggage": "حقيبة اليد",
+            "checked_baggage": "الحقائب المسجلة",
+            "extra_baggage": "الحقائب الإضافية",
+            "base_fare": "السعر الأساسي",
+            "taxes_and_fees": "الرسوم والضرائب",
+            "total_fare": "المجموع"
         },
         "insurance": {
             "title": " تأمين السفر",
@@ -1791,14 +1791,14 @@
         "full_name_required": "الإسم الكامل مطلوب",
         "email_required": "الإيميل مطلوب",
         "phone_required": "رقم الهاتف مطلوب",
-         "search_travelers": "بحث المسافرين"
+        "search_travelers": "بحث المسافرين"
     },
     "Payment": {
         "title": "الدفع",
         "select_payment_method": "إختيار طريقة الدفع",
         "payment_details": "تفاصيل الدفع",
         "secured_payments": "مدفوعات آمنة عبر بوابات الدفع الموثوقة.",
-        "card": "بطاقة إئتمان",
+        "card": "بطاقة خصم / بطاقة إئتمان ",
         "paypal": "باي بال",
         "pay_at_airport": "الدفع في المطار",
         "card_number": "رقم البطاقة",
@@ -2275,5 +2275,30 @@
         "payment_method": "طريقة الدفع",
         "meals": "وجبات",
         "insurance": "تأمين"
+    },
+    "Payment": {
+        "aiAgentCoordinating": "وكيلنا الذكي يقوم بالتنسيق مع بوابة الدفع وأنظمة شركات الطيران.",
+        "paymentDeductedProcessing": "تم خصم دفعتك بنجاح. نحن نقوم بمعالجة تذكرتك وسيتم إرسالها إلى بريدك الإلكتروني في غضون 3 ساعات كحد أقصى.",
+        "finalizingItinerary": "جاري الانتهاء من خط سير رحلتك وإعداد تفاصيل التذكرة الإلكترونية...",
+        "retryPayment": "إعادة محاولة الدفع",
+        "sameBooking": "نفس الحجز",
+        "newSearch": "بحث جديد",
+        "poweredByAi": "مدعوم بالذكاء الاصطناعي · تنسيق فوري · بوابة دفع آمنة",
+        "verifyingPayment": "جاري التحقق من دفعتك...",
+        "stepPaymentVerified": "1. تم التحقق من الدفع",
+        "stepBookingConfirmed": "2. تم تأكيد الحجز",
+        "stepTicketIssuance": "3. إصدار التذكرة",
+        "missingBookingRef": "رقم مرجع الحجز مفقود.",
+        "checkingPaymentStatus": "جاري التحقق من حالة الدفع...",
+        "paymentFailedCancelled": "فشل الدفع أو تم إلغاؤه.",
+        "paymentSuccessConfirming": "تم الدفع بنجاح. جاري تأكيد الحجز...",
+        "bookingConfirmedIssuing": "تم تأكيد الحجز. جاري إصدار التذكرة...",
+        "ticketIssuedRedirecting": "تم إصدار التذكرة بنجاح. جاري إعادة التوجيه...",
+        "ticketAlreadyIssuedRedirecting": "تذكرتك مصدرة بالفعل. جاري إعادة التوجيه...",
+        "paymentReceivedTicketPending": "تم استلام الدفعة بنجاح. سيتم إصدار تذكرتك في غضون 3 ساعات.",
+        "recheckingPaymentStatus": "جاري إعادة التحقق من حالة الدفع...",
+        "unableToDetermineStatus": "تعذر تحديد حالة الدفع.",
+        "networkIssueRetrying": "مشكلة في الشبكة. جاري إعادة المحاولة...",
+        "networkError": "خطأ في الشبكة. يرجى المحاولة مرة أخرى."
     }
 }

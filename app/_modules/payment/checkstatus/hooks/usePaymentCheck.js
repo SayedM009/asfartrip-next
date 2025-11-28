@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { checkPayment } from "../services/checkPaymentService";
 import { confirmBooking, issueTicket } from "../services/confirmBookingService";
 
@@ -13,13 +14,14 @@ import { confirmBooking, issueTicket } from "../services/confirmBookingService";
  */
 export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
     const router = useRouter();
+    const t = useTranslations("PaymentPage");
     const [status, setStatus] = useState("loading");
-    const [statusMessage, setStatusMessage] = useState("Verifying your payment…");
+    const [statusMessage, setStatusMessage] = useState(t("verifyingPayment"));
     const [retryCount, setRetryCount] = useState(0);
     const [steps, setSteps] = useState([
-        { label: "1. Payment Verified", status: "pending" },
-        { label: "2. Booking Confirmed", status: "pending" },
-        { label: "3. Ticket Issuance", status: "pending" },
+        { label: t("stepPaymentVerified"), status: "pending" },
+        { label: t("stepBookingConfirmed"), status: "pending" },
+        { label: t("stepTicketIssuance"), status: "pending" },
     ]);
 
     const MAX_RETRIES = 2;
@@ -35,7 +37,7 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
     const checkPaymentStatus = useCallback(async () => {
         if (!booking_ref) {
             setStatus("error");
-            setStatusMessage("Missing booking reference.");
+            setStatusMessage(t("missingBookingRef"));
             updateStep(0, "error");
             return;
         }
@@ -43,7 +45,7 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
         try {
             setStatus("loading");
             updateStep(0, "loading");
-            setStatusMessage("Checking payment status…");
+            setStatusMessage(t("checkingPaymentStatus"));
 
             // Step 1: Check payment
             const paymentData = await checkPayment(booking_ref, gateway, order_ref);
@@ -63,13 +65,13 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
             if (paymentFailed) {
                 setStatus("error");
                 updateStep(0, "error");
-                setStatusMessage("Payment failed or cancelled.");
+                setStatusMessage(t("paymentFailedCancelled"));
                 return;
             }
 
             if (paymentSuccess) {
                 updateStep(0, "success");
-                setStatusMessage("Payment successful. Confirming the booking…");
+                setStatusMessage(t("paymentSuccessConfirming"));
 
                 // Step 2: Confirm booking
                 updateStep(1, "loading");
@@ -80,7 +82,7 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
 
                     if (bookingStatus === "CONFIRMED") {
                         updateStep(1, "success");
-                        setStatusMessage("Booking confirmed. Issuing ticket…");
+                        setStatusMessage(t("bookingConfirmedIssuing"));
 
                         // Step 3: Issue ticket
                         updateStep(2, "loading");
@@ -97,7 +99,7 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
                             if (ticketStatus === 'CREATED' && ticketNumbers === 'Yes') {
                                 updateStep(2, "success");
                                 setStatus("success");
-                                setStatusMessage("Ticket issued successfully. Redirecting…");
+                                setStatusMessage(t("ticketIssuedRedirecting"));
 
                                 // ✅ Send voucher to customer email (non-blocking)
                                 try {
@@ -134,7 +136,7 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
                             if (issueData?.alreadyIssued) {
                                 updateStep(2, "success");
                                 setStatus("success");
-                                setStatusMessage("Your ticket is already issued. Redirecting…");
+                                setStatusMessage(t("ticketAlreadyIssuedRedirecting"));
 
                                 // ✅ Send voucher to customer email (non-blocking)
                                 try {
@@ -169,9 +171,7 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
                             // ⏳ ANY other case - ticket is pending (PENDING, FAILURE, or any other status)
                             updateStep(2, "success");
                             setStatus("partial-success");
-                            setStatusMessage(
-                                "Payment received successfully. Your ticket will be issued within 3 hours."
-                            );
+                            setStatusMessage(t("paymentReceivedTicketPending"));
 
                             setTimeout(() => {
                                 const paymentParams = new URLSearchParams({
@@ -197,9 +197,7 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
                             console.error("Issue ticket error:", issueErr);
                             updateStep(2, "success");
                             setStatus("partial-success");
-                            setStatusMessage(
-                                "Payment received successfully. Your ticket will be issued within 3 hours."
-                            );
+                            setStatusMessage(t("paymentReceivedTicketPending"));
 
                             setTimeout(() => {
                                 const paymentParams = new URLSearchParams({
@@ -228,9 +226,7 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
                         updateStep(1, "success");
                         updateStep(2, "success");
                         setStatus("partial-success");
-                        setStatusMessage(
-                            "Payment received successfully. Your ticket will be issued within 3 hours."
-                        );
+                        setStatusMessage(t("paymentReceivedTicketPending"));
 
                         setTimeout(() => {
                             const paymentParams = new URLSearchParams({
@@ -253,9 +249,7 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
                     updateStep(1, "success");
                     updateStep(2, "success");
                     setStatus("partial-success");
-                    setStatusMessage(
-                        "Payment received successfully. Your ticket will be issued within 3 hours."
-                    );
+                    setStatusMessage(t("paymentReceivedTicketPending"));
 
                     setTimeout(() => {
                         router.push(
@@ -268,9 +262,7 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
                     updateStep(1, "success");
                     updateStep(2, "success");
                     setStatus("partial-success");
-                    setStatusMessage(
-                        "Payment received successfully. Your ticket will be issued within 3 hours."
-                    );
+                    setStatusMessage(t("paymentReceivedTicketPending"));
 
                     setTimeout(() => {
                         router.push(
@@ -284,7 +276,7 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
             // Payment status unclear - retry
             if (retryCount < MAX_RETRIES) {
                 setStatusMessage(
-                    `Rechecking payment status... (Retry ${retryCount + 1})`
+                    `${t("recheckingPaymentStatus")} (Retry ${retryCount + 1})`
                 );
                 setTimeout(
                     () => setRetryCount((n) => n + 1),
@@ -295,13 +287,13 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
 
             setStatus("error");
             updateStep(0, "error");
-            setStatusMessage("Unable to determine payment status.");
+            setStatusMessage(t("unableToDetermineStatus"));
         } catch (err) {
             console.error("Payment check error:", err);
 
             if (retryCount < MAX_RETRIES) {
                 setStatusMessage(
-                    `Network issue. Retrying (${retryCount + 1}/${MAX_RETRIES})…`
+                    `${t("networkIssueRetrying")} (${retryCount + 1}/${MAX_RETRIES})…`
                 );
                 setTimeout(() => setRetryCount((n) => n + 1), 1800);
                 return;
@@ -309,19 +301,19 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
 
             setStatus("error");
             updateStep(0, "error");
-            setStatusMessage("Network error. Please try again.");
+            setStatusMessage(t("networkError"));
         }
-    }, [booking_ref, gateway, order_ref, retryCount, router, updateStep]);
+    }, [booking_ref, gateway, order_ref, retryCount, router, updateStep, t]);
 
     const retry = useCallback(() => {
         setRetryCount(0);
         setStatus("loading");
         setSteps([
-            { label: "1. Payment Verified", status: "pending" },
-            { label: "2. Booking Confirmed", status: "pending" },
-            { label: "3. Ticket Issuance", status: "pending" },
+            { label: t("stepPaymentVerified"), status: "pending" },
+            { label: t("stepBookingConfirmed"), status: "pending" },
+            { label: t("stepTicketIssuance"), status: "pending" },
         ]);
-    }, []);
+    }, [t]);
 
     return {
         status,

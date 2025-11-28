@@ -12,6 +12,7 @@ import {
     Plane,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export default function PriceNotFoundPage() {
     const t = useTranslations("Flight.operations");
@@ -152,12 +153,12 @@ export default function PriceNotFoundPage() {
                         <div className="text-center pt-2 md:pt-6 border-t border-border">
                             <p className="text-sm text-muted-foreground">
                                 {t("need_assistance")}{" "}
-                                <a
+                                <Link
                                     href="/contact"
                                     className="text-accent-600 dark:text-accent-400 hover:text-accent-700 dark:hover:text-accent-300 font-medium hover:underline transition-colors"
                                 >
                                     {t("contact_support")}
-                                </a>
+                                </Link>
                             </p>
                         </div>
                     </div>

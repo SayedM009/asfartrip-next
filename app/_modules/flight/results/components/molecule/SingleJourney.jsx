@@ -91,9 +91,9 @@ export default function SingleJourney({ segments, t, formatDate, isReturn }) {
                                     top: "50%",
                                 }}
                             >
-                                <div className="w-2 h-2 bg-muted rounded-full" />
+                                <div className="w-2 h-2 bg-background rounded-full" />
                                 <div className="absolute top-[-10px] left-1/2 -translate-x-1/2">
-                                    <div className="bg-muted text-xs px-2 py-1 rounded border">
+                                    <div className="bg-background text-xs px-2 py-1 rounded border">
                                         {seg.Destination}
                                     </div>
                                 </div>

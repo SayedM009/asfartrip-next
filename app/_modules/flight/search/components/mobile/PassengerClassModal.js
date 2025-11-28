@@ -44,14 +44,14 @@ export function PassengerClassModal({
 
     // Temp state for UI
     const [tempPassengers, setTempPassengers] = useState(passengers);
-    const [tempClass, setTempClass] = useState(travelClass.toLowerCase() || "economy");
+    const [tempClass, setTempClass] = useState(travelClass?.toLowerCase() || "economy");
 
     // Sync temp state with props when dialog opens
     // This ensures the dialog shows the current stored values, not the initial defaults
     useEffect(() => {
         if (isOpen) {
             setTempPassengers(passengers);
-            setTempClass(travelClass.toLowerCase() || "economy");
+            setTempClass(travelClass?.toLowerCase() || "economy");
         }
     }, [isOpen, passengers, travelClass]);
 
@@ -102,15 +102,7 @@ export function PassengerClassModal({
 
     const applyChanges = () => {
         onPassengersChange(tempPassengers);
-        sessionStorage.setItem(
-            "flightPassengers",
-            JSON.stringify(tempPassengers)
-        );
-
         onClassChange(tempClass);
-
-        sessionStorage.setItem("travelClass", tempClass);
-
         setIsOpen(false);
     };
 

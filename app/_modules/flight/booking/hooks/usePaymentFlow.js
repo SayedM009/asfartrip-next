@@ -160,6 +160,10 @@ export function usePaymentFlow({ contactInfo, travelerRefs, setCurrentStep }) {
         setDataModified,
         setCurrentStep,
         setGateway,
+        config,
+        getTotalPrice,
+        locale,
+        setSameBookingURL,
     ]);
 
     // ============================

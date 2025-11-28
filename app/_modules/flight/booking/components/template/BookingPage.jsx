@@ -33,10 +33,12 @@ import PriceChangeDialog from "../molecule/PriceChangeDialog";
 import TimeoutPopup from "@/app/_components/ui/TimeoutPopup";
 import { BackWardButtonWithDirections } from "@/app/_components/layout/BackwardButton";
 
-
-
-
-export default function BookingPage({ isLogged, cart: initialCart, userId, userType }) {
+export default function BookingPage({
+    isLogged,
+    cart: initialCart,
+    userId,
+    userType,
+}) {
     const [currentStep, setCurrentStep] = useState(2);
     const travelerRefs = useRef([]);
     const t = useTranslations("Flight");
@@ -50,7 +52,7 @@ export default function BookingPage({ isLogged, cart: initialCart, userId, userT
 
     const totalPassengers = getTotalPassengers();
 
-    console.log("1- from BookingPage userType", userType)
+    console.log("1- from BookingPage userType", userType);
     // init (userId + cart + insurance)
     useBookingInitialization({
         isLogged,
@@ -88,7 +90,7 @@ export default function BookingPage({ isLogged, cart: initialCart, userId, userT
     // STEP 3: Payment
     if (currentStep === 3) {
         return (
-            <div className="min-h-screen bg-gray-50 dark:bg-transparent">
+            <div className="min-h-screen bg-background">
                 <BookingSteps currentStep={3} />
 
                 <div className="max-w-7xl mx-auto py-6 lg:py-8 flex flex-col lg:flex-row gap-8">
@@ -211,4 +213,3 @@ export default function BookingPage({ isLogged, cart: initialCart, userId, userT
         </div>
     );
 }
-

@@ -28,15 +28,26 @@ function DateRangeDialog({
     const formatDate = useDateFormatter();
     const differenceInDays = useCalculateDaysBetween(range?.from, range?.to);
 
-    function handleSelectDepartureDateWithSession(value) {
-        onDepartDateChange(value);
-        sessionStorage.setItem("departureDate", JSON.stringify(value));
-    }
-
-    function handleSelectRangeDateWithSession(value) {
-        onRangeDateChange(value);
-        sessionStorage.setItem("rangeDate", JSON.stringify(value));
-    }
+    const handleDayClick = (day) => {
+        onRangeDateChange((prev) => {
+            if (prev?.to) {
+                // If 'to' is already set, reset the range
+                return { from: day, to: undefined };
+            } else if (prev?.from) {
+                // If 'from' is set and 'to' is not
+                if (day < prev.from) {
+                    // If the new day is before the 'from' date, reset the range
+                    return { from: day, to: undefined };
+                } else {
+                    // Otherwise, set the 'to' date
+                    return { from: prev.from, to: day };
+                }
+            } else {
+                // If neither 'from' nor 'to' is set, set 'from'
+                return { from: day, to: undefined };
+            }
+        });
+    };
 
     const pattern = isRTL ? "EEEE d MMMM" : "EEE MMM d";
     return (
@@ -61,7 +72,7 @@ function DateRangeDialog({
                         <div className="text-right">
                             <div className="font-semibold dark:text-gray-50">
                                 {range?.to
-                                    ? formatDate(range.from, {
+                                    ? formatDate(range.to, {
                                         pattern,
                                     })
                                     : t("return_date")}
@@ -90,9 +101,7 @@ function DateRangeDialog({
                     <Calendar
                         mode="range"
                         selected={range}
-                        onSelect={(val) => {
-                            handleSelectRangeDateWithSession?.(val);
-                        }}
+                        onDayClick={handleDayClick}
                         className="rounded-lg w-full "
                         numberOfMonths={12}
                         hideNavigation
@@ -103,9 +112,7 @@ function DateRangeDialog({
                     <Calendar
                         mode="single"
                         selected={departDate}
-                        onSelect={(val) => {
-                            handleSelectDepartureDateWithSession?.(val);
-                        }}
+                        onSelect={onDepartDateChange}
                         className="rounded-lg w-full"
                         numberOfMonths={12}
                         hideNavigation

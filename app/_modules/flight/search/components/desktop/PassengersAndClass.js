@@ -19,6 +19,7 @@ import {
     canAddPassenger,
     canRemovePassenger,
 } from "../../logic/applyPassengerRules";
+import { normalizeClassName } from "../../utils/formatters";
 
 export default function PassengersAndClass({
     passengers,
@@ -32,19 +33,6 @@ export default function PassengersAndClass({
     const t = useTranslations("Flight");
     const totalPassengers =
         passengers.adults + passengers.children + passengers.infants;
-
-    const getClassDisplayName = (className) => {
-        switch (className) {
-            case "Economy":
-                return "Economy";
-            case "Business":
-                return "Business";
-            case "First":
-                return "First";
-            default:
-                return "Economy";
-        }
-    };
 
     const updatePassengers = (type, increment) => {
         setPassengers((prev) => {
@@ -76,17 +64,13 @@ export default function PassengersAndClass({
                 INF: updated.infants,
             });
 
-            // Save to sessionStorage
-            sessionStorage.setItem("flightPassengers", JSON.stringify(updated));
-
             return updated;
         });
     };
 
-    function handleTravelClass(value) {
+    const handleTravelClass = (value) => {
         setTravelClass(value);
-        sessionStorage.setItem("travelClass", value);
-    }
+    };
 
     const passengerConfig = [
         {
@@ -134,9 +118,9 @@ export default function PassengersAndClass({
                                         : ""}
                                     |{" "}
                                     {t(
-                                        `ticket_class.${getClassDisplayName(
+                                        `ticket_class.${normalizeClassName(
                                             travelClass
-                                        ).toLocaleLowerCase()}`
+                                        )}`
                                     )}
                                 </span>
                             </div>
@@ -165,13 +149,13 @@ export default function PassengersAndClass({
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent dir={dir}>
-                                        <SelectItem value="Economy">
+                                        <SelectItem value="economy">
                                             {t("ticket_class.economy")}
                                         </SelectItem>
-                                        <SelectItem value="Business">
+                                        <SelectItem value="business">
                                             {t("ticket_class.business")}
                                         </SelectItem>
-                                        <SelectItem value="First">
+                                        <SelectItem value="first">
                                             {t("ticket_class.first")}
                                         </SelectItem>
                                     </SelectContent>

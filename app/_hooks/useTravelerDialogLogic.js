@@ -48,8 +48,7 @@ export function useTravelerDialogLogic({
         } else {
             resetForm();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [traveller]);
+    }, [traveller, resetForm]);
 
     const handleFieldChange = (field, value) => {
         setFormTraveler((prev) => ({ ...prev, [field]: value }));

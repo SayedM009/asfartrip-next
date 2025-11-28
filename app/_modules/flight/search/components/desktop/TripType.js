@@ -1,13 +1,14 @@
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
+
 export default function TripType({ tripType, setTripType }) {
     const { locale } = useCheckLocal();
     const t = useTranslations("Flight");
-    function handleTripType(type) {
-        setTripType(type);
-        sessionStorage.setItem("tripType", type);
-    }
+
+    // Session persistence is now handled by the parent hook (useTripType)
+    // We just call the state setter directly.
+
     return (
         <div className="flex justify-start mb-4">
             <div className="relative bg-muted rounded-lg p-1">
@@ -17,18 +18,16 @@ export default function TripType({ tripType, setTripType }) {
                     style={{
                         left:
                             tripType === "oneway"
-                                ? `${
-                                      locale === "en"
-                                          ? "4px"
-                                          : "calc(50% + 2px)"
-                                  }`
+                                ? `${locale === "en"
+                                    ? "4px"
+                                    : "calc(50% + 2px)"
+                                }`
                                 : tripType === "roundtrip"
-                                ? `${
-                                      locale === "en"
-                                          ? "calc(50% + 2px)"
-                                          : "4px"
-                                  }`
-                                : "",
+                                    ? `${locale === "en"
+                                        ? "calc(50% + 2px)"
+                                        : "4px"
+                                    }`
+                                    : "",
 
                         width: "calc(50% - 6px)",
                     }}
@@ -39,7 +38,7 @@ export default function TripType({ tripType, setTripType }) {
                     {["oneway", "roundtrip"].map((type) => (
                         <button
                             key={type}
-                            onClick={() => handleTripType(type)}
+                            onClick={() => setTripType(type)}
                             className={cn(
                                 "px-4 py-2 font-medium transition-colors duration-200 rounded-md relative z-10 cursor-pointer",
                                 tripType === type

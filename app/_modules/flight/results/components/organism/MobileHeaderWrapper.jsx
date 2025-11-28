@@ -45,7 +45,7 @@ export default function MobileHeaderWrapper() {
             <BackWardButtonWithDirections href="/" />
 
             <MobileHeaderEditDialog open={open} setOpen={setOpen}>
-                <button className="bg-muted min-h-12 rounded-lg flex-1 flex flex-col justify-center border px-3">
+                <button className="bg-background min-h-12 rounded-lg flex-1 flex flex-col justify-center border px-3">
                     <MobileHeaderSearchSummary
                         origin={origin}
                         destination={destination}

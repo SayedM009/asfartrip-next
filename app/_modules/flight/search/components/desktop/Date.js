@@ -1,5 +1,4 @@
 import { Calendar } from "@/components/ui/calendar";
-import { formatDisplayDate } from "@/app/_helpers/formatDisplayDate";
 import {
     Popover,
     PopoverContent,
@@ -11,6 +10,7 @@ import { CalendarIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
+
 export default function Dates({
     tripType,
     departDate,
@@ -24,15 +24,7 @@ export default function Dates({
     const { isRTL } = useCheckLocal();
     const formatDate = useDateFormatter();
     const pattern = isRTL ? "EEEE d MMMM" : "EEE MMM d";
-    function handleSelectDepartureDateWithSession(value) {
-        setDepartDate(value);
-        sessionStorage.setItem("departureDate", JSON.stringify(value));
-    }
 
-    function handleSelectRangeDateWithSession(value) {
-        setRange(value);
-        sessionStorage.setItem("rangeDate", JSON.stringify(value));
-    }
     return (
         <>
             {tripType === "roundtrip" ? (
@@ -77,11 +69,7 @@ export default function Dates({
                                     <Calendar
                                         mode="range"
                                         selected={range}
-                                        onSelect={(val) => {
-                                            handleSelectRangeDateWithSession?.(
-                                                val
-                                            );
-                                        }}
+                                        onSelect={setRange}
                                         initialFocus
                                         locale={dateLocale}
                                         numberOfMonths={2}
@@ -122,9 +110,7 @@ export default function Dates({
                             <Calendar
                                 mode="single"
                                 selected={departDate}
-                                onSelect={(val) => {
-                                    handleSelectDepartureDateWithSession?.(val);
-                                }}
+                                onSelect={setDepartDate}
                                 initialFocus
                                 locale={dateLocale}
                                 startMonth={new Date()}

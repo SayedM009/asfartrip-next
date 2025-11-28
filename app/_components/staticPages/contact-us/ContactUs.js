@@ -10,9 +10,14 @@ import {
     HeadphonesIcon,
 } from "lucide-react";
 import SocialMedia from "../../SocialMedia";
+import { WebsiteConfigContext } from "@/app/_modules/config";
+import { use } from "react";
 
 export default function ContactUs() {
     const c = useTranslations("ContactPage");
+
+    const { website } = use(WebsiteConfigContext)
+    console.log(website)
 
     // =================== CONTACT DATA ===================
     const contactCards = [
@@ -22,7 +27,7 @@ export default function ContactUs() {
             title: c("cards_whatsapp_title"),
             subtitle: c("cards_whatsapp_subtitle"),
             value: c("cards_whatsapp_value"),
-            link: "https://wa.me/971043409933",
+            link: "https://wa.me/+971(4)3409933".replace(/[^0-9]/g, ""),
         },
         {
             icon: Mail,
@@ -264,24 +269,35 @@ export default function ContactUs() {
                     <SocialMedia />
                 </section>
 
-                {/* MAP */}
-                <section>
-                    <h2 className="text-3xl lg:text-5xl text-gray-900 dark:text-white mb-4 tracking-tight">
-                        {c("map_title")}
-                    </h2>
 
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4280.861641500784!2d55.3021035!3d25.2405206!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f61492407cd75%3A0x98af8805b3eedbac!2sAsfar%20Travel%20Agency%20LLC!5e1!3m2!1sar!2sae!4v1763303035713!5m2!1sar!2sae"
-                        width="100%"
-                        height="420"
-                        style={{ border: 0, borderRadius: "20px" }}
-                        allowFullScreen=""
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        className="shadow-sm"
-                    ></iframe>
-                </section>
+
+                {/* MAP */}
+                {website?.map_url && (
+                    <MapSection c={c} website={website} />
+                )}
             </section>
         </div>
+    );
+}
+
+
+function MapSection({ c, website }) {
+    return (
+        <section>
+            <h2 className="text-3xl lg:text-5xl text-gray-900 dark:text-white mb-4 tracking-tight">
+                {c("map_title")}
+            </h2>
+
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4280.861641500784!2d55.3021035!3d25.2405206!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f61492407cd75%3A0x98af8805b3eedbac!2sAsfar%20Travel%20Agency%20LLC!5e1!3m2!1sar!2sae!4v1763303035713!5m2!1sar!2sae"
+                width="100%"
+                height="420"
+                style={{ border: 0, borderRadius: "20px" }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="shadow-sm"
+            ></iframe>
+        </section>
     );
 }

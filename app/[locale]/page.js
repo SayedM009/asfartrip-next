@@ -47,8 +47,8 @@ function HomePage({ params }) {
                 <ServicesNavigation />
                 <FlightSearchWrapper />
                 <PromotionalSlider />
-                <DestinationSlider />
                 <FlightsSlider />
+                <DestinationSlider />
                 <HotelsSlider />
             </section>
             <Footer />

@@ -1,58 +1,28 @@
-import { useState } from "react";
+import { SESSION_KEYS, DEFAULT_VALUES } from "../constants/sessionKeys";
+import { useSessionPersistence } from "./useSessionPersistence";
 import { applyPassengerRules } from "../logic/applyPassengerRules";
 
-/**
- * usePassengerLogic - Custom Hook
- * Manages passenger state and validation logic
- * 
- * @param {Object} initialPassengers - Initial passenger counts
- * @returns {Object} Passenger state and update functions
- */
-export function usePassengerLogic(initialPassengers = { adults: 1, children: 0, infants: 0 }) {
-    const [passengers, setPassengers] = useState(initialPassengers);
+export function usePassengerLogic() {
+    const [passengers, setPassengers] = useSessionPersistence(
+        SESSION_KEYS.PASSENGERS,
+        DEFAULT_VALUES.PASSENGERS
+    );
 
     const updatePassengers = (type, increment) => {
-        setPassengers((prev) => {
-            // Calculate new value
-            let newValue = increment
-                ? prev[type] + 1
-                : Math.max(0, prev[type] - 1);
+        const currentCount = passengers[type];
+        const newCount = increment ? currentCount + 1 : Math.max(0, currentCount - 1);
 
-            // Create updated object
-            let updated = {
-                ...prev,
-                [type]: newValue,
-            };
+        let updated = { ...passengers, [type]: newCount };
 
-            // Apply passenger rules (e.g., infants can't exceed adults)
-            updated = applyPassengerRules({
-                ADT: updated.adults,
-                CHD: updated.children,
-                INF: updated.infants,
-            });
-
-            // Save to sessionStorage
-            sessionStorage.setItem("flightPassengers", JSON.stringify(updated));
-
-            return updated;
+        // Apply rules
+        updated = applyPassengerRules({
+            ADT: updated.adults,
+            CHD: updated.children,
+            INF: updated.infants
         });
+
+        setPassengers(updated);
     };
 
-    const getTotalPassengers = () => {
-        return passengers.adults + passengers.children + passengers.infants;
-    };
-
-    const resetPassengers = () => {
-        const defaultPassengers = { adults: 1, children: 0, infants: 0 };
-        setPassengers(defaultPassengers);
-        sessionStorage.setItem("flightPassengers", JSON.stringify(defaultPassengers));
-    };
-
-    return {
-        passengers,
-        setPassengers,
-        updatePassengers,
-        getTotalPassengers,
-        resetPassengers,
-    };
+    return { passengers, setPassengers, updatePassengers };
 }

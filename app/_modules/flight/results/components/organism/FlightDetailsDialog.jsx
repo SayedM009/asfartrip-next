@@ -50,7 +50,8 @@ export function FlightDetailsDialog({
         JSON.parse(searchParams.get("cities")) || {};
 
     const departureCity =
-        departure?.city || JSON.parse(sessionStorage.getItem("departure"))?.city;
+        departure?.city ||
+        JSON.parse(sessionStorage.getItem("departure"))?.city;
 
     const destinationCity =
         destination?.city ||
@@ -111,15 +112,14 @@ export function FlightDetailsDialog({
         switch (pricingData.status) {
             case "success": {
                 clearBookingData();
-                setTicket(ticket)
+                setTicket(ticket);
                 setSearchInfo(searchInfo);
                 setSessionId(pricingData.data.sessionId);
                 setTempId(pricingData.data.tempId);
 
-                
                 //  Save the current search results URL so user can return if booking fails
                 const currentSearchURL = window.location.href;
-                
+
                 setSearchURL(currentSearchURL);
 
                 setBaggageData({
@@ -139,25 +139,25 @@ export function FlightDetailsDialog({
 
             case "price_changed": {
                 clearBookingData();
-                
+
                 // Update ticket with new price
                 const updatedTicket = {
                     ...ticket,
                     TotalPrice: pricingData.data.newPrice,
                     BasePrice: pricingData.data.basePrice,
-                    Taxes: pricingData.data.taxPrice
+                    Taxes: pricingData.data.taxPrice,
                 };
 
                 setTicket(updatedTicket);
                 setSearchInfo(searchInfo);
                 setSessionId(pricingData.data.sessionId);
                 setTempId(pricingData.data.tempId);
-                
+
                 // Set price change data for the popup
                 setPriceChangeData({
                     oldPrice: pricingData.data.oldPrice,
                     newPrice: pricingData.data.newPrice,
-                    currency: pricingData.data.currency
+                    currency: pricingData.data.currency,
                 });
 
                 // Save search URL
@@ -200,7 +200,7 @@ export function FlightDetailsDialog({
                     "open-slide-right close-slide-right"
                 )}
             >
-                <DialogHeader>
+                <DialogHeader className="text-left rtl:text-right">
                     <DialogTitle>{t("dialog.flight_details")}</DialogTitle>
                     <DialogDescription>{t("dialog.guide")}</DialogDescription>
                 </DialogHeader>

@@ -18,15 +18,17 @@ import BookingPagePaymentTitle from "../atoms/BookingPagePaymentTitle";
 import BookingPagePaymentSubTitle from "../atoms/BookingPagePaymentSubTitle";
 import CardsAccepted from "@/app/_components/layout/footer/CardsAccepted";
 
-export default function PaymentSection({ onConfirmPayment, backTo, loading, iframeSrc }) {
+export default function PaymentSection({
+    onConfirmPayment,
+    backTo,
+    loading,
+    iframeSrc,
+}) {
     const [selectedMethod, setSelectedMethod] = useState("card");
 
-    const { payment_gateways } =
-        useContext(WebsiteConfigContext);
-
+    const { payment_gateways } = useContext(WebsiteConfigContext);
 
     const supportedGateways = payment_gateways.map((p) => p.name.toLowerCase());
-
 
     const { ticket, searchURL, getTotalPrice } = useBookingStore();
     const totalAmount = getTotalPrice();
@@ -76,15 +78,6 @@ export default function PaymentSection({ onConfirmPayment, backTo, loading, ifra
         },
     ];
 
-    // function handleChoosenPaymentGatway() {
-    //     if (selectedMethod === "telr") return null;
-    //     if (selectedMethod !== "telr")
-    //     // 1. if payment === telr.  gateway url in store = null
-    //     // 2. if payment !=== telr. gateway url in store  = choosen url (Tabby, Tamara, Cyrpto)
-    //     // 3. if !url button = display none
-    // }
-
-
     return (
         <div className="space-y-6 flex-1 mt-1">
             {/* Payment Method Selection */}
@@ -119,7 +112,9 @@ export default function PaymentSection({ onConfirmPayment, backTo, loading, ifra
 
             {/* Payment Details Form */}
             {selectedMethod === "card" &&
-                supportedGateways.includes("telr") && <TelrIframe src={iframeSrc} />}
+                supportedGateways.includes("telr") && (
+                    <TelrIframe src={iframeSrc} />
+                )}
             {/* Confirm Payment Button */}
             <PaymentButton
                 onConfirmPayment={onConfirmPayment}
@@ -140,45 +135,52 @@ function PaymentButton({ onConfirmPayment, loading, isTelrCard }) {
     const totalAmount = getTotalPrice();
     const { formatPrice } = useCurrency();
     const p = useTranslations("Payment");
-    if (isTelrCard) return null;
     return (
-        <div className=" fixed bottom-0 left-0 right-0 sm:relative bg-white dark:bg-gray-800 border-t border-border shadow-lg z-50 ">
+        <div
+            className={cn(
+                "fixed bottom-0 left-0 right-0 sm:relative bg-white dark:bg-gray-800 border-t border-border shadow-lg z-50 ",
+                isTelrCard && "block md:hidden"
+            )}
+        >
             <div className="p-3">
                 <div className="sm:hidden">
                     <FareSummaryDialog />
                 </div>
-                <Button
-                    onClick={onConfirmPayment}
-                    className={cn(
-                        `py-5 sm:py-7 sm:text-lg font-semibold
+                {!isTelrCard && (
+                    <Button
+                        onClick={onConfirmPayment}
+                        className={cn(
+                            `py-5 sm:py-7 sm:text-lg font-semibold
                     bg-gradient-to-r from-primary-700 to-accent-400
                     hover:from-primary-600 hover:to-accent-500
                     text-white shadow-md hover:shadow-lg
                      duration-300 cursor-pointer rounded-sm w-full transition-colors gap-4  `
-                    )}
-                    size="lg"
-                    disabled={loading}
-                >
-                    <span>
-                        {loading ? (
-                            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        ) : (
-                            p("pay_now")
                         )}
-                    </span>
-                    {formatPrice(totalAmount, "white")}
-                </Button>
+                        size="lg"
+                        disabled={loading}
+                    >
+                        <span>
+                            {loading ? (
+                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                            ) : (
+                                p("pay_now")
+                            )}
+                        </span>
+                        {formatPrice(totalAmount, "white")}
+                    </Button>
+                )}
             </div>
         </div>
     );
 }
 
 function TelrIframe({ src }) {
+    const p = useTranslations("Payment");
     if (!src) return null;
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-border p-4 min-h-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-border p-4 min-h-6 mb-16">
             <h3 className="mb-6 pb-4 border-b border-border rtl:text-right">
-                Payment Details
+                {p("card")}
             </h3>
 
             <iframe
@@ -224,13 +226,13 @@ function GateWays({
                                 className={cn(
                                     "p-2 rounded-lg shrink-0",
                                     method.color === "blue" &&
-                                    "bg-accent-100 dark:bg-accent-900",
+                                        "bg-accent-100 dark:bg-accent-900",
                                     method.color === "green" &&
-                                    "bg-green-100 dark:bg-green-900",
+                                        "bg-green-100 dark:bg-green-900",
                                     method.color === "purple" &&
-                                    "bg-purple-100 dark:bg-purple-900",
+                                        "bg-purple-100 dark:bg-purple-900",
                                     method.color === "orange" &&
-                                    "bg-orange-100 dark:bg-orange-900"
+                                        "bg-orange-100 dark:bg-orange-900"
                                 )}
                             >
                                 {method.img ? (
@@ -247,13 +249,13 @@ function GateWays({
                                         className={cn(
                                             "w-6 h-6",
                                             method.color === "blue" &&
-                                            "text-accent-600 dark:text-accent-400",
+                                                "text-accent-600 dark:text-accent-400",
                                             method.color === "green" &&
-                                            "text-green-600 dark:text-green-400",
+                                                "text-green-600 dark:text-green-400",
                                             method.color === "purple" &&
-                                            "text-purple-600 dark:text-purple-400",
+                                                "text-purple-600 dark:text-purple-400",
                                             method.color === "orange" &&
-                                            "text-orange-600 dark:text-orange-400"
+                                                "text-orange-600 dark:text-orange-400"
                                         )}
                                     />
                                 )}
@@ -270,7 +272,7 @@ function GateWays({
                                 <p className="text-sm text-muted-foreground">
                                     {method.id === "card" ? (
                                         <div className="flex items-center gap-2">
-                                           <CardsAccepted />
+                                            <CardsAccepted />
                                         </div>
                                     ) : (
                                         t(`${method.id}_description`)

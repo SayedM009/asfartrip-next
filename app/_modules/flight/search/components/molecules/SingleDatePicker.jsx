@@ -9,7 +9,6 @@ import useCalendarLocale from "@/app/_hooks/useCalendarLocale";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import DateButton from "../atoms/DateButton";
-import "../calendar-custom.css";
 
 /**
  * SingleDatePicker - Molecule Component

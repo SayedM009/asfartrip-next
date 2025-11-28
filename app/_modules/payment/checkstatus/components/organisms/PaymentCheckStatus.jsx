@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import useBookingStore from "@/app/_modules/flight/booking/store/bookingStore";
@@ -20,25 +21,22 @@ import StepStatus from "../molecules/StepStatus";
  */
 export default function PaymentCheckStatus({ params, searchParams }) {
     const { booking_ref } = params;
-    const gateway = searchParams?.gateway?.toUpperCase() || 'ZIINA';
-    const order_ref = sessionStorage.getItem(`telr_order_ref_${booking_ref}`) || searchParams?.order_ref;
+    const gateway = searchParams?.gateway?.toUpperCase() || "ZIINA";
+    const order_ref =
+        sessionStorage.getItem(`telr_order_ref_${booking_ref}`) ||
+        searchParams?.order_ref;
+    const t = useTranslations("PaymentPage");
 
-    
     const router = useRouter();
-    
+
     const {
         gateway: { ifrurl },
         searchURL,
         sameBookingURL,
     } = useBookingStore();
 
-    const {
-        status,
-        statusMessage,
-        steps,
-        checkPaymentStatus,
-        retry,
-    } = usePaymentCheck({ booking_ref, gateway, order_ref });
+    const { status, statusMessage, steps, checkPaymentStatus, retry } =
+        usePaymentCheck({ booking_ref, gateway, order_ref });
 
     // Prevent double execution in React Strict Mode
     const hasRun = useRef(false);
@@ -80,8 +78,7 @@ export default function PaymentCheckStatus({ params, searchParams }) {
                                         </span>
                                     </div>
                                     <p className="mt-2 text-xs text-gray-500 dark:text-gray-300">
-                                        Our AI agent is coordinating with the
-                                        payment gateway and airline systems.
+                                        {t("aiAgentCoordinating")}
                                     </p>
                                 </motion.div>
                             )}
@@ -104,8 +101,8 @@ export default function PaymentCheckStatus({ params, searchParams }) {
                                     </div>
                                     <p className="mt-2 text-sm text-gray-700 dark:text-gray-200">
                                         {status === "partial-success"
-                                            ? "Your payment has been deducted successfully. We are processing your ticket and it will be sent to your email within maximum 3 hours."
-                                            : "Finalizing your itinerary and preparing e-ticket details…"}
+                                            ? t("paymentDeductedProcessing")
+                                            : t("finalizingItinerary")}
                                     </p>
                                 </motion.div>
                             )}
@@ -127,15 +124,17 @@ export default function PaymentCheckStatus({ params, searchParams }) {
                                     </div>
 
                                     <div className="flex flex-col gap-3 w-full max-w-xs mx-auto mt-5">
-                                        {gateway !== "TELR"  && <button
-                                            onClick={() =>
-                                                (window.location.href = ifrurl)
-                                            }
-                                            className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium text-sm cursor-pointer transition-all duration-200 hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
-                                        >
-                                            Retry Payment
-                                        </button>}
-                                        
+                                        {gateway !== "TELR" && (
+                                            <button
+                                                onClick={() =>
+                                                    (window.location.href =
+                                                        ifrurl)
+                                                }
+                                                className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium text-sm cursor-pointer transition-all duration-200 hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+                                            >
+                                                {t("retryPayment")}
+                                            </button>
+                                        )}
 
                                         <div className="grid grid-cols-2 gap-3">
                                             <button
@@ -144,7 +143,7 @@ export default function PaymentCheckStatus({ params, searchParams }) {
                                                 }
                                                 className="w-full py-3 rounded-lg bg-gradient-to-r from-orange-500 to-amber-400 text-white font-semibold text-sm cursor-pointer transition-all duration-200 hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
                                             >
-                                                Same Booking
+                                                {t("sameBooking")}
                                             </button>
 
                                             <button
@@ -153,7 +152,7 @@ export default function PaymentCheckStatus({ params, searchParams }) {
                                                 }
                                                 className="w-full py-3 rounded-lg bg-gradient-to-r from-teal-400 to-emerald-600 text-white font-medium text-sm cursor-pointer transition-all duration-200 hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
                                             >
-                                                New Search
+                                                {t("newSearch")}
                                             </button>
                                         </div>
                                     </div>
@@ -166,7 +165,7 @@ export default function PaymentCheckStatus({ params, searchParams }) {
                 </motion.div>
 
                 <div className="mt-6 text-xs text-gray-500 dark:text-gray-400">
-                    Powered by AI · Real-time orchestration · Secure gateway
+                    {t("poweredByAi")}
                 </div>
             </div>
         </div>
