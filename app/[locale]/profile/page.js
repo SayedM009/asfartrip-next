@@ -1,5 +1,4 @@
 import ProfileOnMobile from "@/app/_modules/profile/components/templates/ProfileMobileTemplate";
-import useIsDevice from "@/app/_hooks/useIsDevice";
 
 // Generate SEO
 import Script from "next/script";
@@ -8,7 +7,7 @@ import { generatePageMetadata, buildWebPageJsonLd } from "@/app/_libs/seo";
 import { DEFAULT_LOCALE } from "@/app/_config/i18n";
 
 export async function generateMetadata({ params }) {
-    const locale = params?.locale || DEFAULT_LOCALE;
+    const locale = (await params)?.locale || DEFAULT_LOCALE;
     const dict = await getDictionary(locale);
 
     return generatePageMetadata({
@@ -31,20 +30,20 @@ async function Page({ params }) {
         description: dict.Profile?.metaDescription,
         keywords: dict.Profile?.metaKeywords,
     });
-    const { mobile } = useIsDevice();
-    if (mobile)
-        return (
-            <>
-                <Script
-                    id="profile"
-                    type="application/ld+json"
-                    strategy="afterInteractive"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-                />
-                <ProfileOnMobile />
-            </>
-        );
-    return <div>profile</div>;
+
+    // Server component - just render the mobile profile
+    // The mobile detection is handled by CSS (hidden md:block pattern in other places)
+    return (
+        <>
+            <Script
+                id="profile"
+                type="application/ld+json"
+                strategy="afterInteractive"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <ProfileOnMobile />
+        </>
+    );
 }
 
 export default Page;
