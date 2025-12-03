@@ -65,15 +65,14 @@ export const useCurrencyStore = create((set, get) => ({
         const isImageCurrency =
             currentCurrency === "AED" || currentCurrency === "SAR";
 
-        const iconSrc = `/currencies/${color}/${
-            currentCurrency === "AED" ? "uae.svg" : "saudi.svg"
-        }`;
+        const iconSrc = `/currencies/${color}/${currentCurrency === "AED" ? "uae.svg" : "saudi.svg"
+            }`;
 
         return (
             <span
                 className={`inline-flex items-center gap-1 font-semibold ${className}`}
             >
-                <span>{converted.toLocaleString()}</span>
+                <span>{converted.toLocaleString('en-US')}</span>
                 {isImageCurrency ? (
                     <Image
                         src={iconSrc}

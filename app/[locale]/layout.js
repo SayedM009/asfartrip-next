@@ -67,8 +67,8 @@ import { routing } from "@/i18n/routing";
 import { cairo } from "@/app/_libs/fonts";
 import { getMessages } from "next-intl/server";
 import { getWebsiteConfig } from "../_modules/config/api/getWebsiteConfig";
-import "./globals.css";
 import ClientLayout from "./ClientLayout";
+import "./globals.css";
 
 export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));

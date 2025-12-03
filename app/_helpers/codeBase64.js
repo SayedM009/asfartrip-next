@@ -1,11 +1,9 @@
 export function encodeBase64(value) {
-    // ترميز أول مرة
     const once =
         typeof window !== "undefined"
             ? btoa(value.toString())
             : Buffer.from(value.toString()).toString("base64");
 
-    // ترميز ثاني مرة (Double Encoding)
     return typeof window !== "undefined"
         ? btoa(once)
         : Buffer.from(once).toString("base64");

@@ -5,9 +5,11 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import AnimatedPrice from "@/app/_components/ui/AnimatedPrice";
 import { cn } from "@/lib/utils";
 import useDisplayShortDate from "@/app/_hooks/useDisplayShortDate";
+import { useTranslations } from "next-intl";
 
-export default function FlightPromoCard({ card, t, isRTL, onClick }) {
+export default function FlightPromoCard({ card, isRTL, onClick }) {
     const displayShortDate = useDisplayShortDate();
+    const t = useTranslations("Flights_slider");
 
     return (
         <div

@@ -37,7 +37,6 @@ export async function GET() {
             cache: "no-store",
         });
 
-        console.log(res)
 
         if (!res.ok) {
             console.error(" Upstream API error:", {

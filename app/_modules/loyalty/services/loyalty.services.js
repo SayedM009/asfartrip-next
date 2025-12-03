@@ -5,13 +5,12 @@ export async function getLoyaltyConfig() {
         cache: "no-store",
     });
 
-    const text = await res.text();
     let json;
-
     try {
-        json = JSON.parse(text);
-    } catch (error) {
-        throw new Error(`Invalid JSON from /api/loyalty/config: ${text.substring(0, 200)}`);
+        json = await res.json();
+    } catch {
+        const text = await res.text();
+        throw new Error(`Invalid JSON from /api/loyalty/config: ${text.slice(0, 200)}`);
     }
 
     if (!res.ok) {
@@ -23,37 +22,38 @@ export async function getLoyaltyConfig() {
 
 export async function getUserTier(userId) {
     const encodedId = encodeBase64(userId);
+
     const res = await fetch(
         `/api/loyalty/tier?user_id=${encodeURIComponent(encodedId)}`,
         { cache: "no-store" }
     );
 
-    const text = await res.text();
     let json;
-
     try {
-        json = JSON.parse(text);
-    } catch (error) {
-        throw new Error(`Invalid JSON from /api/loyalty/tier: ${text.substring(0, 200)}`);
+        json = await res.json();
+    } catch {
+        const text = await res.text();
+        throw new Error(`Invalid JSON from /api/loyalty/tier: ${text.slice(0, 200)}`);
     }
 
     return json.data;
 }
 
+
 export async function getUserBalance(userId) {
     const encodedId = encodeBase64(userId);
+
     const res = await fetch(
         `/api/loyalty/balance?user_id=${encodeURIComponent(encodedId)}`,
         { cache: "no-store" }
     );
 
-    const text = await res.text();
     let json;
-
     try {
-        json = JSON.parse(text);
-    } catch (error) {
-        throw new Error(`Invalid JSON from /api/loyalty/balance: ${text.substring(0, 200)}`);
+        json = await res.json();
+    } catch {
+        const text = await res.text();
+        throw new Error(`Invalid JSON from /api/loyalty/balance: ${text.slice(0, 200)}`);
     }
 
     return json.data;

@@ -97,7 +97,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 token.fullData = account.serverData;
             }
 
-            // تسجيل الدخول عبر OTP
             if (account?.provider === "credentials" && user) {
                 token.id = user.id;
                 token.email = user.email;
@@ -141,4 +140,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     secret: process.env.NEXTAUTH_SECRET,
+    trustHost: true,
 });

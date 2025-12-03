@@ -19,17 +19,17 @@ export async function getFlightBookingDetails(booking_reference) {
             body: JSON.stringify({ booking_reference }),
         });
 
-        const text = await res.text();
+        // Try safer JSON
         let data;
-
         try {
-            data = JSON.parse(text);
-        } catch (error) {
-            throw new Error(`Invalid JSON from /api/flight/get-booking: ${text.substring(0, 200)}`);
+            data = await res.json();
+        } catch {
+            const text = await res.text();
+            throw new Error(`Invalid JSON from API: ${text.substring(0, 200)}`);
         }
 
         if (!res.ok) {
-            throw new Error(data.error || data.message || "Failed to get booking");
+            throw new Error(data?.error || data?.message || "Failed to get booking");
         }
 
         return data;
