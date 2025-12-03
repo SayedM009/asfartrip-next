@@ -19,11 +19,11 @@ import PromotionalSlider from "../_modules/offers/components/organisms/Promotion
 import Footer from "../_components/layout/footer/Footer";
 
 export async function generateMetadata({ params }) {
-    const locale = params?.locale || DEFAULT_LOCALE;
-    const dict = await getDictionary(locale);
+    const { locale } = await params;
+    const dict = await getDictionary(locale || DEFAULT_LOCALE);
 
     return generatePageMetadata({
-        locale,
+        locale: locale || DEFAULT_LOCALE,
         path: "/",
         title: dict.Homepage?.metaTitle,
         description: dict.Homepage?.metaDescription,
@@ -31,9 +31,10 @@ export async function generateMetadata({ params }) {
     });
 }
 
-function HomePage({ params }) {
-    const locale = params?.locale || DEFAULT_LOCALE;
-    const jsonLd = buildHomeJsonLd({ locale });
+export default async function HomePage({ params }) {
+    const { locale } = await params;
+    const jsonLd = buildHomeJsonLd({ locale: locale || DEFAULT_LOCALE });
+
     return (
         <section className="container-custom">
             <Script
@@ -56,7 +57,3 @@ function HomePage({ params }) {
         </section>
     );
 }
-
-export default HomePage;
-
-
