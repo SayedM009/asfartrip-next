@@ -12,6 +12,15 @@ export async function GET() {
 
         const targetDomain = "whitelabel-demo.asfartrip.com";
 
+        // 🔍 Debug logging
+        console.log("🔍 Config API Debug:", {
+            url,
+            username,
+            passwordLength: password?.length,
+            targetDomain,
+            fullUrl: `${url}/api/website/${targetDomain}`,
+        });
+
         const basicAuth = Buffer.from(`${username}:${password}`).toString(
             "base64"
         );
