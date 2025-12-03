@@ -78,7 +78,7 @@ export default async function RootLayout({ children, params }) {
     const { locale } = await params;
     const isRTL = locale === "ar";
     const messages = await getMessages();
-    // const config = await getWebsiteConfig();
+    const config = await getWebsiteConfig();
 
 
     // ⚠️ TEMPORARY: Skip config until credentials are fixed
