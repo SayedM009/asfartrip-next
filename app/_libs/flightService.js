@@ -1,16 +1,11 @@
 // 1. Search airports
 // const API = process.env.NEXT_PUBLIC_APP_API_BASE_URL;
-const baseUrl =
-    process.env.VERCEL_URL
-        ? process.env.VERCEL_URL
-        : process.env.NEXT_PUBLIC_SITE_URL ||
-        "http://localhost:3000";
-
-
+import { getOrigin } from "../_utils/getOrigin.server";
 
 export async function confirmFlightBooking(booking_reference) {
     try {
-        const res = await fetch("/api/flight/confirm-booking", {
+        const origin = getOrigin();
+        const res = await fetch(`${origin}/api/flight/confirm-booking`, {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: JSON.stringify({ booking_reference }),
@@ -78,7 +73,8 @@ export async function issueFlightBooking(
 
 export async function getFlightBookingDetails(booking_reference) {
     try {
-        const res = await fetch(`${baseUrl}/api/flight/get-booking`, {
+        const origin = getOrigin();
+        const res = await fetch(`${origin}/api/flight/get-booking`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ booking_reference }),

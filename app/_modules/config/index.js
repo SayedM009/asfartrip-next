@@ -1,4 +1,3 @@
-export { getWebsiteConfig } from "./api/getWebsiteConfig";
 export { WebsiteConfigContext } from "./context/WebsiteConfigContext";
 export { default as WebsiteConfigProvider } from "./components/WebsiteConfigProvider";
 

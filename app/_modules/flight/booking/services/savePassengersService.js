@@ -1,10 +1,3 @@
-const baseUrl =
-    process.env.VERCEL_URL
-        ? process.env.VERCEL_URL
-        : process.env.NEXT_PUBLIC_SITE_URL ||
-        "http://localhost:3000";
-
-
 export async function savePassengers(payload) {
     try {
         const formData = new URLSearchParams();
@@ -35,7 +28,7 @@ export async function savePassengers(payload) {
 
         console.log("Sending payload:", formData.toString());
 
-        const response = await fetch(`${baseUrl}/api/flight/save-passengers`, {
+        const response = await fetch(`/api/flight/save-passengers`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",

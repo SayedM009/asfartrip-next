@@ -1,12 +1,11 @@
 
-const baseUrl =
-    process.env.VERCEL_URL
-        ? process.env.VERCEL_URL
-        : process.env.NEXT_PUBLIC_SITE_URL ||
-        "http://localhost:3000";
+
+import { getOrigin } from "@/app/_utils/getOrigin.server";
 
 export async function getWebsiteConfig() {
-    const res = await fetch(`${baseUrl}/api/config`, {
+    const origin = getOrigin();
+
+    const res = await fetch(`${origin}/api/config`, {
         cache: "no-store",
     });
 

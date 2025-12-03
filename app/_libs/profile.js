@@ -1,17 +1,13 @@
-const baseUrl =
-    process.env.VERCEL_URL
-        ? process.env.VERCEL_URL
-        : process.env.NEXT_PUBLIC_SITE_URL ||
-        "http://localhost:3000";
+
 export async function updateProfileClient(data) {
-    // نحول البيانات إلى x-www-form-urlencoded
+
     const formBody = new URLSearchParams();
 
     for (const key in data) {
         formBody.append(key, data[key]);
     }
 
-    const res = await fetch(`${baseUrl}/api/dashboard/update-profile`, {
+    const res = await fetch(`/api/dashboard/update-profile`, {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -25,7 +21,7 @@ export async function updateProfileClient(data) {
 }
 
 export async function fetchUserProfile({ user_id, user_type }) {
-    const res = await fetch(`${baseUrl}/api/dashboard/get-profile`, {
+    const res = await fetch(`/api/dashboard/get-profile`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({ user_id, user_type }).toString(),
@@ -35,7 +31,7 @@ export async function fetchUserProfile({ user_id, user_type }) {
 }
 
 export async function fetchUserTravellers(user_id) {
-    const res = await fetch(`${baseUrl}/api/dashboard/get-travellers`, {
+    const res = await fetch(`/api/dashboard/get-travellers`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({ user_id }).toString(),
