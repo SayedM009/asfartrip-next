@@ -1,48 +1,58 @@
-"use cleint"
-import { Instagram,  Facebook } from "lucide-react";
+"use cleint";
+import { Instagram, Facebook } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import { useContext } from "react";
-import { WebsiteConfigContext } from "../_modules/config";
+// import { WebsiteConfigContext } from "../_modules/config";
 import XIcon from "./SVG/XIcon";
 import WhatsAppIcon from "./SVG/WhatsAppIcon";
 import TikTokIcon from "./SVG/TikTokIcon";
 
-function SocialMedia({options = {sizeIcon: 12, align: "center", sizeOnMobile: 12, sizeOnTablet: 12, sizeOnDesktop: 12 }}) {
-    const {social_media} = useContext(WebsiteConfigContext)
-    
-    const c = useTranslations("ContactPage"); 
+function SocialMedia({
+    options = {
+        sizeIcon: 12,
+        align: "center",
+        sizeOnMobile: 12,
+        sizeOnTablet: 12,
+        sizeOnDesktop: 12,
+    },
+}) {
+    // const {social_media} = useContext(WebsiteConfigContext)
+
+    const c = useTranslations("ContactPage");
     const socialLinks = {
-        "INSTAGRAM" :{
-           
+        INSTAGRAM: {
             icon: Instagram,
             name: c("social_instagram"),
             ariaLabel: c("social_instagram"),
         },
-        "FACEBOOK":{
+        FACEBOOK: {
             icon: Facebook,
             name: c("social_facebook"),
             ariaLabel: c("social_facebook"),
         },
-        "TIKTOK":{
+        TIKTOK: {
             icon: TikTokIcon,
             name: c("social_tiktok"),
             ariaLabel: c("social_tiktok"),
         },
-        "TWITTER":{
+        TWITTER: {
             icon: XIcon,
             name: c("social_twitter"),
             ariaLabel: c("social_twitter"),
         },
-       
-        "WHATSAPP":{
+
+        WHATSAPP: {
             icon: WhatsAppIcon,
             name: c("social_whatsapp"),
             ariaLabel: c("social_whatsapp"),
-        }
+        },
     };
-    return  <div className={`flex items-center justify-${options.align} gap-4 lg:gap-6`}>
-                        {social_media.map((social, index) => {
+    return (
+        <div
+            className={`flex items-center justify-${options.align} gap-4 lg:gap-6`}
+        >
+            {/* {social_media.map((social, index) => {
                             const Icon = socialLinks[social.name].icon;
 
                             return (
@@ -63,8 +73,9 @@ function SocialMedia({options = {sizeIcon: 12, align: "center", sizeOnMobile: 12
                                     <Icon  className={` text-gray-700 dark:text-gray-300 group-hover:text-white transition-colors duration-300`}    />
                                 </motion.a>
                             );
-                        })}
-                    </div>
+                        })} */}
+        </div>
+    );
 }
 
-export default SocialMedia
+export default SocialMedia;

@@ -66,7 +66,7 @@
 import { routing } from "@/i18n/routing";
 import { cairo } from "@/app/_libs/fonts";
 import { getMessages } from "next-intl/server";
-import { getWebsiteConfig } from "../_modules/config/api/getWebsiteConfig";
+// import { getWebsiteConfig } from "../_modules/config/api/getWebsiteConfig";
 import ClientLayout from "./ClientLayout";
 import "./globals.css";
 
@@ -78,12 +78,13 @@ export default async function RootLayout({ children, params }) {
     const { locale } = await params;
     const isRTL = locale === "ar";
     const messages = await getMessages();
-    const config = await getWebsiteConfig();
+    // const config = await getWebsiteConfig();
 
     return (
         <html lang={locale} dir={isRTL ? "rtl" : "ltr"} suppressHydrationWarning>
             <body className={`${cairo.className} antialiased`}>
-                <ClientLayout locale={locale} messages={messages} config={config}>
+                {/* <ClientLayout locale={locale} messages={messages} config={config}> */}
+                <ClientLayout locale={locale} messages={messages}>
                     {children}
                 </ClientLayout>
             </body>

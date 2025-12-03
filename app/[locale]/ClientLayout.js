@@ -13,7 +13,7 @@ export default function ClientLayout({ children, locale, messages, config }) {
         <AuthProvider>
             <WebsiteConfigProvider config={config}>
                 <NextIntlClientProvider locale={locale} messages={messages}>
-                    <ThemeProvider attribute="class" enableSystem defaultTheme="system">
+                    <ThemeProvider attribute="class" enableSystem defaultTheme="light">
                         <main>{children}</main>
 
                         <Toaster
