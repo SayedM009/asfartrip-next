@@ -1,13 +1,9 @@
-import createMiddleware from "next-intl/middleware";
-import { routing } from "./i18n/routing";
-import { auth } from "./app/_libs/auth";
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
 
-export default auth((req) => {
-  return createMiddleware(routing)(req);
-});
+export default createMiddleware(routing);
 
 export const config = {
-  matcher: [
-    "/((?!api|_next|_vercel|.*\\..*).*)"
-  ],
+
+  matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)'
 };
