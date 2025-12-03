@@ -11,7 +11,7 @@ import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 import { BackWardButtonWithDirections } from "@/app/_components/layout/BackwardButton";
 import LoyaltyPointsBanner from "@/app/_modules/loyalty/components/organisms/LoyaltyPointsBanner";
 import PayWithLoyaltyPoints from "@/app/_modules/loyalty/components/organisms/PayWithLoyaltyPoints";
-// import { WebsiteConfigContext } from "@/app/_modules/config";
+import { WebsiteConfigContext } from "@/app/_modules/config";
 
 import TopMobileSection from "./TopMobileSection";
 import BookingPagePaymentTitle from "../atoms/BookingPagePaymentTitle";
@@ -26,9 +26,9 @@ export default function PaymentSection({
 }) {
     const [selectedMethod, setSelectedMethod] = useState("card");
 
-    // const { payment_gateways } = useContext(WebsiteConfigContext);
+    const { payment_gateways } = useContext(WebsiteConfigContext);
 
-    // const supportedGateways = payment_gateways.map((p) => p.name.toLowerCase());
+    const supportedGateways = payment_gateways.map((p) => p.name.toLowerCase());
 
     const { ticket, searchURL, getTotalPrice } = useBookingStore();
     const totalAmount = getTotalPrice();
