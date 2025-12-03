@@ -12,6 +12,12 @@ const nextConfig = {
       "images.pexels.com",
     ],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '2mb',
+    },
+  },
+  productionBrowserSourceMaps: true,
 };
 
 export default withNextIntl(nextConfig);
