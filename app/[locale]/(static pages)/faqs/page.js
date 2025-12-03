@@ -19,9 +19,9 @@ export async function generateMetadata({ params }) {
     });
 }
 
-function page({ params }) {
-    const locale = params?.locale || DEFAULT_LOCALE;
-    const dict = getDictionary(locale);
+async function page({ params }) {
+    const locale = (await params)?.locale || DEFAULT_LOCALE;
+    const dict = await getDictionary(locale);
     const jsonLd = buildWebPageJsonLd({
         locale,
         path: "/faqs",

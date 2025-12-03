@@ -21,8 +21,8 @@ export async function generateMetadata({ params }) {
 }
 
 async function Page({ searchParams, params }) {
-    const locale = params?.locale || DEFAULT_LOCALE;
-    const dict = getDictionary(locale);
+    const locale = (await params)?.locale || DEFAULT_LOCALE;
+    const dict = await getDictionary(locale);
     const jsonLd = buildWebPageJsonLd({
         locale,
         path: "/flights/search",

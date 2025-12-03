@@ -27,7 +27,7 @@ export default async function StatusPage({ params, searchParams }) {
     const unwrappedSearchParams = await Promise.resolve(searchParams);
 
     const locale = unwrappedParams?.locale || DEFAULT_LOCALE;
-    const dict = getDictionary(locale);
+    const dict = await getDictionary(locale);
     const jsonLd = buildWebPageJsonLd({
         locale,
         path: "/flights/status",
