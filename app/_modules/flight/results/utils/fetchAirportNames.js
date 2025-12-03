@@ -2,7 +2,7 @@
 
 import { AIRPORTS_AR } from "./airportsAr";
 
-const API = process.env.NEXT_PUBLIC_APP_API_BASE_URL;
+const API = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function fetchAirportName(code, locale = "en") {
     // Check local dictionary first for Arabic

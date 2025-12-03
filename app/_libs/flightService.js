@@ -1,5 +1,4 @@
 // 1. Search airports
-// const API = process.env.NEXT_PUBLIC_APP_API_BASE_URL;
 import { getOrigin } from "../_utils/getOrigin.server";
 
 export async function confirmFlightBooking(booking_reference) {
@@ -40,7 +39,7 @@ export async function issueFlightBooking(
 
         // ✅ Check if ticket was successfully issued
         if (data?.data?.ticket_status === 'CREATED' && data?.data?.ticket_numbers === 'Yes') {
-            console.log("✅ Ticket issued successfully");
+            console.log("Ticket issued successfully");
             return { success: true, alreadyIssued: false, data };
         }
 

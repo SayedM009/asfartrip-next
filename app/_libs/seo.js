@@ -6,7 +6,7 @@ import {
 } from "@/app/_config/i18n";
 
 export function getBaseUrl() {
-    let base = process.env.NEXT_PUBLIC_BASE_URL || "https://www.asfartrip.com";
+    let base = process.env.WEBSITE_URL || "https://www.asfartrip.com";
     if (base.endsWith("/")) base = base.slice(0, -1);
     return base;
 }

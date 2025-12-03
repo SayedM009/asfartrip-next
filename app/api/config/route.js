@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { headers } from "next/headers";
 
 export async function GET() {
     try {
@@ -10,17 +9,6 @@ export async function GET() {
         if (!username || !password) {
             throw new Error("Missing API credentials configuration");
         }
-
-        // Get the host from the request headers
-        const headersList = await headers();
-        const host = headersList.get("host");
-
-        // Use the host from the request, or fallback to demo for localhost
-        // You can add more local/dev domains to this check if needed
-        // const targetDomain =
-        //     host && !host.includes("localhost")
-        //         ? host
-        //         : "whitelabel-demo.asfartrip.com";
 
         const targetDomain = "whitelabel-demo.asfartrip.com";
 

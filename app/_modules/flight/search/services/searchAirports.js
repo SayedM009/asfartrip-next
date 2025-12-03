@@ -1,4 +1,4 @@
-const API = process.env.NEXT_PUBLIC_APP_API_BASE_URL;
+const API = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function searchAirports(term) {
   if (!term) return [];
