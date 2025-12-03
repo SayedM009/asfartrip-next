@@ -1,4 +1,3 @@
-// app/_modules/flights/results/filters/utils/fetchAirportNames.js
 
 import { AIRPORTS_AR } from "./airportsAr";
 
