@@ -2,8 +2,8 @@
 import { Instagram, Facebook } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
-import { useContext } from "react";
-// import { WebsiteConfigContext } from "../_modules/config";
+import { use } from "react";
+import { WebsiteConfigContext } from "../_modules/config";
 import XIcon from "./SVG/XIcon";
 import WhatsAppIcon from "./SVG/WhatsAppIcon";
 import TikTokIcon from "./SVG/TikTokIcon";
@@ -17,7 +17,7 @@ function SocialMedia({
         sizeOnDesktop: 12,
     },
 }) {
-    // const {social_media} = useContext(WebsiteConfigContext)
+    const { social_media } = use(WebsiteConfigContext);
 
     const c = useTranslations("ContactPage");
     const socialLinks = {
@@ -52,28 +52,30 @@ function SocialMedia({
         <div
             className={`flex items-center justify-${options.align} gap-4 lg:gap-6`}
         >
-            {/* {social_media.map((social, index) => {
-                            const Icon = socialLinks[social.name].icon;
+            {social_media.map((social, index) => {
+                const Icon = socialLinks[social.name].icon;
 
-                            return (
-                                <motion.a
-                                    key={social.name}
-                                    href={social.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label={social.ariaLabel}
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{
-                                        duration: 0.4,
-                                        delay: 0.3 + index * 0.1,
-                                    }}
-                                    className={`w-${options.sizeOnMobile} h-${options.sizeOnMobile} lg:w-${options.sizeOnDesktop} lg:h-${options.sizeOnDesktop} rounded-xl bg-gray-50 dark:bg-gray-900 flex items-center justify-center hover:bg-accent-500 dark:hover:bg-accent-500 hover:scale-110 transition-all duration-300 group`}
-                                >
-                                    <Icon  className={` text-gray-700 dark:text-gray-300 group-hover:text-white transition-colors duration-300`}    />
-                                </motion.a>
-                            );
-                        })} */}
+                return (
+                    <motion.a
+                        key={social.name}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={social.ariaLabel}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{
+                            duration: 0.4,
+                            delay: 0.3 + index * 0.1,
+                        }}
+                        className={`w-${options.sizeOnMobile} h-${options.sizeOnMobile} lg:w-${options.sizeOnDesktop} lg:h-${options.sizeOnDesktop} rounded-xl bg-gray-50 dark:bg-gray-900 flex items-center justify-center hover:bg-accent-500 dark:hover:bg-accent-500 hover:scale-110 transition-all duration-300 group`}
+                    >
+                        <Icon
+                            className={` text-gray-700 dark:text-gray-300 group-hover:text-white transition-colors duration-300`}
+                        />
+                    </motion.a>
+                );
+            })}
         </div>
     );
 }

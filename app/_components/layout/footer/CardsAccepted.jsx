@@ -2,10 +2,10 @@
 
 import { WebsiteConfigContext } from "@/app/_modules/config";
 import Image from "next/image";
-import { useContext } from "react";
+import { use } from "react";
 
 export default function CardsAccepted({ size = 30 }) {
-    const { cards_accepted, ...other } = useContext(WebsiteConfigContext);
+    const { cards_accepted } = use(WebsiteConfigContext);
     return (
         <div className="flex items-center gap-3">
             {cards_accepted.map((card, index) => (

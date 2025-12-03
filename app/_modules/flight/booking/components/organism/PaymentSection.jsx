@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { use, useState } from "react";
 import { CreditCard, Wallet, Bitcoin, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -26,7 +26,7 @@ export default function PaymentSection({
 }) {
     const [selectedMethod, setSelectedMethod] = useState("card");
 
-    const { payment_gateways } = useContext(WebsiteConfigContext);
+    const { payment_gateways } = use(WebsiteConfigContext);
 
     const supportedGateways = payment_gateways.map((p) => p.name.toLowerCase());
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useContext } from "react";
+import { useState, useCallback, use } from "react";
 import { useLocale } from "next-intl";
 import { savePassengers } from "../services/savePassengersService";
 import { createTelrPayment } from "../services/createTelrPayment";
@@ -14,7 +14,7 @@ export function usePaymentFlow({ contactInfo, travelerRefs, setCurrentStep }) {
     const [telrIframeUrl, setTelrIframeUrl] = useState(null);
 
     // Get config from context
-    const config = useContext(WebsiteConfigContext);
+    const config = use(WebsiteConfigContext);
 
     // Get current locale
     const locale = useLocale();

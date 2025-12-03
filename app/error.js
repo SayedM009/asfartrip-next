@@ -8,6 +8,9 @@ export default function GlobalError({ error, reset }) {
             <body>
                 <h2>Something went wrong.</h2>
                 <pre style={{ whiteSpace: "pre-wrap", color: "red" }}>
+                    {error?.stack}
+                    {error?.name}
+                    {error?.message}
                     {error?.digest ?? "No digest found"}
                 </pre>
 
