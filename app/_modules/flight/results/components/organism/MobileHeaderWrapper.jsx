@@ -61,7 +61,9 @@ export default function MobileHeaderWrapper() {
                 </button>
             </MobileHeaderEditDialog>
 
-            <CurrencySwitcher isLabel={false} />
+            <div className="flex items-center">
+                <CurrencySwitcher isLabel={false} />
+            </div>
         </div>
     );
 }

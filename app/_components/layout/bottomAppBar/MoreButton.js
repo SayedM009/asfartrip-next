@@ -5,7 +5,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-    DialogFooter,
+    // DialogFooter,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import {
@@ -31,7 +31,8 @@ import {
 import { useState } from "react";
 import { LanguageSwitcher } from "@/app/_modules/language";
 import { ThemeSwitcher } from "@/app/_modules/theme";
-import { SignOutButton } from "@/app/_modules/auth";
+import clsx from "clsx";
+// import { SignOutButton } from "@/app/_modules/auth";
 
 const HELPER_LINKS = [
     {
@@ -105,16 +106,24 @@ function MoreButton() {
                         {t("more")}
                     </DialogTitle>
                     <DialogDescription>
-                        <section className=" dark:bg-gray-[#555]  mt-2 mx-3 rounded-lg min-h-80 pt-2 flex flex-col  px-4 shadow-xl  ">
+                        <section className=" dark:bg-gray-[#555]  mt-2 mx-3 rounded-lg min-h-80  flex flex-col  px-4 shadow-xl gap-2 ">
+                            {/* Currency Switcher */}
+                            <div className=" flex items-center justify-between border-b-1 border-gray-300   dark:border-gray-100 gap-3 pb-2">
+                                <BanknotesIcon className="size-5 text-accent-500" />
+                                <div className="w-full">
+                                    <CurrencySwitcher isLabel={false} />
+                                </div>
+                            </div>
                             {/* Language Switcher */}
-                            <div className="flex items-center border-b-1 border-gray-300 pb-1  dark:border-gray-100">
+                            <div className="flex items-center border-b-1 border-gray-300   dark:border-gray-100 pb-2">
                                 <Earth className="size-5 w-5 h-5 text-accent-500" />
                                 <div className=" w-full">
                                     <LanguageSwitcher />
                                 </div>
                             </div>
+
                             {/* Theme Switcher */}
-                            <div className="py-2 flex text-md font-bold items-center border-b-1 border-gray-300 dark:border-gray-100 justify-between bac">
+                            <div className=" flex text-md font-bold items-center border-b-1 border-gray-300 dark:border-gray-100 justify-between pb-2">
                                 <ThemeSwitcher />
                                 <Switch
                                     checked={condition}
@@ -122,35 +131,26 @@ function MoreButton() {
                                     dir="ltr"
                                 />
                             </div>
-                            {/* Currency Switcher */}
-                            <div className="py-2 flex items-center border-b-1 border-gray-300 pb-1  dark:border-gray-100 gap-3">
-                                <BanknotesIcon className="size-5 text-accent-500" />
-                                <div className=" w-full">
-                                    <CurrencySwitcher isLabel={false} />
-                                </div>
-                                <span className="font-bold dark:text-gray-50">
-                                    <ChevronBasedOnLanguage />
-                                </span>
-                            </div>
+
 
                             {/* Helper Links */}
                             {HELPER_LINKS.map((link, index) => (
                                 <Link
                                     key={link.title}
-                                    className={`flex  py-3 border-b-1  w-full justify-between dark:text-gray-50  ${index + 1 < HELPER_LINKS.length
-                                        ? "border-gray-300 dark:border-gray-100 "
-                                        : ""
-                                        }`}
-                                    onClick={() => setOpen(false)}
                                     href={link.path}
+                                    onClick={() => setOpen(false)}
+                                    className={clsx(
+                                        "flex  w-full justify-between dark:text-gray-50 pt-2 pb-4",
+                                        "capitalize font-bold",
+                                        index !== HELPER_LINKS.length - 1 && "border-b border-gray-300 dark:border-gray-100"
+                                    )}
                                 >
-                                    <div className="flex gap-2 capitalize font-bold">
-                                        <span className="w-5 ">
-                                            {link.icon}
-                                        </span>
-                                        {p(`${link.title}`)}
+                                    <div className="flex gap-2">
+                                        <span className="w-5">{link.icon}</span>
+                                        {p(link.title)}
                                     </div>
-                                    <ChevronBasedOnLanguage />
+
+                                    <ChevronBasedOnLanguage size={12} />
                                 </Link>
                             ))}
                         </section>

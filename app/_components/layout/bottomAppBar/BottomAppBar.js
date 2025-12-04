@@ -1,7 +1,7 @@
 "use client";
 import { Link, usePathname } from "@/i18n/navigation";
 import { HomeIcon, PercentBadgeIcon } from "@heroicons/react/24/outline";
-import { TicketIcon } from "lucide-react";
+// import { TicketIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import MoreButton from "./MoreButton";
 

@@ -75,8 +75,12 @@ export default function CurrencySwitcher({
                     variant="ghost"
                     size="sm"
                     aria-label={t("title")}
-                    className={`font-bold gap-2 cursor-pointer p-0 dark:text-white
-                        ${hiddenOnMobile ? "hidden sm:flex sm:w-10" : "flex "}`}
+                    className={`font-bold gap-2 cursor-pointer p-0 dark:text-white 
+                        ${
+                            hiddenOnMobile
+                                ? "hidden sm:flex sm:w-10"
+                                : "flex w-full justify-start "
+                        }`}
                 >
                     {currentCurrency}
                     {isLabel && <span>{t("title")}</span>}
