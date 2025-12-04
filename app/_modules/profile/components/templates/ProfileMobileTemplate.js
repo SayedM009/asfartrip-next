@@ -15,16 +15,17 @@ export default function ProfileOnMobile() {
     const [openDialog, setOpenDialog] = useState(null);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const { isRTL } = useCheckLocal();
-
-    const {
-        user: { id, usertype },
-    } = useAuthStore();
+    const { user } = useAuthStore();
     const { activeTab, fetchBookings } = useDashboardBookingsStore();
+    const id = user?.id;
+    const usertype = user?.usertype;
 
     useEffect(() => {
         if (!id || !usertype) return null;
         fetchBookings(id, usertype, "cancelled");
     }, [activeTab, fetchBookings, id, usertype]);
+
+    if (!id || !usertype) return null;
 
     return (
         <AnimatePresence>
