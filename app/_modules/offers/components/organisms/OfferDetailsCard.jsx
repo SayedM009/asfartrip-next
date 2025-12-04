@@ -9,7 +9,7 @@ export default function OfferDetailsCard({ offer, locale }) {
     const dir = isArabic ? "rtl" : "ltr";
 
     return (
-        <section dir={dir} className="space-y-4 py-4 sm:py-16">
+        <section dir={dir} className="space-y-4 pt-6 pb-10 md:py-16">
             {/* صورة العرض */}
             <div className="relative w-full h-64 md:h-96 rounded-2xl overflow-hidden">
                 <Image

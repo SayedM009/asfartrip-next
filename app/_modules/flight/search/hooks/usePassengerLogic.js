@@ -14,7 +14,6 @@ export function usePassengerLogic() {
 
         let updated = { ...passengers, [type]: newCount };
 
-        // Apply rules
         updated = applyPassengerRules({
             ADT: updated.adults,
             CHD: updated.children,

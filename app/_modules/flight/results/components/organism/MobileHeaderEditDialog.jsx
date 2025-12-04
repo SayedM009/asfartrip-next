@@ -21,13 +21,13 @@ export default function MobileHeaderEditDialog({ open, setOpen, children }) {
 
             <DialogContent
                 className={cn(
-                    "max-w-none w-full h-[45vh] top-179 rounded-none border-0",
+                    " h-[45%] fixed bottom-0  ",
                     "open-slide-bottom close-slide-bottom",
                     "pt-4"
                 )}
             >
                 <DialogHeader>
-                    <DialogTitle className="text-sm font-medium text-accent-400">
+                    <DialogTitle className="text-sm font-bold text-accent-400">
                         {t("operations.edit_your_search")}
                     </DialogTitle>
                     <DialogDescription>

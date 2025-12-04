@@ -6,7 +6,7 @@ import { LoginButton } from "@/app/_modules/auth";
 
 async function Navbar() {
     return (
-        <nav className="flex items-center justify-between sm:border-b-1 pb-3">
+        <nav className="flex items-center justify-between sm:border-b-1 pt-2 md:pt-0 pb-3">
             <Logo />
             <div className="flex items-center gap-1 ">
                 <CurrencySwitcher hiddenOnMobile={true} isLabel={false} />

@@ -16,13 +16,13 @@ function BottomAppBar() {
                 <HomeIcon className={`w-6 ${active && "text-accent-400"}`} />
             ),
         },
-        {
-            title: "trips",
-            path: "/trips",
-            icon: (active) => (
-                <TicketIcon className={`w-7 ${active && "text-accent-400"}`} />
-            ),
-        },
+        // {
+        //     title: "trips",
+        //     path: "/trips",
+        //     icon: (active) => (
+        //         <TicketIcon className={`w-7 ${active && "text-accent-400"}`} />
+        //     ),
+        // },
         {
             title: "offers",
             path: "/offers",
