@@ -8,29 +8,29 @@ import { HotelsSlider } from "../_components/sliders/HotelsSlider";
 import Navbar from "@/app/_components/layout/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
 import { FlightSearchWrapper } from "../_modules/flight/search";
+import BottomAppBar from "../_components/layout/bottomAppBar/BottomAppBar";
+import PromotionalSlider from "../_modules/offers/components/organisms/PromotionalSlider";
+import Footer from "../_components/layout/footer/Footer";
 
 // Generate SEO
 import Script from "next/script";
 import { DEFAULT_LOCALE } from "@/app/_config/i18n";
 import { getDictionary } from "../_libs/getDictionary";
 import { generatePageMetadata, buildHomeJsonLd } from "@/app/_libs/seo";
-import BottomAppBar from "../_components/layout/bottomAppBar/BottomAppBar";
-import PromotionalSlider from "../_modules/offers/components/organisms/PromotionalSlider";
-import Footer from "../_components/layout/footer/Footer";
 
-// export async function generateMetadata({ params }) {
-//     const locale = params?.locale || DEFAULT_LOCALE;
 
-//     const dict = await getDictionary(locale);
+export async function generateMetadata({ params }) {
+    const locale = (await params)?.locale || DEFAULT_LOCALE;
+    const dict = await getDictionary(locale);
 
-//     return generatePageMetadata({
-//         locale,
-//         path: "/",
-//         title: dict.Homepage?.metaTitle || "",
-//         description: dict.Homepage?.metaDescription || "",
-//         keywords: dict.Homepage?.metaKeywords || "",
-//     });
-// }
+    return generatePageMetadata({
+        locale,
+        path: "/",
+        title: dict.Homepage?.metaTitle || "AsfarTrip - Flight Tickets & Travel Booking",
+        description: dict.Homepage?.metaDescription || "Book cheap flights, hotels, and travel packages with AsfarTrip",
+        keywords: dict.Homepage?.metaKeywords || "flight tickets, hotels, travel, UAE",
+    });
+}
 
 export default async function HomePage({ params }) {
     const { locale } = await params;
