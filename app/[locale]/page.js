@@ -19,18 +19,18 @@ import { getDictionary } from "../_libs/getDictionary";
 import { generatePageMetadata, buildHomeJsonLd } from "@/app/_libs/seo";
 
 
-export async function generateMetadata({ params }) {
-    const locale = (await params)?.locale || DEFAULT_LOCALE;
-    const dict = await getDictionary(locale);
+// export async function generateMetadata({ params }) {
+//     const locale = (await params)?.locale || DEFAULT_LOCALE;
+//     const dict = await getDictionary(locale);
 
-    return generatePageMetadata({
-        locale,
-        path: "/",
-        title: dict.Homepage?.metaTitle || "AsfarTrip - Flight Tickets & Travel Booking",
-        description: dict.Homepage?.metaDescription || "Book cheap flights, hotels, and travel packages with AsfarTrip",
-        keywords: dict.Homepage?.metaKeywords || "flight tickets, hotels, travel, UAE",
-    });
-}
+//     return generatePageMetadata({
+//         locale,
+//         path: "/",
+//         title: dict.Homepage?.metaTitle,
+//         description: dict.Homepage?.metaDescription,
+//         keywords: dict.Homepage?.metaKeywords,
+//     });
+// }
 
 export default async function HomePage({ params }) {
     const { locale } = await params;
