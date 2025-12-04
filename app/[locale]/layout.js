@@ -69,7 +69,7 @@ import { getMessages } from "next-intl/server";
 // import { getWebsiteConfig } from "../_modules/config/api/getWebsiteConfig";
 import ClientLayout from "./ClientLayout";
 import "./globals.css";
-import { AuthProvider } from "./providers";
+// import { AuthProvider } from "./providers";
 import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
@@ -365,25 +365,25 @@ export default async function RootLayout({ children, params }) {
     return (
         <html lang={locale} dir={isRTL ? "rtl" : "ltr"} suppressHydrationWarning>
             <body className={`${cairo.className} antialiased`}>
-                <AuthProvider>
-                    <NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Dubai">
-                        <ThemeProvider attribute="class" enableSystem defaultTheme="light">
-                            <ClientLayout config={config}>
-                                {children}
-                            </ClientLayout>
-                            <Toaster
-                                position="top-center"
-                                duration={2000}
-                                icons={{
-                                    success: <CheckCircleIcon className="text-green-500 size-5" />,
-                                    error: (
-                                        <AlertCircle className="rounded-full size-5 bg-red-500 text-white" />
-                                    ),
-                                }}
-                            />
-                        </ThemeProvider>
-                    </NextIntlClientProvider>
-                </AuthProvider>
+                {/* <AuthProvider> */}
+                <NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Dubai">
+                    <ThemeProvider attribute="class" enableSystem defaultTheme="light">
+                        <ClientLayout config={config}>
+                            {children}
+                        </ClientLayout>
+                        <Toaster
+                            position="top-center"
+                            duration={2000}
+                            icons={{
+                                success: <CheckCircleIcon className="text-green-500 size-5" />,
+                                error: (
+                                    <AlertCircle className="rounded-full size-5 bg-red-500 text-white" />
+                                ),
+                            }}
+                        />
+                    </ThemeProvider>
+                </NextIntlClientProvider>
+                {/* </AuthProvider> */}
 
             </body>
         </html>
