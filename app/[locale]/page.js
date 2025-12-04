@@ -18,31 +18,31 @@ import BottomAppBar from "../_components/layout/bottomAppBar/BottomAppBar";
 import PromotionalSlider from "../_modules/offers/components/organisms/PromotionalSlider";
 import Footer from "../_components/layout/footer/Footer";
 
-export async function generateMetadata({ params }) {
-    const { locale } = await params;
-    const dict = await getDictionary(locale || DEFAULT_LOCALE);
+// export async function generateMetadata({ params }) {
+//     const { locale } = await params;
+//     const dict = await getDictionary(locale || DEFAULT_LOCALE);
 
-    return generatePageMetadata({
-        locale: locale || DEFAULT_LOCALE,
-        path: "/",
-        title: dict.Homepage?.metaTitle,
-        description: dict.Homepage?.metaDescription,
-        keywords: dict.Homepage?.metaKeywords,
-    });
-}
+//     return generatePageMetadata({
+//         locale: locale || DEFAULT_LOCALE,
+//         path: "/",
+//         title: dict.Homepage?.metaTitle,
+//         description: dict.Homepage?.metaDescription,
+//         keywords: dict.Homepage?.metaKeywords,
+//     });
+// }
 
 export default async function HomePage({ params }) {
-    const { locale } = await params;
-    const jsonLd = buildHomeJsonLd({ locale: locale || DEFAULT_LOCALE });
+    // const { locale } = await params;
+    // const jsonLd = buildHomeJsonLd({ locale: locale || DEFAULT_LOCALE });
 
     return (
         <section className="container-custom">
-            <Script
+            {/* <Script
                 id="home-jsonld"
                 type="application/ld+json"
                 strategy="afterInteractive"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
+            /> */}
             <Navbar />
             <section className="space-y-6 mb-10">
                 <ServicesNavigation />
