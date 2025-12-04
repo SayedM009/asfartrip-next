@@ -76,19 +76,40 @@ export function useEmailOtp({ onSuccess }) {
         setIsVerifying(true);
 
         try {
-            const result = await signIn("credentials", {
+            // Step 1: Verify OTP and get user data
+            const verifyResult = await verify(email, otp);
+
+            if (verifyResult.errorStatus) {
+                setOtpError(verifyResult.error || "Invalid OTP");
+                setIsVerifying(false);
+                return;
+            }
+
+            // Step 2: Sign in with the received token
+            const user = verifyResult.data?.user;
+            if (!user || !user.api_token) {
+                setOtpError("Invalid user data received");
+                setIsVerifying(false);
+                return;
+            }
+
+            const signInResult = await signIn("credentials", {
                 email,
-                otp,
+                token: user.api_token,
+                userData: JSON.stringify(user),
                 redirect: false,
             });
 
-            if (result?.error) {
-                setOtpError(result.error || "Invalid OTP");
-            } else if (result?.ok) {
+            if (signInResult?.error) {
+                setOtpError(signInResult.error || "Sign in failed");
+            } else if (signInResult?.ok) {
                 setOtpOpen(false);
                 if (onSuccess) onSuccess();
+            } else {
+                setOtpError("Sign in failed");
             }
         } catch (err) {
+            console.error("Sign in error:", err);
             setOtpError("Verification failed");
         }
 

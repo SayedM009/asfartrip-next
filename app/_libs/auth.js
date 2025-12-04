@@ -14,7 +14,6 @@ const API_BASE_URL = process.env.API_BASE_URL || "https://api.travelsprovider.co
 export const { handlers, signIn, signOut, auth } = NextAuth({
     ...authConfig,
 
-    // ✅ Real providers (runs in Node runtime only)
     providers: [
         Google({
             clientId: process.env.GOOGLE_CLIENT_ID,
@@ -25,40 +24,35 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             name: "Email",
             credentials: {
                 email: { label: "Email", type: "text" },
-                otp: { label: "OTP", type: "text" },
+                token: { label: "Token", type: "text" },
+                userData: { label: "User Data", type: "text" },
             },
             async authorize(credentials) {
-                const { email, otp } = credentials;
-                if (!email || !otp) {
-                    throw new Error("Email and OTP are required");
-                }
+                const { email, token, userData } = credentials;
 
-                const response = await fetch(
-                    `${API_BASE_URL}/api/b2c/login-otp`,
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ email, otp }),
+                // If token and userData are provided, use them directly
+                if (token && userData) {
+                    try {
+                        const user = JSON.parse(userData);
+                        return {
+                            id: user.user_id || email,
+                            email: user.email || email,
+                            name: `${user.firstname || ''} ${user.lastname || ''}`.trim(),
+                            avatar: user.profile_photo || "",
+                            api_token: token,
+                            usertype: user.usertype || "",
+                            domain: user.domain || "",
+                            provider: "email",
+                            data: user,
+                        };
+                    } catch (error) {
+                        console.error("Error parsing user data:", error);
+                        return null;
                     }
-                );
-
-                const data = await response.json();
-                if (!response.ok || !data.status) {
-                    throw new Error(data.message || "Invalid OTP");
                 }
 
-                const user = data.user || {};
-                return {
-                    id: user.user_id || email,
-                    email: user.email || email,
-                    name: `${user.firstname || ''} ${user.lastname || ''}`.trim(),
-                    avatar: user.profile_photo || "",
-                    api_token: user.api_token || "",
-                    usertype: user.usertype || "",
-                    domain: user.domain || "",
-                    provider: "email",
-                    data,
-                };
+                // Fallback: if no token/userData, return null
+                return null;
             },
         }),
     ],
