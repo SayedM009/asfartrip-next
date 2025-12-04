@@ -7,7 +7,7 @@ import { generatePageMetadata, buildWebPageJsonLd } from "@/app/_libs/seo";
 import { DEFAULT_LOCALE } from "@/app/_config/i18n";
 
 export async function generateMetadata({ params }) {
-    const locale = params?.locale || DEFAULT_LOCALE;
+    const locale = (await params)?.locale || DEFAULT_LOCALE;
     const dict = await getDictionary(locale);
 
     return generatePageMetadata({

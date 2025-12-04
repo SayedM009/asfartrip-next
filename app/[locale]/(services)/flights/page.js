@@ -15,7 +15,7 @@ import { FlightSearchWrapper } from "@/app/_modules/flight/search";
 import PromotionalSlider from "@/app/_modules/offers/components/organisms/PromotionalSlider";
 
 export async function generateMetadata({ params }) {
-    const locale = params?.locale || DEFAULT_LOCALE;
+    const locale = (await params)?.locale || DEFAULT_LOCALE;
     const dict = await getDictionary(locale);
 
     return generatePageMetadata({

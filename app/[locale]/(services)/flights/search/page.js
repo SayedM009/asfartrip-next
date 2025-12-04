@@ -8,7 +8,7 @@ import Navbar from "@/app/_components/layout/Navbar";
 import FlightSearchWrapper from "@/app/_modules/flight/results/components/organism/FlightSearchNavWrapper";
 
 export async function generateMetadata({ params }) {
-    const locale = params?.locale || DEFAULT_LOCALE;
+    const locale = (await params)?.locale || DEFAULT_LOCALE;
     const dict = await getDictionary(locale);
 
     return generatePageMetadata({

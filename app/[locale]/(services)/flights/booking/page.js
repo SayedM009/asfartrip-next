@@ -17,7 +17,7 @@ import { getCart } from "@/app/_modules/flight/booking/services/cartService";
 // Generate Metadata (SEO)
 // ===============================
 export async function generateMetadata({ params }) {
-    const locale = params?.locale || DEFAULT_LOCALE;
+    const locale = (await params)?.locale || DEFAULT_LOCALE;
     const dict = await getDictionary(locale);
 
     return generatePageMetadata({
