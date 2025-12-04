@@ -19,11 +19,12 @@ import PromotionalSlider from "../_modules/offers/components/organisms/Promotion
 import Footer from "../_components/layout/footer/Footer";
 
 export async function generateMetadata({ params }) {
-    const { locale } = await params;
-    const dict = await getDictionary(locale || DEFAULT_LOCALE);
+    const locale = params?.locale || DEFAULT_LOCALE;
+
+    const dict = await getDictionary(locale);
 
     return generatePageMetadata({
-        locale: locale || DEFAULT_LOCALE,
+        locale,
         path: "/",
         title: dict.Homepage?.metaTitle,
         description: dict.Homepage?.metaDescription,
