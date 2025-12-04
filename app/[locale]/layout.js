@@ -389,23 +389,3 @@ export default async function RootLayout({ children, params }) {
         </html>
     );
 }
-
-// export default async function RootLayout({ children, locale }) {
-//     const messages = await getMessages({ locale });
-//     const isRTL = locale === "ar";
-
-//     return (
-//         <html lang={locale} dir={isRTL ? "rtl" : "ltr"} suppressHydrationWarning>
-//             <body className={`${cairo.className} antialiased`}>
-//                 <NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Dubai">
-//                     <ThemeProvider attribute="class" enableSystem defaultTheme="light">
-//                         {children}
-
-//                     </ThemeProvider>
-//                 </NextIntlClientProvider>
-
-//             </body>
-//         </html>
-//     );
-// }
-
