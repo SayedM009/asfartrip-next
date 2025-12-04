@@ -1,21 +1,22 @@
 import { headers } from "next/headers";
 
 export async function getWebsiteConfig() {
-    const h = await headers();
-
+    const h = headers();
     const protocol = h.get("x-forwarded-proto") || "https";
     const host = h.get("host");
-    const origin = `${protocol}://${host}`;
 
-    const res = await fetch(`${origin}/api/config`, {
+    // ALWAYS fetch root API (no /en)
+    const origin = `${protocol}://${host}`;
+    const url = `${origin}/api/config`;
+
+    const res = await fetch(url, {
         cache: "no-store",
     });
 
-    // Check response status before parsing
     if (!res.ok) {
         const errorText = await res.text();
         console.error(`Config API failed: ${res.status} ${res.statusText}`, {
-            url: `${origin}/api/config`,
+            url,
             status: res.status,
             preview: errorText.substring(0, 200),
         });
@@ -24,7 +25,7 @@ export async function getWebsiteConfig() {
         );
     }
 
-    // Validate Content-Type
+    // Content type check
     const contentType = res.headers.get("content-type");
     if (!contentType?.includes("application/json")) {
         const text = await res.text();
@@ -33,7 +34,7 @@ export async function getWebsiteConfig() {
             preview: text.substring(0, 200),
         });
         throw new Error(
-            `Expected JSON from /api/config but got ${contentType || "unknown content type"}`
+            `Expected JSON but got ${contentType || "unknown content type"}`
         );
     }
 
