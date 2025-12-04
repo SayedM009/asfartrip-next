@@ -14,23 +14,23 @@ import Footer from "../_components/layout/footer/Footer";
 
 // Generate SEO
 import Script from "next/script";
-import { DEFAULT_LOCALE } from "@/app/_config/i18n";
+import { DEFAULT_LOCALE } from "../_config/i18n";
 import { getDictionary } from "../_libs/getDictionary";
-import { generatePageMetadata, buildHomeJsonLd } from "@/app/_libs/seo";
+import { buildHomeJsonLd, generatePageMetadata } from "../_libs/seo";
 
 
-// export async function generateMetadata({ params }) {
-//     const locale = (await params)?.locale || DEFAULT_LOCALE;
-//     const dict = await getDictionary(locale);
+export async function generateMetadata({ params }) {
+    const locale = (await params)?.locale || DEFAULT_LOCALE;
+    const dict = await getDictionary(locale);
 
-//     return generatePageMetadata({
-//         locale,
-//         path: "/",
-//         title: dict.Homepage?.metaTitle,
-//         description: dict.Homepage?.metaDescription,
-//         keywords: dict.Homepage?.metaKeywords,
-//     });
-// }
+    return generatePageMetadata({
+        locale,
+        path: "/",
+        title: dict.Homepage?.metaTitle,
+        description: dict.Homepage?.metaDescription,
+        keywords: dict.Homepage?.metaKeywords,
+    });
+}
 
 export default async function HomePage({ params }) {
     const { locale } = await params;
