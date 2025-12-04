@@ -15,7 +15,6 @@ export default function CardsAccepted({ size = 30 }) {
                     alt={card.image}
                     width={size}
                     height={size}
-                    quality={100}
                 />
             ))}
         </div>
