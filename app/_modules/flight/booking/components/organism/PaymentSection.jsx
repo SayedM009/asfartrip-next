@@ -26,9 +26,9 @@ export default function PaymentSection({
 }) {
     const [selectedMethod, setSelectedMethod] = useState("card");
 
-    // const { payment_gateways } = use(WebsiteConfigContext);
+    const { payment_gateways } = use(WebsiteConfigContext);
 
-    // const supportedGateways = payment_gateways.map((p) => p.name.toLowerCase());
+    const supportedGateways = payment_gateways.map((p) => p.name.toLowerCase());
 
     const { ticket, searchURL, getTotalPrice } = useBookingStore();
     const totalAmount = getTotalPrice();
@@ -106,23 +106,23 @@ export default function PaymentSection({
                 paymentMethods={paymentMethods}
                 selectedMethod={selectedMethod}
                 setSelectedMethod={setSelectedMethod}
-                // supportedGateways={supportedGateways}
+                supportedGateways={supportedGateways}
                 t={p}
             />
 
             {/* Payment Details Form */}
-            {/* {selectedMethod === "card" &&
+            {selectedMethod === "card" &&
                 supportedGateways.includes("telr") && (
                     <TelrIframe src={iframeSrc} />
-                )} */}
+                )}
             {/* Confirm Payment Button */}
             <PaymentButton
                 onConfirmPayment={onConfirmPayment}
                 loading={loading}
-                // isTelrCard={
-                //     selectedMethod === "card" &&
-                //     supportedGateways.includes("telr")
-                // }
+                isTelrCard={
+                    selectedMethod === "card" &&
+                    supportedGateways.includes("telr")
+                }
             />
 
             <TimeoutPopup timeoutMinutes={12} redirectLink={searchURL} />

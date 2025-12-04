@@ -52,8 +52,8 @@ export default async function HomePage({ params }) {
                 <DestinationSlider />
                 <HotelsSlider />
             </section>
-            {/* <Footer /> */}
-            {/* <BottomAppBar /> */}
+            <Footer />
+            <BottomAppBar />
         </section>
     );
 }

@@ -7,13 +7,13 @@ import LegalLinks from "./LegalLinks";
 import CardsAccepted from "./CardsAccepted";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "next-intl";
-// import { WebsiteConfigContext } from "@/app/_modules/config";
+import { WebsiteConfigContext } from "@/app/_modules/config";
 import { use } from "react";
 
 export default function Footer() {
     const t = useTranslations("Footer");
 
-    // const { website } = use(WebsiteConfigContext);
+    const { website } = use(WebsiteConfigContext);
 
     return (
         <footer className="text-muted-foreground hidden md:block border-t">
@@ -30,10 +30,10 @@ export default function Footer() {
 
                 {/* Bottom Footer */}
                 <div className="flex flex-col md:flex-row justify-between items-center text-sm">
-                    {/* <p className="mb-4 md:mb-0">
+                    <p className="mb-4 md:mb-0">
                         &copy; {new Date().getFullYear()} {website?.name}{" "}
                         {t("copy_right.text")}
-                    </p> */}
+                    </p>
                     <CardsAccepted />
                 </div>
             </div>
