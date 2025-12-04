@@ -46,7 +46,7 @@ export default function InsuranceSelection() {
     if (options.length <= 0) return null;
 
     return (
-        <div className="bg-white dark:bg-transparent rounded-lg border border-border p-6">
+        <div className="bg-background dark:bg-gray-800/50 rounded-lg border border-border p-6">
             {/* Header */}
             <div className="flex items-center gap-3 mb-6">
                 <div className="bg-accent-100 dark:bg-accent-900/30 p-2 rounded-lg">
@@ -89,7 +89,7 @@ export default function InsuranceSelection() {
                   ${
                       isSelected
                           ? "border-accent-600 dark:border-accent-500 bg-accent-50 dark:bg-accent-900/30 shadow-sm"
-                          : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600"
+                          : "border-gray-200 dark:border-gray-700 bg-background hover:border-gray-300 dark:hover:border-gray-600"
                   }
                 `}
                                 >

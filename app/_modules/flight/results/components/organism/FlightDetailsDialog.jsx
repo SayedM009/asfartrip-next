@@ -186,7 +186,7 @@ export function FlightDetailsDialog({
             {/* Trigger */}
             {!withContinue && trigger && (
                 <DialogTrigger asChild>
-                    <button className="text-blue-600 text-sm flex items-center gap-1">
+                    <button className="text-blue-500 dark:text-blue-400 text-sm flex items-center gap-1">
                         {trigger.icon} {trigger.title}
                     </button>
                 </DialogTrigger>

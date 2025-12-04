@@ -52,7 +52,6 @@ export default function BookingPage({
 
     const totalPassengers = getTotalPassengers();
 
-    console.log("1- from BookingPage userType", userType);
     // init (userId + cart + insurance)
     useBookingInitialization({
         isLogged,
