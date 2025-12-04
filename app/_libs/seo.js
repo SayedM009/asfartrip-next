@@ -1,4 +1,3 @@
-// app/_libs/seo.js
 import {
     SUPPORTED_LOCALES,
     DEFAULT_LOCALE,
@@ -6,7 +5,7 @@ import {
 } from "@/app/_config/i18n";
 
 export function getBaseUrl() {
-    let base = process.env.NEXT_PUBLIC_WEBSITE_URL ?? "https://www.asfartrip.com";
+    let base = process.env.WEBSITE_URL ?? "https://www.asfartrip.com";
 
     if (base.endsWith("/")) base = base.slice(0, -1);
     return base;
