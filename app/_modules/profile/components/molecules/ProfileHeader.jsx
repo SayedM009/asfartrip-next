@@ -1,3 +1,4 @@
+"use client";
 import { Link } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
