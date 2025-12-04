@@ -20,16 +20,30 @@ import { buildHomeJsonLd, generatePageMetadata } from "../_libs/seo";
 
 
 export async function generateMetadata({ params }) {
-    const locale = (await params)?.locale || DEFAULT_LOCALE;
-    const dict = await getDictionary(locale);
+    const resolvedParams = await params;
+    const locale = resolvedParams?.locale || DEFAULT_LOCALE;
 
-    return generatePageMetadata({
-        locale,
-        path: "/",
-        title: dict.Homepage?.metaTitle,
-        description: dict.Homepage?.metaDescription,
-        keywords: dict.Homepage?.metaKeywords,
-    });
+    try {
+        const dict = await getDictionary(locale);
+
+        return generatePageMetadata({
+            locale,
+            path: "/",
+            title: dict.Homepage?.metaTitle || "AsfarTrip - Travel Booking",
+            description: dict.Homepage?.metaDescription || "Book flights, hotels and more",
+            keywords: dict.Homepage?.metaKeywords,
+        });
+    } catch (error) {
+        console.error("Error generating metadata:", error);
+
+        // Fallback metadata
+        return generatePageMetadata({
+            locale,
+            path: "/",
+            title: "AsfarTrip - Travel Booking",
+            description: "Book flights, hotels and more",
+        });
+    }
 }
 
 export default async function HomePage({ params }) {

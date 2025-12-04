@@ -1,12 +1,12 @@
 import {
-    SUPPORTED_LOCALES,
+
     DEFAULT_LOCALE,
     HREFLANG_MAP,
+    SUPPORTED_LOCALES,
 } from "@/app/_config/i18n";
 
 export function getBaseUrl() {
     let base = process.env.WEBSITE_URL ?? "https://www.asfartrip.com";
-
     if (base.endsWith("/")) base = base.slice(0, -1);
     return base;
 }
@@ -29,7 +29,6 @@ export function generatePageMetadata({
     }
 
     const currentUrl = `${baseUrl}/${locale}${normalizedPath}`;
-    // const ogImage = image || `${baseUrl}/og-image.jpg`;
 
     const languages = {};
     SUPPORTED_LOCALES.forEach((lng) => {
@@ -54,20 +53,11 @@ export function generatePageMetadata({
             siteName: "asfartrip.com",
             locale: locale === "ar" ? "ar_AE" : "en_US",
             type: "website",
-            // images: [
-            //     {
-            //         url: ogImage,
-            //         width: 1200,
-            //         height: 630,
-            //         alt: title,
-            //     },
-            // ],
         },
         twitter: {
             card: "summary_large_image",
             title,
             description,
-            // images: [ogImage],
         },
         robots: "index, follow",
     };

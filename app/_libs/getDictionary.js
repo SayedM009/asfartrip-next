@@ -1,19 +1,15 @@
-import fs from "fs";
-import path from "path";
+const dictionaries = {
+    en: () => import('@/app/_messages/en.json').then(m => m.default),
+    ar: () => import('@/app/_messages/ar.json').then(m => m.default),
+};
 
 export async function getDictionary(locale) {
-    const filePath = path.resolve("./app/_messages", `${locale}.json`);
-
     try {
-        const file = await fs.promises.readFile(filePath, "utf-8");
-        return JSON.parse(file);
+        const loadDict = dictionaries[locale] || dictionaries.en;
+        return await loadDict();
     } catch (err) {
-        console.error(`Missing translation file for locale: ${locale}`);
-        // fallback to English
-        const fallback = await fs.promises.readFile(
-            path.resolve("./app/_messages/en.json"),
-            "utf-8"
-        );
-        return JSON.parse(fallback);
+        console.error(`Failed to load dictionary for locale: ${locale}`, err);
+        // Fallback to English
+        return await dictionaries.en();
     }
 }
