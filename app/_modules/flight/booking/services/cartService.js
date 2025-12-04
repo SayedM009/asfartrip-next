@@ -2,7 +2,8 @@
 import { getOrigin } from "@/app/_utils/getOrigin.server";
 
 export async function getCart(sessionId) {
-    const origin = getOrigin();
+    const origin = await getOrigin();
+    console.log(origin)
     const res = await fetch(`${origin}/api/flight/get-cart`, {
         method: "POST",
         headers: {

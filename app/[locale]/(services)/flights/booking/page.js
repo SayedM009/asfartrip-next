@@ -33,7 +33,7 @@ export async function generateMetadata({ params }) {
 // PAGE COMPONENT
 // ===============================
 export default async function Page({ searchParams, params }) {
-    const locale = params?.locale || DEFAULT_LOCALE;
+    const locale = (await params)?.locale || DEFAULT_LOCALE;
 
     // FIX: لازم await
     const dict = await getDictionary(locale);

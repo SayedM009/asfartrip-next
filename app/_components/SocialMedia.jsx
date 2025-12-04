@@ -3,7 +3,7 @@ import { Instagram, Facebook } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import { use } from "react";
-import { WebsiteConfigContext } from "../_modules/config";
+// import { WebsiteConfigContext } from "../_modules/config";
 import XIcon from "./SVG/XIcon";
 import WhatsAppIcon from "./SVG/WhatsAppIcon";
 import TikTokIcon from "./SVG/TikTokIcon";
@@ -17,7 +17,7 @@ function SocialMedia({
         sizeOnDesktop: 12,
     },
 }) {
-    const { social_media } = use(WebsiteConfigContext);
+    // const { social_media } = use(WebsiteConfigContext);
 
     const c = useTranslations("ContactPage");
     const socialLinks = {
@@ -52,7 +52,7 @@ function SocialMedia({
         <div
             className={`flex items-center justify-${options.align} gap-4 lg:gap-6`}
         >
-            {social_media.map((social, index) => {
+            {/* {social_media.map((social, index) => {
                 const Icon = socialLinks[social.name].icon;
 
                 return (
@@ -75,7 +75,7 @@ function SocialMedia({
                         />
                     </motion.a>
                 );
-            })}
+            })} */}
         </div>
     );
 }

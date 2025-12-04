@@ -1,14 +1,14 @@
 "use client";
 
-import { WebsiteConfigContext } from "@/app/_modules/config";
+// import { WebsiteConfigContext } from "@/app/_modules/config";
 import Image from "next/image";
 import { use } from "react";
 
 export default function CardsAccepted({ size = 30 }) {
-    const { cards_accepted } = use(WebsiteConfigContext);
+    // const { cards_accepted } = use(WebsiteConfigContext);
     return (
         <div className="flex items-center gap-3">
-            {cards_accepted.map((card, index) => (
+            {/* {cards_accepted.map((card, index) => (
                 <Image
                     key={index}
                     src={`/currencies/${card.image}`}
@@ -16,7 +16,7 @@ export default function CardsAccepted({ size = 30 }) {
                     width={size}
                     height={size}
                 />
-            ))}
+            ))} */}
         </div>
     );
 }

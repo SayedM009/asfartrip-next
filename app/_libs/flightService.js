@@ -3,7 +3,7 @@ import { getOrigin } from "../_utils/getOrigin.server";
 
 export async function confirmFlightBooking(booking_reference) {
     try {
-        const origin = getOrigin();
+        const origin = await getOrigin();
         const res = await fetch(`${origin}/api/flight/confirm-booking`, {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -72,7 +72,7 @@ export async function issueFlightBooking(
 
 export async function getFlightBookingDetails(booking_reference) {
     try {
-        const origin = getOrigin();
+        const origin = await getOrigin();
         const res = await fetch(`${origin}/api/flight/get-booking`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },

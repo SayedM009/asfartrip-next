@@ -11,7 +11,7 @@ import { getOrigin } from "@/app/_utils/getOrigin.server";
  * @returns {Promise<Object>} Booking details
  */
 export async function getFlightBookingDetails(booking_reference) {
-    const origin = getOrigin();
+    const origin = await getOrigin();
     try {
         const res = await fetch(`${origin}/api/flight/get-booking`, {
             method: "POST",

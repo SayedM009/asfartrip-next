@@ -31,33 +31,6 @@ export async function generateMetadata({ params }) {
     });
 }
 
-// export default async function HomePage({ params }) {
-//     const { locale } = await params;
-//     const jsonLd = buildHomeJsonLd({ locale: locale || DEFAULT_LOCALE });
-
-//     return (
-//         <section className="container-custom">
-//             <Script
-//                 id="home-jsonld"
-//                 type="application/ld+json"
-//                 strategy="afterInteractive"
-//                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-//             />
-//             <Navbar />
-//             <section className="space-y-6 mb-10">
-//                 <ServicesNavigation />
-//                 <FlightSearchWrapper />
-//                 <PromotionalSlider />
-//                 <FlightsSlider />
-//                 <DestinationSlider />
-//                 <HotelsSlider />
-//             </section>
-//             <Footer />
-//             <BottomAppBar />
-//         </section>
-//     );
-// }
-
 export default async function HomePage({ params }) {
     const { locale } = await params;
     const jsonLd = buildHomeJsonLd({ locale: locale || DEFAULT_LOCALE });
@@ -70,8 +43,17 @@ export default async function HomePage({ params }) {
                 strategy="afterInteractive"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
+            <Navbar />
             <section className="space-y-6 mb-10">
+                <ServicesNavigation />
+                <FlightSearchWrapper />
+                <PromotionalSlider />
+                <FlightsSlider />
+                <DestinationSlider />
+                <HotelsSlider />
             </section>
+            {/* <Footer /> */}
+            {/* <BottomAppBar /> */}
         </section>
     );
 }

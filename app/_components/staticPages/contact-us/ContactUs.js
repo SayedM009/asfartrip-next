@@ -10,14 +10,13 @@ import {
     HeadphonesIcon,
 } from "lucide-react";
 import SocialMedia from "../../SocialMedia";
-import { WebsiteConfigContext } from "@/app/_modules/config";
+// import { WebsiteConfigContext } from "@/app/_modules/config";
 import { use } from "react";
 
 export default function ContactUs() {
     const c = useTranslations("ContactPage");
 
-    const { website } = use(WebsiteConfigContext)
-    console.log(website)
+    // const { website } = use(WebsiteConfigContext)
 
     // =================== CONTACT DATA ===================
     const contactCards = [
@@ -272,9 +271,9 @@ export default function ContactUs() {
 
 
                 {/* MAP */}
-                {website?.map_url && (
+                {/* {website?.map_url && (
                     <MapSection c={c} website={website} />
-                )}
+                )} */}
             </section>
         </div>
     );
