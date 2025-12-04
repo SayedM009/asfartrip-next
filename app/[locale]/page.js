@@ -26,9 +26,9 @@ export async function generateMetadata({ params }) {
     return generatePageMetadata({
         locale,
         path: "/",
-        title: dict.Homepage?.metaTitle,
-        description: dict.Homepage?.metaDescription,
-        keywords: dict.Homepage?.metaKeywords,
+        title: dict.Homepage?.metaTitle || "",
+        description: dict.Homepage?.metaDescription || "",
+        keywords: dict.Homepage?.metaKeywords || "",
     });
 }
 
