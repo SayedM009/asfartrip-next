@@ -23,7 +23,7 @@ const destinations = [
         img: "/destinations/riyadh.jpg",
         date: "2025-09-12T00:00:00.000Z",
         time: "1h 40m",
-        isDirect: Math.random() < 0.5,
+        isDirect: true,
         price: 999,
     },
     {
@@ -38,7 +38,7 @@ const destinations = [
         img: "/destinations/salalah.jpg",
         date: "2025-09-15T00:00:00.000Z",
         time: "1h 50m",
-        isDirect: Math.random() < 0.5,
+        isDirect: true,
         price: 999,
     },
     {
@@ -53,7 +53,7 @@ const destinations = [
         img: "/destinations/trabzon.jpg",
         date: "2025-09-20T00:00:00.000Z",
         time: "4h 0m",
-        isDirect: Math.random() < 0.5,
+        isDirect: true,
         price: 999,
     },
     {
@@ -68,7 +68,7 @@ const destinations = [
         img: "/destinations/tbilisi.webp",
         date: "2025-09-25T00:00:00.000Z",
         time: "3h 30m",
-        isDirect: Math.random() < 0.5,
+        isDirect: true,
         price: 999,
     },
     {
@@ -83,7 +83,7 @@ const destinations = [
         img: "/destinations/saraievo.jpg",
         date: "2025-09-28T00:00:00.000Z",
         time: "5h 0m",
-        isDirect: Math.random() < 0.5,
+        isDirect: true,
         price: 999,
     },
     {
@@ -98,7 +98,7 @@ const destinations = [
         img: "/destinations/vienna.jpg",
         date: "2025-10-02T00:00:00.000Z",
         time: "6h 0m",
-        isDirect: Math.random() < 0.5,
+        isDirect: true,
         price: 999,
     },
     {
@@ -113,7 +113,7 @@ const destinations = [
         img: "/destinations/salzburg.jpg",
         date: "2025-10-05T00:00:00.000Z",
         time: "6h 20m",
-        isDirect: Math.random() < 0.5,
+        isDirect: true,
         price: 999,
     },
     {
@@ -128,7 +128,7 @@ const destinations = [
         img: "/destinations/cairo.jpg",
         date: "2025-09-10T00:00:00.000Z",
         time: "3h 0m",
-        isDirect: Math.random() < 0.5,
+        isDirect: true,
         price: 999,
     },
 ];
