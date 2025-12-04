@@ -18,19 +18,19 @@ import BottomAppBar from "../_components/layout/bottomAppBar/BottomAppBar";
 import PromotionalSlider from "../_modules/offers/components/organisms/PromotionalSlider";
 import Footer from "../_components/layout/footer/Footer";
 
-// export async function generateMetadata({ params }) {
-//     const locale = params?.locale || DEFAULT_LOCALE;
+export async function generateMetadata({ params }) {
+    const locale = params?.locale || DEFAULT_LOCALE;
 
-//     const dict = await getDictionary(locale);
+    const dict = await getDictionary(locale);
 
-//     return generatePageMetadata({
-//         locale,
-//         path: "/",
-//         title: dict.Homepage?.metaTitle,
-//         description: dict.Homepage?.metaDescription,
-//         keywords: dict.Homepage?.metaKeywords,
-//     });
-// }
+    return generatePageMetadata({
+        locale,
+        path: "/",
+        title: dict.Homepage?.metaTitle,
+        description: dict.Homepage?.metaDescription,
+        keywords: dict.Homepage?.metaKeywords,
+    });
+}
 
 export default async function HomePage({ params }) {
     const { locale } = await params;
