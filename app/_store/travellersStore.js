@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { fetchUserTravellers } from "../_libs/profile";
 
 const useTravellersStore = create(
@@ -27,6 +27,16 @@ const useTravellersStore = create(
         }),
         {
             name: "travellers-storage",
+            storage: createJSONStorage(() => {
+                if (typeof window !== "undefined") {
+                    return window.localStorage;
+                }
+                return {
+                    getItem: () => null,
+                    setItem: () => { },
+                    removeItem: () => { },
+                };
+            }),
             partialize: (state) => ({ travellers: state.travellers }),
         }
     )
