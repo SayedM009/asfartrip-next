@@ -12,7 +12,7 @@ export default function ClientLayout({ children, locale, messages, config }) {
     return (
         <AuthProvider>
             <WebsiteConfigProvider config={config}>
-                <NextIntlClientProvider locale={locale} messages={messages}>
+                <NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Dubai">
                     <ThemeProvider attribute="class" enableSystem defaultTheme="light">
                         <main>{children}</main>
 

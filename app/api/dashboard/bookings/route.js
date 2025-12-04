@@ -17,7 +17,7 @@ export async function POST(req) {
         const username = process.env.TP_USERNAME;
         const password = process.env.TP_PASSWORD;
         const baseUrl =
-            process.env.NEXT_PUBLIC_API_BASE_URL ||
+            process.env.API_BASE_URL ||
             "https://uat-api.travelsprovider.com";
 
         // إعداد body بالطريقة المطلوبة

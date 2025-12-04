@@ -1,5 +1,4 @@
-const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.travelsprovider.com";
+const API_BASE_URL = process.env.API_BASE_URL || "https://api.travelsprovider.com";
 
 // Send OTP
 export async function sendOtp(email) {

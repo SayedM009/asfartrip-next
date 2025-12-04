@@ -13,7 +13,7 @@ export async function loginWithExistsCredintials() {
     const basicAuth = Buffer.from(`${username}:${password}`).toString("base64");
 
     const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login`,
+        `${process.env.API_BASE_URL}/api/login`,
         {
             method: "POST",
             headers: {

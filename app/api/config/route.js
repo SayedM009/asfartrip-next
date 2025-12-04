@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const url = process.env.NEXT_PUBLIC_API_BASE_URL;
+        const url = process.env.API_BASE_URL;
         const username = process.env.TP_USERNAME;
         const password = process.env.TP_PASSWORD;
 
@@ -49,7 +49,11 @@ export async function GET() {
             domain: targetDomain,
         });
 
-        return NextResponse.json(data);
+        return NextResponse.json({
+            status: "success",
+            data: data.data ?? data,
+        });
+
     } catch (error) {
         console.error(" Config API error:", {
             message: error.message,

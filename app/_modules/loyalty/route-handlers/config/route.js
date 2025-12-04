@@ -52,7 +52,7 @@ export async function GET() {
 
         const basicAuth = Buffer.from(`${username}:${password}`).toString("base64");
 
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/loyalty/config`;
+        const apiUrl = `${process.env.API_BASE_URL}/api/loyalty/config`;
 
         const response = await fetchLoyaltyConfig(basicAuth, apiUrl);
 

@@ -101,7 +101,7 @@ export async function POST(req) {
 
         // Call backend sendVoucher API
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/sendVoucher`,
+            `${process.env.API_BASE_URL}/api/sendVoucher`,
             {
                 method: "POST",
                 headers: {

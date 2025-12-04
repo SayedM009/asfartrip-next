@@ -6,7 +6,7 @@ export async function POST(req) {
         const user_id = params.get("user_id");
         const username = process.env.TP_USERNAME;
         const password = process.env.TP_PASSWORD;
-        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+        const baseUrl = process.env.API_BASE_URL;
 
         const basicAuth = btoa(`${username}:${password}`);
 

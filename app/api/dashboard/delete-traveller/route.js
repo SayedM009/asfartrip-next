@@ -17,7 +17,7 @@ export async function POST(req) {
 
         const username = process.env.TP_USERNAME;
         const password = process.env.TP_PASSWORD;
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/traveller/delete_passenger_saved_list`;
+        const apiUrl = `${process.env.API_BASE_URL}/traveller/delete_passenger_saved_list`;
 
         const basicAuth = Buffer.from(`${username}:${password}`).toString(
             "base64"

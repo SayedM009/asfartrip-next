@@ -9,7 +9,7 @@ import Google from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { authConfig } from "../_config/auth.config";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.travelsprovider.com";
+const API_BASE_URL = process.env.API_BASE_URL || "https://api.travelsprovider.com";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     ...authConfig,

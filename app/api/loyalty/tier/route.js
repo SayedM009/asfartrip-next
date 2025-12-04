@@ -71,8 +71,7 @@ export async function GET(req) {
         );
 
         //  بناء رابط الـ API الخارجي
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL
-            }/api/loyalty/tier?user_id=${encodeURIComponent(userId)}`;
+        const apiUrl = `${process.env.API_BASE_URL}/api/loyalty/tier?user_id=${encodeURIComponent(userId)}`;
 
         //  تنفيذ الطلب
         const response = await fetchUserTier(basicAuth, apiUrl);

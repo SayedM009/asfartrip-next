@@ -55,7 +55,7 @@ export async function POST(request) {
 
         // Call Telr check API
         const telrResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/telr/check`,
+            `${process.env.API_BASE_URL}/api/telr/check`,
             {
                 method: "POST",
                 headers: {

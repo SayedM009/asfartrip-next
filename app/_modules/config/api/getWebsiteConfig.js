@@ -1,9 +1,8 @@
-
-
 import { headers } from "next/headers";
 
 export async function getWebsiteConfig() {
-    const h = headers();
+    const h = await headers();
+
     const protocol = h.get("x-forwarded-proto") || "https";
     const host = h.get("host");
     const origin = `${protocol}://${host}`;
@@ -25,11 +24,11 @@ export async function getWebsiteConfig() {
         );
     }
 
-    // Validate Content-Type to ensure it's JSON
+    // Validate Content-Type
     const contentType = res.headers.get("content-type");
     if (!contentType?.includes("application/json")) {
         const text = await res.text();
-        console.error(` Config API returned non-JSON response`, {
+        console.error(`Config API returned non-JSON response`, {
             contentType,
             preview: text.substring(0, 200),
         });

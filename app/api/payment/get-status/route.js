@@ -46,7 +46,7 @@ export async function POST(req) {
             "base64"
         );
 
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/payment/getStatus`;
+        const apiUrl = `${process.env.API_BASE_URL}/api/payment/getStatus`;
         let requestData = { bookingRef, api_token: token };
 
         let res = await makeRequest(requestData, basicAuth, apiUrl);

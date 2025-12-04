@@ -22,9 +22,15 @@ import StepStatus from "../molecules/StepStatus";
 export default function PaymentCheckStatus({ params, searchParams }) {
     const { booking_ref } = params;
     const gateway = searchParams?.gateway?.toUpperCase() || "ZIINA";
-    const order_ref =
-        sessionStorage.getItem(`telr_order_ref_${booking_ref}`) ||
-        searchParams?.order_ref;
+
+    let order_ref = searchParams?.order_ref || null;
+
+    if (typeof window !== "undefined") {
+        order_ref =
+            sessionStorage.getItem(`telr_order_ref_${booking_ref}`) ||
+            order_ref;
+    }
+
     const t = useTranslations("PaymentPage");
 
     const router = useRouter();

@@ -74,7 +74,7 @@ export async function POST(request) {
 
         // Call Telr API
         const telrResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/telr/create`,
+            `${process.env.API_BASE_URL}/api/telr/create`,
             {
                 method: "POST",
                 headers: {

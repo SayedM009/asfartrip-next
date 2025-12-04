@@ -64,9 +64,7 @@ export async function GET(req) {
             "base64"
         );
 
-        const apiUrl = `${
-            process.env.NEXT_PUBLIC_API_BASE_URL
-        }/api/loyalty/balance?user_id=${encodeURIComponent(userId)}`;
+        const apiUrl = `${process.env.API_BASE_URL}/api/loyalty/balance?user_id=${encodeURIComponent(userId)}`;
 
         const response = await fetchUserBalance(basicAuth, apiUrl);
 
