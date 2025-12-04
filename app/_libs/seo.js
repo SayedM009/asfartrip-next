@@ -29,7 +29,7 @@ export function generatePageMetadata({
     }
 
     const currentUrl = `${baseUrl}/${locale}${normalizedPath}`;
-    const ogImage = image || `${baseUrl}/og-image.jpg`;
+    // const ogImage = image || `${baseUrl}/og-image.jpg`;
 
     const languages = {};
     SUPPORTED_LOCALES.forEach((lng) => {
@@ -54,20 +54,20 @@ export function generatePageMetadata({
             siteName: "asfartrip.com",
             locale: locale === "ar" ? "ar_AE" : "en_US",
             type: "website",
-            images: [
-                {
-                    url: ogImage,
-                    width: 1200,
-                    height: 630,
-                    alt: title,
-                },
-            ],
+            // images: [
+            //     {
+            //         url: ogImage,
+            //         width: 1200,
+            //         height: 630,
+            //         alt: title,
+            //     },
+            // ],
         },
         twitter: {
             card: "summary_large_image",
             title,
             description,
-            images: [ogImage],
+            // images: [ogImage],
         },
         robots: "index, follow",
     };
