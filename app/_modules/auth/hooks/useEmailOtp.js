@@ -4,6 +4,7 @@ import { useState, useEffect, useTransition } from "react";
 import { validateEmail } from "@/app/_modules/auth/utils/validateEmail";
 import { useOtpActions } from "@/app/_modules/auth/hooks/useOtpActions";
 import { signIn } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 export function useEmailOtp({ onSuccess }) {
     const { send, verify, resend } = useOtpActions();
@@ -21,8 +22,11 @@ export function useEmailOtp({ onSuccess }) {
     const [isResending, setIsResending] = useState(false);
 
     const [countdown, setCountdown] = useState(0);
+
     const OTPLENGTH = 6;
     const RESEND_COOLDOWN = 30;
+
+    const t = useTranslations("Login")
 
     // =============================
     // EMAIL HANDLERS
@@ -34,11 +38,11 @@ export function useEmailOtp({ onSuccess }) {
 
     function validateEmailInput() {
         if (!email) {
-            setEmailError("Email is required");
+            setEmailError(t("empty_email"));
             return false;
         }
         if (!validateEmail(email)) {
-            setEmailError("Invalid email");
+            setEmailError(t("invalid_email"));
             return false;
         }
         return true;
@@ -69,7 +73,7 @@ export function useEmailOtp({ onSuccess }) {
     // =============================
     async function handleVerifyOtp() {
         if (!otp || otp.length < OTPLENGTH) {
-            setOtpError("Please enter full OTP");
+            setOtpError(t("empty_otp"));
             return;
         }
 

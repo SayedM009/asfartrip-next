@@ -2288,5 +2288,12 @@
         "unableToDetermineStatus": "Unable to determine payment status.",
         "networkIssueRetrying": "Network issue. Retrying...",
         "networkError": "Network error. Please try again."
+    },
+    "ErrorPage": {
+        "title": "Something Went Wrong",
+        "description": "We're sorry, but something unexpected happened. Our team has been notified and we're working to fix it.",
+        "try_again": "Try Again",
+        "go_home": "Go to Homepage",
+        "support_message": "If the problem persists, please contact us at"
     }
 }

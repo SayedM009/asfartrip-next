@@ -18,6 +18,7 @@ export default function ContactUs() {
 
     const { website } = use(WebsiteConfigContext)
 
+
     // =================== CONTACT DATA ===================
     const contactCards = [
         {
@@ -26,7 +27,7 @@ export default function ContactUs() {
             title: c("cards_whatsapp_title"),
             subtitle: c("cards_whatsapp_subtitle"),
             value: c("cards_whatsapp_value"),
-            link: "https://wa.me/+971(4)3409933".replace(/[^0-9]/g, ""),
+            link: `https://wa.me/${website?.phone?.replace(/[^0-9]/g, "")}`,
         },
         {
             icon: Mail,
@@ -272,7 +273,7 @@ export default function ContactUs() {
 
                 {/* MAP */}
                 {website?.map_url && (
-                    <MapSection c={c} website={website} />
+                    <MapSection c={c} src={website?.map_url} />
                 )}
             </section>
         </div>
@@ -280,7 +281,8 @@ export default function ContactUs() {
 }
 
 
-function MapSection({ c, website }) {
+function MapSection({ c, src }) {
+    // TODO: Add map_url to website config
     return (
         <section>
             <h2 className="text-3xl lg:text-5xl text-gray-900 dark:text-white mb-4 tracking-tight">

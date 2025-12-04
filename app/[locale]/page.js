@@ -61,7 +61,7 @@ export default async function HomePage({ params }) {
             <Navbar />
             <section className="space-y-6 mb-10">
                 <ServicesNavigation />
-                <FlightSearchWrapper />
+                {/* <FlightSearchWrapper /> */}
                 <PromotionalSlider />
                 <FlightsSlider />
                 <DestinationSlider />

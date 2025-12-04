@@ -50,15 +50,17 @@ export default function EmailInput({ parentSetOpen }) {
     });
 
     return (
-        <section className="mt-10 text-center">
-            <h2 className="text-xl font-semibold">{t("signin_register")}</h2>
+        <section className="mt-10 text-center capitalize">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                {t("signin_register")}
+            </h2>
 
-            <div className="flex items-center justify-center gap-2 mt-3">
-                <span className="text-xs text-gray-500 flex items-center gap-1">
+            <div className="flex items-center justify-center gap-2 mt-3 ">
+                <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 ">
                     <FireIcon width={16} height={16} /> {t("sub_title_one")}
                 </span>
                 <span className="text-xs"> | </span>
-                <span className="text-xs text-gray-500 flex items-center gap-1">
+                <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 ">
                     <Points width={16} height={16} /> {t("sub_title_two")}
                 </span>
             </div>
@@ -87,7 +89,12 @@ export default function EmailInput({ parentSetOpen }) {
             {otpOpen && (
                 <Dialog open={otpOpen} onOpenChange={setOtpOpen}>
                     <DialogContent
-                        className={cn("pt-4 block w-full h-full md:h-11/12")}
+                        className={cn(
+                            "dialog-bg",
+                            "pt-4 block w-full h-full max-w-none rounded-none border-0  md:h-11/12 md:rounded",
+                            "open-slide-right",
+                            "close-slide-right"
+                        )}
                     >
                         <DialogHeader>
                             <DialogTitle className="text-center text-xl font-semibold">
@@ -128,7 +135,7 @@ export default function EmailInput({ parentSetOpen }) {
                                 {otpError && <ErrorMessage error={otpError} />}
 
                                 <Button
-                                    className="mt-4 w-50 py-5"
+                                    className="mt-4 w-50 py-5 capitalize cursor-pointer"
                                     onClick={handleVerifyOtp}
                                     disabled={isVerifying}
                                 >

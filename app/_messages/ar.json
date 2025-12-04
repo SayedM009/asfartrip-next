@@ -671,10 +671,10 @@
         "points": "نقاط"
     },
     "Services": {
-        "Flights": "طيران",
-        "Hotels": "فنادق",
+        "Flights": "الطيران",
+        "Hotels": "الفنادق",
         "Insurance": "تأمين",
-        "Cars": "توصيل",
+        "Cars": "تأجير ",
         "Flights_sub_title": "حجز التذاكر",
         "Hotels_sub_title": "فنادق ممتازة",
         "Insurance_sub_title": "أمن رحلتك",
@@ -2300,5 +2300,12 @@
         "unableToDetermineStatus": "تعذر تحديد حالة الدفع.",
         "networkIssueRetrying": "مشكلة في الشبكة. جاري إعادة المحاولة...",
         "networkError": "خطأ في الشبكة. يرجى المحاولة مرة أخرى."
+    },
+    "ErrorPage": {
+        "title": "حدث خطأ ما",
+        "description": "نعتذر، لقد حدث شيء غير متوقع. تم إبلاغ فريقنا ونعمل على إصلاح المشكلة.",
+        "try_again": "حاول مرة أخرى",
+        "go_home": "العودة للصفحة الرئيسية",
+        "support_message": "إذا استمرت المشكلة، يرجى التواصل معنا على"
     }
 }

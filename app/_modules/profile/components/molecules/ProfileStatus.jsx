@@ -24,7 +24,7 @@ function Status() {
     }, [id, usertype, fetchBookings]);
 
     return (
-        <div className="px-4 mt-5 grid grid-cols-3 gap-3 relative">
+        <div className="px-4 grid grid-cols-3 gap-3 relative">
             <AnimatePresence mode="wait">
                 {loading ? (
                     <motion.div

@@ -51,7 +51,7 @@ export default function Header() {
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="px-4 pt-16 pb-6 border-b border-gray-100 dark:border-neutral-800 flex items-center gap-3"
+                className="px-4 pt-20 pb-6 border-b border-gray-100 dark:border-neutral-800 flex items-center gap-3"
             >
                 <Avatar className="rounded-full w-16 h-16 shadow-2xl outline-2 outline-gray-300 dark:outline-white border-2 border-transparent flex items-center justify-center">
                     <AvatarImage src={avatar} alt={`Avatar of ${name}`} />
