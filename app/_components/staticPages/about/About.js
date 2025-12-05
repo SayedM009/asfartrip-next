@@ -9,7 +9,7 @@ export default function AboutPage() {
     const t = useTranslations("About");
 
     return (
-        <section className="py-10 space-y-20 sm:space-y-32 transition-colors duration-300">
+        <section className="pt-10 pb-20 space-y-20 sm:space-y-32 transition-colors duration-300">
             {/* HERO */}
             <motion.section
                 initial={{ opacity: 0, y: 25 }}

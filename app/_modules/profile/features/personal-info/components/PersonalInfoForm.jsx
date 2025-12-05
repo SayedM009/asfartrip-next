@@ -108,7 +108,7 @@ function PersonalInfo({ close }) {
     if (loading) return <TravelerBasicFieldsSkeleton />;
 
     return (
-        <div className="max-w-md mx-auto px-4 min-h-[100vh - 50px]">
+        <div>
             <TravelerBasicFields
                 traveler={userInfo}
                 onFieldChange={handleChange}
@@ -116,7 +116,7 @@ function PersonalInfo({ close }) {
                 isLoggedIn={true}
             />
             {success && <p className="text-green-600 mt-3">{success}</p>}
-            <div className="sticky bottom-0 left-0 right-0 bg-white dark:bg-[#1c1c1e] border-t border-gray-100 dark:border-neutral-800 pt-8 flex flex-col justify-center items-center gap-2">
+            <div className="pt-8">
                 <Button
                     className="bg-accent-500 hover:bg-[#cf5f1a] text-white text-sm py-5 rounded-full shadow-md w-full"
                     onClick={handleSave}

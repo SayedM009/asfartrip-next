@@ -2,8 +2,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useTravellersManager } from "@/app/_hooks/useTravellersManager";
-import TravellerCard from "./TravellerCard";
-import TravellerCardSkeleton from "./TravellerCardSkeleton";
+import TravellerCard from "../molecules/TravellerCard";
+import TravellerCardSkeleton from "../molecules/TravellerCardSkeleton";
 import AddEditTraveller from "./AddEditTraveller";
 import AirplaneStairs from "@/app/_components/SVG/AirplaneStairs";
 import { useAuthStore } from "@/app/_modules/auth";
@@ -11,12 +11,10 @@ import { useAuthStore } from "@/app/_modules/auth";
 export default function Travellers() {
     const p = useTranslations("Profile");
     const { user } = useAuthStore();
-    const { travellers, isLoading, handleDelete } = useTravellersManager(
-        user?.id
-    );
+    const { travellers, isLoading } = useTravellersManager(user?.id);
 
     return (
-        <div className="flex flex-col h-[calc(100vh-80px)]">
+        <div className="flex flex-col justify-start min-h-[calc(100vh-80px)]">
             <div className="flex-1 overflow-y-auto space-y-4 pb-24">
                 <AnimatePresence mode="wait">
                     {isLoading ? (

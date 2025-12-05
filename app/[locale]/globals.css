@@ -42,26 +42,25 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
-    /* --background: oklch(1 0 0); */
-    --background: #FFF;
+    --background: #fff;
     --foreground: #05203c;
 
     /* Tiers */
     /* Bronze */
-    --tier-bronze-from: #cda474; /* اللون الفاتح */
-    --tier-bronze-to: #6b4b2f; /* اللون الغامق */
+    --tier-bronze-from: #cda474;
+    --tier-bronze-to: #6b4b2f;
 
     /* Silver */
-    --tier-silver-from: #b4cef1; /* مزرق فاتح */
-    --tier-silver-to: #3f628e; /* مزرق غامق */
+    --tier-silver-from: #b4cef1;
+    --tier-silver-to: #3f628e;
 
     /* Gold */
-    --tier-gold-from: #fdd388; /* ذهبي فاتح */
-    --tier-gold-to: #6d4a08; /* ذهبي غامق */
+    --tier-gold-from: #fdd388;
+    --tier-gold-to: #6d4a08;
 
     /* Platinum */
-    --tier-platinum-from: #4fa7d1; /* أزرق فاتح */
-    --tier-platinum-to: #124c6d; /* أزرق غامق */
+    --tier-platinum-from: #4fa7d1;
+    --tier-platinum-to: #124c6d;
 }
 
 .dark {
@@ -184,12 +183,6 @@
     .container-custom {
         @apply max-w-[96%] sm:max-w-[93%] 2xl:max-w-[65%] m-auto  p-2 pt-3 md:pt-4;
     }
-    .w-full-light-colors {
-        @apply bg-[var(--main-bg)] text-[var(--main-text)];
-    }
-    .w-full-main-colors {
-        @apply bg-[var(--background)] text-[var(--foreground)];
-    }
     .icons-hover-600 {
         @apply cursor-pointer  hover:bg-accent transition-colors py-1 px-1  md:px-3 rounded-md hover:text-accent-foreground;
     }
@@ -255,24 +248,6 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
-    --animate-marquee: marquee var(--duration) infinite linear;
-    --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
-  @keyframes marquee {
-  from {
-    transform: translateX(0);
-        }
-  to {
-    transform: translateX(calc(-100% - var(--gap)));
-        }
-    }
-  @keyframes marquee-vertical {
-  from {
-    transform: translateY(0);
-        }
-  to {
-    transform: translateY(calc(-100% - var(--gap)));
-        }
-    }
 }
 
 @layer base {
@@ -342,20 +317,20 @@ html {
 }
 
 .duration-slider [data-orientation="horizontal"] {
-    background-color: #f3f4f6; /* لون الخط الأساسي */
+    background-color: #f3f4f6;
 }
 
 .duration-slider [data-orientation="horizontal"] .bg-primary {
-    background-color: #e86b1e !important; /* لون الجزء المحدد - أصفر */
+    background-color: #e86b1e !important;
 }
 
 .duration-slider [role="slider"] {
-    background-color: #e86b1e; /* لون المؤشر */
+    background-color: #e86b1e;
     border: 2px solid white;
 }
 
 .duration-slider [role="slider"]:hover {
-    background-color: #e86b1e; /* لون المؤشر عند hover */
+    background-color: #e86b1e;
 }
 
 /* Primary Button */
