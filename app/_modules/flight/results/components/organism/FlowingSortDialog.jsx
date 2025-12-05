@@ -48,12 +48,11 @@ export default function FlowingSortDialog({ flights, setSortBy, sortBy }) {
 
             <DialogContent
                 className={cn(
-                    "max-w-none w-full h-[28vh] top-200 rounded-t-xl border-0 md:h-11/12 md:rounded",
                     "open-slide-bottom close-slide-bottom pt-4 shadow"
                 )}
             >
                 <DialogHeader>
-                    <DialogTitle className="flex justify-start text-sm font-semibold text-accent-500">
+                    <DialogTitle className="flex justify-start text-sm font-bold text-accent-500 ">
                         {t("filters.sort_by")}
                     </DialogTitle>
                 </DialogHeader>

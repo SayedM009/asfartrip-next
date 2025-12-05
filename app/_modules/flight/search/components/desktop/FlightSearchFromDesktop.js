@@ -74,7 +74,7 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
             <div>
                 <div className=" mx-auto">
                     {/* Search Form */}
-                    <Card className="border shadow-sm">
+                    <Card className="border shadow-sm py-4">
                         <CardContent className="p-4">
                             {/* Trip Type Selection - Left Aligned */}
                             <TripType

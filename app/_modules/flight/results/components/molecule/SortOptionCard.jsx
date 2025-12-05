@@ -28,7 +28,7 @@ export default function SortOptionCard({
                 <p className="text-xs">{durationText}</p>
             </div>
 
-            <div className="font-bold">{formatPrice(price)}</div>
+            <div className="font-bold">{formatPrice(price, "white")}</div>
         </button>
     );
 }

@@ -123,7 +123,7 @@ export function DestinationSlider() {
                             loading="eager"
                             priority="true"
                         />
-                        <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
+                        <h2 className="text-md md:text-2xl font-bold uppercase ">
                             {t("title")}
                         </h2>
                     </div>

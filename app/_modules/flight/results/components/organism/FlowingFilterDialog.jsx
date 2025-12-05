@@ -32,12 +32,12 @@ export default function FlowingFilterDialog({
 
             <DialogContent
                 className={cn(
-                    "max-w-none w-full h-[80vh] top-140 rounded-t-xl border-0 shadow overflow-y-auto",
+                    "max-w-none w-full h-full rounded-none border-0 shadow overflow-y-auto",
                     "open-slide-bottom close-slide-bottom pt-4"
                 )}
             >
                 <DialogHeader>
-                    <DialogTitle className="text-sm font-semibold text-accent-500">
+                    <DialogTitle className="text-sm font-bold text-accent-500 ">
                         {t("filters.filter")}
                     </DialogTitle>
                 </DialogHeader>
