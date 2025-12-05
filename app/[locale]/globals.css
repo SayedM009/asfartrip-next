@@ -371,6 +371,7 @@ html {
     border: 5px solid var(--color-accent-400);
     animation: l20-1 0.8s infinite linear alternate, l20-2 1.6s infinite linear;
 }
+
 @keyframes l20-1 {
     0% {
         clip-path: polygon(
@@ -463,4 +464,15 @@ html {
     100% {
         transform: scaleY(-1) rotate(-135deg);
     }
+}
+
+/* Hidden Content For SEO  */
+
+.visually-hidden {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
 }

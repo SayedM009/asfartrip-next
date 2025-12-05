@@ -7,7 +7,7 @@ import { HotelsSlider } from "../_components/sliders/HotelsSlider";
 // Components
 import Navbar from "@/app/_components/layout/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
-import { FlightSearchWrapper } from "../_modules/flight/search";
+// import { FlightSearchWrapper } from "../_modules/flight/search";
 import BottomAppBar from "../_components/layout/bottomAppBar/BottomAppBar";
 import PromotionalSlider from "../_modules/offers/components/organisms/PromotionalSlider";
 import Footer from "../_components/layout/footer/Footer";
@@ -73,6 +73,11 @@ export default async function HomePage({ params }) {
             </section>
             <Footer />
             <BottomAppBar />
+            {/* Testing the SEO */}
+            <h1 className="visually-hidden">{locale == "ar" ? "احجز أرخص رحلات الطيران والفنادق وعروض السفر حول العالم مع أسفار تريب" : "Book Cheap Flights, Hotels, and Travel Deals Worldwide with AsfarhiddenTrip"}</h1>
+            <h2 className="visually-hidden">{locale == "ar" ? "قارن أسعار تذاكر الطيران والفنادق وباقات العطلات بسهولة" : "Compare Airfares, Hotel Prices, and Holiday Packages Easily"}</h2>
+            <p className="visually-hidden" hidden>{locale == "ar" ? "توفر لك أسفار تريب أفضل عروض السفر، من رحلات طيران منخفضة التكلفة وفنادق مميزة إلى تأمين السفر وباقات العطلات حول العالم. استمتع بحجوزات فورية، ودفع آمن، وعروض حصرية، ودعم عملاء على مدار الساعة. منصتنا تساعدك على مقارنة الأسعار واختيار الوجهة المناسبة بكل سهولة وثقة." : "AsfarTrip helps travelers find affordable flights, hotel deals, travel insurance, and holiday packages around the world. Enjoy instant booking, secure payments, exclusive travel offers, and 24/7 customer support. Our platform makes it easy to compare prices, explore destinations, and plan your perfect trip with confidence and convenience."}</p>
         </section>
+
     );
 }
