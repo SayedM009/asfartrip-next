@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import AnimatedPrice from "@/app/_components/ui/AnimatedPrice";
 import { cn } from "@/lib/utils";
 import useDisplayShortDate from "@/app/_hooks/useDisplayShortDate";
 import { useTranslations } from "next-intl";
+import ChevronBasedOnLanguage from "@/app/_components/ui/ChevronBasedOnLanguage";
 
 export default function FlightPromoCard({ card, isRTL, onClick }) {
     const displayShortDate = useDisplayShortDate();
@@ -19,7 +19,7 @@ export default function FlightPromoCard({ card, isRTL, onClick }) {
         >
             <div
                 className={cn(
-                    "h-70 rounded-2xl p-6 relative overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-105",
+                    "h-70 rounded-2xl p-6 relative  group cursor-pointer transition-transform duration-300 hover:scale-105 border-0.5",
                     card.backgroundColor
                 )}
             >
@@ -28,27 +28,23 @@ export default function FlightPromoCard({ card, isRTL, onClick }) {
                     src={card.img}
                     alt={`${card.from}, ${card.to}`}
                     fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover rounded-2xl"
                     loading="lazy"
                 />
 
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+                <div className="absolute inset-0  bg-gradient-to-t from-black via-black/30 to-transparent rounded-2xl" />
 
                 {/* Content */}
-                <div className=" z-10 h-full flex flex-col justify-end mt-3 ">
-                    <div className="text-white text-xl font-semibold capitalize bg-[#111] absolute w-full left-0 bottom-0 right-0 py-2 px-3">
-                        <h3 className="flex items-center gap-2 text-md sm:text-sm">
-                            {t(`cities.${card.from}`)}{" "}
-                            {isRTL ? (
-                                <ArrowLeft className="size-5" />
-                            ) : (
-                                <ArrowRight className="size-5" />
-                            )}{" "}
+
+                <div className="">
+                    <div className="flex flex-col gap-0.5 text-xl font-semibold capitalize bg-background absolute left-0 right-0 -bottom-1  py-2 px-3 border-1 rounded-b-2xl">
+                        <h3 className="flex items-center gap-2 text-md sm:text-sm font-bold">
+                            {t(`cities.${card.from}`)}
+                            <ChevronBasedOnLanguage icon="arrow" />
                             {t(`cities.${card.to}`)}
                         </h3>
-                        <div className="flex items-center justify-between text-sm font-normal text-gray-400 sm:text-xs">
+                        <div className="flex items-center justify-between text-[10px] font-normal text-gray-400 sm:text-xs">
                             <h4>{displayShortDate(card.date)}</h4>
                             <h4>{card.time}</h4>
                         </div>
@@ -63,7 +59,7 @@ export default function FlightPromoCard({ card, isRTL, onClick }) {
                                     />
                                 </span>
                             </h4>
-                            <h4 className="bg-gray-300 rounded-sm px-2 text-gray-900 text-xs">
+                            <h4 className="bg-blue-100 rounded-sm px-2 py-1 text-gray-900 text-xs">
                                 {card.isDirect && t("direct")}
                             </h4>
                         </div>

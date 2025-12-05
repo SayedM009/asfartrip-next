@@ -7,9 +7,9 @@ import { useRouter } from "@/i18n/navigation";
 import { addDays, format } from "date-fns";
 
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
-import Airplane from "@/app/_components/SVG/Airplane";
 import { Button } from "@/components/ui/button";
 import FlightPromoCard from "../molecule/FlightPromoCard";
+import Image from "next/image";
 
 const destinations = [
     {
@@ -209,10 +209,13 @@ export default function FlightsSlider() {
             <div className="flex items-center justify-between mb-2 sm:mb-6">
                 <div>
                     <div className="flex items-center sm:mb-2 gap-2">
-                        <Airplane
-                            width={36}
-                            height={36}
-                            loading="lazy"
+                        <Image
+                            src="/icons/air-freight.webp"
+                            alt="take-off"
+                            width={22}
+                            height={22}
+                            className="w-5 h-5 md:w-7 md:h-7"
+                            loading="eager"
                             priority="true"
                         />
 
@@ -221,9 +224,9 @@ export default function FlightsSlider() {
                         </h2>
                     </div>
 
-                    <p className="text-xs sm:text-lg text-muted-foreground">
+                    {/* <p className="text-xs sm:text-lg text-muted-foreground">
                         {t("sub_title")}
-                    </p>
+                    </p> */}
                 </div>
 
                 {/* Desktop Navigation Buttons */}

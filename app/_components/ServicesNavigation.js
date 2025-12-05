@@ -72,7 +72,7 @@ function ServicesNavigation() {
                             service.path === pathname && "md:bg-accent-400",
 
                             // ---- Inactive state ----
-                            service.path !== pathname && "md:bg-gradient-to-b to-gray-200 from-white",
+                            service.path !== pathname && "md:bg-gradient-to-b from-gray-300  ",
 
                             // ---- Disabled state ----
                             service.soon && "opacity-50 cursor-not-allowed select-none"
@@ -95,7 +95,7 @@ function ServicesNavigation() {
 
                                     // Inactive styles
                                     {
-                                        "bg-gradient-to-b from-gray-100": service.path !== pathname && condition,
+                                        "bg-gradient-to-b from-gray-300": service.path !== pathname && condition,
                                         "bg-gradient-to-b from-gray-300 ": service.path !== pathname && !condition,
                                     }
                                 )}

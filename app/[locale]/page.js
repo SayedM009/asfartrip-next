@@ -17,6 +17,7 @@ import Script from "next/script";
 import { DEFAULT_LOCALE } from "../_config/i18n";
 import { getDictionary } from "../_libs/getDictionary";
 import { buildHomeJsonLd, generatePageMetadata } from "../_libs/seo";
+import { FlightSearchFormDesktop } from "../_modules/flight/search/components/desktop/FlightSearchFromDesktop";
 
 
 export async function generateMetadata({ params }) {
@@ -62,6 +63,9 @@ export default async function HomePage({ params }) {
             <section className="space-y-6 mb-10">
                 <ServicesNavigation />
                 {/* <FlightSearchWrapper /> */}
+                <div className="hidden md:block">
+                    <FlightSearchFormDesktop />
+                </div>
                 <PromotionalSlider />
                 <FlightsSlider />
                 <DestinationSlider />

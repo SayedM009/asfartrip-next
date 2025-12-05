@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import { useLocale, useTranslations } from "next-intl";
 import { offers } from "../../data/offersData";
+import Image from "next/image";
 
 export default function PromotionalSlider() {
     const scrollRef = useRef(null);
@@ -54,14 +55,24 @@ export default function PromotionalSlider() {
             {/* Header */}
             <div className="flex items-center justify-between mb-3 sm:mb-6">
                 <div>
-                    <h2 className="text-md sm:text-2xl font-bold uppercase">
-                        {t("title")}
-                    </h2>
-                    <p className="text-xs sm:text-lg text-muted-foreground">
+                    <section className="flex items-center sm:mb-2 gap-2">
+                        <Image
+                            src="/icons/fire.webp"
+                            alt="fire"
+                            width={22}
+                            height={22}
+                            className="w-5 h-5 md:w-7 md:h-7"
+                            loading="eager"
+                            priority="true"
+                        />
+                        <h2 className="text-md sm:text-2xl font-bold uppercase">
+                            {t("title")}
+                        </h2>
+                    </section>
+                    {/* <p className="text-xs sm:text-lg text-muted-foreground">
                         {t("sub_title")}
-                    </p>
+                    </p> */}
                 </div>
-
                 {/* Desktop Arrows */}
                 <div
                     className={cn(

@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 
 import Image from "next/image";
 import useCheckLocal from "../../_hooks/useCheckLocal";
-import Airpaloon from "../SVG/Airpaloon";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -114,22 +114,29 @@ export function DestinationSlider() {
             <div className="flex items-center justify-between mb-2 sm:mb-6">
                 <div>
                     <div className="flex items-center sm:mb-2 gap-2">
-                        <Airpaloon width={36} height={36} />
+                        <Image
+                            src="/icons/map.webp"
+                            alt="fire"
+                            width={22}
+                            height={22}
+                            className="w-5 h-5 md:w-7 md:h-7"
+                            loading="eager"
+                            priority="true"
+                        />
                         <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
                             {t("title")}
                         </h2>
                     </div>
 
-                    <p className="text-xs sm:text-lg text-muted-foreground">
+                    {/* <p className="text-xs sm:text-lg text-muted-foreground">
                         {t("sub_title")}
-                    </p>
+                    </p> */}
                 </div>
 
                 {/* Desktop Navigation Buttons */}
                 <div
-                    className={`hidden sm:flex gap-2 ${
-                        isRTL && "flex-row-reverse"
-                    }`}
+                    className={`hidden sm:flex gap-2 ${isRTL && "flex-row-reverse"
+                        }`}
                 >
                     <Button
                         variant="outline"

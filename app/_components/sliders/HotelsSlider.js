@@ -4,7 +4,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { useTranslations } from "next-intl";
 
-import Bed from "../SVG/Bed";
 import Image from "next/image";
 import useCheckLocal from "../../_hooks/useCheckLocal";
 import { cn } from "@/lib/utils";
@@ -114,22 +113,29 @@ export function HotelsSlider() {
             <div className="flex items-center justify-between mb-2 sm:mb-6">
                 <div>
                     <div className="flex items-center sm:mb-2 gap-2">
-                        <Bed width={36} height={36} />
+                        <Image
+                            src="/icons/hotel.webp"
+                            alt="fire"
+                            width={22}
+                            height={22}
+                            className="w-5 h-5 md:w-7 md:h-7"
+                            loading="eager"
+                            priority="true"
+                        />
                         <h2 className="text-md uppercase sm:text-2xl font-bold text-foreground mb-0  ">
                             {t("title")}
                         </h2>
                     </div>
 
-                    <p className="text-xs sm:text-lg text-muted-foreground">
+                    {/* <p className="text-xs sm:text-lg text-muted-foreground">
                         {t("sub_title")}
-                    </p>
+                    </p> */}
                 </div>
 
                 {/* Desktop Navigation Buttons */}
                 <div
-                    className={`hidden sm:flex gap-2 ${
-                        isRTL && "flex-row-reverse"
-                    }`}
+                    className={`hidden sm:flex gap-2 ${isRTL && "flex-row-reverse"
+                        }`}
                 >
                     <Button
                         variant="outline"
@@ -159,7 +165,7 @@ export function HotelsSlider() {
                 <div
                     ref={scrollContainerRef}
                     onScroll={handleScroll}
-                    className="flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-1"
+                    className="flex gap-3 sm:gap-4  overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-1"
                     style={{
                         scrollSnapType: "x mandatory",
                     }}
@@ -172,7 +178,7 @@ export function HotelsSlider() {
                         >
                             <div
                                 className={cn(
-                                    "h-70 rounded-2xl p-6 relative overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-105",
+                                    "h-70 rounded-2xl p-6 relative  group cursor-pointer transition-transform duration-300 hover:scale-105 border-0.5",
                                     card.backgroundColor
                                 )}
                             >
@@ -181,25 +187,24 @@ export function HotelsSlider() {
                                     src={card.img}
                                     alt={`${card.from}, ${card.to}`}
                                     fill
-                                    className="object-cover"
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    className="object-cover rounded-2xl"
                                     loading="lazy"
                                 />
 
                                 {/* Gradient Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent rounded-2xl" />
 
                                 {/* Content */}
-                                <div className=" z-10 h-full flex flex-col justify-end mt-3 ">
-                                    <div className="text-white text-xl font-semibold capitalize bg-[#111] absolute w-full left-0 bottom-0 right-0 py-2 px-3">
-                                        <h3 className="flex items-center gap-2 text-sm">
+                                <div className=" ">
+                                    <div className="flex flex-col gap-1 text-xl font-semibold capitalize bg-background absolute w-full left-0 -bottom-1  right-0 py-2 px-3 border-1 rounded-b-2xl">
+                                        <h3 className="flex items-center gap-2 text-sm font-bold">
                                             {t(`hotels.${card.title}`)}
                                         </h3>
                                         <div className="flex items-center justify-between text-sm font-normal text-gray-400">
-                                            {t(`locations.${card.location}`)}
-                                            <span className="flex text-xs items-center gap-1">
+                                            <span className="text-xs">{t(`locations.${card.location}`)}</span>
+                                            <span className="flex text-xs items-center gap-1 text-muted-foreground">
                                                 5
-                                                <StarIcon className="size-3 text-white" />
+                                                <StarIcon className="size-3 text-black dark:text-white" />
                                             </span>
                                         </div>
                                         {/* <div className="flex items-center justify-between text-sm">
