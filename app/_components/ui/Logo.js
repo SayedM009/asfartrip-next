@@ -12,17 +12,17 @@ function Logo() {
         setMounted(true);
     }, []);
 
-    // const logoSrc = mounted
-    //     ? theme === "light"
-    //         ? "/Asfartrip-svg.svg"
-    //         : "/lightLogo.webp"
-    //     : "/Asfartrip-svg.svg";
-
     const logoSrc = mounted
         ? theme === "light"
-            ? "/lightLogo-eu.svg"
+            ? "/Asfartrip-svg.svg"
             : "/lightLogo.webp"
         : "/Asfartrip-svg.svg";
+
+    // const logoSrc = mounted
+    //     ? theme === "light"
+    //         ? "/lightLogo-eu.svg"
+    //         : "/lightLogo.webp"
+    //     : "/Asfartrip-svg.svg";
 
     return (
         <Link href="/">

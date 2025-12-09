@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import WegoSearchFormDialog from "../_modules/flight/search/components/mobile-wego/WegoSearchFormDialog";
 
-const WIDTH = 80;
-const HEIGHT = 80;
+const WIDTH = 60;
+const HEIGHT = 60;
 
 function WegoServicesNavigation() {
     const t = useTranslations("Services");

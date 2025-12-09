@@ -10,8 +10,8 @@ import {
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import WegoSearchForm from "./WegoSearchForm";
-const WIDTH = 80;
-const HEIGHT = 80;
+const WIDTH = 60;
+const HEIGHT = 60;
 
 function WegoSearchFormDialog() {
     const t = useTranslations("Services");
@@ -34,9 +34,9 @@ function WegoSearchFormDialog() {
                 </div>
             </DialogTrigger>
             <DialogContent className="min-h-screen max-w-none rounded-none open-slide-right close-slide-right">
-                <DialogHeader>
+                <DialogHeader className="pt-5">
                     <DialogTitle className="text-left rtl:text-right">
-                        {f("search_flights")}
+                        {/* {f("search_flights")} */}
                     </DialogTitle>
                     <DialogDescription className="mt-4">
                         <WegoSearchForm />

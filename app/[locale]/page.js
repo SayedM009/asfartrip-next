@@ -55,11 +55,12 @@ export default async function HomePage({ params }) {
     return (
         <>
 
-            <div className="relative">
+            {/* <div className="relative">
                 <div
+
                     className="w-full h-[20vh]
-             bg-gradient-to-br from-[#FF8008] to-[#FFC837]
-             [clip-path:ellipse(85%_100%_at_50%_0%)] p-2 pt-3 "
+              bg-gradient-to-b from-[#FFE000] to-[#799F0C] bg-[length:400%_400%]
+             [clip-path:ellipse(85%_100%_at_50%_0%)] p-2 pt-3 animate-gradient-normal"
 
                 >
 
@@ -69,7 +70,7 @@ export default async function HomePage({ params }) {
                     <WegoServicesNavigation />
                 </div>
 
-            </div>
+            </div> */}
 
             <section className="container-custom">
                 <Script
@@ -80,8 +81,9 @@ export default async function HomePage({ params }) {
                 />
 
                 <section className="space-y-6 mb-10">
+                    <Navbar />
                     {/* <ServicesNavigation /> */}
-
+                    <WegoServicesNavigation />
                     {/* <FlightSearchWrapper /> */}
                     <div className="hidden md:block">
                         <FlightSearchFormDesktop />
