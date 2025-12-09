@@ -11,7 +11,7 @@ function WegoServicesNavigation() {
     const t = useTranslations("Services");
 
     return (
-        <nav className="flex items-center justify-around my-5 sm:my-8 gap-5">
+        <nav className="flex items-center justify-around  sm:my-8 gap-5">
             <motion.div
                 key={"search"}
                 initial={{ opacity: 0, y: 40 }}

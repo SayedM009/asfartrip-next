@@ -55,7 +55,7 @@ export default async function HomePage({ params }) {
     return (
         <>
 
-            <div className="relative md:hidden">
+            <div className="relative md:hidden mb-5">
                 <div
 
                     className="w-full h-[20vh]
@@ -66,7 +66,7 @@ export default async function HomePage({ params }) {
 
                     <WegoMobileNavbar />
                 </div>
-                <div className="absolute z-50 left-1/2 -translate-x-1/2     top-27 flex justify-between">
+                <div className="absolute z-50 left-1/2 -translate-x-1/2 -bottom-[40px]  flex justify-between">
                     <WegoServicesNavigation />
                 </div>
 
