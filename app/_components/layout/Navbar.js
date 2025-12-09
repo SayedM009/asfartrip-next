@@ -19,3 +19,14 @@ async function Navbar() {
 }
 
 export default Navbar;
+
+export function WegoMobileNavbar() {
+    return (
+        <nav className="flex items-center justify-between sm:border-b-1 pt-2 md:pt-0 pb-3 md:hidden">
+            <Logo logoSRC="/lightLogo.webp" />
+            <div className="flex items-center gap-1 ">
+                <LoginButton />
+            </div>
+        </nav>
+    );
+}

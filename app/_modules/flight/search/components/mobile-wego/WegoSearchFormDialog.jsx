@@ -1,6 +1,7 @@
 "use client";
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogHeader,
@@ -10,6 +11,8 @@ import {
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import WegoSearchForm from "./WegoSearchForm";
+import { X } from "lucide-react";
+import ChevronBasedOnLanguage from "@/app/_components/ui/ChevronBasedOnLanguage";
 const WIDTH = 60;
 const HEIGHT = 60;
 
@@ -33,12 +36,23 @@ function WegoSearchFormDialog() {
                     <span className="font-bold ">{t(`Flights`)}</span>
                 </div>
             </DialogTrigger>
-            <DialogContent className="min-h-screen max-w-none rounded-none open-slide-right close-slide-right">
-                <DialogHeader className="pt-5">
-                    <DialogTitle className="text-left rtl:text-right">
-                        {/* {f("search_flights")} */}
-                    </DialogTitle>
-                    <DialogDescription className="mt-4">
+            <DialogContent
+                className="min-h-screen max-w-none rounded-none open-slide-right close-slide-right"
+                showCloseButton={false}
+            >
+                <DialogHeader>
+                    <div className="flex items-center gap-2">
+                        <DialogClose className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+                            <div className="rotate-180">
+                                <ChevronBasedOnLanguage icon="arrow" size="5" />
+                            </div>
+                            <span className="sr-only">Close</span>
+                        </DialogClose>
+                        <DialogTitle className="text-left rtl:text-right">
+                            {f("search_flights")}
+                        </DialogTitle>
+                    </div>
+                    <DialogDescription className="mt-6">
                         <WegoSearchForm />
                     </DialogDescription>
                 </DialogHeader>

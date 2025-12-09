@@ -137,16 +137,31 @@ function WegoDestinationSearchDialog({
                 )}
             </DialogTrigger>
 
-            <DialogContent className="bg-background h-full w-full max-w-none rounded-none border-0 p-0 overflow-hidden">
-                <DialogHeader className="p-4 border-b hidden">
+            <DialogContent
+                className="bg-background h-full w-full max-w-none rounded-none border-0 p-0 overflow-hidden"
+                onOpenAutoFocus={(e) => e.preventDefault()}
+                showCloseButton={false}
+            >
+                <DialogHeader className="p-4 border-b">
                     <div className="flex items-center gap-3">
+                        {/* Search Input */}
+                        <div className="relative w-full">
+                            <Input
+                                type="search"
+                                // placeholder={t("search_by_city_airport")}
+                                placeholder={dialogTitle}
+                                className="rounded-lg ps-10 h-12 text-base placeholder:text-gray-400 shadow-none focus:ring-1 focus:ring-primary-500"
+                                onChange={(e) => handleSearch(e.target.value)}
+                            />
+                            <LucideSearch
+                                className={`absolute ${searchDirection} top-1/2 transform -translate-y-1/2 text-gray-400`}
+                                size={20}
+                            />
+                        </div>
                         <DialogClose className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
                             <X className="w-5 h-5" />
                             <span className="sr-only">Close</span>
                         </DialogClose>
-                        <DialogTitle className="text-lg text-muted-foreground font-normal">
-                            {dialogTitle}
-                        </DialogTitle>
                     </div>
                     <DialogDescription className="sr-only">
                         {dialogTitle}
@@ -154,20 +169,6 @@ function WegoDestinationSearchDialog({
                 </DialogHeader>
 
                 <div className="p-4 overflow-y-auto h-[calc(100vh-80px)]">
-                    {/* Search Input */}
-                    <div className="relative w-full mb-6">
-                        <Input
-                            type="search"
-                            placeholder={t("search_by_city_airport")}
-                            className="rounded-lg ps-10 h-12 text-base placeholder:text-gray-400 shadow-none focus:ring-1 focus:ring-primary-500"
-                            onChange={(e) => handleSearch(e.target.value)}
-                        />
-                        <LucideSearch
-                            className={`absolute ${searchDirection} top-1/2 transform -translate-y-1/2 text-gray-400`}
-                            size={20}
-                        />
-                    </div>
-
                     {/* Content */}
                     {isLoading ? (
                         <div className="flex items-center justify-center h-56">

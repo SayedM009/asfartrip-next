@@ -12,7 +12,7 @@ export default function WegoTripTypeTabs({ tripType, onTripTypeChange }) {
     const t = useTranslations("Flight");
 
     return (
-        <div className=" p-1.5 flex gap-2 justify-center">
+        <div className=" p-1.5 flex gap-4 justify-center">
             {/* One-way Tab */}
             <button
                 onClick={() => onTripTypeChange("oneway")}

@@ -118,7 +118,7 @@ export default function WegoSearchForm({ onSearchComplete }) {
                 tripType={tripType}
                 onTripTypeChange={setTripType}
             />
-            <div className="rounded-xl border border-border my-4">
+            <div className="rounded-xl border border-border my-6">
                 {/* From/To Card */}
                 <WegoLocationSelector
                     departure={departure}
@@ -177,7 +177,7 @@ export default function WegoSearchForm({ onSearchComplete }) {
             <Button
                 onClick={handleSearch}
                 disabled={!departure?.label_code || !destination?.label_code}
-                className="w-full h-10 bg-accent-500 hover:bg-accent-600 text-white font-bold text-base rounded-full shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full h-12 bg-accent-500 hover:bg-accent-600 text-white font-bold text-base rounded-full shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
                 {t("operations.search")}
             </Button>

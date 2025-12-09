@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-function Logo() {
+function Logo({ logoSRC = "/Asfartrip-svg.svg" }) {
     const { theme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
@@ -14,15 +14,9 @@ function Logo() {
 
     const logoSrc = mounted
         ? theme === "light"
-            ? "/Asfartrip-svg.svg"
+            ? logoSRC
             : "/lightLogo.webp"
         : "/Asfartrip-svg.svg";
-
-    // const logoSrc = mounted
-    //     ? theme === "light"
-    //         ? "/lightLogo-eu.svg"
-    //         : "/lightLogo.webp"
-    //     : "/Asfartrip-svg.svg";
 
     return (
         <Link href="/">

@@ -5,7 +5,7 @@ import FlightsSlider from "@/app/_modules/flight/presentation/components/organis
 import { HotelsSlider } from "../_components/sliders/HotelsSlider";
 
 // Components
-import Navbar from "@/app/_components/layout/Navbar";
+import Navbar, { WegoMobileNavbar } from "@/app/_components/layout/Navbar";
 import ServicesNavigation from "@/app/_components/ServicesNavigation";
 import { FlightSearchWrapper } from "../_modules/flight/search";
 import BottomAppBar from "../_components/layout/bottomAppBar/BottomAppBar";
@@ -55,22 +55,22 @@ export default async function HomePage({ params }) {
     return (
         <>
 
-            {/* <div className="relative">
+            <div className="relative md:hidden">
                 <div
 
                     className="w-full h-[20vh]
-              bg-gradient-to-b from-[#FFE000] to-[#799F0C] bg-[length:400%_400%]
-             [clip-path:ellipse(85%_100%_at_50%_0%)] p-2 pt-3 animate-gradient-normal"
+              bg-gradient-to-br from-[#031627] via-[#041f35] to-[#05203c]
+             [clip-path:ellipse(85%_100%_at_50%_0%)] px-3 pt-3 animate-gradient-normal"
 
                 >
 
-                    <Navbar />
+                    <WegoMobileNavbar />
                 </div>
                 <div className="absolute z-50 left-1/2 -translate-x-1/2     top-27 flex justify-between">
                     <WegoServicesNavigation />
                 </div>
 
-            </div> */}
+            </div>
 
             <section className="container-custom">
                 <Script
@@ -81,9 +81,11 @@ export default async function HomePage({ params }) {
                 />
 
                 <section className="space-y-6 mb-10">
-                    <Navbar />
+                    <div className="hidden md:block">
+                        <Navbar />
+                    </div>
                     {/* <ServicesNavigation /> */}
-                    <WegoServicesNavigation />
+                    {/* <WegoServicesNavigation /> */}
                     {/* <FlightSearchWrapper /> */}
                     <div className="hidden md:block">
                         <FlightSearchFormDesktop />
