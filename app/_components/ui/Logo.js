@@ -12,9 +12,15 @@ function Logo() {
         setMounted(true);
     }, []);
 
+    // const logoSrc = mounted
+    //     ? theme === "light"
+    //         ? "/Asfartrip-svg.svg"
+    //         : "/lightLogo.webp"
+    //     : "/Asfartrip-svg.svg";
+
     const logoSrc = mounted
         ? theme === "light"
-            ? "/Asfartrip-svg.svg"
+            ? "/lightLogo-eu.svg"
             : "/lightLogo.webp"
         : "/Asfartrip-svg.svg";
 

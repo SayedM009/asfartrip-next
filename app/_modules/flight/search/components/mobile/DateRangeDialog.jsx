@@ -21,6 +21,7 @@ function DateRangeDialog({
     range,
     onDepartDateChange,
     onRangeDateChange,
+    isBorder = true,
 }) {
     const t = useTranslations("Calender");
     const { isRTL } = useCheckLocal();
@@ -52,15 +53,21 @@ function DateRangeDialog({
     const pattern = isRTL ? "EEEE d MMMM" : "EEE MMM d";
     return (
         <Dialog>
-            <DialogTrigger className="text-primary-800 w-full flex items-center justify-between py-3 border-t border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors ">
+            <DialogTrigger
+                className={`text-primary-800 w-full flex items-center justify-between  ${
+                    isBorder ? "border-t py-3" : ""
+                } border-gray-200 cursor-pointer hover:bg-gray-50 rounded transition-colors ${
+                    isBorder ? "border-t" : ""
+                }`}
+            >
                 {tripType === "roundtrip" ? (
                     <>
                         <div>
                             <div className="font-semibold dark:text-gray-50">
                                 {range?.from
                                     ? formatDate(range.from, {
-                                        pattern,
-                                    })
+                                          pattern,
+                                      })
                                     : t("departure_date")}
                             </div>
                         </div>
@@ -73,8 +80,8 @@ function DateRangeDialog({
                             <div className="font-semibold dark:text-gray-50">
                                 {range?.to
                                     ? formatDate(range.to, {
-                                        pattern,
-                                    })
+                                          pattern,
+                                      })
                                     : t("return_date")}
                             </div>
                         </div>
@@ -84,8 +91,8 @@ function DateRangeDialog({
                         <div className="font-semibold dark:text-gray-50">
                             {departDate
                                 ? formatDate(departDate, {
-                                    pattern,
-                                })
+                                      pattern,
+                                  })
                                 : t("departure_date")}
                         </div>
                     </div>

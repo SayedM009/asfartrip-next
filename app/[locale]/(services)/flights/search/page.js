@@ -47,7 +47,7 @@ async function Page({ searchParams, params }) {
                 <Navbar />
             </div>
             <FlightSearchWrapper />
-            <FlightSearch parsedSearchObject={parsedSearchObject} />
+            <FlightSearch parsedSearchObject={parsedSearchObject} isDirect={await searchParams.direct} />
         </>
     );
 }

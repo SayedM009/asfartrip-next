@@ -13,35 +13,41 @@ export function useSearchValidation() {
         range,
         passengers
     }) => {
-        // 1. Same City Validation
-        if (departure && destination && (departure.city === destination.city || departure.label_code === destination.label_code)) {
-            toast.error(t("errors.same_city", { city: departure?.city || departure?.label_code }));
-            return false;
-        }
-
-        // 2. Required Fields
-        if (!departure) {
+        // 1. Required Fields - Check these FIRST before same city validation
+        if (!departure || !departure.label_code) {
             toast.error(t("errors.departure_required"));
             return false;
         }
-        if (!destination) {
+        if (!destination || !destination.label_code) {
             toast.error(t("errors.destination_required"));
             return false;
         }
 
-        // 3. Date Validation
-        if (tripType === "oneway" && !departDate) {
-            toast.error(t("errors.departure_date_required"));
-            return false;
-        }
-        if (tripType === "roundtrip" && (!range?.from || !range?.to)) {
-            toast.error(t("errors.return_date_required"));
+        // 2. Same City Validation - Only after we know both cities are selected
+        if (departure.city === destination.city || departure.label_code === destination.label_code) {
+            toast.error(t("errors.same_city", { city: departure.city || departure.label_code }));
             return false;
         }
 
+        // 3. Date Validation
+        if (tripType === "oneway") {
+            if (!departDate) {
+                toast.error(t("errors.departure_date_required"));
+                return false;
+            }
+        } else {
+            // Round-trip: check departure date first, then return date
+            if (!range?.from) {
+                toast.error(t("errors.departure_date_required"));
+                return false;
+            }
+            if (!range?.to) {
+                toast.error(t("errors.return_date_required"));
+                return false;
+            }
+        }
+
         // 4. Logic Validation (using existing logic file if needed, or inline)
-        // The existing validateSearchParams seems to return an object with valid/errors.
-        // We can use that for more complex rules if they exist.
         const validation = validateSearchParams({
             departure,
             destination,
@@ -54,7 +60,6 @@ export function useSearchValidation() {
         });
 
         if (!validation.valid) {
-            // Show first error
             toast.error(validation.errors[0]);
             return false;
         }
@@ -64,3 +69,4 @@ export function useSearchValidation() {
 
     return { validateSearch };
 }
+

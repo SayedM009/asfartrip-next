@@ -4,7 +4,7 @@ import ErrorState from "./ErrorState";
 import ResultsWrapper from "./ResultsWrapper";
 import FlightSearchSkeleton from "./Skeleton/FlightSearchSkeleton";
 
-export default function FlightSearch({ parsedSearchObject }) {
+export default function FlightSearch({ parsedSearchObject, isDirect }) {
     const { tickets, loading, error } = useFlightSearch(parsedSearchObject);
 
     if (loading) return <FlightSearchSkeleton />;
@@ -18,5 +18,5 @@ export default function FlightSearch({ parsedSearchObject }) {
             />
         );
 
-    return <ResultsWrapper tickets={tickets} />;
+    return <ResultsWrapper tickets={tickets} isDirect={isDirect} />;
 }

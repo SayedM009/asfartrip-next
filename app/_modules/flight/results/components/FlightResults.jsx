@@ -24,10 +24,9 @@ import FlightFilters from "./FlightFilters";
 import FloatingSortFilter from "./organism/FloatingSortFilter";
 import DesktopSortBar from "./molecule/DesktopSortBar";
 
-
-const FlightResults = ({ flights = [], searchParams }) => {
+const FlightResults = ({ flights = [], searchParams, isDirect }) => {
     const f = useTranslations("Flight");
-    const [filterBy, setFilterBy] = useState("all");
+    const [filterBy, setFilterBy] = useState(isDirect ? "direct" : "all");
     const [sortBy, setSortBy] = useState("price");
     const [selectedAirlines, setSelectedAirlines] = useState([]);
     const [selectedTripTimes, setSelectedTripTimes] = useState([]);
@@ -45,11 +44,11 @@ const FlightResults = ({ flights = [], searchParams }) => {
         {
             id: "before6",
             label: f("before"),
-            icon: <CloudMoonIcon />
+            icon: <CloudMoonIcon />,
         },
-        { id: "morning", label: "06:00 - 12:00", icon: <Sunrise />},
-        { id: "afternoon", label: "12:00 - 18:00", icon: <Sun/> },
-        { id: "evening", label: f("after"), icon: <Sunset/> },
+        { id: "morning", label: "06:00 - 12:00", icon: <Sunrise /> },
+        { id: "afternoon", label: "12:00 - 18:00", icon: <Sun /> },
+        { id: "evening", label: f("after"), icon: <Sunset /> },
     ];
 
     // ======================
@@ -239,7 +238,6 @@ const FlightResults = ({ flights = [], searchParams }) => {
                 earliestIdx = i;
             }
         }
-
 
         return {
             cheapestIndex: cheapestIdx,

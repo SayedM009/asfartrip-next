@@ -28,7 +28,7 @@ function DestinationSearchDialog({
     onSelect,
     locale,
     dir = "start",
-    sessionKey,
+    isTitle = true,
 }) {
     const [results, setResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -87,13 +87,6 @@ function DestinationSearchDialog({
         });
     }
 
-    function handleSelectedDestinationFromRegion(value) {
-        onSelect({
-            city: value.city,
-            label_code: value.label_code,
-            country: value.country,
-        });
-    }
     return (
         <Dialog
             onOpenChange={() => {
@@ -101,18 +94,18 @@ function DestinationSearchDialog({
             }}
         >
             <DialogTrigger
-                className={`flex-1 flex flex-wrap justify-${dir} font-semibold capitalize max-ch-20`}
+                className={`flex-1 flex flex-wrap justify-${dir} font-semibold capitalize max-ch-20 w-full`}
             >
                 {destination?.city ?? t("city")}
                 <span
                     className={`w-full dark:text-gray-50 font-normal text-sm flex justify-${dir}`}
                 >
-                    {destination?.label_code ?? t("airport")}
+                    {isTitle ? destination?.label_code ?? t("airport") : ""}
                 </span>
             </DialogTrigger>
             <DialogContent className=" bg-background h-full w-full max-w-none rounded-none border-0 p-3 overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle></DialogTitle>
+                    <DialogTitle className="hidden">Flight Search</DialogTitle>
                     <DialogDescription className="mt-8">
                         <div className="relative w-full">
                             <Input
@@ -132,7 +125,7 @@ function DestinationSearchDialog({
                             </div>
                         ) : !results.length ? (
                             <PreparedResultsList
-                                onSelect={handleSelectedDestinationFromRegion}
+                                onSelect={handleSelectedDestinationFromAPI}
                             />
                         ) : (
                             <APIResultsList
