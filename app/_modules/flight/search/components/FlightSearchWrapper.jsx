@@ -7,5 +7,5 @@ import { getIsDevice } from "@/app/_hooks/useIsDevice";
 export default async function FlightSearchWrapper() {
     const { mobile } = await getIsDevice();
 
-    return mobile ? <WegoSearchForm /> : <FlightSearchFormDesktop />;
+    return mobile ? <FlightSearchFormMobile /> : <FlightSearchFormDesktop />;
 }

@@ -65,9 +65,9 @@ export default function PromotionalSlider() {
                             loading="eager"
                             priority="true"
                         />
-                        <h2 className="text-md md:text-2xl font-bold uppercase">
+                        <h1 className="text-md md:text-2xl font-bold uppercase">
                             {t("title")}
-                        </h2>
+                        </h1>
                     </section>
                     {/* <p className="text-xs sm:text-lg text-muted-foreground">
                         {t("sub_title")}

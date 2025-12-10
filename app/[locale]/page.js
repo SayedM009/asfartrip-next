@@ -56,20 +56,12 @@ export default async function HomePage({ params }) {
         <>
 
             <div className="relative md:hidden mb-5">
-                <div
-
-                    className="w-full h-[20vh]
-              bg-gradient-to-br from-[#031627] via-[#041f35] to-[#05203c]
-             [clip-path:ellipse(85%_100%_at_50%_0%)] px-3 pt-3 animate-gradient-normal"
-
-                >
-
+                <div className="w-full h-[20vh] bg-gradient-to-br from-[#031627] via-[#041f35] to-[#05203c] [clip-path:ellipse(85%_100%_at_50%_0%)] px-3 pt-3 animate-gradient-normal">
                     <WegoMobileNavbar />
                 </div>
                 <div className="absolute z-50 left-1/2 -translate-x-1/2 -bottom-[40px]  flex justify-between">
                     <WegoServicesNavigation />
                 </div>
-
             </div>
 
             <section className="container-custom">
@@ -84,9 +76,8 @@ export default async function HomePage({ params }) {
                     <div className="hidden md:block">
                         <Navbar />
                     </div>
-                    {/* <ServicesNavigation /> */}
-                    {/* <WegoServicesNavigation /> */}
-                    {/* <FlightSearchWrapper /> */}
+                    {/* <ServicesNavigation />
+                    <FlightSearchWrapper /> */}
                     <div className="hidden md:block">
                         <FlightSearchFormDesktop />
                     </div>
@@ -96,11 +87,13 @@ export default async function HomePage({ params }) {
                     <HotelsSlider />
                 </section>
                 <Footer />
+
                 <BottomAppBar />
                 {/* Testing the SEO */}
-                <h1 className="visually-hidden">{locale == "ar" ? "احجز أرخص رحلات الطيران والفنادق وعروض السفر حول العالم مع أسفار تريب" : "Book Cheap Flights, Hotels, and Travel Deals Worldwide with AsfarhiddenTrip"}</h1>
-                <h2 className="visually-hidden">{locale == "ar" ? "قارن أسعار تذاكر الطيران والفنادق وباقات العطلات بسهولة" : "Compare Airfares, Hotel Prices, and Holiday Packages Easily"}</h2>
-                <p className="visually-hidden" hidden>{locale == "ar" ? "توفر لك أسفار تريب أفضل عروض السفر، من رحلات طيران منخفضة التكلفة وفنادق مميزة إلى تأمين السفر وباقات العطلات حول العالم. استمتع بحجوزات فورية، ودفع آمن، وعروض حصرية، ودعم عملاء على مدار الساعة. منصتنا تساعدك على مقارنة الأسعار واختيار الوجهة المناسبة بكل سهولة وثقة." : "AsfarTrip helps travelers find affordable flights, hotel deals, travel insurance, and holiday packages around the world. Enjoy instant booking, secure payments, exclusive travel offers, and 24/7 customer support. Our platform makes it easy to compare prices, explore destinations, and plan your perfect trip with confidence and convenience."}</p>
+                <h2 className="visually-hidden">{locale == "ar" ? "احجز أرخص رحلات الطيران والفنادق وعروض السفر حول العالم مع أسفار تريب" : "Book Cheap Flights, Hotels, and Travel Deals Worldwide with AsfarhiddenTrip"}</h2>
+                <h3 className="visually-hidden">{locale == "ar" ? "قارن أسعار تذاكر الطيران والفنادق وباقات العطلات بسهولة" : "Compare Airfares, Hotel Prices, and Holiday Packages Easily"}</h3>
+                <p className="visually-hidden">{locale == "ar" ? "تم إنشاء هذا الموقع بواسطة فريق تطوير أسفار تريب" : "Powered by Asfar Travel Tech Team"}</p>
+                <p className="visually-hidden">{locale == "ar" ? "توفر لك أسفار تريب أفضل عروض السفر، من رحلات طيران منخفضة التكلفة وفنادق مميزة إلى تأمين السفر وباقات العطلات حول العالم. استمتع بحجوزات فورية، ودفع آمن، وعروض حصرية، ودعم عملاء على مدار الساعة. منصتنا تساعدك على مقارنة الأسعار واختيار الوجهة المناسبة بكل سهولة وثقة." : "AsfarTrip helps travelers find affordable flights, hotel deals, travel insurance, and holiday packages around the world. Enjoy instant booking, secure payments, exclusive travel offers, and 24/7 customer support. Our platform makes it easy to compare prices, explore destinations, and plan your perfect trip with confidence and convenience."}</p>
             </section>
         </>
 
