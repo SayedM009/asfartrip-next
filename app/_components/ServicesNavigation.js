@@ -99,6 +99,7 @@ function ServicesNavigation() {
                                         "bg-gradient-to-b from-gray-300 ": service.path !== pathname && !condition,
                                     }
                                 )}
+                                unoptimized
                             />
 
                             {service.soon && (

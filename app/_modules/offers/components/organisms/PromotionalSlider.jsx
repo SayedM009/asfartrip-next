@@ -63,7 +63,7 @@ export default function PromotionalSlider() {
                             height={22}
                             className="w-5 h-5 md:w-7 md:h-7"
                             loading="eager"
-                            priority="true"
+                            priority={true}
                         />
                         <h1 className="text-md md:text-2xl font-bold uppercase">
                             {t("title")}
@@ -84,11 +84,13 @@ export default function PromotionalSlider() {
                         direction="left"
                         disabled={!canScrollLeft}
                         onClick={() => scroll("left")}
+                        aria-label="Scroll offers left"
                     />
                     <SliderArrow
                         direction="right"
                         disabled={!canScrollRight}
                         onClick={() => scroll("right")}
+                        aria-label="Scroll offers right"
                     />
                 </div>
             </div>

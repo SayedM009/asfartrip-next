@@ -43,7 +43,6 @@ async function HomePage({ params }) {
             <Script
                 id="flights"
                 type="application/ld+json"
-                strategy="afterInteractive"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
             <Navbar />

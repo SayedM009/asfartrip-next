@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "next-intl";
 import { WebsiteConfigContext } from "@/app/_modules/config";
 import { use } from "react";
+import { Link } from "@/i18n/navigation";
 
 export default function Footer() {
     const t = useTranslations("Footer");
@@ -16,8 +17,8 @@ export default function Footer() {
     const { website } = use(WebsiteConfigContext);
 
     return (
-        <footer className="text-muted-foreground hidden md:block border-t">
-            <div className=" py-12">
+        <footer className="text-muted-foreground md:block border-t">
+            <div className="hidden md:block  py-12">
                 {/* Top Footer Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
                     <CompanyInfo />
@@ -36,6 +37,12 @@ export default function Footer() {
                     </p>
                     <CardsAccepted />
                 </div>
+            </div>
+            <div className="md:hidden py-6 text-center text-sm mb-10">
+                <p>
+                    &copy; {new Date().getFullYear()} {website?.name}.{" "}
+                    {t("copy_right.text")}
+                </p>
             </div>
         </footer>
     );

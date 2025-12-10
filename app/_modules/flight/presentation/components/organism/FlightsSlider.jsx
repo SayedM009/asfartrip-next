@@ -216,7 +216,7 @@ export default function FlightsSlider() {
                             height={22}
                             className="w-5 h-5 md:w-7 md:h-7"
                             loading="eager"
-                            priority="true"
+                            priority={true}
                         />
 
                         <h2 className="text-md md:text-2xl font-bold uppercase">
@@ -268,13 +268,13 @@ export default function FlightsSlider() {
                         scrollSnapType: "x mandatory",
                     }}
                 >
-                    {destinations.map((card) => (
+                    {destinations.map((card, index) => (
                         <FlightPromoCard
                             key={card.id}
                             card={card}
                             t={t}
-                            isRTL={isRTL}
                             onClick={() => handleSlideClick(card)}
+                            index={index}
                         />
                     ))}
                 </div>

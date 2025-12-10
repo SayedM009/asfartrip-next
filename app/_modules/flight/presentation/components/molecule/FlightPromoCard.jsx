@@ -7,7 +7,7 @@ import useDisplayShortDate from "@/app/_hooks/useDisplayShortDate";
 import { useTranslations } from "next-intl";
 import ChevronBasedOnLanguage from "@/app/_components/ui/ChevronBasedOnLanguage";
 
-export default function FlightPromoCard({ card, isRTL, onClick }) {
+export default function FlightPromoCard({ card, onClick, index }) {
     const displayShortDate = useDisplayShortDate();
     const t = useTranslations("Flights_slider");
 
@@ -16,6 +16,10 @@ export default function FlightPromoCard({ card, isRTL, onClick }) {
             className="flex-shrink-0 w-[80vw] sm:w-72 lg:w-80"
             style={{ scrollSnapAlign: "start" }}
             onClick={onClick}
+            role="button"
+            tabIndex={0}
+            aria-label={`Flight from ${card.from} to ${card.to}, starting from ${card.price}`}
+            onKeyDown={(e) => e.key === "Enter" && onClick()}
         >
             <div
                 className={cn(
@@ -28,8 +32,11 @@ export default function FlightPromoCard({ card, isRTL, onClick }) {
                     src={card.img}
                     alt={`${card.from}, ${card.to}`}
                     fill
+                    sizes="(max-width: 640px) 80vw, (max-width: 1024px) 288px, 320px"
                     className="object-cover rounded-2xl"
-                    loading="lazy"
+                    loading={index < 3 ? "eager" : "lazy"}
+                    priority={index < 3}
+                    fetchPriority={index < 3 ? "high" : "low"}
                 />
 
                 {/* Gradient Overlay */}
@@ -45,8 +52,8 @@ export default function FlightPromoCard({ card, isRTL, onClick }) {
                             {t(`cities.${card.to}`)}
                         </h3>
                         <div className="flex items-center justify-between text-[10px] font-normal text-gray-400 sm:text-xs">
-                            <h4>{displayShortDate(card.date)}</h4>
-                            <h4>{card.time}</h4>
+                            <span>{displayShortDate(card.date)}</span>
+                            <span>{card.time}</span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
                             <h4>

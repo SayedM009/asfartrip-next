@@ -115,12 +115,12 @@ export function HotelsSlider() {
                     <div className="flex items-center sm:mb-2 gap-2">
                         <Image
                             src="/icons/hotel.webp"
-                            alt="fire"
+                            alt="hotel icon"
                             width={22}
                             height={22}
                             className="w-5 h-5 md:w-7 md:h-7"
                             loading="eager"
-                            priority="true"
+                            priority={true}
                         />
                         <h2 className="text-md md:text-2xl font-bold uppercase  ">
                             {t("title")}
@@ -134,8 +134,9 @@ export function HotelsSlider() {
 
                 {/* Desktop Navigation Buttons */}
                 <div
-                    className={`hidden sm:flex gap-2 ${isRTL && "flex-row-reverse"
-                        }`}
+                    className={`hidden sm:flex gap-2 ${
+                        isRTL && "flex-row-reverse"
+                    }`}
                 >
                     <Button
                         variant="outline"
@@ -185,8 +186,9 @@ export function HotelsSlider() {
                                 {/* Background Image */}
                                 <Image
                                     src={card.img}
-                                    alt={`${card.from}, ${card.to}`}
+                                    alt={`${card.title} hotel in ${card.location}`}
                                     fill
+                                    sizes="(max-width: 640px) 80vw, (max-width: 1024px) 288px, 320px"
                                     className="object-cover rounded-2xl"
                                     loading="lazy"
                                 />
@@ -201,7 +203,11 @@ export function HotelsSlider() {
                                             {t(`hotels.${card.title}`)}
                                         </h3>
                                         <div className="flex items-center justify-between text-sm font-normal text-gray-400">
-                                            <span className="text-xs">{t(`locations.${card.location}`)}</span>
+                                            <span className="text-xs">
+                                                {t(
+                                                    `locations.${card.location}`
+                                                )}
+                                            </span>
                                             <span className="flex text-xs items-center gap-1 text-muted-foreground">
                                                 5
                                                 <StarIcon className="size-3 text-black dark:text-white" />
