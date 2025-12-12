@@ -9,7 +9,7 @@ import DeleteAccount from "../organisms/DeleteAccountDialog";
 import FullscreenDialog from "../organisms/ProfileFullscreenDialog";
 import Status from "../molecules/ProfileStatus";
 import Header from "../molecules/ProfileHeader";
-import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
+import { useDashboardBookingsStore } from "../../store/dashboardBookingStore";
 
 export default function ProfileOnMobile() {
     const [openDialog, setOpenDialog] = useState(null);

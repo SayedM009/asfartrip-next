@@ -13,7 +13,7 @@ import TravelInsuranceIcon from "@/app/_components/SVG/TravelInsuranceIcon";
 import { useAuthStore } from "@/app/_modules/auth";
 import InsuranceBookingCard from "./molecules/InsuranceBookingCard";
 import InsuranceBookingCardSkeleton from "./molecules/InsuranceBookingCardSkeleton";
-import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
+import { useDashboardBookingsStore } from "../../../store/dashboardBookingStore";
 
 export default function InsuranceBookings() {
     const p = useTranslations("Profile");

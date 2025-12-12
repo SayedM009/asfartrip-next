@@ -8,60 +8,7 @@ import Image from "next/image";
 import useCheckLocal from "../../_hooks/useCheckLocal";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-
-const destinations = [
-    {
-        id: "1",
-        title: "atlantis",
-        location: "dubai",
-        backgroundColor:
-            "bg-gradient-to-br from-orange-400 via-orange-500 to-red-500",
-        img: "/hotels/atlantis.jpg",
-        date: "2025-09-12T00:00:00.000Z", // ISO format
-        time: "1h 40m",
-        isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
-    },
-    {
-        id: "2",
-        title: "one",
-        location: "dubai",
-        backgroundColor:
-            "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
-        textColor: "text-white",
-        img: "/hotels/one.webp",
-        date: "2025-09-15T00:00:00.000Z",
-        time: "1h 50m",
-        isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
-    },
-    {
-        id: "3",
-        title: "salalah",
-        location: "salalah",
-        backgroundColor:
-            "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
-        textColor: "text-white",
-        img: "/hotels/salalah.webp",
-        date: "2025-09-20T00:00:00.000Z",
-        time: "4h 0m",
-        isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
-    },
-    {
-        id: "4",
-        title: "mazagan",
-        location: "eljadida",
-        backgroundColor:
-            "bg-gradient-to-br from-gray-800 via-gray-900 to-black",
-        textColor: "text-white",
-        img: "/hotels/mazagan.jpg",
-        date: "2025-09-25T00:00:00.000Z",
-        time: "3h 30m",
-        isDirect: Math.random() < 0.5,
-        price: Math.floor(Math.random() * 901) + 100 + " USD",
-    },
-];
+import { hotelsDestinations as destinations } from "@/app/_data/destinations";
 
 export function HotelsSlider() {
     const scrollContainerRef = useRef(null);
@@ -213,12 +160,6 @@ export function HotelsSlider() {
                                                 <StarIcon className="size-3 text-black dark:text-white" />
                                             </span>
                                         </div>
-                                        {/* <div className="flex items-center justify-between text-sm">
-                                                <h4>Start from {card.price}</h4>
-                                                <h4 className="bg-gray-300 rounded-sm px-2 text-gray-900 text-xs">
-                                                    {card.isDirect && "Direct"}
-                                                </h4>
-                                            </div> */}
                                     </div>
                                 </div>
                             </div>

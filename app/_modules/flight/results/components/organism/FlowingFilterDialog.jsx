@@ -11,7 +11,7 @@ import { Funnel } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import FlightFilters from "../FlightFilters";
+import FlightFilters from "./FlightFilters";
 
 export default function FlowingFilterDialog({
     flights,

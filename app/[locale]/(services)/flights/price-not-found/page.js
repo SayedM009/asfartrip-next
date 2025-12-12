@@ -1,7 +1,7 @@
 "use client";
 
-import BottomAppBar from "@/app/_components/layout/bottomAppBar/BottomAppBar";
-import Navbar from "@/app/_components/layout/Navbar";
+import BottomAppBar from "@/app/_components/bottomAppBar/BottomAppBar";
+import Navbar from "@/app/_components/navigation/Navbar";
 import { Button } from "@/components/ui/button";
 import {
     Search,

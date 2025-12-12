@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import BackwardButton from "@/app/_components/layout/BackwardButton";
+import BackwardButton from "@/app/_components/navigation/BackwardButton";
 
 export default function TicketExpired() {
     return (

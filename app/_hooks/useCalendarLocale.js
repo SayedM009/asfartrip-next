@@ -1,5 +1,6 @@
 import { enUS, arSA } from "date-fns/locale";
 import { useLocale } from "next-intl";
+
 const locales = { en: enUS, ar: arSA };
 
 function useCalendarLocale() {

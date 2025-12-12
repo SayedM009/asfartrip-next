@@ -11,7 +11,7 @@ import MobileHeaderEditDialog from "./MobileHeaderEditDialog";
 import MobileHeaderSearchSummary from "./MobileHeaderSearchSummary";
 
 import { getSafeSearchObject, parseDateString } from "../../utils/headerUtils";
-import { BackWardButtonWithDirections } from "@/app/_components/layout/BackwardButton";
+import { BackWardButtonWithDirections } from "@/app/_components/navigation/BackwardButton";
 
 export default function MobileHeaderWrapper() {
     const params = useSearchParams();

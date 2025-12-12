@@ -1,22 +1,6 @@
 import { NextResponse } from "next/server";
 import { getValidToken } from "@/app/_libs/token-manager";
 
-/**
- * POST /api/payment/create-telr
- * Creates a Telr payment transaction for any module (FLIGHT, HOTEL, etc.)
- * 
- * Request body:
- * {
- *   "amount": "800",
- *   "currency": "AED",
- *   "merchant_order_id": "AFT11F2120Z136236",
- *   "description": "Flight booking - AFT11F2120Z136236",
- *   "module": "FLIGHT",
- *   "return_url": "https://example.com/payment/callback/AFT11F2120Z136236?gateway=telr&module=FLIGHT",
- *   "cancelled_url": "http://localhost:3000/en/payment/checkstatus/VS84B7X21Q01103132685",
- *   "declined_url": "http://localhost:3000/en/payment/checkstatus/VS84B7X21Q01103132685"
- * }
- */
 export async function POST(request) {
     try {
         // Parse request body

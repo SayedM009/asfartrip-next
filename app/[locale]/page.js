@@ -5,12 +5,12 @@ import FlightsSlider from "@/app/_modules/flight/presentation/components/organis
 import { HotelsSlider } from "../_components/sliders/HotelsSlider";
 
 // Components
-import Navbar, { WegoMobileNavbar } from "@/app/_components/layout/Navbar";
-import ServicesNavigation from "@/app/_components/ServicesNavigation";
-import { FlightSearchWrapper } from "../_modules/flight/search";
-import BottomAppBar from "../_components/layout/bottomAppBar/BottomAppBar";
+import Navbar, { WegoMobileNavbar } from "@/app/_components/navigation/Navbar";
+import ServicesNavigation from "@/app/_components/navigation/ServicesNavigation";
+// import { FlightSearchWrapper } from "../_modules/flight/search";
+import BottomAppBar from "../_components/bottomAppBar/BottomAppBar";
 import PromotionalSlider from "../_modules/offers/components/organisms/PromotionalSlider";
-import Footer from "../_components/layout/footer/Footer";
+import Footer from "../_components/footer/Footer";
 
 // Generate SEO
 import Script from "next/script";
@@ -18,7 +18,7 @@ import { DEFAULT_LOCALE } from "../_config/i18n";
 import { getDictionary } from "../_libs/getDictionary";
 import { buildHomeJsonLd, generatePageMetadata } from "../_libs/seo";
 import { FlightSearchFormDesktop } from "../_modules/flight/search/components/desktop/FlightSearchFromDesktop";
-import WegoServicesNavigation from "../_components/WegoServicesNavigation";
+import WegoServicesNavigation from "../_components/navigation/WegoServicesNavigation";
 
 
 export async function generateMetadata({ params }) {
@@ -76,8 +76,6 @@ export default async function HomePage({ params }) {
                 <div className="hidden md:block">
                     <Navbar />
                 </div>
-                {/* <ServicesNavigation />
-                    <FlightSearchWrapper /> */}
                 <div className="hidden md:block">
                     <ServicesNavigation />
                     <FlightSearchFormDesktop />

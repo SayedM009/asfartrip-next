@@ -1,8 +1,4 @@
-/**
- * Confirm flight booking
- * @param {string} booking_reference - Booking reference
- * @returns {Promise<Object>} Confirmation response
- */
+
 async function confirmFlightBooking(booking_reference) {
     try {
         const res = await fetch("/api/flight/confirm-booking", {
@@ -20,13 +16,6 @@ async function confirmFlightBooking(booking_reference) {
     }
 }
 
-/**
- * Issue flight ticket
- * @param {string} booking_reference - Booking reference
- * @param {string} transaction_id - Transaction ID
- * @param {string} payment_method - Payment method
- * @returns {Promise<Object>} Issue response
- */
 async function issueFlightBooking(
     booking_reference,
     transaction_id,
@@ -45,13 +34,12 @@ async function issueFlightBooking(
 
         const data = await res.json();
 
-        // ✅ Check if ticket was successfully issued
+        //  Check if ticket was successfully issued
         if (data?.data?.ticket_status === 'CREATED' && data?.data?.ticket_numbers === 'Yes') {
-            console.log("✅ Ticket issued successfully");
             return { success: true, alreadyIssued: false, data };
         }
 
-        // ⚠️ Check for "already been executed" or "already issued" messages
+        // Check for "already been executed" or "already issued" messages
         const msg = (
             data?.status ||
             data?.message ||
@@ -60,7 +48,7 @@ async function issueFlightBooking(
         ).toLowerCase();
 
         if (msg.includes("already been executed") || msg.includes("already issued")) {
-            console.warn("⚠️ Ticket already issued for this booking.");
+            console.warn("Ticket already issued for this booking.");
             return { success: true, alreadyIssued: true, data };
         }
 
@@ -78,11 +66,7 @@ async function issueFlightBooking(
     }
 }
 
-/**
- * Confirm booking based on module type
- * @param {Object} paymentData - Payment response data
- * @returns {Promise<Object>} Confirmation response
- */
+
 export async function confirmBooking(paymentData) {
     const { module, booking_ref, order_id } = paymentData;
 
@@ -90,23 +74,11 @@ export async function confirmBooking(paymentData) {
         case 'FLIGHT':
             return await confirmFlightBooking(booking_ref);
 
-        // Add other modules as needed
-        // case 'HOTEL':
-        //     return await confirmHotelBooking(order_id, transaction_id, payment_method);
-        // case 'INSURANCE':
-        //     return await confirmInsuranceBooking(order_id);
-
         default:
             throw new Error(`Unsupported booking module: ${module}`);
     }
 }
 
-/**
- * Issue ticket for confirmed booking
- * @param {Object} confirmData - Confirmation response data
- * @param {Object} paymentData - Original payment data
- * @returns {Promise<Object>} Issue response
- */
 export async function issueTicket(confirmData, paymentData) {
     const { module } = paymentData;
 
@@ -117,18 +89,12 @@ export async function issueTicket(confirmData, paymentData) {
                 paymentData.order_id;
 
 
-            console.log({ confirmData, paymentData });
 
             return await issueFlightBooking(
                 confirmData.booking_reference,
                 transaction_id,
                 "Payment Gateway"
             );
-
-        // Add other modules as needed
-        // case 'HOTEL':
-        //     // Hotels don't need separate issuing
-        //     return { status: 'success', message: 'Hotel booking confirmed' };
 
         default:
             throw new Error(`Unsupported module for ticket issuance: ${module}`);

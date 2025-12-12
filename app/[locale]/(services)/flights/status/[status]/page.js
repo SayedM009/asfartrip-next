@@ -1,12 +1,11 @@
 import Script from "next/script";
 import { getFlightBookingDetails } from "@/app/_modules/flight/status/services/flightStatusService";
 import FlightStatusPage from "@/app/_modules/flight/status/components/template/FlightStatusPage";
-import LoadingState from "@/app/_components/status/LoadingState";
 import { getDictionary } from "@/app/_libs/getDictionary";
 import { generatePageMetadata, buildWebPageJsonLd } from "@/app/_libs/seo";
 import { DEFAULT_LOCALE } from "@/app/_config/i18n";
-import Navbar from "@/app/_components/layout/Navbar";
-import BottomAppBar from "@/app/_components/layout/bottomAppBar/BottomAppBar";
+import Navbar from "@/app/_components/navigation/Navbar";
+import BottomAppBar from "@/app/_components/bottomAppBar/BottomAppBar";
 
 export async function generateMetadata({ params }) {
     const unwrappedParams = await Promise.resolve(params);
@@ -91,7 +90,9 @@ export default async function StatusPage({ params, searchParams }) {
                     paymentInfo={paymentInfo}
                 />
             ) : (
-                <LoadingState message="Fetching booking details..." />
+                <div>
+                    Fetching booking details...
+                </div>
             )}
             <BottomAppBar />
         </>

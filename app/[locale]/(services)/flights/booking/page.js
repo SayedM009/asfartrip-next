@@ -1,4 +1,4 @@
-import Navbar from "@/app/_components/layout/Navbar";
+import Navbar from "@/app/_components/navigation/Navbar";
 import Script from "next/script";
 
 import { auth } from "@/app/_libs/auth";

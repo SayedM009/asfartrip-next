@@ -1,15 +1,8 @@
-/**
- * Flight Status Service
- * Handles fetching flight booking details for status page
- */
+
 
 import { getOrigin } from "@/app/_utils/getOrigin.server";
 
-/**
- * Get flight booking details
- * @param {string} booking_reference - Booking reference
- * @returns {Promise<Object>} Booking details
- */
+
 export async function getFlightBookingDetails(booking_reference) {
     const origin = await getOrigin();
     try {
@@ -19,7 +12,6 @@ export async function getFlightBookingDetails(booking_reference) {
             body: JSON.stringify({ booking_reference }),
         });
 
-        // Try safer JSON
         let data;
         try {
             data = await res.json();

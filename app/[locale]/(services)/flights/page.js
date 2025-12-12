@@ -2,15 +2,15 @@
 import FlightsSlider from "@/app/_modules/flight/presentation/components/organism/FlightsSlider";
 
 // Components
-import Navbar from "@/app/_components/layout/Navbar";
-import ServicesNavigation from "@/app/_components/ServicesNavigation";
+import Navbar from "@/app/_components/navigation/Navbar";
+import ServicesNavigation from "@/app/_components/navigation/ServicesNavigation";
 
 // Generate SEO
 import Script from "next/script";
 import { getDictionary } from "@/app/_libs/getDictionary";
 import { generatePageMetadata, buildWebPageJsonLd } from "@/app/_libs/seo";
 import { DEFAULT_LOCALE } from "@/app/_config/i18n";
-import BottomAppBar from "@/app/_components/layout/bottomAppBar/BottomAppBar";
+import BottomAppBar from "@/app/_components/bottomAppBar/BottomAppBar";
 import { FlightSearchWrapper } from "@/app/_modules/flight/search";
 import PromotionalSlider from "@/app/_modules/offers/components/organisms/PromotionalSlider";
 

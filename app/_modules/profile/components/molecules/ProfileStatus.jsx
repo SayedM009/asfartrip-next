@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import useLoyaltyStore from "@/app/_modules/loyalty/store/loyaltyStore";
 import { useAuthStore } from "@/app/_modules/auth";
-import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
+import { useDashboardBookingsStore } from "../../store/dashboardBookingStore";
 
 function Status() {
     const p = useTranslations("Profile");

@@ -88,7 +88,6 @@ export function useFormatBaggage() {
             if (Number(w) > 0) parts.push(`${w} ${kgWord()}`);
         }
 
-        // ثم القطع
         if (pieceMatch) {
             const p = parseInt(pieceMatch[1], 10);
             if (!isNaN(p) && p > 0) {

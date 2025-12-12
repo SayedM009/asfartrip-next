@@ -10,8 +10,8 @@ import { Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { TravelerBasicFieldsSkeleton } from "@/app/_components/TravelerBasicFieldsSkeleton";
-import { useTravelerDialogLogic } from "@/app/_hooks/useTravelerDialogLogic";
 import TravelerBasicFields from "@/app/_components/TravelerBasicFields";
+import { useTravelerDialogLogic } from "@/app/_modules/profile/hooks/useTravelerDialogLogic";
 
 export default function AddEditTraveller({
     traveller,

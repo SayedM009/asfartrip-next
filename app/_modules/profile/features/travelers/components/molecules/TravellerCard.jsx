@@ -1,11 +1,10 @@
 "use client";
-import { Trash } from "lucide-react";
 import { motion } from "framer-motion";
 import { formatDisplayDate } from "@/app/_helpers/formatDisplayDate";
 import { useTranslations } from "next-intl";
-import { getPassportStatus } from "@/app/_utils/travelers";
 import AddEditTraveller from "../organisms/AddEditTraveller";
 import DeleteTravellerDialog from "../organisms/DeleteTravellerDialog";
+import { getPassportStatus } from "@/app/_modules/profile/utils/getPassportStatus";
 
 export default function TravellerCard({
     traveller,

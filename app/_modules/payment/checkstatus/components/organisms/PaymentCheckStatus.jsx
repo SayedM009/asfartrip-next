@@ -10,15 +10,6 @@ import { usePaymentCheck } from "../../hooks/usePaymentCheck";
 import AIOrb from "../atoms/AIOrb";
 import StepStatus from "../molecules/StepStatus";
 
-/**
- * Main Payment Check Status Component
- * @param {Object} props
- * @param {Object} props.params - Route params
- * @param {string} props.params.booking_ref - Booking reference
- * @param {Object} props.searchParams - URL search params
- * @param {string} props.searchParams.gateway - Payment gateway (telr, ziina, etc.)
- * @param {string} props.searchParams.order_ref - Telr order reference
- */
 export default function PaymentCheckStatus({ params, searchParams }) {
     const { booking_ref } = params;
     const gateway = searchParams?.gateway?.toUpperCase() || "ZIINA";

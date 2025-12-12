@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { fetchUserTravellers } from "@/app/_libs/profile";
+import { fetchUserTravellers } from "../services/fetchUserTravellers";
+// import { fetchUserTravellers } from "@/app/_libs/profile";
 
 const useTravellersStore = create(
     persist(

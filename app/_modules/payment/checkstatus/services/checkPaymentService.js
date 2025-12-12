@@ -1,12 +1,6 @@
-import { checkStatus } from "@/app/_libs/paymentService";
+import { checkStatus } from "./checkStatus";
 
-/**
- * Check payment status for both Telr and external gateways
- * @param {string} booking_ref - Booking reference
- * @param {string} gateway - Gateway name (TELR, ZIINA, etc.)
- * @param {string} order_ref - Telr order reference (only for Telr)
- * @returns {Promise<Object>} Normalized payment response
- */
+
 export async function checkPayment(booking_ref, gateway = 'ZIINA', order_ref = null) {
     if (gateway?.toUpperCase() === 'TELR') {
         // Check Telr payment

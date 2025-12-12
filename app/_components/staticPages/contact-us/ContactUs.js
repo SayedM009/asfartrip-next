@@ -9,7 +9,7 @@ import {
     MapPin,
     HeadphonesIcon,
 } from "lucide-react";
-import SocialMedia from "../../SocialMedia";
+import SocialMedia from "../../ui/SocialMedia";
 import { WebsiteConfigContext } from "@/app/_modules/config";
 import { use } from "react";
 

@@ -11,7 +11,7 @@ import { useAuthStore } from "@/app/_modules/auth";
 import AirplaneStairs from "@/app/_components/SVG/AirplaneStairs";
 import FlightBookingCard from "./molecules/FlightBookingCard";
 import BookingCardSkeleton from "./molecules/BookingCardSkeleton";
-import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
+import { useDashboardBookingsStore } from "../../../store/dashboardBookingStore";
 
 export default function FlightBookings() {
     const p = useTranslations("Profile");

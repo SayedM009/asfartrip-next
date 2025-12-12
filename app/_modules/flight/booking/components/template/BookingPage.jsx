@@ -31,7 +31,7 @@ import PriceChangeDialog from "../molecule/PriceChangeDialog";
 
 // Components
 import TimeoutPopup from "@/app/_components/ui/TimeoutPopup";
-import { BackWardButtonWithDirections } from "@/app/_components/layout/BackwardButton";
+import { BackWardButtonWithDirections } from "@/app/_components/navigation/BackwardButton";
 
 export default function BookingPage({
     isLogged,

@@ -8,7 +8,7 @@ import useBookingStore from "../../store/bookingStore";
 import TimeoutPopup from "@/app/_components/ui/TimeoutPopup";
 import FareSummaryDialog from "./FareSummaryDialog";
 import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
-import { BackWardButtonWithDirections } from "@/app/_components/layout/BackwardButton";
+import { BackWardButtonWithDirections } from "@/app/_components/navigation/BackwardButton";
 import LoyaltyPointsBanner from "@/app/_modules/loyalty/components/organisms/LoyaltyPointsBanner";
 import PayWithLoyaltyPoints from "@/app/_modules/loyalty/components/organisms/PayWithLoyaltyPoints";
 import { WebsiteConfigContext } from "@/app/_modules/config";
@@ -16,7 +16,7 @@ import { WebsiteConfigContext } from "@/app/_modules/config";
 import TopMobileSection from "./TopMobileSection";
 import BookingPagePaymentTitle from "../atoms/BookingPagePaymentTitle";
 import BookingPagePaymentSubTitle from "../atoms/BookingPagePaymentSubTitle";
-import CardsAccepted from "@/app/_components/layout/footer/CardsAccepted";
+import CardsAccepted from "@/app/_components/footer/CardsAccepted";
 
 export default function PaymentSection({
     onConfirmPayment,

@@ -1,6 +1,6 @@
-import BottomAppBar from "@/app/_components/layout/bottomAppBar/BottomAppBar";
-import Footer from "@/app/_components/layout/footer/Footer";
-import Navbar from "@/app/_components/layout/Navbar";
+import BottomAppBar from "@/app/_components/bottomAppBar/BottomAppBar";
+import Footer from "@/app/_components/footer/Footer";
+import Navbar from "@/app/_components/navigation/Navbar";
 
 function layout({ children }) {
     return (

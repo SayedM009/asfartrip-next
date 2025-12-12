@@ -4,9 +4,10 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { TravelerBasicFieldsSkeleton } from "@/app/_components/TravelerBasicFieldsSkeleton";
-import { fetchUserProfile, updateProfileClient } from "@/app/_libs/profile";
 import useAuthStore from "@/app/_modules/auth/store/authStore";
 import TravelerBasicFields from "@/app/_components/TravelerBasicFields";
+import { fetchUserProfile } from "../../../services/fetchUserProfile";
+import { updateProfileClient } from "../../../services/updateProfileClient";
 
 function PersonalInfo({ close }) {
     const [userInfo, setUserInfo] = useState({});

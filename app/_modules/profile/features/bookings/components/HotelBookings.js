@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 import HotelBookingCard from "./molecules/HotelBookingCard";
 import HotelBookingCardSkeleton from "./molecules/HotelBookingCardSkeleton";
-import { useDashboardBookingsStore } from "@/app/_store/dashboardBookingStore";
+import { useDashboardBookingsStore } from "../../../store/dashboardBookingStore";
 
 export default function HotelBookings() {
     const p = useTranslations("Profile");

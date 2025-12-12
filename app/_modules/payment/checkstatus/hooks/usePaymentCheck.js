@@ -4,14 +4,7 @@ import { useTranslations } from "next-intl";
 import { checkPayment } from "../services/checkPaymentService";
 import { confirmBooking, issueTicket } from "../services/confirmBookingService";
 
-/**
- * Hook for managing payment check flow
- * @param {Object} params
- * @param {string} params.booking_ref - Booking reference
- * @param {string} params.gateway - Payment gateway (TELR, ZIINA, etc.)
- * @param {string} params.order_ref - Telr order reference
- * @returns {Object} Payment check state and methods
- */
+
 export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
     const router = useRouter();
     const t = useTranslations("PaymentPage");
@@ -95,15 +88,15 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
                             const ticketStatus = issueData?.data?.ticket_status?.toUpperCase();
                             const ticketNumbers = issueData?.data?.ticket_numbers;
 
-                            // ✅ ONLY condition for success: ticket_status = CREATED AND ticket_numbers = Yes
+                            //  ONLY condition for success: ticket_status = CREATED AND ticket_numbers = Yes
                             if (ticketStatus === 'CREATED' && ticketNumbers === 'Yes') {
                                 updateStep(2, "success");
                                 setStatus("success");
                                 setStatusMessage(t("ticketIssuedRedirecting"));
 
-                                // ✅ Send voucher to customer email (non-blocking)
+                                //  Send voucher to customer email (non-blocking)
                                 try {
-                                    const { sendVoucher } = await import('@/app/_libs/bookingService');
+                                    const { sendVoucher } = await import('../services/sechVoucher');
                                     sendVoucher(paymentData.booking_ref, 'FLIGHT').catch(err => {
                                         console.error('Failed to send voucher:', err);
                                         // Don't block user flow if voucher sending fails
@@ -132,15 +125,15 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
                                 return;
                             }
 
-                            // ✅ If ticket was already issued (from alreadyIssued flag)
+                            // If ticket was already issued (from alreadyIssued flag)
                             if (issueData?.alreadyIssued) {
                                 updateStep(2, "success");
                                 setStatus("success");
                                 setStatusMessage(t("ticketAlreadyIssuedRedirecting"));
 
-                                // ✅ Send voucher to customer email (non-blocking)
+                                // Send voucher to customer email (non-blocking)
                                 try {
-                                    const { sendVoucher } = await import('@/app/_libs/bookingService');
+                                    const { sendVoucher } = await import('../services/sechVoucher');
                                     sendVoucher(paymentData.booking_ref, 'FLIGHT').catch(err => {
                                         console.error('Failed to send voucher:', err);
                                     });
@@ -168,7 +161,7 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
                                 return;
                             }
 
-                            // ⏳ ANY other case - ticket is pending (PENDING, FAILURE, or any other status)
+                            // ANY other case - ticket is pending (PENDING, FAILURE, or any other status)
                             updateStep(2, "success");
                             setStatus("partial-success");
                             setStatusMessage(t("paymentReceivedTicketPending"));

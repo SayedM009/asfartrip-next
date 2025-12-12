@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { ChevronUp } from "lucide-react";
 import { useTranslations } from "next-intl";
-import PayInInstallments from "@/app/_components/PayInInstallments";
+import PayInInstallments from "@/app/_components/ui/PayInInstallments";
 import FareSummarySidebar from "./FareSummarySidebar";
 import useBookingStore from "../../store/bookingStore";
 import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";

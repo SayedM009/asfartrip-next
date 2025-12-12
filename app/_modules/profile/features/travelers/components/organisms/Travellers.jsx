@@ -1,12 +1,12 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { useTravellersManager } from "@/app/_hooks/useTravellersManager";
 import TravellerCard from "../molecules/TravellerCard";
 import TravellerCardSkeleton from "../molecules/TravellerCardSkeleton";
 import AddEditTraveller from "./AddEditTraveller";
 import AirplaneStairs from "@/app/_components/SVG/AirplaneStairs";
 import { useAuthStore } from "@/app/_modules/auth";
+import { useTravellersManager } from "@/app/_modules/profile/hooks/useTravellersManager";
 
 export default function Travellers() {
     const p = useTranslations("Profile");

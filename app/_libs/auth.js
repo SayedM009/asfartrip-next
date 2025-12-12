@@ -1,9 +1,3 @@
-// ============================================
-// auth.js - FULL NEXTAUTH CONFIGURATION
-// ============================================
-// Runs in Node.js runtime (Server Components, API Routes)
-// Can use fetch(), heavy providers, complex logic
-
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -30,7 +24,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             async authorize(credentials) {
                 const { email, token, userData } = credentials;
 
-                // If token and userData are provided, use them directly
                 if (token && userData) {
                     try {
                         const user = JSON.parse(userData);
@@ -51,18 +44,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     }
                 }
 
-                // Fallback: if no token/userData, return null
                 return null;
             },
         }),
     ],
 
-    // ✅ Override callbacks from authConfig with Node-safe versions
     callbacks: {
-        // Keep Edge-safe authorized callback from authConfig
         ...authConfig.callbacks,
 
-        // ✅ Node runtime - can use fetch()
         async signIn({ account }) {
             if (account?.provider === "google" && account?.id_token) {
                 try {
@@ -73,26 +62,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     });
 
                     const data = await res.json();
-                    console.log("✅ Google server response:", data);
+                    console.log("Google server response:", data);
 
                     if (res.ok && data?.status) {
                         account.serverData = data;
                         return true;
                     } else {
-                        console.error("❌ Google API login failed:", data);
+                        console.error("Google API login failed:", data);
                         return false;
                     }
                 } catch (err) {
-                    console.error("❌ Error calling API:", err.message);
+                    console.error(" Error calling API:", err.message);
                     return false;
                 }
             }
             return true;
         },
 
-        // ✅ Build JWT token with all user data
         async jwt({ token, user, account }) {
-            // Google provider
             if (account?.provider === "google" && account?.serverData) {
                 const { user: u, token: serverToken } = account.serverData;
                 token.id = u.user_id;
@@ -107,7 +94,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 token.fullData = account.serverData;
             }
 
-            // Credentials provider
             if (account?.provider === "credentials" && user) {
                 token.id = user.id;
                 token.email = user.email;
@@ -123,7 +109,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             return token;
         },
 
-        // ✅ Build session from JWT
         async session({ session, token }) {
             if (token) {
                 session.user = {
