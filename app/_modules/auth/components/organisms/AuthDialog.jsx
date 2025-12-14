@@ -28,7 +28,7 @@ export default function AuthDialog({ primary }) {
                             "icons-hover-600 border-1 flex text-sm px-3 py-0 rounded border-gray-500 ",
                             primary
                                 ? "bg-accent-500 text-white border-0 hover:bg-accent-600 hover:text-white transition-colors dark:bg-accent-500 dark:hover:bg-accent-600"
-                                : "bg-transparent text-white md:text-black md:dark:text-white"
+                                : "bg-transparent  md:text-black md:dark:text-white"
                         )}
                     >
                         {t("Login.title")}

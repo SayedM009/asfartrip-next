@@ -45,33 +45,36 @@ export default function MainSearchForm({
      * Debounced airport search - reduces API calls by waiting 350ms after user stops typing
      * Applies validation to filter out incomplete/invalid airports
      */
-    const debouncedSearch = useDebouncedCallback(async (value, onResults, setLoading) => {
-        if (!value || value.length <= 2) {
-            onResults([]);
-            setLoading(false);
-            return;
-        }
+    const debouncedSearch = useDebouncedCallback(
+        async (value, onResults, setLoading) => {
+            if (!value || value.length <= 2) {
+                onResults([]);
+                setLoading(false);
+                return;
+            }
 
-        try {
-            const data = await searchAirports(value);
+            try {
+                const data = await searchAirports(value);
 
-            // Filter invalid / incomplete results
-            const validResults = data.filter(
-                (d) =>
-                    d.label_code?.length === 3 &&
-                    d.city &&
-                    d.country &&
-                    !d.city.toLowerCase().includes("test")
-            );
+                // Filter invalid / incomplete results
+                const validResults = data.filter(
+                    (d) =>
+                        d.label_code?.length === 3 &&
+                        d.city &&
+                        d.country &&
+                        !d.city.toLowerCase().includes("test")
+                );
 
-            onResults(validResults);
-        } catch (error) {
-            console.error("Error searching airports:", error);
-            onResults([]);
-        } finally {
-            setLoading(false);
-        }
-    }, 350);
+                onResults(validResults);
+            } catch (error) {
+                console.error("Error searching airports:", error);
+                onResults([]);
+            } finally {
+                setLoading(false);
+            }
+        },
+        350
+    );
 
     /**
      * Handle search input change
@@ -113,6 +116,8 @@ export default function MainSearchForm({
                 >
                     <PopoverTrigger asChild>
                         <div
+                            role="button"
+                            tabIndex={0}
                             className="relative cursor-pointer hover:bg-input-background/5 transition-colors min-w-30"
                             onClick={() => {
                                 setIsSearchingDeparture(true);
@@ -192,6 +197,8 @@ export default function MainSearchForm({
                 >
                     <PopoverTrigger asChild>
                         <div
+                            role="button"
+                            tabIndex={0}
                             className="relative cursor-pointer hover:bg-input-background/5 transition-colors min-w-30"
                             onClick={() => {
                                 setIsSearchingDestination(true);

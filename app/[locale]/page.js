@@ -19,6 +19,7 @@ import { getDictionary } from "../_libs/getDictionary";
 import { buildHomeJsonLd, generatePageMetadata } from "../_libs/seo";
 import { FlightSearchFormDesktop } from "../_modules/flight/search/components/desktop/FlightSearchFromDesktop";
 import WegoServicesNavigation from "../_components/navigation/WegoServicesNavigation";
+import SkyScannerServicesNavigation from "../_components/navigation/SkyScannerServicesNavigation";
 
 
 export async function generateMetadata({ params }) {
@@ -54,15 +55,16 @@ export default async function HomePage({ params }) {
 
     return <main>
 
+        {/* 1. Wego */}
         {/* Mobile Navbar */}
-        <div className="relative md:hidden mb-5">
+        {/* <div className="relative md:hidden mb-5">
             <div className="w-full h-[20vh] bg-gradient-to-br from-[#031627] via-[#041f35] to-[#05203c] [clip-path:ellipse(85%_100%_at_50%_0%)] px-3 pt-3 animate-gradient-normal">
                 <WegoMobileNavbar />
             </div>
             <div className="absolute z-50 left-1/2 -translate-x-1/2 -bottom-[40px]  flex justify-between">
                 <WegoServicesNavigation />
             </div>
-        </div>
+        </div> */}
 
         {/* Desktop Navbar */}
         <section className="container-custom">
@@ -73,8 +75,15 @@ export default async function HomePage({ params }) {
             />
 
             <section className="space-y-6">
-                <div className="hidden md:block">
+                {/* 1. Wego */}
+                {/* <div className="hidden md:block">
                     <Navbar />
+                </div> */}
+
+                {/* 2. SkyScanner */}
+                <Navbar />
+                <div className=" md:hidden">
+                    <SkyScannerServicesNavigation />
                 </div>
                 <div className="hidden md:block">
                     <ServicesNavigation />

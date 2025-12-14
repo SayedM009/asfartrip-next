@@ -28,8 +28,6 @@ function genderFromTitle(title = "") {
     if (!title) return "";
     const t = title.toLowerCase();
 
-    //  ترتيب الفحص مهم جداً!
-    // Mr و Mrs و Master يحتوون على "mr"، لذلك نفحص بالترتيب الصحيح
     if (t === "mrs" || t === "ms" || t === "miss") return "Female";
     if (t === "mr" || t === "master" || t === "mstr") return "Male";
 
@@ -97,8 +95,8 @@ export default function TravelerBasicFields({
                                     ? "border-accent-500 bg-accent-500 text-white shadow-md"
                                     : "border-gray-200 dark:border-gray-700 hover:border-accent-400 hover:bg-accent-50 dark:hover:bg-accent-900/30",
                                 showValidation &&
-                                !currentGender &&
-                                "border-red-500"
+                                    !currentGender &&
+                                    "border-red-500"
                             )}
                             disabled={false}
                         >
@@ -106,11 +104,6 @@ export default function TravelerBasicFields({
                         </button>
                     ))}
                 </div>
-                {/* {showValidation && !currentGender && (
-                    <p className="text-sm text-red-500">
-                        {t("gender_required") || "Please select gender"}
-                    </p>
-                )} */}
             </div>
 
             {/* First / Last Name */}
@@ -132,8 +125,8 @@ export default function TravelerBasicFields({
                         className={cn(
                             "h-12 mt-2",
                             showValidation &&
-                            !traveler.firstName &&
-                            "border-red-500"
+                                !traveler.firstName &&
+                                "border-red-500"
                         )}
                         placeholder={t("first_name_placeholder")}
                     />
@@ -158,8 +151,8 @@ export default function TravelerBasicFields({
                         className={cn(
                             "h-12 mt-2",
                             showValidation &&
-                            !traveler.lastName &&
-                            "border-red-500"
+                                !traveler.lastName &&
+                                "border-red-500"
                         )}
                         placeholder={t("last_name_placeholder")}
                     />
@@ -205,8 +198,8 @@ export default function TravelerBasicFields({
                         className={cn(
                             "h-12 mt-2",
                             showValidation &&
-                            !traveler.passportNumber &&
-                            "border-red-500"
+                                !traveler.passportNumber &&
+                                "border-red-500"
                         )}
                         placeholder="A12345678"
                     />
@@ -221,8 +214,8 @@ export default function TravelerBasicFields({
                         className={cn(
                             "mt-2",
                             showValidation &&
-                            !traveler.nationality &&
-                            "ring-1 ring-red-500 rounded-lg"
+                                !traveler.nationality &&
+                                "ring-1 ring-red-500 rounded-lg"
                         )}
                     >
                         <NationalitySelect

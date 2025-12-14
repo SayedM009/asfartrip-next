@@ -676,7 +676,7 @@
         "Flights": "Flights",
         "Hotels": "Hotels",
         "Insurance": "Insurance",
-        "Cars": "Tranfers",
+        "Cars": "Rent Cars",
         "Flights_sub_title": "Book Flights",
         "Hotels_sub_title": "Prefect Stays",
         "Insurance_sub_title": "Safe Trip",
@@ -756,7 +756,9 @@
             "business": "business",
             "business_description": "Priority service and comfort",
             "first": "first",
-            "first_description": "Luxury travel experience"
+            "first_description": "Luxury travel experience",
+            "cabin_class": "Cabin Class",
+            "cabin_class_description": "Select your preferred cabin class"
         },
         "passengers": {
             "title": "Passengers & Class",

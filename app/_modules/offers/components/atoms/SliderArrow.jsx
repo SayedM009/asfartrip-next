@@ -12,6 +12,7 @@ export default function SliderArrow({ direction = "left", disabled, onClick }) {
             size="icon"
             disabled={disabled}
             onClick={onClick}
+            aria-label={direction === "left" ? "Previous slide" : "Next slide"}
         >
             <Icon className="w-4 h-4" />
         </Button>
