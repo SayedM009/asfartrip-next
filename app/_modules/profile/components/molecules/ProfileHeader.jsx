@@ -3,12 +3,11 @@ import { Link } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
-import { AvatarImage } from "@/components/ui/avatar";
 
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import useAuthStore from "@/app/_modules/auth/store/authStore";
 import ChevronBasedOnLanguage from "@/app/_components/ui/ChevronBasedOnLanguage";
+import ShadcnAvatar from "@/app/_modules/auth/components/molecules/ShadcnAvatar";
 
 export default function Header() {
     const p = useTranslations("Profile");
@@ -17,7 +16,7 @@ export default function Header() {
     const { isRTL } = useCheckLocal();
 
     const { user } = useAuthStore();
-    const { name = "", email = "", avatar = "" } = user;
+    const { name = "", email = "" } = user;
 
     useEffect(() => {
         const hour = new Date().getHours();
@@ -53,14 +52,12 @@ export default function Header() {
                 transition={{ delay: 0.3, duration: 0.5 }}
                 className="px-4 pt-20 pb-6 border-b border-gray-100 dark:border-neutral-800 flex items-center gap-3"
             >
-                <Avatar className="rounded-full w-16 h-16 shadow-2xl outline-2 outline-gray-300 dark:outline-white border-2 border-transparent flex items-center justify-center">
-                    <AvatarImage src={avatar} alt={`Avatar of ${name}`} />
-
-                    <AvatarFallback className="text-3xl font-bold">
-                        {`${user?.name?.trim()?.split(" ")?.[0]?.[0] || ""}`}
-                        {`${user?.name?.trim()?.split(" ")?.[1]?.[0] || ""}`}
-                    </AvatarFallback>
-                </Avatar>
+                <ShadcnAvatar
+                    user={user}
+                    className={
+                        "rounded-full w-16 h-16 shadow-2xl outline-2 outline-gray-300 dark:outline-white border-2 border-transparent flex items-center justify-center"
+                    }
+                />
                 <div>
                     <p className="text-xs text-gray-400 dark:text-gray-400">
                         {greeting}

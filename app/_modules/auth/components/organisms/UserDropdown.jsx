@@ -11,16 +11,14 @@ import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { LogOut, Settings, CalendarRange } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 
 // استبدال المسار القديم
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 
-// استبدال المسار القديم للـ store
-import { useAuthStore } from "@/app/_modules/auth/hooks/useAuthStore";
-
 import { UserGroupIcon } from "@heroicons/react/24/outline";
 import { Link } from "@/i18n/navigation";
+import useAuthStore from "../../store/authStore";
+import ShadcnAvatar from "../molecules/ShadcnAvatar";
 
 export default function UserDropdown() {
     const { user } = useAuthStore();
@@ -30,20 +28,11 @@ export default function UserDropdown() {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Avatar className="h-8 w-8 cursor-pointer border hidden sm:block">
-                    <AvatarImage src={user?.avatar} alt={user?.name} />
-                    <AvatarFallback>
-                        <Image
-                            src="/avatar.webp"
-                            alt={`Alternative avatar for ${user?.avatar}`}
-                            width={36}
-                            height={36}
-                            referrerPolicy="no-referrer"
-                            className="rounded-full shadow-lg"
-                        />
-                    </AvatarFallback>
-                </Avatar>
+            <DropdownMenuTrigger className="border-0 outline-0">
+                <ShadcnAvatar
+                    user={user}
+                    className={"h-8 w-8 cursor-pointer border hidden sm:block"}
+                />
             </DropdownMenuTrigger>
 
             <DropdownMenuContent
@@ -51,20 +40,14 @@ export default function UserDropdown() {
                 dir={condition}
                 className="w-65 p-0 overflow-hidden rounded-lg shadow-lg"
             >
-                <section className={`p-3 bg-gray-50 dark:bg-gray-800 border-b`}>
-                    <div className="flex items-center gap-4 mb-2">
-                        <Avatar className="h-7 w-7 cursor-pointer border">
-                            <AvatarImage src={user?.avatar} alt={user?.name} />
-                            <AvatarFallback>
-                                <Image
-                                    src="/avatar.webp"
-                                    alt={`Alternative avatar for ${user?.avatar}`}
-                                    width={24}
-                                    height={24}
-                                    referrerPolicy="no-referrer"
-                                />
-                            </AvatarFallback>
-                        </Avatar>
+                <section className="p-3 border-b">
+                    <div className="flex items-center gap-4">
+                        <ShadcnAvatar
+                            user={user}
+                            className={
+                                "h-8 w-8 cursor-pointer border hidden sm:block"
+                            }
+                        />
                         <p className="font-semibold text-sm">{user?.name}</p>
                     </div>
                 </section>
@@ -93,7 +76,7 @@ export default function UserDropdown() {
                     <DropdownMenuSeparator />
 
                     <DropdownMenuItem
-                        className={`cursor-pointer py-2 px-3 text-sm text-red-600 dark:text-red-500  flex items-center gap-2 hover:bg-red-50 dark:hover:bg-red-100 rounded transition-colors hover:outline-0 ${
+                        className={`cursor-pointer py-2 px-3 text-sm text-red-600 dark:text-red-500  flex items-center gap-2 hover:bg-red-50 dark:hover:bg-red-200 rounded transition-colors hover:outline-0 ${
                             isRTL && "flex-row-reverse justify-end"
                         }`}
                         onClick={signOut}
