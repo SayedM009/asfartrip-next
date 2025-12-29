@@ -24,7 +24,6 @@ export default function FlightTicket({
     isFastest,
     isCheapest,
 }) {
-
     const { formatPrice } = useCurrency();
     const { isRTL } = useCheckLocal();
     const t = useTranslations("Flight");
@@ -56,7 +55,6 @@ export default function FlightTicket({
         onSelect?.();
     };
 
-
     return (
         <>
             <Card
@@ -81,9 +79,6 @@ export default function FlightTicket({
                                 isRTL ? "left-[-2px]" : "right-[-2px]"
                             }`}
                         >
-                            
-                            
-
                             {/* FASTEST Label */}
                             {isFastest && (
                                 <span
@@ -175,11 +170,16 @@ export default function FlightTicket({
                                 </div>
 
                                 <div className="font-extrabold text-accent-500 ">
-                                    {formatPrice(TotalPrice, "orange", 20, "text-3xl ")}
+                                    {formatPrice(
+                                        TotalPrice,
+                                        "orange",
+                                        20,
+                                        "text-3xl "
+                                    )}
                                 </div>
 
                                 {/* Desktop Select Button */}
-                                <div className="hidden sm:block">
+                                <div className="hidden sm:block mb-2">
                                     <Button
                                         onClick={(e) => {
                                             e.stopPropagation();
@@ -192,8 +192,6 @@ export default function FlightTicket({
                                 </div>
 
                                 <LoyaltyPoints price={TotalPrice} />
-
-                                
                             </div>
                         </div>
                     </div>

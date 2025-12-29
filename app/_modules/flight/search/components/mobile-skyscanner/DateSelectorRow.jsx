@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarDays } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useDateFormatter } from "@/app/_hooks/useDisplayShortDate";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";

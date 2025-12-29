@@ -10,7 +10,7 @@ export default function CancellationPage() {
     return (
         <div className="transition-colors duration-300 mb-20 sm:mb-auto">
             {/* HERO */}
-            <header className="bg-gradient-to-br from-orange-50/50 via-white to-background dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 pt-7 mb-10 sm:py-14 ">
+            <header className=" pt-7 mb-10 sm:py-14 ">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}

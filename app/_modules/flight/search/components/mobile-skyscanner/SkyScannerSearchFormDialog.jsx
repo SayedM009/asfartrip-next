@@ -11,7 +11,7 @@ import {
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { SkyscannerSearchShell } from ".";
-import { Plane, X } from "lucide-react";
+import { ChevronDownIcon, Plane, X } from "lucide-react";
 
 const WIDTH = 60;
 const HEIGHT = 60;

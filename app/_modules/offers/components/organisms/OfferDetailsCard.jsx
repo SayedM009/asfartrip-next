@@ -10,7 +10,6 @@ export default function OfferDetailsCard({ offer, locale }) {
 
     return (
         <section dir={dir} className="space-y-4 pt-6 pb-10 md:py-16">
-            {/* صورة العرض */}
             <div className="relative w-full h-64 md:h-96 rounded-2xl overflow-hidden">
                 <Image
                     src={offer.image[locale]}
@@ -20,7 +19,6 @@ export default function OfferDetailsCard({ offer, locale }) {
                 />
             </div>
 
-            {/* العنوان + السعر */}
             <OfferTitle title={offer.title[locale]} />
             <OfferMainPrice
                 amount={offer.priceFrom.amount}
@@ -28,17 +26,14 @@ export default function OfferDetailsCard({ offer, locale }) {
                 locale={locale}
             />
 
-            {/* Route */}
             <OfferRoute
                 origin={offer.origin}
                 destination={offer.destination}
                 locale={locale}
             />
 
-            {/* Validity */}
             <OfferValidity validity={offer.validity} locale={locale} />
 
-            {/* Tags */}
             {offer.tags[locale]?.length > 0 && (
                 <div className="flex gap-2 flex-wrap mt-2">
                     {offer.tags[locale].map((tag) => (

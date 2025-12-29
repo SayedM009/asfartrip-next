@@ -97,7 +97,8 @@ function Status() {
                                     />
                                 }
                                 label={p("tier")}
-                                value={l(tier?.tier_name) || "-"}
+                                // value={l(tier?.tier_name) || "-"}
+                                value={"-"}
                             />
                         </StatMotion>
                     </motion.div>

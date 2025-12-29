@@ -19,7 +19,7 @@ export default function RefundPage() {
     return (
         <div className="transition-colors duration-300 mb-20 sm:mb-auto">
             {/* HERO */}
-            <header className="relative overflow-hidden bg-gradient-to-br from-orange-50/50 via-white to-background dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 py-5 lg:py-10 mb-10">
+            <header className="relative overflow-hidden py-5 lg:py-10 mb-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}

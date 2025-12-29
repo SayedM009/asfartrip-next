@@ -37,7 +37,7 @@ export default function Header() {
                     href="/"
                     className={`absolute top-5 ${
                         isRTL ? "right-4" : "left-4"
-                    } z-30 p-2 rounded-full bg-white dark:bg-neutral-800 shadow-md hover:scale-110 transition`}
+                    } z-30 p-2 rounded-full shadow-md hover:scale-110 transition`}
                 >
                     <span className="rotate-180 block">
                         <ChevronBasedOnLanguage size="5" icon="arrow" />

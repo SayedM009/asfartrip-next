@@ -34,7 +34,7 @@ export default function ProfileOnMobile() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="min-h-screen bg-[#f9fafb] dark:bg-[#111] text-[#33394c] dark:text-gray-100 pb-24 relative overflow-hidden"
+                className="min-h-screen  pb-24 relative overflow-hidden"
                 dir={isRTL ? "rtl" : "ltr"}
             >
                 {/* Background motion when dialogs open */}

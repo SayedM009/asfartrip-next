@@ -8,14 +8,14 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
-import { LogOut, Settings, CalendarRange } from "lucide-react";
+import { LogOut, Settings, CalendarRange, UserIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
 // استبدال المسار القديم
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 
-import { UserGroupIcon } from "@heroicons/react/24/outline";
+import { Squares2X2Icon, UserGroupIcon } from "@heroicons/react/24/outline";
 import { Link } from "@/i18n/navigation";
 import useAuthStore from "../../store/authStore";
 import ShadcnAvatar from "../molecules/ShadcnAvatar";
@@ -28,7 +28,7 @@ export default function UserDropdown() {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="border-0 outline-0">
+            <DropdownMenuTrigger className="border-0 outline-0 ">
                 <ShadcnAvatar
                     user={user}
                     className={"h-8 w-8 cursor-pointer border hidden sm:block"}
@@ -48,29 +48,51 @@ export default function UserDropdown() {
                                 "h-8 w-8 cursor-pointer border hidden sm:block"
                             }
                         />
-                        <p className="font-semibold text-sm">{user?.name}</p>
+                        <div>
+                            <p className="font-semibold text-sm capitalize">
+                                {user?.name.toLocaleLowerCase()}
+                            </p>
+                            <p className="font-semibold text-xs text-gray-500">
+                                {user?.email}
+                            </p>
+                        </div>
                     </div>
                 </section>
 
                 <section className="p-2">
                     <DropdownMenuItem className="cursor-pointer py-2 px-3 text-sm  gap-2 hover:bg-muted transition-colors hover:outline-0">
                         <Link
-                            href="/profile"
+                            href="/profile/dashboard"
                             className="flex items-center gap-2"
                         >
-                            <Settings className="size-4 text-accent-500" />
-                            {l("manage_account")}
+                            <Squares2X2Icon className="size-4 text-accent-500" />
+                            Dashboard
+                        </Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem className="cursor-pointer py-2 px-3 text-sm  gap-2 hover:bg-muted transition-colors hover:outline-0">
+                        <Link
+                            href="/profile/profile-info"
+                            className="flex items-center gap-2"
+                        >
+                            <UserIcon className="size-4 text-accent-500" />
+                            Profile Info
+                        </Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem className="cursor-pointer py-2 px-3 text-sm flex items-center gap-2 hover:bg-muted transition-colors hover:outline-0">
+                        <Link
+                            href="/profile/travellers"
+                            className="flex items-center gap-2"
+                        >
+                            <UserGroupIcon className="size-4.5 text-accent-500" />
+                            {l("travelers")}
                         </Link>
                     </DropdownMenuItem>
 
                     <DropdownMenuItem className="cursor-pointer py-2 px-3 text-sm flex items-center gap-2 hover:bg-muted transition-colors hover:outline-0">
                         <CalendarRange className="size-4 text-accent-500" />
                         {l("my_bookings")}
-                    </DropdownMenuItem>
-
-                    <DropdownMenuItem className="cursor-pointer py-2 px-3 text-sm flex items-center gap-2 hover:bg-muted transition-colors hover:outline-0">
-                        <UserGroupIcon className="size-4.5 text-accent-500" />
-                        {l("travelers")}
                     </DropdownMenuItem>
 
                     <DropdownMenuSeparator />

@@ -69,7 +69,7 @@ const useLoyaltyStore = create((set, get) => ({
         const config = get().config;
         if (!config) return 0;
         const rate = parseFloat(config.earning_rate);
-        return ticketPrice * rate;
+        return (ticketPrice * (rate / 100)).toFixed(2);
     },
     calculateBalanceValue: () => {
         const { config, balance } = get();

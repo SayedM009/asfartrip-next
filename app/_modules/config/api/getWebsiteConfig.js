@@ -10,7 +10,7 @@ export async function getWebsiteConfig() {
     const url = `${origin}/api/config`;
 
     const res = await fetch(url, {
-        cache: "no-store",
+        cache: "force-cache",
     });
 
     if (!res.ok) {
