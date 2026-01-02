@@ -98,12 +98,13 @@ export default function LocationSearchDialog({
     }, [open]);
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={setOpen} modal={false}>
             <DialogTrigger asChild>{trigger}</DialogTrigger>
             <DialogContent
-                className="h-full w-full max-w-none rounded-none border-0 p-0 gap-0"
+                className="h-full w-full max-w-none rounded-none border-0 p-0 gap-0 fixed inset-0"
                 showCloseButton={false}
                 onOpenAutoFocus={(e) => e.preventDefault()}
+                onInteractOutside={(e) => e.preventDefault()}
             >
                 <DialogHeader className="flex items-center flex-row gap-3 p-4 border-b">
                     <DialogClose className="p-2 -m-2" aria-label="Close">

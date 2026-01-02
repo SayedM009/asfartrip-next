@@ -60,7 +60,7 @@ export default function RouteCard({
                     trigger={
                         <button
                             type="button"
-                            className="w-full flex items-center gap-4 p-3 text-start dark:bg-[#243346] hover:bg-[#0D2D4D] transition-colors rounded-2xl border dark:border-0"
+                            className="w-full flex items-center gap-4 p-3 text-start dark:bg-[#243346] transition-colors rounded-2xl border dark:border-0"
                             aria-label={t("to") || "To"}
                         >
                             <PlaneIcon className="w-5 h-5 rotate-125 text-black dark:text-white flex-shrink-0" />
