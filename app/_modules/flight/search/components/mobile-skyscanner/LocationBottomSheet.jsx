@@ -86,7 +86,7 @@ export default function LocationBottomSheet({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 bg-background">
+        <div className="absolute inset-0 z-50 bg-background">
             {/* Header */}
             <div className="flex items-center gap-3 p-4 border-b ">
                 <button
