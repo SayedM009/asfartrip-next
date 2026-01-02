@@ -105,7 +105,7 @@ export default function LocationSearchDialog({
                 showCloseButton={false}
                 onOpenAutoFocus={(e) => e.preventDefault()}
             >
-                <DialogHeader className="flex items-center flex-row gap-3 px-4 border-b">
+                <DialogHeader className="flex items-center flex-row gap-3 p-4 border-b">
                     <DialogClose className="p-2 -m-2" aria-label="Close">
                         <X className="w-6 h-6" />
                     </DialogClose>

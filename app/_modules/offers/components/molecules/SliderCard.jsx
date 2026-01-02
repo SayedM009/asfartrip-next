@@ -5,10 +5,14 @@ export default function SliderCard({ offer, locale, index }) {
     return (
         <Link
             href={`/offers/${offer.slug}`}
-            className="flex-shrink-0 w-[80vw] sm:w-[350px] lg:w-[480px] aspect-[16/7] relative rounded-xl overflow-hidden"
+            className="flex-shrink-0 w-[60vw] sm:w-[350px] lg:w-[480px] aspect-[16/7] relative rounded-xl overflow-hidden"
             style={{ scrollSnapAlign: "start" }}
         >
-            <SliderImage src={offer.image[locale]} alt={offer.title[locale]} index={index} />
+            <SliderImage
+                src={offer.image[locale]}
+                alt={offer.title[locale]}
+                index={index}
+            />
         </Link>
     );
 }

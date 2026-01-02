@@ -1,7 +1,6 @@
 import Image from "next/image";
 
 export default function SliderImage({ src, alt, index }) {
-    
     return (
         <Image
             src={src}
