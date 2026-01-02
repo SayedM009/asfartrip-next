@@ -10,18 +10,34 @@ function LoyaltyInitializer() {
     const { fetchConfig, fetchTier, fetchBalance } = useLoyaltyStore();
 
     useEffect(() => {
-        if (status === "authenticated" && session?.user?.id) {
+        if (status !== "authenticated" || !session?.user?.id) {
+            if (status === "unauthenticated") {
+                clearUser();
+            }
+            return;
+        }
+
+        let cancelled = false;
+
+        const init = async () => {
             setUser(session.user);
             setSession(session);
-            Promise.all([
-                fetchConfig(),
+
+            const config = await fetchConfig();
+            if (!config || cancelled) return;
+
+            await Promise.all([
                 fetchTier(session.user.id),
                 fetchBalance(session.user.id),
             ]);
-        } else if (status === "unauthenticated") {
-            clearUser();
-        }
-    }, [status, session?.user?.id, setUser, setSession, clearUser, fetchConfig, fetchTier, fetchBalance, session]);
+        };
+
+        init();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [status, session?.user?.id]);
 
     return null;
 }

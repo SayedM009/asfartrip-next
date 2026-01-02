@@ -1,15 +1,16 @@
 "use client";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "use-intl";
 import { Power } from "lucide-react";
-import useAuthStore from "../../store/authStore";
 
 function SignOutButton() {
     const t = useTranslations("Login");
-    const { status } = useAuthStore();
+    // Use NextAuth useSession as the authoritative source for auth decisions
+    const { status } = useSession();
 
-    if (status !== "authenticated" || status === "loading") return null;
+    // Only render when session has resolved and user is authenticated
+    if (status !== "authenticated") return null;
 
     return (
         <Button

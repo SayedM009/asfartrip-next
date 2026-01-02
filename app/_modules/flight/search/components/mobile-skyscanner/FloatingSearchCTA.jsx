@@ -22,8 +22,7 @@ export default function FloatingSearchCTA({ onSearch, isValid }) {
             disabled={!isValid}
             className={`w-12 h-12 rounded-full flex items-center justify-center shadow-2xl transition-all  ${
                 isValid
-                    ? // ? "bg-[#84E8FF] hover:bg-[#00B8C9] cursor-pointer"
-                      "bg-accent-500 hover:bg-[#00B8C9] cursor-pointer"
+                    ? "bg-accent-500 hover:bg-accent-600 cursor-pointer"
                     : "bg-gray-600 cursor-not-allowed opacity-50"
             }`}
             aria-label={t("operations.search") || "Search flights"}

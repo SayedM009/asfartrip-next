@@ -17,15 +17,13 @@ export default function ProfileOnMobile() {
     const { isRTL } = useCheckLocal();
     const { user } = useAuthStore();
     const { activeTab, fetchBookings } = useDashboardBookingsStore();
-    const id = user?.id;
-    const usertype = user?.usertype;
 
     useEffect(() => {
-        if (!id || !usertype) return null;
-        fetchBookings(id, usertype, "cancelled");
-    }, [activeTab, fetchBookings, id, usertype]);
+        if (!user?.id || !user?.usertype) return;
+        fetchBookings(user?.id, user?.usertype, "completed");
+    }, [activeTab, fetchBookings, user?.id, user?.usertype]);
 
-    if (!id || !usertype) return null;
+    if (!user?.id || !user?.usertype) return null;
 
     return (
         <AnimatePresence>
@@ -34,7 +32,7 @@ export default function ProfileOnMobile() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="min-h-screen  pb-24 relative overflow-hidden"
+                className="min-h-screen pb-24 relative overflow-hidden"
                 dir={isRTL ? "rtl" : "ltr"}
             >
                 {/* Background motion when dialogs open */}

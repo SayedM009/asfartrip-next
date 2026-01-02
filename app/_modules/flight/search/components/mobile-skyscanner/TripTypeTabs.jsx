@@ -30,7 +30,7 @@ export default function TripTypeTabs({ tripType, onTripTypeChange }) {
             <div
                 className="flex justify-start gap-8 "
                 role="tablist"
-                aria-label={t("trip_type") || "Trip type selection"}
+                aria-label={"Trip type selection"}
             >
                 {displayTabs.map((tab) => (
                     <button

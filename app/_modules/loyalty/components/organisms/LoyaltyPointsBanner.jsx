@@ -1,15 +1,16 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import useLoyaltyStore from "../../store/loyaltyStore";
-import useAuthStore from "@/app/_modules/auth/store/authStore";
 
 export default function LoyaltyPointsBanner({ price }) {
     const l = useTranslations("Loyalty.Banner");
     const { tier, config, calculatePoints, isLoading } = useLoyaltyStore();
-    const { status } = useAuthStore();
-    const points = calculatePoints(price);
 
-    if (status !== "authenticated") return null;
+    // Gate on presence of config - only populated after auth sync via LoyaltyInitializer
+    // null config means either session not confirmed OR unauthenticated
+    if (!config) return null;
+
+    const points = calculatePoints(price);
 
     if (isLoading || !config) {
         return (

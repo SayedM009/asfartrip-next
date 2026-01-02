@@ -152,7 +152,7 @@ export default function LocationBottomSheet({
                 {/* Popular Destinations (when no search) */}
                 {!isLoading && !search && (
                     <div className="p-4">
-                        <h3 className="text-sm font-bold text-gray-400 mb-3 uppercase tracking-wide">
+                        <h3 className="text-sm font-bold text-gray-400 mb-3 uppercase tracking-wide text-left rtl:text-right">
                             {t("popular_cities") || "Popular cities"}
                         </h3>
                         <div className="space-y-1">

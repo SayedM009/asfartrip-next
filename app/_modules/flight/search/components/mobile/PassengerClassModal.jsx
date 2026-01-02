@@ -44,7 +44,9 @@ export function PassengerClassModal({
 
     // Temp state for UI
     const [tempPassengers, setTempPassengers] = useState(passengers);
-    const [tempClass, setTempClass] = useState(travelClass?.toLowerCase() || "economy");
+    const [tempClass, setTempClass] = useState(
+        travelClass?.toLowerCase() || "economy"
+    );
 
     // Sync temp state with props when dialog opens
     // This ensures the dialog shows the current stored values, not the initial defaults
@@ -219,7 +221,11 @@ export function PassengerClassModal({
                             {t("passengers.travel_class")}
                         </Label>
 
-                        <Select value={tempClass} onValueChange={setTempClass} dir={isRTL ? "rtl" : "ltr"}>
+                        <Select
+                            value={tempClass}
+                            onValueChange={setTempClass}
+                            dir={isRTL ? "rtl" : "ltr"}
+                        >
                             <SelectTrigger className="w-full capitalize">
                                 <SelectValue className="capitalize" />
                             </SelectTrigger>

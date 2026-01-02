@@ -11,20 +11,22 @@ import { useDashboardBookingsStore } from "../../store/dashboardBookingStore";
 function Status() {
     const p = useTranslations("Profile");
     const l = useTranslations("Loyalty");
-    const {
-        user: { id, usertype },
-    } = useAuthStore();
+    // user may be null until session syncs from LoyaltyInitializer
+    const { user } = useAuthStore();
     const { balance, tier } = useLoyaltyStore();
     const { fetchBookings, totalCompleted, loading } =
         useDashboardBookingsStore();
 
+    const id = user?.id;
+    const usertype = user?.usertype;
+
     useEffect(() => {
-        if (!id || !usertype) return null;
+        if (!id || !usertype) return;
         fetchBookings(id, usertype, "completed");
     }, [id, usertype, fetchBookings]);
 
     return (
-        <div className="px-4 grid grid-cols-3 gap-3 relative">
+        <div className="grid grid-cols-3 gap-3 relative">
             <AnimatePresence mode="wait">
                 {loading ? (
                     <motion.div
@@ -97,8 +99,7 @@ function Status() {
                                     />
                                 }
                                 label={p("tier")}
-                                // value={l(tier?.tier_name) || "-"}
-                                value={"-"}
+                                value={l(tier?.tier_name) || "-"}
                             />
                         </StatMotion>
                     </motion.div>

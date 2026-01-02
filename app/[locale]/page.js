@@ -65,6 +65,7 @@ export default async function HomePage({ params }) {
                 <WegoServicesNavigation />
             </div>
         </div> */}
+        {/* 1. Wego */}
 
         {/* Desktop Navbar */}
         <section className="container-custom">
@@ -79,12 +80,13 @@ export default async function HomePage({ params }) {
                 {/* <div className="hidden md:block">
                     <Navbar />
                 </div> */}
-
+                {/* 1. Wego */}
                 {/* 2. SkyScanner */}
                 <Navbar />
                 <div className=" md:hidden">
                     <SkyScannerServicesNavigation />
                 </div>
+                {/* 2. SkyScanner */}
                 <div className="hidden md:block">
                     <ServicesNavigation />
                     <FlightSearchFormDesktop />

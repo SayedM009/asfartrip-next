@@ -69,7 +69,7 @@ export default function PassengersBottomSheet({
                     type="button"
                     onClick={onClose}
                     className="p-2 -m-2 "
-                    aria-label={t("close") || "Close"}
+                    aria-label="Close"
                 >
                     <X className="w-6 h-6" />
                 </button>
@@ -82,7 +82,7 @@ export default function PassengersBottomSheet({
             <div className="flex-1 overflow-y-auto p-4">
                 {/* Passengers Section */}
                 <div className="space-y-4">
-                    <h3 className="text-sm font-bold  uppercase tracking-wide">
+                    <h3 className="text-sm font-bold  uppercase tracking-wide text-left rtl:text-right">
                         {t("passengers.passengers") || "Passengers"}
                     </h3>
 
@@ -183,7 +183,7 @@ export default function PassengersBottomSheet({
                             >
                                 <Minus className="w-5 h-5" />
                             </button>
-                            <span className="w-8 text-center  font-bold text-lg">
+                            <span className="w-8  text-center  font-bold text-lg">
                                 {infants}
                             </span>
                             <button
@@ -203,7 +203,7 @@ export default function PassengersBottomSheet({
 
                 {/* Cabin Class Section */}
                 <div className="space-y-4">
-                    <h3 className="text-sm font-bold  text-black dark:text-white uppercase tracking-wide">
+                    <h3 className="text-sm font-bold  text-black dark:text-white uppercase tracking-wide text-left rtl:text-right">
                         {t("ticket_class.cabin_class") || "Cabin Class"}
                     </h3>
 
@@ -215,14 +215,16 @@ export default function PassengersBottomSheet({
                                 onClick={() => onClassChange(cls.id)}
                                 className={`w-full flex items-center justify-between p-4 rounded-xl transition-colors ${
                                     travelClass === cls.id
-                                        ? "bg-[#0062E3] text-white"
+                                        ? "bg-accent-500 text-white"
                                         : "bg-[#243346]  hover:bg-[#0D2D4D] text-white"
                                 }`}
                             >
-                                <span className="font-medium">{cls.label}</span>
+                                <span className="font-medium capitalize">
+                                    {cls.label}
+                                </span>
                                 {travelClass === cls.id && (
                                     <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center">
-                                        <div className="w-2 h-2 rounded-full bg-[#0062E3] " />
+                                        <div className="w-2 h-2 rounded-full bg-accent-500 " />
                                     </div>
                                 )}
                             </button>
@@ -236,7 +238,6 @@ export default function PassengersBottomSheet({
                 <button
                     type="button"
                     onClick={onClose}
-                    // className="w-full h-12 bg-[#0062E3] text-white  font-bold text-base rounded-full shadow-lg transition-all"
                     className="w-full h-12 bg-accent-500 text-white  font-bold text-base rounded-full shadow-lg transition-all"
                 >
                     {t("passengers.apply") || "Apply"}

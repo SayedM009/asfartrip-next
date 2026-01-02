@@ -115,6 +115,7 @@ export default function Dates({
                                 locale={dateLocale}
                                 startMonth={new Date()}
                                 disabled={(date) => date < new Date()}
+                                numberOfMonths={2}
                             />
                         </PopoverContent>
                     </Popover>

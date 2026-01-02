@@ -4,20 +4,15 @@ import { persist, createJSONStorage } from "zustand/middleware";
 const useAuthStore = create(
     persist(
         (set, get) => ({
+            // Read-only snapshots - NOT authoritative for auth decisions
+            // These are synced from LoyaltyInitializer AFTER useSession() resolves
             user: null,
-            status: "loading",
             session: null,
 
-            setUser: (user) =>
-                set({
-                    user,
-                    status: user ? "authenticated" : "unauthenticated",
-                }),
+            // Called only from LoyaltyInitializer after NextAuth session resolves
+            setUser: (user) => set({ user }),
 
-            setSession: (session) =>
-                set({
-                    session: session,
-                }),
+            setSession: (session) => set({ session }),
 
             updateSessionUser: (userData) => {
                 const currentSession = get().session;
@@ -48,7 +43,7 @@ const useAuthStore = create(
             },
 
             clearUser: () => {
-                set({ user: null, status: "unauthenticated", session: null });
+                set({ user: null, session: null });
                 import("@/app/_modules/loyalty/store/loyaltyStore").then(
                     (mod) => mod.default.getState().reset()
                 );
@@ -66,6 +61,9 @@ const useAuthStore = create(
                     removeItem: () => { },
                 };
             }),
+            // CRITICAL: Skip hydration to prevent stale auth data on first render
+            // Zustand state is synced only after useSession() resolves in LoyaltyInitializer
+            skipHydration: true,
         }
     )
 );

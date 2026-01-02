@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Users, User, Baby, ChevronRight } from "lucide-react";
 import { PassengerClassModal } from "../mobile/PassengerClassModal";
 import { normalizeClassName } from "../../utils/formatters";
 import { UserGroupIcon } from "@heroicons/react/24/outline";
@@ -19,9 +18,6 @@ export default function WegoPassengerSelector({
     onClassChange,
 }) {
     const t = useTranslations("Flight");
-
-    const totalPassengers =
-        passengers.adults + passengers.children + passengers.infants;
 
     return (
         <div className="py-1">

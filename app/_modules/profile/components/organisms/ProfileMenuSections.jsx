@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Link } from "@/i18n/navigation";
 import {
     BedDouble,
@@ -22,7 +22,7 @@ export default function Sections({ setOpenDialog, setShowDeleteDialog }) {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="px-4 mt-8 space-y-6"
+            className="mt-8 space-y-6"
         >
             <AnimatedSection title={p("my_profile")}>
                 <Row
@@ -125,17 +125,19 @@ function Row({ icon: Icon, label, onClick, danger }) {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
             onClick={onClick}
-            className={`w-full flex items-center justify-between px-4 py-4 text-left transition-colors ${danger
-                ? "text-red-500"
-                : "hover:bg-gray-50 dark:hover:bg-neutral-800"
-                }`}
+            className={`w-full flex items-center justify-between px-4 py-4 text-left transition-colors ${
+                danger
+                    ? "text-red-500"
+                    : "hover:bg-gray-50 dark:hover:bg-neutral-800"
+            }`}
         >
             <div className="flex items-center gap-3">
                 <Icon
-                    className={`w-5 h-5 ${danger
-                        ? "text-red-500"
-                        : "text-gray-600 dark:text-gray-300"
-                        }`}
+                    className={`w-5 h-5 ${
+                        danger
+                            ? "text-red-500"
+                            : "text-gray-600 dark:text-gray-300"
+                    }`}
                 />
                 <span className="text-[15px] font-medium">{label}</span>
             </div>

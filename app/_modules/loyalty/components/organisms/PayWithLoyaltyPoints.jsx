@@ -6,14 +6,15 @@ import { useTranslations } from "next-intl";
 
 import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 import useLoyaltyStore from "../../store/loyaltyStore";
-import useAuthStore from "@/app/_modules/auth/store/authStore";
 
 export default function PayWithLoyaltyPoints() {
     const l = useTranslations("Loyalty.pay_with_points");
     const { formatPrice } = useCurrency();
-    const { status } = useAuthStore();
     const { balance, calculateBalanceValue, isLoading } = useLoyaltyStore();
-    if (status !== "authenticated") return null;
+
+    // Gate on presence of balance - only set after auth sync via LoyaltyInitializer
+    // null balance means either session not confirmed OR unauthenticated
+    if (balance === null) return null;
 
     if (isLoading) {
         return (

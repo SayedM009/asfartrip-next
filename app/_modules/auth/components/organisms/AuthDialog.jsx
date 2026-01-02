@@ -42,6 +42,7 @@ export default function AuthDialog({ primary }) {
                         "open-slide-right",
                         "close-slide-right"
                     )}
+                    onOpenAutoFocus={(e) => e.preventDefault()}
                 >
                     <DialogHeader>
                         <DialogTitle className="flex justify-center">

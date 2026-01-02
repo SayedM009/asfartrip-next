@@ -36,7 +36,7 @@ export default function PassengersRow({
                 type="button"
                 onClick={() => setIsSheetOpen(true)}
                 className="w- flex items-center justify-between  rounded-2xl text-start hover:bg-[#0D2D4D] transition-colors py-4"
-                aria-label={t("passengers_and_class") || "Passengers and class"}
+                aria-label={"Passengers and class"}
             >
                 <div className="flex items-center gap-6">
                     {/* Adults */}
@@ -87,8 +87,8 @@ export default function PassengersRow({
                 </div>
 
                 {/* Class with dropdown icon */}
-                <div className="flex items-center gap-2 text-black dark:text-white">
-                    <span className="text-sm">
+                <div className="flex items-center gap-2 text-black dark:text-white capitalize">
+                    <span className="text-sm font-semibold">
                         {classLabels[travelClass] || classLabels.economy}
                     </span>
                     <ChevronDown className="w-4 h-4 " />
