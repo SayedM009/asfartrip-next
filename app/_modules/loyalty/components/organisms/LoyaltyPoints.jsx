@@ -21,7 +21,7 @@ export default function LoyaltyPoints({ price }) {
     }
 
     return (
-        <div className="flex items-center gap-1 py-0.5 pl-2 pr-1 rtl:pl-1 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900 dark:to-green-300 rounded-2xl rounded-bl-2xl">
+        <div className="flex items-center gap-1 py-0.5 pl-2 pr-1 rtl:pl-1 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 rounded-2xl rounded-bl-2xl">
             <div className="bg-[#1fa86b] w-fit p-0.5 rounded-full">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

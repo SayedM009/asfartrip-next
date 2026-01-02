@@ -201,7 +201,10 @@ export default function LocationSearchDialog({
                         search.length > 2 && (
                             <div className="flex flex-col items-center justify-center p-8 text-gray-400">
                                 <Search className="w-12 h-12 mb-4 opacity-50" />
-                                <p>{t("no_results") || "No airports found"}</p>
+                                <p>
+                                    {t("operations.no_results") ||
+                                        "No airports found"}
+                                </p>
                             </div>
                         )}
                 </div>

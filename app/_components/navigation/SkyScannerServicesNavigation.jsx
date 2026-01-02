@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import SkyScannerSearchFormDialog from "@/app/_modules/flight/search/components/mobile-skyscanner/SkyScannerSearchFormDialog";
-import { BedDouble, Car } from "lucide-react";
+import { BedDouble, Car, ShieldPlus } from "lucide-react";
 
 const WIDTH = 60;
 const HEIGHT = 60;
@@ -30,7 +30,7 @@ function SkyScannerServicesNavigation() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{
-                    duration: 0.6,
+                    duration: 0.5,
                     ease: "easeOut",
                 }}
             >
@@ -43,20 +43,22 @@ function SkyScannerServicesNavigation() {
                 </div>
             </motion.div>
             <motion.div
-                key={"cars"}
+                key={"insurance"}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{
-                    duration: 0.6,
+                    duration: 0.7,
                     ease: "easeOut",
                 }}
             >
                 <div className="flex flex-col  items-center gap-2 ">
                     <div className="bg-accent-500  p-4 rounded-full ">
-                        <Car className=" text-white" />
+                        <ShieldPlus className=" text-white" />
                     </div>
 
-                    <span className="font-bold text-center">{t(`Cars`)}</span>
+                    <span className="font-bold text-center">
+                        {t(`Insurance`)}
+                    </span>
                 </div>
             </motion.div>
         </nav>
