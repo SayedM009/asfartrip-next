@@ -145,7 +145,7 @@ export default function LocationSearchDialog({
                                     key={`${airport.label_code}-${index}`}
                                     type="button"
                                     onClick={() => handleSelect(airport)}
-                                    className="w-full flex items-center gap-4 p-3 text-start hover:bg-[#0A2540] rounded-xl transition-colors"
+                                    className="w-full flex items-center gap-4 p-3 text-start rounded-xl transition-colors"
                                     role="option"
                                 >
                                     <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />

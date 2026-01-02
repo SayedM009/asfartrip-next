@@ -25,7 +25,7 @@ function SkyScannerSearchFormDialog() {
                 </div>
             </DialogTrigger>
             <DialogContent
-                className="min-h-screen max-w-none rounded-none open-slide-right close-slide-right"
+                className=" bg-background h-full w-full max-w-none rounded-none border-0 p-3 overflow-y-auto open-slide-right close-slide-right"
                 showCloseButton={false}
             >
                 <DialogHeader>
