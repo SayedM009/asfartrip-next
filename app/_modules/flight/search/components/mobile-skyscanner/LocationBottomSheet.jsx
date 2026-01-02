@@ -128,7 +128,7 @@ export default function LocationSearchDialog({
                 </DialogHeader>
 
                 {/* Content */}
-                <div className="overflow-y-auto">
+                <div className="overflow-y-auto flex-1 min-h-screen">
                     {/* Loading State */}
                     {isLoading && (
                         <div className="flex items-center justify-center h-56">
@@ -138,7 +138,7 @@ export default function LocationSearchDialog({
 
                     {/* Search Results */}
                     {!isLoading && results.length > 0 && (
-                        <div className="p-4">
+                        <div className="p-4 ">
                             {results.map((airport, index) => (
                                 <button
                                     key={`${airport.label_code}-${index}`}
