@@ -12,7 +12,7 @@ import { tripTypes as TT } from "../../constants/tripTypes";
 export default function TripTypes({ t, tripType, setTripType, isRTL }) {
     return (
         <>
-            <label className="block mb-2 text-muted-foreground text-xs">
+            <label className="block mb-2 text-muted-foreground text-xs text-left rtl:text-right">
                 {t("trip_type")}
             </label>
             <Select
@@ -34,7 +34,9 @@ export default function TripTypes({ t, tripType, setTripType, isRTL }) {
                         />
                     </div>
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent
+                    onPointerDownOutside={(e) => e.stopPropagation()}
+                >
                     {Object.entries(TT).map(([title, items]) => (
                         <SelectGroup key={title}>
                             <SelectLabel>{t(title)}</SelectLabel>

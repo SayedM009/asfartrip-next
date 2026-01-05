@@ -18,7 +18,7 @@ export default function Destinations({
 }) {
     return (
         <>
-            <label className="block mb-2 text-muted-foreground text-xs">
+            <label className="block mb-2 text-muted-foreground text-xs text-left rtl:text-right">
                 {t("select_destination")}
             </label>
             <Select
@@ -37,7 +37,10 @@ export default function Destinations({
                         <SelectValue placeholder={t("select_destination")} />
                     </div>
                 </SelectTrigger>
-                <SelectContent className="max-h-[500px] overflow-y-auto">
+                <SelectContent
+                    className="max-h-[500px] overflow-y-auto"
+                    onPointerDownOutside={(e) => e.stopPropagation()}
+                >
                     {Object.entries(DC).map(([title, items]) => (
                         <SelectGroup key={title}>
                             <SelectLabel>{t(title)}</SelectLabel>

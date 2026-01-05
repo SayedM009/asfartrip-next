@@ -23,7 +23,7 @@ export default function Passengers({ t, PD, passengers, setPassengers }) {
 
     return (
         <div className="w-full">
-            <label className="block mb-2 text-muted-foreground text-xs">
+            <label className="block mb-2 text-muted-foreground text-xs text-left rtl:text-right">
                 {t("passengers")}
             </label>
 
