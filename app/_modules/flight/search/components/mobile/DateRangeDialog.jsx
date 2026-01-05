@@ -14,6 +14,7 @@ import { useTranslations } from "next-intl";
 import useCalendarLocale from "@/app/_hooks/useCalendarLocale";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import useCalculateDaysBetween from "@/app/_hooks/useCalculateDaysBetween";
+import handleRangeSelect from "@/app/_helpers/handleRangeSelect";
 
 function DateRangeDialog({
     tripType,
@@ -28,27 +29,6 @@ function DateRangeDialog({
     const { dateLocale } = useCalendarLocale();
     const formatDate = useDateFormatter();
     const differenceInDays = useCalculateDaysBetween(range?.from, range?.to);
-
-    const handleDayClick = (day) => {
-        onRangeDateChange((prev) => {
-            if (prev?.to) {
-                // If 'to' is already set, reset the range
-                return { from: day, to: undefined };
-            } else if (prev?.from) {
-                // If 'from' is set and 'to' is not
-                if (day < prev.from) {
-                    // If the new day is before the 'from' date, reset the range
-                    return { from: day, to: undefined };
-                } else {
-                    // Otherwise, set the 'to' date
-                    return { from: prev.from, to: day };
-                }
-            } else {
-                // If neither 'from' nor 'to' is set, set 'from'
-                return { from: day, to: undefined };
-            }
-        });
-    };
 
     const pattern = isRTL ? "EEEE d MMMM" : "EEE MMM d";
     return (
@@ -108,7 +88,13 @@ function DateRangeDialog({
                     <Calendar
                         mode="range"
                         selected={range}
-                        onDayClick={handleDayClick}
+                        onSelect={(newRange) =>
+                            handleRangeSelect(
+                                newRange,
+                                onRangeDateChange,
+                                range
+                            )
+                        }
                         className="rounded-lg w-full "
                         numberOfMonths={12}
                         hideNavigation

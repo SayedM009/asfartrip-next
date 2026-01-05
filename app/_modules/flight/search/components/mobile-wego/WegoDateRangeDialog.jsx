@@ -18,6 +18,7 @@ import useCalendarLocale from "@/app/_hooks/useCalendarLocale";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import useCalculateDaysBetween from "@/app/_hooks/useCalculateDaysBetween";
 import { useState } from "react";
+import handleRangeSelect from "@/app/_helpers/handleRangeSelect";
 
 /**
  * WegoDateRangeDialog - Wego-style date picker with full-row clickable trigger
@@ -42,27 +43,7 @@ export default function WegoDateRangeDialog({
     const formatDate = useDateFormatter();
     const differenceInDays = useCalculateDaysBetween(range?.from, range?.to);
 
-    const handleDayClick = (day) => {
-        onRangeDateChange((prev) => {
-            if (prev?.to) {
-                return { from: day, to: undefined };
-            } else if (prev?.from) {
-                if (day < prev.from) {
-                    return { from: day, to: undefined };
-                } else {
-                    return { from: prev.from, to: day };
-                }
-            } else {
-                return { from: day, to: undefined };
-            }
-        });
-    };
-
     const pattern = isRTL ? "EEEE, d MMMM" : "EEE, d MMM";
-
-    // Check if dates are selected
-    const hasDepartDate = tripType === "oneway" ? departDate : range?.from;
-    const hasReturnDate = tripType === "roundtrip" && range?.to;
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -135,7 +116,13 @@ export default function WegoDateRangeDialog({
                         <Calendar
                             mode="range"
                             selected={range}
-                            onDayClick={handleDayClick}
+                            onSelect={(newRange) =>
+                                handleRangeSelect(
+                                    newRange,
+                                    onRangeDateChange,
+                                    range
+                                )
+                            }
                             className="rounded-lg w-full"
                             numberOfMonths={12}
                             hideNavigation

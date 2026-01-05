@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Calendar } from "@/components/ui/calendar";
 import useCalendarLocale from "@/app/_hooks/useCalendarLocale";
+import handleRangeSelect from "@/app/_helpers/handleRangeSelect";
 
 /**
  * DateBottomSheet - Full-screen calendar sheet
@@ -25,26 +26,6 @@ export default function DateBottomSheet({
 }) {
     const t = useTranslations("Calender");
     const { dateLocale } = useCalendarLocale();
-
-    const handleDayClick = (day) => {
-        if (tripType === "roundtrip") {
-            onRangeChange((prev) => {
-                if (prev?.to) {
-                    return { from: day, to: undefined };
-                } else if (prev?.from) {
-                    if (day < prev.from) {
-                        return { from: day, to: undefined };
-                    } else {
-                        return { from: prev.from, to: day };
-                    }
-                } else {
-                    return { from: day, to: undefined };
-                }
-            });
-        } else {
-            onDepartDateChange(day);
-        }
-    };
 
     const handleApply = () => {
         onClose();
@@ -75,7 +56,9 @@ export default function DateBottomSheet({
                     <Calendar
                         mode="range"
                         selected={range}
-                        onDayClick={handleDayClick}
+                        onSelect={(newRange) =>
+                            handleRangeSelect(newRange, onRangeChange, range)
+                        }
                         className="rounded-lg w-full bg-transparent  text-black dark:text-white "
                         numberOfMonths={12}
                         hideNavigation
@@ -86,9 +69,7 @@ export default function DateBottomSheet({
                     <Calendar
                         mode="single"
                         selected={departDate}
-                        onSelect={(date) => {
-                            onDepartDateChange(date);
-                        }}
+                        onSelect={onDepartDateChange}
                         className="rounded-lg w-full bg-transparent  text-black dark:text-white "
                         numberOfMonths={12}
                         hideNavigation
