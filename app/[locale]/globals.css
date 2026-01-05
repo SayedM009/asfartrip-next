@@ -181,7 +181,8 @@
 
 @layer components {
     .container-custom {
-        @apply max-w-[96%] sm:max-w-[93%] 2xl:max-w-[65%] m-auto  p-2 pt-3 md:pt-4;
+        @apply max-w-[96%] sm:max-w-[93%] xl:max-w-[80%] 2xl:max-w-[65%]
+         m-auto  p-2 pt-3 md:pt-4;
     }
     .icons-hover-600 {
         @apply cursor-pointer  hover:bg-accent transition-colors py-1 px-1  md:px-3 rounded-md hover:text-accent-foreground;

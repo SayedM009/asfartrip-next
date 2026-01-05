@@ -1,6 +1,6 @@
 "use client";
 
-import { format, parse } from "date-fns";
+import { format, isValid, parse, parseISO } from "date-fns";
 import { enUS, arSA } from "date-fns/locale";
 import { useLocale } from "next-intl";
 
@@ -48,18 +48,46 @@ function useDisplayShortDate(pattern = "dd MMMM") {
 export default useDisplayShortDate;
 
 
+// export function useDateFormatter() {
+//     const locale = useLocale();
+
+//     return (isoDate, options = {}) => {
+//         if (!isoDate) return "";
+
+//         const actualLocale = locales[options.locale || locale] || enUS;
+
+//         const dateOnly = extractDateOnly(isoDate);
+//         const parsedDate = parse(dateOnly, "yyyy-MM-dd", new Date());
+
+//         return format(parsedDate, options.pattern || "EEE, d MMM yyyy", {
+//             locale: actualLocale,
+//         });
+//     };
+// }
+
+
 export function useDateFormatter() {
     const locale = useLocale();
 
-    return (isoDate, options = {}) => {
-        if (!isoDate) return "";
+    return (dateValue, options = {}) => {
+        if (!dateValue) return "";
 
         const actualLocale = locales[options.locale || locale] || enUS;
 
-        const dateOnly = extractDateOnly(isoDate);
-        const parsedDate = parse(dateOnly, "yyyy-MM-dd", new Date());
+        let parsedDate;
 
-        return format(parsedDate, options.pattern || "EEE, d MMM yyyy", {
+        if (typeof dateValue === 'string') {
+            parsedDate = parseISO(dateValue);
+        }
+        else if (dateValue instanceof Date) {
+            parsedDate = dateValue;
+        }
+
+        if (!parsedDate || !isValid(parsedDate)) {
+            return "";
+        }
+
+        return format(parsedDate, options.pattern || "dd-MM-yyyy", {
             locale: actualLocale,
         });
     };

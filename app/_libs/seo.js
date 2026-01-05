@@ -63,7 +63,7 @@ export function generatePageMetadata({
     };
 }
 
-export function buildWebPageJsonLd({ locale, path = "/", title, description }) {
+export function buildWebPageJsonLd({ locale, path = "/", title, description, image }) {
     const baseUrl = getBaseUrl();
     const normalizedPath =
         !path || path === "/" ? "" : path.startsWith("/") ? path : `/${path}`;
@@ -76,6 +76,7 @@ export function buildWebPageJsonLd({ locale, path = "/", title, description }) {
         description,
         url,
         inLanguage: locale,
+        image,
     };
 }
 

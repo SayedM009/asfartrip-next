@@ -30,6 +30,73 @@
             "metaKeywords": "flight booking status, check reservation status, flight confirmation, booking updates, flight payment status, verify booking, airline booking status"
         }
     },
+    "InsurancePage": {
+        "metaTitle": "Travel Insurance | Secure & Fast Online Policy Booking | AsfarTrip",
+        "metaDescription": "Protect your trip with AsfarTrip's secure travel insurance. Get instant coverage for medical emergencies, trip cancellations, and lost luggage with easy online payment.",
+        "metaKeywords": "travel insurance online, buy travel insurance, international travel cover, medical travel insurance, schengen visa insurance, travel policy reservation, secure insurance payment",
+        "features": {
+            "title": "TOP FEATURES",
+            "subtitle": "Comprehensive coverage and effortless claims with our premium insurance solutions",
+            "items": {
+                "fast": {
+                    "title": "FAST AND QUICK",
+                    "desc": "Experience swift and efficient insurance solutions tailored to your needs, ensuring you’re protected without any unnecessary delays."
+                },
+                "price": {
+                    "title": "BEST PRICE GUARANTEE",
+                    "desc": "Rest easy knowing you're getting the most competitive rates available, backed by our commitment to providing you with the best value."
+                },
+                "decide": {
+                    "title": "YOU DECIDE!",
+                    "desc": "Customize your insurance plan according to your preferences and requirements, giving you the flexibility to choose the coverage."
+                },
+                "insure": {
+                    "title": "INSURE YOUR INSURANCE",
+                    "desc": "Enjoy an extra layer of security by safeguarding your existing policies, ensuring you're prepared for unexpected circumstances."
+                }
+            }
+        },
+        "plans": {
+            "title": "Choose Your Perfect Coverage Plan",
+            "subtitle": "From a single getaway to frequent global explorations, discover flexible insurance plans designed to protect you for up to two full years.",
+            "items": {
+                "single": {
+                    "title": "Single Trip",
+                    "desc": "Perfect coverage for a one-time journey with a set destination."
+                },
+                "annual": {
+                    "title": "Annual Multi-trip",
+                    "desc": "Full coverage for all your travels throughout a whole year."
+                },
+                "biennial": {
+                    "title": "Biennial Plan",
+                    "desc": "The most cost-effective solution for frequent flyers, valid for 2 years."
+                }
+            }
+        },
+        "coverage": {
+            "title": "Comprehensive Travel Protection",
+            "subtitle": "We've got you covered globally. Focus on your journey while we take care of the unexpected.",
+            "items": {
+                "medical": {
+                    "title": "Medical Emergencies",
+                    "desc": "Full coverage for sudden illnesses, accidents, and emergency hospital treatments abroad."
+                },
+                "luggage": {
+                    "title": "Baggage Protection",
+                    "desc": "Compensation for lost, stolen, or damaged luggage and personal belongings during your trip."
+                },
+                "cancellation": {
+                    "title": "Trip Cancellation",
+                    "desc": "Refund of non-refundable trip costs if you have to cancel due to unforeseen events."
+                },
+                "repatriation": {
+                    "title": "Global Assistance",
+                    "desc": "24/7 emergency medical evacuation and repatriation services to your home country."
+                }
+            }
+        }
+    },
     "Profile": {
         "metaTitle": "My Account & Profile | Manage Bookings & Travel Details | AsfarTrip",
         "metaDescription": "Manage your AsfarTrip account, update personal information, view your booking history, save traveller details, and access exclusive member features for a smoother travel experience.",
@@ -2306,5 +2373,51 @@
         "try_again": "Try Again",
         "go_home": "Go to Homepage",
         "support_message": "If the problem persists, please contact us at"
+    },
+    "Insurance": {
+        "search": {
+            "select_destination": "Select Destination",
+            "gulf_countries": "Gulf Countries",
+            "uae": "United arab emirates",
+            "saudi": "Saudi Arabia",
+            "qatar": "Qatar",
+            "oman": "Oman",
+            "kuwait": "Kuwait",
+            "bahrain": "Bahrain",
+            "jordan": "Jordan",
+            "lebanon": "Lebanon",
+            "europe": "Europe",
+            "europe_inc": "Europe including schengen",
+            "asia": "Asia",
+            "india": "India",
+            "pakistan": "Pakistan",
+            "bangladesh": "Bangladesh",
+            "srilanka": "Srilanka",
+            "worldwide_ex": "Worldwide ex USA / Canada",
+            "select_trip_type": "Select Trip Type",
+            "worldwide": "Worldwide",
+            "trip_type": "Trip Type",
+            "single": "Single Trip",
+            "annual": "Annual Travel",
+            "biennial": "2 Year Travel",
+            "dates": "Dates",
+            "travel_date": "Travel Date",
+            "return_date": "Return Date",
+            "passengers": "Passengers",
+            "adults": "Adults",
+            "children": "Children",
+            "seniors": "Seniors",
+            "search": "Search",
+            "passengers_details_label": "Select number of travelers",
+            "age": "Age",
+            "errors": {
+                "destination_required": "Please select a destination",
+                "trip_type_required": "Please select a trip type",
+                "dates_required": "Please select a date",
+                "passengers_required": "Please select at least one passenger",
+                "travel_date_required": "Please select a travel date",
+                "return_date_required": "Please select a return date"
+            }
+        }
     }
 }
