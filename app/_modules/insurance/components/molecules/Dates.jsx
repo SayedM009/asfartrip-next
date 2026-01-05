@@ -27,24 +27,33 @@ export default function Dates({
     // Handler for range selection
     // - If range is complete and user clicks again, reset and start fresh
     // - First click: set only 'from'
-    // - Second click: set 'to' and close popover
+    // - Second click (different date): set 'to' and close popover
     const handleRangeSelect = (newRange) => {
         if (!newRange) {
             setRange({ from: null, to: null });
             return;
         }
 
+        // Check if from and to are the same date (first click - library sets both to same value)
+        const isSameDate =
+            newRange.from &&
+            newRange.to &&
+            newRange.from.getTime() === newRange.to.getTime();
+
+        // If same date, treat as first click - only set 'from', keep popover open
+        if (isSameDate) {
+            setRange({ from: newRange.from, to: null });
+            return;
+        }
+
         // If we already have a complete range and user clicked a new date,
-        // the library keeps 'from' and moves 'to'. We want to reset and start fresh.
-        // Check: if the old range was complete and now 'to' changed but 'from' stayed same
+        // Reset and start fresh with new 'from'
         if (range?.from && range?.to && newRange.from && newRange.to) {
-            // User clicked on a new date after complete selection
-            // Reset to treat this as starting a new range
             setRange({ from: newRange.to, to: null });
             return;
         }
 
-        // If 'to' is now selected, we have a complete range - close the popover
+        // If 'to' is now selected (different from 'from'), we have a complete range - close
         if (newRange.from && newRange.to) {
             setRange(newRange);
             setIsOpen(false);
