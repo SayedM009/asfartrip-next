@@ -13,10 +13,11 @@ import Dates from "../molecules/Dates";
 import Passengers from "../molecules/Passengers";
 import useSearchValidation from "../../hooks/useSearchValidation";
 import validTravelDate from "../../utils/validTravelDate";
-import extractDestination from "../../utils/extractDestination";
+import { extractDestinationCode } from "../../utils/extractDestinationCode";
+import { extractCountryCode } from "../../utils/extractCountryCode";
 import { useRouter } from "@/i18n/navigation";
 
-function InsuranceSearchForm() {
+function InsuranceSearchForm({ onClose }) {
     const [destination, setDestination] = useState("");
     const [tripType, setTripType] = useState("");
     const [selectedDate, setSelectedDate] = useState();
@@ -44,17 +45,21 @@ function InsuranceSearchForm() {
         if (!isValid) return;
 
         const searchParams = {
-            destination: extractDestination(destination),
+            region: extractDestinationCode(destination),
             tripType,
             dates: JSON.stringify(
                 validTravelDate(tripType, selectedDate, range, formatDate)
             ),
             passengers: JSON.stringify(passengers),
+            country: extractCountryCode(destination),
         };
 
         router.push(
             "/insurance/results?" + new URLSearchParams(searchParams).toString()
         );
+
+        // Close research dialog on results page
+        onClose?.();
     }
 
     function handleSubmit(e) {

@@ -1,6 +1,6 @@
 export const destinationsCountries = {
     gulf_countries: [
-        { value: "ARE", label: "uae" },
+        { value: "ARE-uae", label: "uae" },
         { value: "gulf-sa", label: "saudi" },
         { value: "gulf-qat", label: "qatar" },
         { value: "gulf-oman", label: "oman" },

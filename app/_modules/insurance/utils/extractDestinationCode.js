@@ -3,8 +3,7 @@
  * @param {string} destination - Destination value (e.g., "gulf-sa" or "europe")
  * @returns {string} Extracted destination code
  */
-export function extractDestination(destination) {
+export function extractDestinationCode(destination) {
     return destination.includes("-") ? destination.split("-")[0] : destination;
 }
 
-export default extractDestination;

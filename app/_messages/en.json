@@ -2408,6 +2408,7 @@
             "children": "Children",
             "seniors": "Seniors",
             "search": "Search",
+
             "passengers_details_label": "Select number of travelers",
             "age": "Age",
             "errors": {
@@ -2418,6 +2419,47 @@
                 "travel_date_required": "Please select a travel date",
                 "return_date_required": "Please select a return date"
             }
+        },
+        "results": {
+            "passenger": "Passenger",
+            "passengers": "Passengers",
+            "uae": "United arab emirates",
+            "sa": "Saudi Arabia",
+            "qat": "Qatar",
+            "oman": "Oman",
+            "kw": "Kuwait",
+            "bh": "Bahrain",
+            "jor": "Jordan",
+            "lbn": "Lebanon",
+            "europe": "Europe",
+            "europe_inc": "Europe including schengen",
+            "asia": "Asia",
+            "ind": "India",
+            "pak": "Pakistan",
+            "bgd": "Bangladesh",
+            "sri": "Srilanka",
+            "worldwide_ex": "Worldwide ex USA / Canada",
+            "worldwide": "Worldwide",
+            "title": "Research",
+            "standard_traveler": "Standard Traveler",
+            "standard_traveler_annual": "Standard Traveler Annual",
+            "standard_traveler_2_year": "Standard Traveler 2 Year",
+            "premier_traveler": "Premium Traveler",
+            "premier_traveler_annual": "Premium Traveler Annual",
+            "premier_traveler_2_year": "Premium Traveler 2 Year",
+            "elite_traveler": "Elite Traveler",
+            "elite_traveler_annual": "Elite Traveler Annual",
+            "elite_traveler_2_year": "Elite Traveler 2 Year",
+            "covid_only_150k_single_/_multiple_entry": "Covid Only 150K Single / Multiple Entry",
+            "200k_medex_single_entry": "200K Medex Single Entry",
+            "price": "Price",
+            "included_benefits": "Included Benefits",
+            "plan_details": "Plan Details",
+            "more": "More",
+            "emergency_medical": "Emergency Medical",
+            "personal_liability": "Personal Liability",
+            "trip_cancellation_/_curtailment": "Trip Cancellation / Curtailment",
+            "not_covered": "Not Covered"
         }
     }
 }

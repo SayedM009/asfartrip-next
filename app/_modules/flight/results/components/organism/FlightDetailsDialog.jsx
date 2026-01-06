@@ -196,7 +196,7 @@ export function FlightDetailsDialog({
             <DialogContent
                 className={cn(
                     "dialog-bg",
-                    "max-w-none h-full overflow-auto rounded-none border-0 md:rounded sm:fixed sm:left-[87%]",
+                    "max-w-none h-full overflow-auto rounded-none border-0 md:rounded sm:fixed md:left-[75%] lg:left-[80%] xl:left-[83%] 2xl:left-[87%]",
                     "open-slide-right close-slide-right"
                 )}
             >
