@@ -1,20 +1,27 @@
+import { headers } from "next/headers";
+
 export async function fetchQuotesAPI(body, signal) {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
-    const res = await fetch(`${baseUrl}/api/insurance/get-quotes`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-        signal,
-    });
+    const host = (await headers()).get('host');
 
-    let data;
+    const protocol = host.includes('localhost') ? 'http' : 'https';
+
+    const baseUrl = `${protocol}://${host}`;
+
     try {
-        data = await res.json();
-    } catch (e) {
-        console.error('Failed to parse JSON:', e);
-        data = { error: 'Invalid JSON response', raw: res };
-    }
+        const res = await fetch(`${baseUrl}/api/insurance/get-quotes`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+            signal,
+        });
 
-    return { ok: res.ok, status: res.status, data };
+        if (!res.ok) throw new Error(`Error: ${res.status}`);
+
+        const data = await res.json();
+        return { ok: true, data };
+    } catch (e) {
+        console.error('Fetch error on server:', e);
+        return { ok: false, error: e.message };
+    }
 }
