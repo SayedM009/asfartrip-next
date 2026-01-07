@@ -85,7 +85,7 @@ export default async function Page({ searchParams, params }) {
             />
 
             {/* Desktop Navbar */}
-            <div className="hidden sm:block">
+            <div className="hidden md:block">
                 <Navbar />
             </div>
 

@@ -17,14 +17,13 @@ import PlanDetailsDialog from "./PlanDetailsDialog";
 import { benefits } from "../../constants/benefits";
 import { useTranslations } from "next-intl";
 
-// 2. تعريف إعدادات الحركة (Variants)
 const cardVariants = {
-    hidden: { opacity: 0, y: 20 }, // الحالة الابتدائية (مخفي وتحت بـ 20 بكسل)
+    hidden: { opacity: 0, y: 20 },
     visible: (i) => ({
         opacity: 1,
         y: 0,
         transition: {
-            delay: i * 0.2, // التأخير المتسلسل بناءً على رقم الكارت
+            delay: i * 0.2,
             duration: 0.4,
             ease: "easeOut",
         },
@@ -36,13 +35,12 @@ function InsuranceCard({ quote, index }) {
     const t = useTranslations("Insurance.results");
 
     return (
-        // 3. تحويل الحاوية الخارجية إلى motion.div
         <motion.div
-            custom={index} // نمرر الـ index للتحكم في التوقيت
+            custom={index}
             initial="hidden"
             animate="visible"
             variants={cardVariants}
-            className="h-full" // لضمان ثبات الطول داخل الـ Grid
+            className="h-full"
         >
             <Card className="block hover:shadow-lg transition-shadow duration-300 pb-0 h-full ">
                 <CardHeader className="pb-2">

@@ -19,7 +19,6 @@ function prepareRequestData(params) {
             seniors: String(parsedPassengers.seniors || 0),
         };
 
-        // ✅ Fix: return trip needs return_date, not single
         const tripType = params.trip_type || params.tripType;
         if (tripType === "single" && parsedDates.to) {
             requestData.return_date = parsedDates.to;

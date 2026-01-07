@@ -96,7 +96,7 @@ class InsuranceService {
             }
 
             console.error(
-                ` [${new Date().toISOString()}] [${requestId}] FlightService Error:`,
+                ` [${new Date().toISOString()}] [${requestId}] InsuranceService Error:`,
                 error.message
             );
             throw error;
@@ -104,7 +104,7 @@ class InsuranceService {
     }
 
     /**
-     * Search for flights
+     * Search for Quotes
      * @param {Object} searchParams - Search parameters
      * @param {string} requestId - Optional request ID
      */
@@ -113,20 +113,44 @@ class InsuranceService {
     }
 
     /**
-     * Check flight pricing
-     * @param {Object} pricingParams - Pricing parameters
-     * @param {string} requestId - Optional request ID
+     * Add to Cart
+     * @param {string} request - Serialized request data
+     * @param {string} quoteId - Quote ID
+     * @param {string} schemeId - Scheme ID
+     * @param {string} plan - Plan ID (optional)
+     * @param {string} requestId - Request ID for logging
      */
-    async checkPricing(pricingParams, requestId) {
-        return this.request("/api/flight/airpricing", pricingParams, requestId, 45000);
+    async addToCart(request, quoteId, schemeId, plan, requestId) {
+        console.log(`[${requestId}] addToCart called with:`, {
+            request: typeof request === 'string' ? request.substring(0, 100) : request,
+            quoteId,
+            schemeId,
+            plan: typeof plan === 'string' ? plan.substring(0, 100) : plan
+        });
+
+        const params = {
+            request: request,
+            quote_id: String(quoteId),
+            scheme_id: String(schemeId),
+            plan: plan || ""
+        };
+
+        return this.request("/api/v2/insurance/addtocart", params, requestId);
     }
+
     /**
-     * Get cart details
-     * @param {string} sessionId - Session ID
-     * @param {string} requestId - Optional request ID
+     * Get Cart
+     * @param {string} sessionId - Session ID from addToCart response
+     * @param {string} requestId - Request ID for logging
      */
     async getCart(sessionId, requestId) {
-        return this.request("/api/flight/getCart", { session_id: sessionId }, requestId);
+        console.log(`[${requestId}] getCart called with session_id: ${sessionId}`);
+
+        const params = {
+            session_id: String(sessionId)
+        };
+
+        return this.request("/api/v2/insurance/getcart", params, requestId);
     }
 
     /**

@@ -95,6 +95,16 @@
                     "desc": "24/7 emergency medical evacuation and repatriation services to your home country."
                 }
             }
+        },
+        "Results": {
+            "metaTitle": "Travel Insurance Results | Secure & Fast Online Policy Results | AsfarTrip",
+            "metaDescription": "Choose the insurance plan that best suits your needs and book your trip with AsfarTrip. Get instant coverage for medical emergencies, trip cancellations, and lost luggage with easy online payment.",
+            "metaKeywords": "travel insurance booking online, secure travel insurance reservation, book travel insurance tickets, travel itinerary, select seats, confirm booking, online payment flights, reserve airline tickets"
+        },
+        "Booking": {
+            "metaTitle": "Travel Insurance Booking | Secure & Fast Online Policy Booking | AsfarTrip",
+            "metaDescription": "Choose the insurance plan that best suits your needs and book your trip with AsfarTrip. Get instant coverage for medical emergencies, trip cancellations, and lost luggage with easy online payment.",
+            "metaKeywords": "travel insurance booking online, secure travel insurance reservation, book travel insurance tickets, travel itinerary, select seats, confirm booking, online payment flights, reserve airline tickets"
         }
     },
     "Profile": {
@@ -2459,7 +2469,12 @@
             "emergency_medical": "Emergency Medical",
             "personal_liability": "Personal Liability",
             "trip_cancellation_/_curtailment": "Trip Cancellation / Curtailment",
-            "not_covered": "Not Covered"
+            "not_covered": "Not Covered",
+            "book_now": "Book Now",
+            "adding": "Adding...",
+            "added": "Added!",
+            "no_insurance_plans": "No Insurance Plans Found",
+            "we_could_not_find_any_insurance_plans": "We are sorry, we could not find any insurance plans for your search criteria."
         }
     }
 }
