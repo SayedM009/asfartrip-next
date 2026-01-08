@@ -161,7 +161,6 @@ export default function BookingPage({
                 <div className="flex-1 space-y-6">
                     {!isLogged && <TravelerLoginSection />}
 
-                    {console.log(travelers)}
                     {/* Travelers */}
                     <section>
                         <div className="flex items-center justify-between mb-4">

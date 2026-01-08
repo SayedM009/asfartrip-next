@@ -56,12 +56,13 @@ export default function SavedTravelerSelect({ onSelect }) {
                     </Button>
                 </PopoverTrigger>
 
-                <PopoverContent className="p-0" align="start">
+                <PopoverContent
+                    className="p-0"
+                    align="start"
+                    onOpenAutoFocus={(e) => e.preventDefault()}
+                >
                     <Command shouldFilter={true}>
-                        <CommandInput
-                            placeholder={t("search_travelers")}
-                            autoFocus={false}
-                        />
+                        <CommandInput placeholder={t("search_travelers")} />
 
                         <CommandList>
                             <CommandEmpty>

@@ -147,9 +147,12 @@ export default function CountryCodeSelect({ value, onValueChange }) {
                 </Button>
             </PopoverTrigger>
 
-            <PopoverContent className="p-0 w-40">
+            <PopoverContent
+                className="p-0 w-40"
+                onOpenAutoFocus={(e) => e.preventDefault()}
+            >
                 <Command shouldFilter={true}>
-                    <CommandInput placeholder="Search..." autoFocus={false} />
+                    <CommandInput placeholder="Search..." />
                     <CommandList>
                         <CommandGroup>
                             {countries.map((c) => (

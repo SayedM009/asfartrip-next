@@ -5,12 +5,10 @@ import { Button } from "@/components/ui/button";
 import ChevronBasedOnLanguage from "@/app/_components/ui/ChevronBasedOnLanguage";
 import { useTranslations } from "next-intl";
 import PlanSummaryDialog from "./PlanSummaryDialog";
-import { useKeyboardVisible } from "@/app/_hooks/useKeyboardVisible";
 
 /**
  * Mobile Bottom Bar for Insurance booking
  * Shows PlanSummaryDialog trigger and proceed to payment button
- * Hides when keyboard is open
  */
 export default function MobileBottomBar({
     handleProceedToPayment,
@@ -18,10 +16,6 @@ export default function MobileBottomBar({
     quote,
 }) {
     const t = useTranslations("Insurance");
-    const isKeyboardVisible = useKeyboardVisible();
-
-    // Hide when keyboard is open
-    if (isKeyboardVisible) return null;
 
     return (
         <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg z-50">

@@ -22,6 +22,9 @@ export default async function RootLayout({ children, params }) {
 
     return (
         <html lang={locale} dir={isRTL ? "rtl" : "ltr"} suppressHydrationWarning>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content" />
+            </head>
             <body className={`${cairo.className} antialiased`}>
                 <AuthProvider>
                     <NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Dubai">
