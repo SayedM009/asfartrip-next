@@ -19,16 +19,25 @@ import { useCurrencyStore } from "@/app/_modules/currency/store/useCurrencyStore
 import { Loader2, AlertCircle } from "lucide-react";
 import useHandleBookNow from "@/app/_modules/insurance/hooks/useHandleBookNow";
 
-function PlanDetailsDialog({ quote }) {
+function PlanDetailsDialog({ quote, withContinue = true, trigger }) {
     const { formatPrice } = useCurrencyStore();
     const t = useTranslations("Insurance.results");
     const { handleBookNow, isLoading, error, success } = useHandleBookNow();
     return (
         <Dialog dir="ltr">
-            <DialogTrigger className="w-full" dir="ltr">
-                <button className="w-full bg-accent-500 text-primary-foreground py-2 rounded-md hover:opacity-90 transition-opacity cursor-pointer dark:text-white">
-                    {t("plan_details")}
-                </button>
+            <DialogTrigger
+                className={`${trigger ? "" : "w-full"}`}
+                dir={trigger ? "" : "ltr"}
+            >
+                {trigger ? (
+                    <button className="text-blue-500 dark:text-blue-400 text-sm flex items-center gap-1 cursor-pointer">
+                        {trigger.icon} {t("plan_details")}
+                    </button>
+                ) : (
+                    <button className="w-full bg-accent-500 text-primary-foreground py-2 rounded-md hover:opacity-90 transition-opacity cursor-pointer dark:text-white">
+                        {t("plan_details")}
+                    </button>
+                )}
             </DialogTrigger>
             <DialogContent
                 className={cn(
@@ -95,31 +104,33 @@ function PlanDetailsDialog({ quote }) {
                             </div>
                         )}
 
-                        <div className="flex justify-between items-center mt-6 pt-4 border-t sticky bottom-[3px] w-full  bg-background">
-                            <div>
-                                <div className="text-sm text-muted-foreground">
-                                    {t("price")}
+                        {withContinue && (
+                            <div className="flex justify-between items-center mt-6 pt-4 border-t sticky bottom-[3px] w-full  bg-background">
+                                <div>
+                                    <div className="text-sm text-muted-foreground">
+                                        {t("price")}
+                                    </div>
+                                    <div className="text-2xl font-bold">
+                                        {formatPrice(quote.scheme.premium)}
+                                    </div>
                                 </div>
-                                <div className="text-2xl font-bold">
-                                    {formatPrice(quote.scheme.premium)}
-                                </div>
-                            </div>
-                            <button
-                                onClick={() => handleBookNow(quote)}
-                                disabled={isLoading || success}
-                                className="bg-accent-500 dark:text-white text-primary-foreground py-3 px-8 rounded-md hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 min-w-[140px] justify-center font-semibold"
-                            >
-                                {isLoading && (
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                )}
+                                <button
+                                    onClick={() => handleBookNow(quote)}
+                                    disabled={isLoading || success}
+                                    className="bg-accent-500 dark:text-white text-primary-foreground py-3 px-8 rounded-md hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 min-w-[140px] justify-center font-semibold"
+                                >
+                                    {isLoading && (
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                    )}
 
-                                {success
-                                    ? t("added")
-                                    : isLoading
-                                    ? t("adding")
-                                    : t("book_now")}
-                            </button>
-                        </div>
+                                    {success
+                                        ? t("added")
+                                        : isLoading
+                                        ? t("adding")
+                                        : t("book_now")}
+                                </button>
+                            </div>
+                        )}
                     </DialogDescription>
                 </DialogHeader>
             </DialogContent>

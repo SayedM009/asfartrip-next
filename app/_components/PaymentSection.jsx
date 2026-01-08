@@ -1,47 +1,37 @@
-import { use, useState } from "react";
-import {
-    CreditCard,
-    Wallet,
-    Bitcoin,
-    Check,
-    Loader2,
-    Ticket,
-} from "lucide-react";
+"use client";
+
+import { useState, use } from "react";
+import { CreditCard, Wallet, Bitcoin, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import useBookingStore from "../../store/bookingStore";
-import TimeoutPopup from "@/app/_components/ui/TimeoutPopup";
-import FareSummaryDialog from "./FareSummaryDialog";
 import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 import { BackWardButtonWithDirections } from "@/app/_components/navigation/BackwardButton";
-import LoyaltyPointsBanner from "@/app/_modules/loyalty/components/organisms/LoyaltyPointsBanner";
-import PayWithLoyaltyPoints from "@/app/_modules/loyalty/components/organisms/PayWithLoyaltyPoints";
 import { WebsiteConfigContext } from "@/app/_modules/config";
-
 import CardsAccepted from "@/app/_components/footer/CardsAccepted";
-import { FlightDetailsDialog } from "../../../results/components/organism/FlightDetailsDialog";
 import TopMobileSection from "@/app/_components/TopMobileSection";
 import BookingPageTitle from "@/app/_components/BookingPageTitle";
 import BookingPageSubTitle from "@/app/_components/BookingPageSubTitle";
 
+/**
+ * Shared Payment Section component
+ * Used by both Flight and Insurance booking pages
+ */
 export default function PaymentSection({
     onConfirmPayment,
     backTo,
     loading,
     iframeSrc,
+    totalAmount,
+    MobileDetailsSlot, // Custom slot for mobile details dialog
+    BannerSlot, // Custom slot for loyalty/promo banners
 }) {
     const [selectedMethod, setSelectedMethod] = useState("card");
-
     const { payment_gateways } = use(WebsiteConfigContext);
-
-    const supportedGateways = payment_gateways.map((p) => p.name.toLowerCase());
-
-    const { ticket, searchURL, getTotalPrice } = useBookingStore();
-    const totalAmount = getTotalPrice();
+    const supportedGateways =
+        payment_gateways?.map((p) => p.name.toLowerCase()) || [];
     const p = useTranslations("Payment");
-    const t = useTranslations("Flight");
 
     const paymentMethods = [
         {
@@ -108,28 +98,17 @@ export default function PaymentSection({
                             />
                         </div>
                     </div>
-                    <div className="text-right shrink-0 rtl:text-left flex items-end">
-                        <div className="text-lg text-primary-600 dark:text-primary-400">
-                            <FlightDetailsDialog
-                                ticket={ticket}
-                                // isOpen={showDetailsDialog}
-                                // onClose={() =>
-                                //     setShowDetailsDialog(!showDetailsDialog)
-                                // }
-                                withContinue={false}
-                                trigger={{
-                                    title: t("booking.details"),
-                                    icon: <Ticket className="w-4 h-4" />,
-                                }}
-                            />
+                    {MobileDetailsSlot && (
+                        <div className="text-right shrink-0 rtl:text-left flex items-end">
+                            <div className="text-lg text-primary-600 dark:text-primary-400">
+                                {MobileDetailsSlot}
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </TopMobileSection>
-                {/* Loyalty Points Banner */}
-                <LoyaltyPointsBanner price={totalAmount} />
 
-                {/* Pay with Loyalty  Points */}
-                <PayWithLoyaltyPoints />
+                {/* Custom Banner Slot */}
+                {BannerSlot}
             </div>
 
             <GateWays
@@ -140,51 +119,47 @@ export default function PaymentSection({
                 t={p}
             />
 
-            {/* Payment Details Form */}
+            {/* Telr iFrame */}
             {selectedMethod === "card" &&
                 supportedGateways.includes("telr") && (
                     <TelrIframe src={iframeSrc} />
                 )}
+
             {/* Confirm Payment Button */}
             <PaymentButton
                 onConfirmPayment={onConfirmPayment}
                 loading={loading}
+                totalAmount={totalAmount}
                 isTelrCard={
                     selectedMethod === "card" &&
                     supportedGateways.includes("telr")
                 }
             />
-
-            <TimeoutPopup timeoutMinutes={12} redirectLink={searchURL} />
         </div>
     );
 }
 
-function PaymentButton({ onConfirmPayment, loading, isTelrCard }) {
-    const { getTotalPrice } = useBookingStore();
-    const totalAmount = getTotalPrice();
+function PaymentButton({ onConfirmPayment, loading, totalAmount, isTelrCard }) {
     const { formatPrice } = useCurrency();
     const p = useTranslations("Payment");
+
     return (
         <div
             className={cn(
-                "fixed bottom-0 left-0 right-0 sm:relative bg-white dark:bg-gray-800 border-t border-border shadow-lg z-50 ",
+                "fixed bottom-0 left-0 right-0 sm:relative bg-white dark:bg-gray-800 border-t border-border shadow-lg z-50",
                 isTelrCard && "block md:hidden"
             )}
         >
             <div className="p-3">
-                <div className="sm:hidden">
-                    <FareSummaryDialog />
-                </div>
                 {!isTelrCard && (
                     <Button
                         onClick={onConfirmPayment}
                         className={cn(
                             `py-5 sm:py-7 sm:text-lg font-semibold
-                    bg-gradient-to-r from-primary-700 to-accent-400
-                    hover:from-primary-600 hover:to-accent-500
-                    text-white shadow-md hover:shadow-lg
-                     duration-300 cursor-pointer rounded-sm w-full transition-colors gap-4  `
+                            bg-gradient-to-r from-primary-700 to-accent-400
+                            hover:from-primary-600 hover:to-accent-500
+                            text-white shadow-md hover:shadow-lg
+                            duration-300 cursor-pointer rounded-sm w-full transition-colors gap-4`
                         )}
                         size="lg"
                         disabled={loading}
@@ -196,7 +171,7 @@ function PaymentButton({ onConfirmPayment, loading, isTelrCard }) {
                                 p("pay_now")
                             )}
                         </span>
-                        {formatPrice(totalAmount, "white")}
+                        {totalAmount && formatPrice(totalAmount, "white")}
                     </Button>
                 )}
             </div>
@@ -207,12 +182,12 @@ function PaymentButton({ onConfirmPayment, loading, isTelrCard }) {
 function TelrIframe({ src }) {
     const p = useTranslations("Payment");
     if (!src) return null;
+
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-border p-4 min-h-6 mb-16">
             <h3 className="mb-6 pb-4 border-b border-border rtl:text-right">
                 {p("card")}
             </h3>
-
             <iframe
                 src={src}
                 width="100%"
@@ -236,13 +211,13 @@ function GateWays({
 }) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 sm:mt-auto">
-            {paymentMethods.map((method) => {
+            {paymentMethods.map((method, index) => {
                 const Icon = method.icon;
                 const isSelected = selectedMethod === method.id;
                 if (!supportedGateways.includes(method.name)) return null;
                 return (
                     <button
-                        key={method.id}
+                        key={`${method.id}-${method.name}-${index}`}
                         onClick={() => setSelectedMethod(method.id)}
                         className={cn(
                             "p-2 rounded-lg border-2 transition-all text-left rtl:text-right",
@@ -251,7 +226,7 @@ function GateWays({
                                 : "border-gray-200 dark:border-gray-700 hover:border-blue-300"
                         )}
                     >
-                        <div className="flex items-center gap-4 ">
+                        <div className="flex items-center gap-4">
                             <div
                                 className={cn(
                                     "p-2 rounded-lg shrink-0",
@@ -268,7 +243,7 @@ function GateWays({
                                 {method.img ? (
                                     <Image
                                         src={method.img}
-                                        alt={` payment with ${method.id}`}
+                                        alt={`payment with ${method.id}`}
                                         className={method.class}
                                         width={method.width || 40}
                                         height={method.height || 40}
@@ -291,7 +266,7 @@ function GateWays({
                                 )}
                             </div>
                             <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-0 ">
+                                <div className="flex items-center gap-2 mb-0">
                                     <h4 className="font-semibold">
                                         {t(`${method.id}`)}
                                     </h4>

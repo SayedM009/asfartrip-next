@@ -3,20 +3,14 @@
 import React from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
 
-import { BOOKING_STEPS } from "../../config/steps.config";
-
-export default function BookingSteps({ currentStep }) {
-    const t = useTranslations("Flight");
-
+export default function BookingSteps({ steps, currentStep, t }) {
     return (
         <div className="hidden lg:block bg-transparent border-b border-border">
             <div className="max-w-7xl mx-auto py-4">
                 <div className="flex items-center justify-between">
-                    {BOOKING_STEPS.map((step, index) => (
+                    {steps?.map((step, index) => (
                         <React.Fragment key={step.id}>
-                            {/* STEP NUMBER / CHECK ICON */}
                             <div className="flex items-center gap-3">
                                 <div
                                     className={cn(
@@ -58,7 +52,7 @@ export default function BookingSteps({ currentStep }) {
                             </div>
 
                             {/* CONNECTOR */}
-                            {index < BOOKING_STEPS.length - 1 && (
+                            {index < steps.length - 1 && (
                                 <div
                                     className={cn(
                                         "flex-1 h-0.5 mx-3",

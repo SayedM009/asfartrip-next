@@ -1863,6 +1863,7 @@
         "adult": "بالغ",
         "child": "طفل",
         "infant": "رضيع",
+        "senior": "كبير السن",
         "day": "يوم",
         "month": "شهر",
         "year": "سنة",
@@ -1874,6 +1875,9 @@
         "age_must_be_12_or_above": "يجب أن يكون عمر البالغ 12 سنة أو أكثر",
         "age_must_be_between_2_and_12": "يجب أن يكون عمر الطفل بين 2 و 11 سنة",
         "age_must_be_under_2": "يجب أن يكون عمر الرضيع أقل من سنتين",
+        "age_must_be_17_to_65": "يجب أن يكون عمر البالغ بين 17 و 65 سنة",
+        "age_must_be_0_to_16": "يجب أن يكون عمر الطفل بين 0 و 16 سنة",
+        "age_must_be_66_to_75": "يجب أن يكون عمر كبير السن بين 66 و 75 سنة",
         "you": "أنت",
         "full_name_required": "الإسم الكامل مطلوب",
         "email_required": "الإيميل مطلوب",
@@ -2395,6 +2399,17 @@
         "go_home": "العودة للصفحة الرئيسية",
         "support_message": "إذا استمرت المشكلة، يرجى التواصل معنا على"
     },
+    "Common": {
+        "error": "خطأ",
+        "something_went_wrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+        "close": "إغلاق",
+        "cancel": "إلغاء",
+        "confirm": "تأكيد",
+        "save": "حفظ",
+        "loading": "جاري التحميل...",
+        "success": "نجاح",
+        "warning": "تحذير"
+    },
     "Insurance": {
         "search": {
             "select_destination": "اختر وجهة",
@@ -2487,6 +2502,26 @@
             "added": "تم الإضافة!",
             "no_insurance_plans": "لا يوجد خطط تأمين",
             "we_could_not_find_any_insurance_plans": "نحن آسفون، لم نتمكن من العثور على أي خطط تأمين لمعايير البحث الخاصة بك."
+        },
+        "booking": {
+            "plan_selection": "إختيار الخطة",
+            "complated": "مكتمل",
+            "enter_traveler_information": "أدخل معلومات المسافر",
+            "enter_traveler_information_helper": "معلومات المسافر والاتصال.",
+            "traveler_information": "معلومات المسافر",
+            "traveler": "مسافر",
+            "travelers": "مسافرين",
+            "payment": "الدفع",
+            "plan_summary": "ملخص الخطة",
+            "details": "تفاصيل",
+            "plan_type": "نوع الخطة",
+            "plan_type_helper": "نوع الخطة التي تريدها",
+            "price_details": "تفاصيل السعر",
+            "base_fare": "السعر الأساسي",
+            "taxes_and_fees": "الضريبة والرسوم",
+            "total_fare": "السعر الإجمالى",
+            "proceed_to_payment": "المتابعة إلى الدفع",
+            "plan_details": "تفاصيل الخطة"
         }
     }
 }

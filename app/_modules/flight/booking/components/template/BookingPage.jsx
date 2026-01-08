@@ -14,14 +14,11 @@ import { useContactInfo } from "../../hooks/useContactInfo";
 import useBookingStore from "../../store/bookingStore";
 
 // Atoms / Molecules / Organisms /
-import BookingSteps from "../organism/BookingSteps";
-import TravelerLoginSection from "../molecule/TravelerLoginSection";
+import BookingSteps from "@/app/_components/BookingSteps";
 import TravelerInformationSection from "../organism/TravelerInformationSection";
 import ContactInformation from "../molecule/ContactInformation";
-import BookingPageTravellerInfoSubTitle from "../molecule/BookingPageTravellerInfoSubTitle";
 import MobileBottomBar from "../molecule/MobileBottomBar";
-import BookingPageTravellerInfoTitle from "../atoms/BookingPageTravellerInfoTitle";
-import TopMobileSection from "../organism/TopMobileSection";
+import TopMobileSection from "@/app/_components/TopMobileSection";
 import PaymentSection from "../organism/PaymentSection";
 import FareSummarySidebar from "../organism/FareSummarySidebar";
 import InsuranceSelection from "../molecule/InsuranceSelection";
@@ -32,6 +29,13 @@ import PriceChangeDialog from "../molecule/PriceChangeDialog";
 // Components
 import TimeoutPopup from "@/app/_components/ui/TimeoutPopup";
 import { BackWardButtonWithDirections } from "@/app/_components/navigation/BackwardButton";
+import { BOOKING_STEPS } from "../../config/steps.config";
+import TravelerLoginSection from "@/app/_components/TravelerLoginSection";
+import { Ticket } from "lucide-react";
+import { FlightDetailsDialog } from "../../../results/components/organism/FlightDetailsDialog";
+import BookingPageTitle from "@/app/_components/BookingPageTitle";
+import ChevronBasedOnLanguage from "@/app/_components/ui/ChevronBasedOnLanguage";
+import BookingPageSubTitle from "@/app/_components/BookingPageSubTitle";
 
 export default function BookingPage({
     isLogged,
@@ -90,7 +94,7 @@ export default function BookingPage({
     if (currentStep === 3) {
         return (
             <div className="min-h-screen bg-background">
-                <BookingSteps currentStep={3} />
+                <BookingSteps steps={BOOKING_STEPS} currentStep={3} t={t} />
 
                 <div className="max-w-7xl mx-auto py-6 lg:py-8 flex flex-col lg:flex-row gap-8">
                     <PaymentSection
@@ -111,18 +115,43 @@ export default function BookingPage({
     // STEP 2: Traveler Details
     return (
         <div className="min-h-screen mt-15 sm:mt-auto">
-            <BookingSteps currentStep={currentStep} />
+            <BookingSteps steps={BOOKING_STEPS} currentStep={2} t={t} />
 
             {/* MOBILE HEADER */}
-            <TopMobileSection t={t} ticket={ticket}>
+            <TopMobileSection>
                 <BackWardButtonWithDirections />
                 <div className="flex-1 min-w-0">
-                    <BookingPageTravellerInfoTitle t={t} />
-
-                    <BookingPageTravellerInfoSubTitle
+                    <BookingPageTitle
                         t={t}
-                        searchInfo={searchInfo}
+                        tKey="booking.enter_traveler_information"
                     />
+
+                    <BookingPageSubTitle
+                        t={t}
+                        tKey={`ticket_class.${String(
+                            searchInfo.class
+                        ).toLowerCase()}`}
+                    >
+                        {searchInfo.origin}
+                        <ChevronBasedOnLanguage icon="arrow" size="3" />
+                        {searchInfo.destination}
+                    </BookingPageSubTitle>
+                </div>
+                <div className="text-right shrink-0 rtl:text-left flex items-end">
+                    <div className="text-lg text-primary-600 dark:text-primary-400">
+                        <FlightDetailsDialog
+                            ticket={ticket}
+                            // isOpen={showDetailsDialog}
+                            // onClose={() =>
+                            //     setShowDetailsDialog(!showDetailsDialog)
+                            // }
+                            withContinue={false}
+                            trigger={{
+                                title: t("booking.details"),
+                                icon: <Ticket className="w-4 h-4" />,
+                            }}
+                        />
+                    </div>
                 </div>
             </TopMobileSection>
 
@@ -132,6 +161,7 @@ export default function BookingPage({
                 <div className="flex-1 space-y-6">
                     {!isLogged && <TravelerLoginSection />}
 
+                    {console.log(travelers)}
                     {/* Travelers */}
                     <section>
                         <div className="flex items-center justify-between mb-4">

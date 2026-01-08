@@ -164,7 +164,7 @@ class InsuranceService {
         if (requestParams.TravelerDetails && typeof requestParams.TravelerDetails === 'object') {
             requestParams.TravelerDetails = JSON.stringify(requestParams.TravelerDetails);
         }
-        return this.request("/api/flight/save", requestParams, requestId);
+        return this.request("/api/v2/insurance/savepassengers", requestParams, requestId);
     }
 
     /**

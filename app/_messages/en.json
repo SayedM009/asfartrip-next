@@ -1852,6 +1852,7 @@
         "adult": "Adult",
         "child": "Child",
         "infant": "Infant",
+        "senior": "Senior",
         "day": "Day",
         "month": "Month",
         "year": "Year",
@@ -1863,6 +1864,9 @@
         "age_must_be_12_or_above": "Adult must be 12 years or older",
         "age_must_be_between_2_and_12": "Child must be between 2 and 11 years old",
         "age_must_be_under_2": "Infant must be under 2 years old",
+        "age_must_be_17_to_65": "Adult must be between 17 and 65 years old",
+        "age_must_be_0_to_16": "Child must be between 0 and 16 years old",
+        "age_must_be_66_to_75": "Senior must be between 66 and 75 years old",
         "you": "You",
         "full_name_required": "Full name is required",
         "email_required": "Email is required",
@@ -2384,6 +2388,17 @@
         "go_home": "Go to Homepage",
         "support_message": "If the problem persists, please contact us at"
     },
+    "Common": {
+        "error": "Error",
+        "something_went_wrong": "Something went wrong. Please try again.",
+        "close": "Close",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "save": "Save",
+        "loading": "Loading...",
+        "success": "Success",
+        "warning": "Warning"
+    },
     "Insurance": {
         "search": {
             "select_destination": "Select Destination",
@@ -2475,6 +2490,26 @@
             "added": "Added!",
             "no_insurance_plans": "No Insurance Plans Found",
             "we_could_not_find_any_insurance_plans": "We are sorry, we could not find any insurance plans for your search criteria."
+        },
+        "booking": {
+            "plan_selection": "Plan Selection",
+            "complated": "Completed",
+            "enter_traveler_information": "Traveler Information",
+            "enter_traveler_information_helper": "Traveler & Contact Information.",
+            "traveler_information": "Traveler Information",
+            "traveler": "Traveler",
+            "travelers": "Travelers",
+            "payment": "Payment",
+            "plan_summary": "Plan Summary",
+            "details": "Details",
+            "plan_type": "Plan Type",
+            "plan_type_helper": "The type of plan you are purchasing.",
+            "price_details": "Price Details",
+            "base_fare": "Base Fare",
+            "taxes_and_fees": "Taxes and Fees",
+            "total_fare": "Total Fare",
+            "proceed_to_payment": "Proceed to Payment",
+            "plan_details": "Plan Details"
         }
     }
 }

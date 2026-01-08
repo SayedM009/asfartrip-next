@@ -1,6 +1,8 @@
 import Navbar from "@/app/_components/navigation/Navbar";
+import { auth } from "@/app/_libs/auth";
 import { getDictionary } from "@/app/_libs/getDictionary";
 import { buildWebPageJsonLd, generatePageMetadata } from "@/app/_libs/seo";
+import BookingPage from "@/app/_modules/insurance/components/templates/BookingPage";
 import { getCartAPI } from "@/app/_modules/insurance/service/getCartAPI";
 import Script from "next/script";
 
@@ -31,7 +33,9 @@ async function page({ params, searchParams }) {
     });
 
     const { data, error } = await getCartAPI(session_id);
-    return <div>
+    const session = await auth();
+
+    return <div className="min-h-screen">
         <Script
             id="insurance/booking"
             type="application/ld+json"
@@ -41,6 +45,9 @@ async function page({ params, searchParams }) {
         <div className="hidden md:block">
             <Navbar />
         </div>
+        <BookingPage data={data} error={error} isLogged={!!session?.user}
+            userId={session?.user?.id}
+            userType={session?.user?.usertype} />
     </div>
 }
 
