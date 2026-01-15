@@ -28,10 +28,13 @@ export default function PaymentCheckStatus({ params, searchParams }) {
     const router = useRouter();
 
     const {
-        gateway: { ifrurl },
+        gateway: bookingGateway,
         searchURL,
         sameBookingURL,
     } = useBookingStore();
+
+    // Safely extract ifrurl - may be null when coming from non-flight modules (e.g., insurance)
+    const ifrurl = bookingGateway?.ifrurl;
 
     const { status, statusMessage, steps, checkPaymentStatus, retry } =
         usePaymentCheck({
@@ -127,7 +130,8 @@ export default function PaymentCheckStatus({ params, searchParams }) {
                                     </div>
 
                                     <div className="flex flex-col gap-3 w-full max-w-xs mx-auto mt-5">
-                                        {gateway !== "TELR" && (
+                                        {/* Retry Payment - only show if ifrurl exists and not TELR */}
+                                        {gateway !== "TELR" && ifrurl && (
                                             <button
                                                 onClick={() =>
                                                     (window.location.href =
@@ -139,25 +143,45 @@ export default function PaymentCheckStatus({ params, searchParams }) {
                                             </button>
                                         )}
 
-                                        <div className="grid grid-cols-2 gap-3">
+                                        {/* Module-specific navigation buttons */}
+                                        {moduleFromUrl === "INSURANCE" ? (
                                             <button
                                                 onClick={() =>
-                                                    router.push(sameBookingURL)
-                                                }
-                                                className="w-full py-3 rounded-lg bg-gradient-to-r from-orange-500 to-amber-400 text-white font-semibold text-sm cursor-pointer transition-all duration-200 hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
-                                            >
-                                                {t("sameBooking")}
-                                            </button>
-
-                                            <button
-                                                onClick={() =>
-                                                    router.push(searchURL)
+                                                    router.push("/insurance")
                                                 }
                                                 className="w-full py-3 rounded-lg bg-gradient-to-r from-teal-400 to-emerald-600 text-white font-medium text-sm cursor-pointer transition-all duration-200 hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
                                             >
-                                                {t("newSearch")}
+                                                {t("backToInsurance")}
                                             </button>
-                                        </div>
+                                        ) : (
+                                            <div className="grid grid-cols-2 gap-3">
+                                                <button
+                                                    onClick={() =>
+                                                        sameBookingURL
+                                                            ? router.push(
+                                                                  sameBookingURL
+                                                              )
+                                                            : router.push("/")
+                                                    }
+                                                    className="w-full py-3 rounded-lg bg-gradient-to-r from-orange-500 to-amber-400 text-white font-semibold text-sm cursor-pointer transition-all duration-200 hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+                                                >
+                                                    {t("sameBooking")}
+                                                </button>
+
+                                                <button
+                                                    onClick={() =>
+                                                        searchURL
+                                                            ? router.push(
+                                                                  searchURL
+                                                              )
+                                                            : router.push("/")
+                                                    }
+                                                    className="w-full py-3 rounded-lg bg-gradient-to-r from-teal-400 to-emerald-600 text-white font-medium text-sm cursor-pointer transition-all duration-200 hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+                                                >
+                                                    {t("newSearch")}
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 </motion.div>
                             )}
