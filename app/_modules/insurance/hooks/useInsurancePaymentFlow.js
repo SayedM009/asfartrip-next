@@ -125,9 +125,9 @@ export function useInsurancePaymentFlow({
                                 merchant_order_id: data.booking_reference,
                                 description: `Insurance booking - ${data.booking_reference}`,
                                 module: "INSURANCE",
-                                return_url: `${window.location.origin}/${locale}/payment/checkstatus/${data.booking_reference}?gateway=telr`,
-                                cancelled_url: `${window.location.origin}/${locale}/payment/checkstatus/${data.booking_reference}?gateway=telr`,
-                                declined_url: `${window.location.origin}/${locale}/payment/checkstatus/${data.booking_reference}?gateway=telr`,
+                                return_url: `${window.location.origin}/${locale}/payment/checkstatus/${data.booking_reference}?gateway=telr&module=insurance`,
+                                cancelled_url: `${window.location.origin}/${locale}/payment/checkstatus/${data.booking_reference}?gateway=telr&module=insurance`,
+                                declined_url: `${window.location.origin}/${locale}/payment/checkstatus/${data.booking_reference}?gateway=telr&module=insurance`,
                             }),
                         });
 

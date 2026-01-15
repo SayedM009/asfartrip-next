@@ -66,6 +66,66 @@ async function issueFlightBooking(
     }
 }
 
+// ============== INSURANCE FUNCTIONS ==============
+
+async function confirmInsuranceBooking(order_id) {
+    try {
+        const res = await fetch("/api/insurance/confirm", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ order_id }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to confirm insurance booking");
+        return data;
+    } catch (err) {
+        console.error("confirmInsuranceBooking error:", err.message);
+        throw err;
+    }
+}
+
+async function purchaseInsurancePolicy(order_id) {
+    try {
+        const res = await fetch("/api/insurance/purchase", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ order_id }),
+        });
+
+        const data = await res.json();
+
+        // Check if policy was successfully purchased
+        if (data?.status === 'success' || data?.policy_id) {
+            return { success: true, alreadyIssued: false, data };
+        }
+
+        // Check for "already purchased" messages
+        const msg = (
+            data?.status ||
+            data?.message ||
+            data?.error ||
+            ""
+        ).toLowerCase();
+
+        if (msg.includes("already") || msg.includes("purchased")) {
+            console.warn("Insurance policy already purchased for this order.");
+            return { success: true, alreadyIssued: true, data };
+        }
+
+        if (!res.ok) {
+            console.error("Failed to purchase insurance policy:", msg);
+            throw new Error(msg || "Failed to purchase insurance policy");
+        }
+
+        return { success: true, alreadyIssued: false, data };
+    } catch (err) {
+        console.error("purchaseInsurancePolicy error:", err.message);
+        throw err;
+    }
+}
+
+// ============== EXPORTED FUNCTIONS ==============
 
 export async function confirmBooking(paymentData) {
     const { module, booking_ref, order_id } = paymentData;
@@ -73,6 +133,9 @@ export async function confirmBooking(paymentData) {
     switch (module?.toUpperCase()) {
         case 'FLIGHT':
             return await confirmFlightBooking(booking_ref);
+
+        case 'INSURANCE':
+            return await confirmInsuranceBooking(order_id);
 
         default:
             throw new Error(`Unsupported booking module: ${module}`);
@@ -88,13 +151,14 @@ export async function issueTicket(confirmData, paymentData) {
                 paymentData.gateway_response?.transaction_id ||
                 paymentData.order_id;
 
-
-
             return await issueFlightBooking(
                 confirmData.booking_reference,
                 transaction_id,
                 "Payment Gateway"
             );
+
+        case 'INSURANCE':
+            return await purchaseInsurancePolicy(paymentData.order_id);
 
         default:
             throw new Error(`Unsupported module for ticket issuance: ${module}`);

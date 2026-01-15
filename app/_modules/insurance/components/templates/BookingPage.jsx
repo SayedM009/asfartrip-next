@@ -145,7 +145,7 @@ function BookingPage({ data, error, isLogged, userId, userType }) {
                                 quote={JSON.parse(cart.plan_json)}
                                 withContinue={false}
                                 trigger={{
-                                    title: t("plan_details"),
+                                    title: t("booking.plan_details"),
                                     icon: <Ticket className="w-4 h-4" />,
                                 }}
                             />
@@ -192,7 +192,7 @@ function BookingPage({ data, error, isLogged, userId, userType }) {
                             quote={JSON.parse(cart.plan_json)}
                             withContinue={false}
                             trigger={{
-                                title: t("plan_details"),
+                                title: t("booking.plan_details"),
                                 icon: <Ticket className="w-4 h-4" />,
                             }}
                         />

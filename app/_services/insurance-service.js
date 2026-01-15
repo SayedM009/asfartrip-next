@@ -168,30 +168,34 @@ class InsuranceService {
     }
 
     /**
-     * Confirm booking
-     * @param {Object} params - Confirmation params (booking_reference)
+     * Confirm insurance booking
+     * @param {string} orderId - Order ID from savePassengers response
      * @param {string} requestId - Optional request ID
      */
-    async confirmBooking(params, requestId) {
-        return this.request("/api/flight/confirmbooking", params, requestId);
+    async confirmBooking(orderId, requestId) {
+        return this.request("/api/v2/insurance/confirm", { order_id: orderId }, requestId);
     }
 
     /**
-     * Issue ticket
-     * @param {Object} params - Issue ticket params (booking_reference, transaction_id, payment_method)
+     * Purchase insurance policy (issue the policy)
+     * @param {string} orderId - Order ID
      * @param {string} requestId - Optional request ID
      */
-    async issueTicket(params, requestId) {
-        return this.request("/api/flight/issueticket", params, requestId);
+    async purchasePolicy(orderId, requestId) {
+        return this.request("/api/v2/insurance/purchase", { order_id: orderId }, requestId);
     }
 
     /**
-     * Get booking details
-     * @param {Object} params - Get booking params (booking_reference)
+     * Get insurance documents (policy documents)
+     * @param {string} orderId - Order ID
+     * @param {string} policyId - Policy ID
      * @param {string} requestId - Optional request ID
      */
-    async getBooking(params, requestId) {
-        return this.request("/api/flight/getBooking", params, requestId);
+    async getDocuments(orderId, policyId, requestId) {
+        return this.request("/api/v2/insurance/documents", {
+            order_id: orderId,
+            policy_id: policyId
+        }, requestId);
     }
 }
 

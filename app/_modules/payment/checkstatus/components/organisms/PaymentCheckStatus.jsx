@@ -13,6 +13,7 @@ import StepStatus from "../molecules/StepStatus";
 export default function PaymentCheckStatus({ params, searchParams }) {
     const { booking_ref } = params;
     const gateway = searchParams?.gateway?.toUpperCase() || "ZIINA";
+    const moduleFromUrl = searchParams?.module?.toUpperCase() || null;
 
     let order_ref = searchParams?.order_ref || null;
 
@@ -33,7 +34,12 @@ export default function PaymentCheckStatus({ params, searchParams }) {
     } = useBookingStore();
 
     const { status, statusMessage, steps, checkPaymentStatus, retry } =
-        usePaymentCheck({ booking_ref, gateway, order_ref });
+        usePaymentCheck({
+            booking_ref,
+            gateway,
+            order_ref,
+            module: moduleFromUrl,
+        });
 
     // Prevent double execution in React Strict Mode
     const hasRun = useRef(false);

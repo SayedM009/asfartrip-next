@@ -3,9 +3,10 @@ import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { checkPayment } from "../services/checkPaymentService";
 import { confirmBooking, issueTicket } from "../services/confirmBookingService";
+import { buildStatusRedirectUrl, buildRedirectUrlString } from "../utils/redirectHelper";
+import { getModuleConfig } from "../registry/moduleRegistry";
 
-
-export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
+export function usePaymentCheck({ booking_ref, gateway, order_ref, module: moduleFromUrl }) {
     const router = useRouter();
     const t = useTranslations("PaymentPage");
     const [status, setStatus] = useState("loading");
@@ -43,6 +44,11 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
             // Step 1: Check payment
             const paymentData = await checkPayment(booking_ref, gateway, order_ref);
 
+            // Override module from URL if provided (for Insurance flow)
+            if (moduleFromUrl) {
+                paymentData.module = moduleFromUrl;
+            }
+
             const paymentSuccess =
                 paymentData?.status?.toLowerCase() === "success" &&
                 ["completed", "paid", "success"].includes(
@@ -71,70 +77,60 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
 
                 try {
                     const confirmData = await confirmBooking(paymentData);
-                    const bookingStatus = confirmData?.booking_status?.toUpperCase();
+                    const bookingStatus = confirmData?.booking_status?.toUpperCase() ||
+                        (confirmData?.status === 'success' ? 'CONFIRMED' : null);
+                    const moduleType = paymentData.module?.toUpperCase();
 
                     if (bookingStatus === "CONFIRMED") {
                         updateStep(1, "success");
                         setStatusMessage(t("bookingConfirmedIssuing"));
 
-                        // Step 3: Issue ticket
+                        // Step 3: Issue ticket / Purchase policy
                         updateStep(2, "loading");
 
                         try {
                             console.log({ confirmData, paymentData });
                             const issueData = await issueTicket(confirmData, paymentData);
 
-                            // Check ticket status from response
-                            const ticketStatus = issueData?.data?.ticket_status?.toUpperCase();
-                            const ticketNumbers = issueData?.data?.ticket_numbers;
+                            // Get module configuration from registry
+                            const moduleConfig = getModuleConfig(moduleType);
 
-                            //  ONLY condition for success: ticket_status = CREATED AND ticket_numbers = Yes
-                            if (ticketStatus === 'CREATED' && ticketNumbers === 'Yes') {
+                            // Check success using registry's isIssueSuccess function
+                            const isSuccess = moduleConfig.isIssueSuccess(issueData);
+
+                            if (isSuccess) {
                                 updateStep(2, "success");
                                 setStatus("success");
-                                setStatusMessage(t("ticketIssuedRedirecting"));
+                                setStatusMessage(t(moduleConfig.translations.issueSuccess));
 
-                                //  Send voucher to customer email (non-blocking)
+                                // Send voucher (non-blocking)
                                 try {
                                     const { sendVoucher } = await import('../services/sechVoucher');
-                                    sendVoucher(paymentData.booking_ref, 'FLIGHT').catch(err => {
+                                    sendVoucher(paymentData.booking_ref, moduleType || 'FLIGHT').catch(err => {
                                         console.error('Failed to send voucher:', err);
-                                        // Don't block user flow if voucher sending fails
                                     });
                                 } catch (err) {
                                     console.error('Failed to import sendVoucher:', err);
                                 }
 
                                 setTimeout(() => {
-                                    const paymentParams = new URLSearchParams({
-                                        order_id: paymentData.order_id,
-                                        booking_ref: paymentData.booking_ref,
-                                        module: 'flight',
-                                        PNR: confirmData.PNR || issueData?.data?.PNR || '',
-                                        gateway: gateway || '',
-                                        transaction_id: paymentData.gateway_response?.id || '',
-                                        amount: paymentData.amount || paymentData.gateway_response?.amount || '',
-                                        currency: paymentData.currency || paymentData.gateway_response?.currency || '',
-                                        payment_status: paymentData.payment_status,
-                                        card_type: paymentData.card_type || '',
-                                        card_last4: paymentData.card_last4 || '',
-                                        transaction_date: paymentData.transaction_date || ''
-                                    });
-                                    router.push(`/flights/status/success?${paymentParams.toString()}`);
+                                    const redirectConfig = buildStatusRedirectUrl(
+                                        moduleType, paymentData, confirmData, issueData, gateway, false
+                                    );
+                                    router.push(buildRedirectUrlString(redirectConfig));
                                 }, 1500);
                                 return;
                             }
 
-                            // If ticket was already issued (from alreadyIssued flag)
+                            // If already issued (from alreadyIssued flag)
                             if (issueData?.alreadyIssued) {
                                 updateStep(2, "success");
                                 setStatus("success");
-                                setStatusMessage(t("ticketAlreadyIssuedRedirecting"));
+                                setStatusMessage(t(moduleConfig.translations.alreadyIssued));
 
-                                // Send voucher to customer email (non-blocking)
                                 try {
                                     const { sendVoucher } = await import('../services/sechVoucher');
-                                    sendVoucher(paymentData.booking_ref, 'FLIGHT').catch(err => {
+                                    sendVoucher(paymentData.booking_ref, moduleType || 'FLIGHT').catch(err => {
                                         console.error('Failed to send voucher:', err);
                                     });
                                 } catch (err) {
@@ -142,73 +138,38 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
                                 }
 
                                 setTimeout(() => {
-                                    const paymentParams = new URLSearchParams({
-                                        order_id: paymentData.order_id,
-                                        booking_ref: paymentData.booking_ref,
-                                        module: 'flight',
-                                        PNR: confirmData.PNR || '',
-                                        gateway: gateway || '',
-                                        transaction_id: paymentData.gateway_response?.id || '',
-                                        amount: paymentData.amount || paymentData.gateway_response?.amount || '',
-                                        currency: paymentData.currency || paymentData.gateway_response?.currency || '',
-                                        payment_status: paymentData.payment_status,
-                                        card_type: paymentData.card_type || '',
-                                        card_last4: paymentData.card_last4 || '',
-                                        transaction_date: paymentData.transaction_date || ''
-                                    });
-                                    router.push(`/flights/status/success?${paymentParams.toString()}`);
+                                    const redirectConfig = buildStatusRedirectUrl(
+                                        moduleType, paymentData, confirmData, issueData, gateway, false
+                                    );
+                                    router.push(buildRedirectUrlString(redirectConfig));
                                 }, 1500);
                                 return;
                             }
 
-                            // ANY other case - ticket is pending (PENDING, FAILURE, or any other status)
+                            // ANY other case - pending
                             updateStep(2, "success");
                             setStatus("partial-success");
-                            setStatusMessage(t("paymentReceivedTicketPending"));
+                            setStatusMessage(t(moduleConfig.translations.pending));
 
                             setTimeout(() => {
-                                const paymentParams = new URLSearchParams({
-                                    order_id: paymentData.order_id,
-                                    booking_ref: paymentData.booking_ref,
-                                    pending: 'true',
-                                    module: 'flight',
-                                    PNR: confirmData.PNR || '',
-                                    gateway: gateway || '',
-                                    transaction_id: paymentData.gateway_response?.id || '',
-                                    amount: paymentData.amount || paymentData.gateway_response?.amount || '',
-                                    currency: paymentData.currency || paymentData.gateway_response?.currency || '',
-                                    payment_status: paymentData.payment_status,
-                                    card_type: paymentData.card_type || '',
-                                    card_last4: paymentData.card_last4 || '',
-                                    transaction_date: paymentData.transaction_date || ''
-                                });
-                                router.push(`/flights/status/success?${paymentParams.toString()}`);
+                                const redirectConfig = buildStatusRedirectUrl(
+                                    moduleType, paymentData, confirmData, issueData, gateway, true
+                                );
+                                router.push(buildRedirectUrlString(redirectConfig));
                             }, 3000);
                             return;
                         } catch (issueErr) {
-                            // Ticket issuance failed but booking is confirmed
-                            console.error("Issue ticket error:", issueErr);
+                            // Ticket/Policy issuance failed but booking is confirmed
+                            console.error("Issue ticket/policy error:", issueErr);
                             updateStep(2, "success");
                             setStatus("partial-success");
-                            setStatusMessage(t("paymentReceivedTicketPending"));
+                            setStatusMessage(t(moduleConfig.translations.pending));
 
                             setTimeout(() => {
-                                const paymentParams = new URLSearchParams({
-                                    order_id: paymentData.order_id,
-                                    booking_ref: paymentData.booking_ref,
-                                    pending: 'true',
-                                    module: 'flight',
-                                    PNR: confirmData.PNR || '',
-                                    gateway: gateway || '',
-                                    transaction_id: paymentData.gateway_response?.id || '',
-                                    amount: paymentData.amount || paymentData.gateway_response?.amount || '',
-                                    currency: paymentData.currency || paymentData.gateway_response?.currency || '',
-                                    payment_status: paymentData.payment_status,
-                                    card_type: paymentData.card_type || '',
-                                    card_last4: paymentData.card_last4 || '',
-                                    transaction_date: paymentData.transaction_date || ''
-                                });
-                                router.push(`/flights/status/success?${paymentParams.toString()}`);
+                                const redirectConfig = buildStatusRedirectUrl(
+                                    moduleType, paymentData, confirmData, null, gateway, true
+                                );
+                                router.push(buildRedirectUrlString(redirectConfig));
                             }, 3000);
                             return;
                         }
@@ -216,51 +177,49 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref }) {
 
                     // Booking is pending or processing
                     if (["PENDING", "PROCESSING"].includes(bookingStatus)) {
+                        const moduleConfig = getModuleConfig(moduleType);
                         updateStep(1, "success");
                         updateStep(2, "success");
                         setStatus("partial-success");
-                        setStatusMessage(t("paymentReceivedTicketPending"));
+                        setStatusMessage(t(moduleConfig.translations.pending));
 
                         setTimeout(() => {
-                            const paymentParams = new URLSearchParams({
-                                order_id: paymentData.order_id,
-                                booking_ref: paymentData.booking_ref,
-                                pending: 'true',
-                                module: 'flight',
-                                gateway: gateway || '',
-                                transaction_id: paymentData.gateway_response?.id || '',
-                                amount: paymentData.amount || paymentData.gateway_response?.amount || '',
-                                currency: paymentData.currency || paymentData.gateway_response?.currency || '',
-                                payment_status: 'completed'
-                            });
-                            router.push(`/flights/status/success?${paymentParams.toString()}`);
+                            const redirectConfig = buildStatusRedirectUrl(
+                                moduleType, paymentData, confirmData, null, gateway, true
+                            );
+                            router.push(buildRedirectUrlString(redirectConfig));
                         }, 3000);
                         return;
                     }
 
                     // Other booking statuses - treat as partial success
+                    const moduleConfigFallback = getModuleConfig(moduleType);
                     updateStep(1, "success");
                     updateStep(2, "success");
                     setStatus("partial-success");
-                    setStatusMessage(t("paymentReceivedTicketPending"));
+                    setStatusMessage(t(moduleConfigFallback.translations.pending));
 
                     setTimeout(() => {
-                        router.push(
-                            `/flights/status/success?order_id=${paymentData.order_id}&booking_ref=${paymentData.booking_ref}&pending=true&module=flight`
+                        const redirectConfig = buildStatusRedirectUrl(
+                            moduleType, paymentData, confirmData, null, gateway, true
                         );
+                        router.push(buildRedirectUrlString(redirectConfig));
                     }, 3000);
                     return;
                 } catch (confirmErr) {
                     // Booking confirmation failed but payment succeeded
+                    const moduleType = paymentData.module?.toUpperCase();
+                    const moduleConfigError = getModuleConfig(moduleType);
                     updateStep(1, "success");
                     updateStep(2, "success");
                     setStatus("partial-success");
-                    setStatusMessage(t("paymentReceivedTicketPending"));
+                    setStatusMessage(t(moduleConfigError.translations.pending));
 
                     setTimeout(() => {
-                        router.push(
-                            `/flights/status/success?order_id=${paymentData.order_id}&booking_ref=${paymentData.booking_ref}&pending=true&module=flight`
+                        const redirectConfig = buildStatusRedirectUrl(
+                            moduleType, paymentData, null, null, gateway, true
                         );
+                        router.push(buildRedirectUrlString(redirectConfig));
                     }, 3000);
                     return;
                 }

@@ -33,6 +33,8 @@ export default function PaymentSection({
         payment_gateways?.map((p) => p.name.toLowerCase()) || [];
     const p = useTranslations("Payment");
 
+    console.log(iframeSrc);
+
     const paymentMethods = [
         {
             id: "card",
@@ -190,13 +192,7 @@ function TelrIframe({ src }) {
             </h3>
             <iframe
                 src={src}
-                width="100%"
-                height="300px"
-                style={{
-                    border: "none",
-                    borderRadius: "0",
-                    margin: "0",
-                }}
+                className="w-full min-h-[400px] border-0 rounded-none m-0"
             ></iframe>
         </div>
     );
