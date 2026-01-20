@@ -85,8 +85,16 @@ export default function HotelSearch() {
             <RoomsAndGuests value={guests} onChange={setGuests} t={t} />
 
             <Button
-                className="font-bold col-span-3 md:col-span-1 md:w-auto h-auto cursor-pointer transition-colors rounded border border-accent-500 dark:border-accent-900 text-accent-500 dark:text-accent-400 hover:text-accent-600 dark:hover:text-accent-500"
+                className="font-bold col-span-3 md:col-span-1 md:w-auto h-auto cursor-pointer transition-colors rounded border border-accent-500 dark:border-accent-900 text-accent-500 dark:text-accent-400 hover:text-accent-600 dark:hover:text-accent-500 hidden md:flex"
                 variant="outline"
+                onClick={handleSearch}
+            >
+                <Search /> {t("search")}
+            </Button>
+
+            <Button
+                className="font-bold col-span-3 md:col-span-1 md:w-auto h-auto cursor-pointer transition-colors rounded border bg-accent-500 text-white flex md:hidden"
+                variant="default"
                 onClick={handleSearch}
             >
                 <Search /> {t("search")}

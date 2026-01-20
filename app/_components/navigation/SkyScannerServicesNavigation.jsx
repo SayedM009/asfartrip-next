@@ -2,8 +2,9 @@
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import SkyScannerSearchFormDialog from "@/app/_modules/flight/search/components/mobile-skyscanner/SkyScannerSearchFormDialog";
-import { BedDouble, ShieldPlus } from "lucide-react";
+import { BedDouble } from "lucide-react";
 import InsuranceDialog from "@/app/_modules/insurance/components/templates/InsuranceDialog";
+import HotelSearchDialog from "@/app/_modules/hotels/search/components/organisms/HotelSearchDialog";
 
 function SkyScannerServicesNavigation() {
     const t = useTranslations("Services");
@@ -31,13 +32,7 @@ function SkyScannerServicesNavigation() {
                     ease: "easeOut",
                 }}
             >
-                <div className="flex flex-col  items-center gap-2 ">
-                    <div className="bg-accent-500  p-4 rounded-full ">
-                        <BedDouble className=" text-white" />
-                    </div>
-
-                    <span className="font-bold text-center">{t(`Hotels`)}</span>
-                </div>
+                <HotelSearchDialog />
             </motion.div>
             <motion.div
                 key={"insurance"}
@@ -48,15 +43,6 @@ function SkyScannerServicesNavigation() {
                     ease: "easeOut",
                 }}
             >
-                {/* <div className="flex flex-col  items-center gap-2 ">
-                    <div className="bg-accent-500  p-4 rounded-full ">
-                        <ShieldPlus className=" text-white" />
-                    </div>
-
-                    <span className="font-bold text-center">
-                        {t(`Insurance`)}
-                    </span>
-                </div> */}
                 <InsuranceDialog />
             </motion.div>
         </nav>

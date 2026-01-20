@@ -57,7 +57,7 @@ export default function DestinationSearchDialog({
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger
                 asChild
-                className="col-span-3 border px-3 rounded-sm cursor-pointer py-2.5 md:py-0 block md:hidden"
+                className="col-span-3 border px-3 rounded-sm cursor-pointer py-2.5 md:py-0 block md:hidden text-left rtl:text-right"
             >
                 <div className="col-span-3 border px-3 py-1 rounded-sm cursor-pointer">
                     <Label className="text-xs mb-1">{t("destination")}</Label>

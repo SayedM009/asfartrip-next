@@ -35,7 +35,7 @@ export default function RoomsAndGuestsDialog({
         <Dialog>
             <DialogTrigger
                 asChild
-                className="col-span-3 border px-3 rounded-sm cursor-pointer py-2 md:py-0 block md:hidden"
+                className="col-span-3 border px-3 rounded-sm cursor-pointer py-2.5 md:py-0 block md:hidden text-left rtl:text-right"
             >
                 <div>
                     <Label className="text-xs">{t("rooms_and_guests")}</Label>
