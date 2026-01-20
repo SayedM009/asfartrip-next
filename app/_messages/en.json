@@ -107,6 +107,11 @@
             "metaKeywords": "travel insurance booking online, secure travel insurance reservation, book travel insurance tickets, travel itinerary, select seats, confirm booking, online payment flights, reserve airline tickets"
         }
     },
+    "HotelPage": {
+        "metaTitle": "Book Hotels Online | Best Price Guarantee & Secure Booking | AsfarTrip",
+        "metaDescription": "Find and book the best hotels worldwide with AsfarTrip. Compare prices, read reviews, and enjoy secure online booking for your next stay. Luxury to budget options available.",
+        "metaKeywords": "hotel booking online, book hotels, luxury hotels, budget accommodation, hotel reservations, best hotel deals, AsfarTrip hotels"
+    },
     "Profile": {
         "metaTitle": "My Account & Profile | Manage Bookings & Travel Details | AsfarTrip",
         "metaDescription": "Manage your AsfarTrip account, update personal information, view your booking history, save traveller details, and access exclusive member features for a smoother travel experience.",
@@ -2575,5 +2580,35 @@
         "travelers": "travelers",
         "showAllTravelers": "Show all {count} travelers",
         "showLess": "Show less"
+    },
+    "Hotels": {
+        "search": {
+            "destination": "Destination",
+            "search_input_placeholder": "City, region or hotel",
+            "check_in": "Check-in",
+            "check_out": "Check-out",
+            "night": "Night",
+            "nights": "Nights",
+            "rooms_and_guests": "Rooms and Guests",
+            "adults": "Adults",
+            "children": "Children",
+            "room": "Room",
+            "rooms": "Rooms",
+            "search": "Search",
+            "children_ages": "Children Ages",
+            "child": "Child",
+            "years": "years",
+            "popular_destinations": "Popular Destinations",
+            "searching": "Searching...",
+            "no_results": "No destinations found",
+            "no_results_hint": "Please try a different search term",
+            "date_selection": "Date Selection",
+            "select": "Select",
+            "destination_selection_helper": "Enter your destination to search for hotels.",
+            "current_location": "Current Location",
+            "detecting_location": "Detecting location...",
+            "location_permission_denied": "Please enable location permission to use this feature",
+            "location_error": "Could not detect your location. Please try again."
+        }
     }
 }

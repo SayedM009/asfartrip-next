@@ -76,7 +76,7 @@ export default function AboutPage() {
                                     loading="lazy"
                                 />
 
-                                {key !== "flights" && (
+                                {!['flights', 'hotels', 'insurance'].includes(key) && (
                                     <span className="absolute -top-2 -right-2 px-2 py-0.5 text-xs font-semibold rounded-full text-white animate-pulse bg-gradient-to-r from-amber-500 via-pink-500 to-purple-500">
                                         {t("soon")}
                                     </span>

@@ -22,7 +22,7 @@ const SERVICES = [
         subTitle: "Perfect Stays",
         src: "/icons/bed-m.gif",
         path: "/hotels",
-        soon: true,
+        soon: false,
     },
     {
         title: "Insurance",
