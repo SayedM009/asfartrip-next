@@ -31,13 +31,6 @@ const SERVICES = [
         path: "/insurance",
         soon: false,
     },
-    {
-        title: "Cars",
-        subTitle: "Rent Vehicles",
-        src: "/icons/car-m.gif",
-        path: "/cars",
-        soon: true,
-    },
 ];
 
 function ServicesNavigation() {
@@ -79,7 +72,7 @@ function ServicesNavigation() {
 
                             // ---- Disabled state ----
                             service.soon &&
-                                "opacity-50 cursor-not-allowed select-none"
+                                "opacity-50 cursor-not-allowed select-none",
                         )}
                     >
                         <div className="relative pointer-events-none">
@@ -96,7 +89,8 @@ function ServicesNavigation() {
                                     "rounded-lg p-2.5 md:p-0 aspect-square",
 
                                     // Active: exact match
-                                    service.path === pathname && "bg-accent-400"
+                                    service.path === pathname &&
+                                        "bg-accent-400",
                                 )}
                                 unoptimized
                             />

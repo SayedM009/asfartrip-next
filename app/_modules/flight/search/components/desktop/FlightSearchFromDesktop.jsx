@@ -34,8 +34,14 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
     const { validateSearch } = useSearchValidation();
 
     // Airport state - unified default as empty object
-    const [departure, setDeparture] = useSessionPersistence(SESSION_KEYS.DEPARTURE, {});
-    const [destination, setDestination] = useSessionPersistence(SESSION_KEYS.DESTINATION, {});
+    const [departure, setDeparture] = useSessionPersistence(
+        SESSION_KEYS.DEPARTURE,
+        {},
+    );
+    const [destination, setDestination] = useSessionPersistence(
+        SESSION_KEYS.DESTINATION,
+        {},
+    );
 
     async function handleSearch() {
         const isValid = validateSearch({
@@ -44,7 +50,7 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
             tripType,
             departDate,
             range,
-            passengers
+            passengers,
         });
 
         if (!isValid) return;
@@ -74,7 +80,7 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
             <div>
                 <div className=" mx-auto">
                     {/* Search Form */}
-                    <Card className="border shadow-sm py-4">
+                    <Card className="border shadow-sm py-0">
                         <CardContent className="p-4">
                             {/* Trip Type Selection - Left Aligned */}
                             <TripType
