@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { hotelService } from "@/app/_services/hotel-service";
+import { hotelService } from "@/app/_modules/hotels/services/hotelService";
 
 /**
  * POST /api/hotel/search

@@ -110,8 +110,14 @@
     "HotelPage": {
         "metaTitle": "Book Hotels Online | Best Price Guarantee & Secure Booking | AsfarTrip",
         "metaDescription": "Find and book the best hotels worldwide with AsfarTrip. Compare prices, read reviews, and enjoy secure online booking for your next stay. Luxury to budget options available.",
-        "metaKeywords": "hotel booking online, book hotels, luxury hotels, budget accommodation, hotel reservations, best hotel deals, AsfarTrip hotels"
+        "metaKeywords": "hotel booking online, book hotels, luxury hotels, budget accommodation, hotel reservations, best hotel deals, AsfarTrip hotels",
+        "results": {
+            "metaTitle": "Hotel Search Results | Book Online at Best Rates | AsfarTrip",
+            "metaDescription": "Explore and compare the best hotel deals worldwide. Find your perfect stay from luxury to budget options with secure booking and instant confirmation on AsfarTrip.",
+            "metaKeywords": "hotel search results, book hotels online, best hotel deals, luxury hotels, budget accommodation, AsfarTrip hotels, compare hotel prices"
+        }
     },
+
     "Profile": {
         "metaTitle": "My Account & Profile | Manage Bookings & Travel Details | AsfarTrip",
         "metaDescription": "Manage your AsfarTrip account, update personal information, view your booking history, save traveller details, and access exclusive member features for a smoother travel experience.",
@@ -1956,6 +1962,62 @@
             "eljadida": "Eljadida, Morocco"
         }
     },
+    "ContinentHotels": {
+        "title": "Explore Hotels Worldwide",
+        "hotels_in": "Popular Hotels in {city}",
+        "clear": "Clear",
+        "retry": "Try Again",
+        "no_hotels": "No hotels found for this city",
+        "continents": {
+            "europe": "Europe",
+            "asia": "Asia",
+            "africa": "Africa",
+            "north_america": "North America",
+            "south_america": "South America",
+            "oceania": "Australia & Oceania"
+        },
+        "cities": {
+            "paris": "Paris",
+            "london": "London",
+            "rome": "Rome",
+            "barcelona": "Barcelona",
+            "amsterdam": "Amsterdam",
+            "istanbul": "Istanbul",
+            "prague": "Prague",
+            "vienna": "Vienna",
+            "dubai": "Dubai",
+            "singapore": "Singapore",
+            "tokyo": "Tokyo",
+            "bangkok": "Bangkok",
+            "kuala_lumpur": "Kuala Lumpur",
+            "hong_kong": "Hong Kong",
+            "seoul": "Seoul",
+            "shanghai": "Shanghai",
+            "mumbai": "Mumbai",
+            "cape_town": "Cape Town",
+            "marrakesh": "Marrakesh",
+            "cairo": "Cairo",
+            "sharm_el_sheikh": "Sharm El Sheikh",
+            "hurghada": "Hurghada",
+            "nairobi": "Nairobi",
+            "accra": "Accra",
+            "new_york": "New York",
+            "los_angeles": "Los Angeles",
+            "miami": "Miami",
+            "las_vegas": "Las Vegas",
+            "chicago": "Chicago",
+            "san_francisco": "San Francisco",
+            "toronto": "Toronto",
+            "vancouver": "Vancouver",
+            "buenos_aires": "Buenos Aires",
+            "sao_paulo": "São Paulo",
+            "bogota": "Bogotá",
+            "sydney": "Sydney",
+            "melbourne": "Melbourne",
+            "perth": "Perth",
+            "auckland": "Auckland"
+        }
+    },
     "Footer": {
         "title": "AsfarTrip is a UAE online travel platform for flights, hotels, and travel services.",
         "social_icons": {
@@ -1970,7 +2032,8 @@
             "flight": "Flight Booking",
             "hotel": "Hotel Reservations",
             "car": "Car Rentals",
-            "insurance": "Travel Insurance"
+            "insurance": "Travel Insurance",
+            "offers": "Offers"
         },
         "stay_updated": {
             "title": "Stay Updated",
@@ -2608,7 +2671,44 @@
             "current_location": "Current Location",
             "detecting_location": "Detecting location...",
             "location_permission_denied": "Please enable location permission to use this feature",
-            "location_error": "Could not detect your location. Please try again."
+            "location_error": "Could not detect your location. Please try again.",
+            "error_no_destination": "No destination selected"
+        },
+        "results": {
+            "properties_found": "properties found",
+            "of": "of",
+            "sort_by": "Sort by",
+            "top_reviewed": "Top Reviewed",
+            "lowest_price": "Lowest Price",
+            "highest_price": "Highest Price",
+            "star_rating": "Star Rating",
+            "filters": "Filters",
+            "clear_filters": "Clear Filters",
+            "price_range": "Price Range",
+            "property_type": "Property Type",
+            "per_night": "/ night",
+            "total_for_nights": "Total for {nights} nights",
+            "view_deal": "View Deal",
+            "free_cancellation": "Free Cancellation",
+            "no_hotels_found": "No hotels found",
+            "no_hotels_found_desc": "Try adjusting the search criteria",
+            "modify_search": "Modify Search",
+            "no_filter_results": "No hotels match the selected filters",
+            "no_filter_results_desc": "Try adjusting the filters or removing some criteria to get more results.",
+            "apply_filters": "Apply",
+            "reset_filters": "Reset",
+            "sort": "Sort",
+            "session_expired": "Session Expired",
+            "session_expired_message": "Your search has expired. Please search again.",
+            "tripadvisor": "Tripadvisor",
+            "total": "Total price",
+            "night": "night",
+            "nights": "nights",
+            "check_availability": "Check Availability",
+            "edit_search": "Edit search",
+            "cancel": "Cancel",
+            "room": "room",
+            "rooms": "rooms"
         }
     }
 }

@@ -1,6 +1,6 @@
 export const citiesDestinations = [
     {
-        id: "1",
+        id: "40601",
         city: "dubai",
         country: "uae",
         backgroundColor:
@@ -8,7 +8,7 @@ export const citiesDestinations = [
         img: "/destinations/Dubai.jpg",
     },
     {
-        id: "2",
+        id: "39769",
         city: "phuket",
         country: "thailand",
 
@@ -18,7 +18,7 @@ export const citiesDestinations = [
         img: "/destinations/tailand.jpg",
     },
     {
-        id: "3",
+        id: "40158",
         city: "istanbul",
         country: "turkey",
 
@@ -28,7 +28,7 @@ export const citiesDestinations = [
         img: "/destinations/istanbul.jpg",
     },
     {
-        id: "4",
+        id: "31023",
         city: "salalah",
         country: "oman",
 
@@ -38,7 +38,7 @@ export const citiesDestinations = [
         img: "/destinations/salalah.jpg",
     },
     {
-        id: "5",
+        id: "28436",
         city: "kuala_lumpur",
         country: "malaysia",
 

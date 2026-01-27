@@ -1,15 +1,16 @@
 "use client";
 import React, { useState, useRef } from "react";
-
+import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import Image from "next/image";
-import useCheckLocal from "../../_hooks/useCheckLocal";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { citiesDestinations as destinations } from "@/app/_data/citiesDestinations";
+import { citiesDestinations as destinations } from "@/app/_modules/hotels/constants/citiesDestinations";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
 
 export function DestinationSlider() {
     const scrollContainerRef = useRef(null);
@@ -17,13 +18,13 @@ export function DestinationSlider() {
     const [canScrollRight, setCanScrollRight] = useState(true);
     const t = useTranslations("Destination_slider");
     const { isRTL } = useCheckLocal();
+    const router = useRouter();
 
     const scroll = (direction) => {
         if (scrollContainerRef.current) {
             const containerWidth = scrollContainerRef.current.clientWidth;
             const scrollAmount = containerWidth * 0.8;
 
-            // في RTL نستخدم نفس المنطق ولكن نحسب بناءً على الموضع الحالي
             const currentScroll = scrollContainerRef.current.scrollLeft;
             let newScrollPosition;
 
@@ -46,16 +47,35 @@ export function DestinationSlider() {
                 scrollContainerRef.current;
 
             if (isRTL) {
-                // في RTL، نحتاج لحساب الموضع بشكل مختلف
                 const maxScrollLeft = scrollWidth - clientWidth;
                 setCanScrollRight(Math.abs(scrollLeft) > 1);
                 setCanScrollLeft(Math.abs(scrollLeft) < maxScrollLeft - 1);
             } else {
-                // LTR المنطق العادي
                 setCanScrollLeft(scrollLeft > 1);
                 setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
             }
         }
+    };
+
+    // Navigate to hotel results with today's date and 1 night stay
+    const handleDestinationClick = (card) => {
+        const today = new Date();
+        const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+
+        const params = new URLSearchParams({
+            city: card.city,
+            checkIn: format(today, "yyyy-MM-dd"),
+            checkOut: format(tomorrow, "yyyy-MM-dd"),
+            nights: "1",
+            nationality: "AE",
+            rooms: "1",
+            adults: "2",
+            children: "0",
+            locationId: card.id,
+            roomDetails: JSON.stringify([{ adults: 2, childrenAges: [] }]),
+        });
+
+        router.push(`/hotels/results?${params.toString()}`);
     };
 
     return (
@@ -77,10 +97,6 @@ export function DestinationSlider() {
                             {t("title")}
                         </h2>
                     </div>
-
-                    {/* <p className="text-xs sm:text-lg text-muted-foreground">
-                        {t("sub_title")}
-                    </p> */}
                 </div>
 
                 {/* Desktop Navigation Buttons */}
@@ -127,11 +143,12 @@ export function DestinationSlider() {
                             key={card.id}
                             className="flex-shrink-0 w-[80vw] sm:w-72 lg:w-80"
                             style={{ scrollSnapAlign: "start" }}
+                            onClick={() => handleDestinationClick(card)}
                         >
                             <div
                                 className={cn(
                                     "h-70 rounded-2xl p-6 relative overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-105",
-                                    card.backgroundColor
+                                    card.backgroundColor,
                                 )}
                             >
                                 {/* Background Image */}

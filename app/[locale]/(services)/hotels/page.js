@@ -7,12 +7,16 @@ import ServicesNavigation from "@/app/_components/navigation/ServicesNavigation"
 import HotelSearch from "@/app/_modules/hotels/search/components/organisms/HotelSearch";
 import PromotionalSlider from "@/app/_modules/offers/components/organisms/PromotionalSlider";
 import BottomAppBar from "@/app/_components/bottomAppBar/BottomAppBar";
+import { HotelsSlider } from "@/app/_modules/hotels/components/organisms/HotelsSlider";
+import { ContinentHotelsSlider } from "@/app/_modules/hotels/components/organisms/ContinentHotelsSlider";
 
 // Generate SEO
 import Script from "next/script";
 import { getDictionary } from "@/app/_libs/getDictionary";
 import { generatePageMetadata, buildWebPageJsonLd } from "@/app/_libs/seo";
 import { DEFAULT_LOCALE } from "@/app/_config/i18n";
+import { DestinationSlider } from "@/app/_modules/hotels/components/organisms/DestinationSlider";
+
 
 
 
@@ -53,7 +57,9 @@ async function HotelPage({ params }) {
                 <ServicesNavigation />
                 <HotelSearch />
                 <PromotionalSlider />
-                {/* <HotelsSlider /> */}
+                <DestinationSlider />
+                <HotelsSlider />
+                <ContinentHotelsSlider />
             </section>
             <BottomAppBar />
         </>

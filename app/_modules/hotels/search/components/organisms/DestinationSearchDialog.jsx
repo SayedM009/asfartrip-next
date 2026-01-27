@@ -19,7 +19,7 @@ import {
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { POPULAR_DESTINATIONS } from "../../constants/popularDestinations";
-import useCurrentLocation from "@/app/_hooks/useCurrentLocation";
+import useCurrentLocation from "@/app/_modules/hotels/search/hooks/useCurrentLocation";
 import { MapPinIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 
@@ -37,6 +37,7 @@ export default function DestinationSearchDialog({
     const {
         city: detectedCity,
         country: detectedCountry,
+        cityObj: detectedCityObj,
         isLoading: isDetectingLocation,
         error: locationError,
         permissionDenied,
@@ -49,7 +50,7 @@ export default function DestinationSearchDialog({
 
     const handleDetectedCityClick = () => {
         if (detectedCity) {
-            handleSelectDestination(detectedCity);
+            handleSelectDestination(detectedCityObj);
         }
     };
 
@@ -161,7 +162,7 @@ export default function DestinationSearchDialog({
                             <div className="grid grid-cols-2">
                                 {POPULAR_DESTINATIONS.map((dest) => (
                                     <div
-                                        key={dest}
+                                        key={dest.id}
                                         className="p-3 bg-gray-50 dark:bg-muted cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors "
                                         onClick={() =>
                                             handleSelectDestination(dest)
@@ -169,15 +170,15 @@ export default function DestinationSearchDialog({
                                     >
                                         <div className="relative min-h-[100px]">
                                             <Image
-                                                src={`/destinations/${dest}.webp`}
-                                                alt={dest}
+                                                src={`/destinations/${dest.name}.webp`}
+                                                alt={dest.name}
                                                 fill
                                                 className="object-cover"
                                             />
                                         </div>
                                         <p className="font-medium text-sm flex items-center gap-1 mt-2 capitalize">
                                             <MapPinIcon className="h-4 w-4 text-blue-500" />{" "}
-                                            {dest}
+                                            {dest.name}
                                         </p>
                                     </div>
                                 ))}
@@ -207,7 +208,7 @@ export default function DestinationSearchDialog({
                                     key={result.id}
                                     className="p-4 hover:bg-gray-50 dark:hover:bg-muted cursor-pointer border-b last:border-b-0 transition-colors flex items-center gap-3"
                                     onClick={() =>
-                                        handleSelectDestination(result.name)
+                                        handleSelectDestination(result)
                                     }
                                 >
                                     {result.type === "location" ? (

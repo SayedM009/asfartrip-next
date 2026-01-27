@@ -88,7 +88,7 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
                                 setTripType={setTripType}
                             />
                             {/* Main Search Form - All fields on one line */}
-                            <div className="flex gap-3 items-end flex-wrap">
+                            <div className="grid grid-cols-15 gap-2 items-end">
                                 <MainSearchForm
                                     departure={departure}
                                     setDeparture={setDeparture}
@@ -97,26 +97,30 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
                                     isLabel={isLabel}
                                 />
                                 {/* Dates - Combined for Round Trip */}
-                                <Dates
-                                    tripType={tripType}
-                                    departDate={departDate}
-                                    setDepartDate={setDepartDate}
-                                    range={range}
-                                    setRange={setRange}
-                                    isLabel={isLabel}
-                                />
+                                <div className="col-span-3">
+                                    <Dates
+                                        tripType={tripType}
+                                        departDate={departDate}
+                                        setDepartDate={setDepartDate}
+                                        range={range}
+                                        setRange={setRange}
+                                        isLabel={isLabel}
+                                    />
+                                </div>
                                 {/* Passengers & Class */}
-                                <PassengersAndClass
-                                    passengers={passengers}
-                                    setPassengers={setPassengers}
-                                    travelClass={travelClass}
-                                    setTravelClass={setTravelClass}
-                                    isLabel={isLabel}
-                                />
+                                <div className="col-span-3">
+                                    <PassengersAndClass
+                                        passengers={passengers}
+                                        setPassengers={setPassengers}
+                                        travelClass={travelClass}
+                                        setTravelClass={setTravelClass}
+                                        isLabel={isLabel}
+                                    />
+                                </div>
                                 {/* Search Button - Redesigned */}
-                                <div className="flex-shrink-0">
+                                <div className="col-span-2">
                                     <Button
-                                        className="h-12 lg:ps-6 lg:pe-8 bg-accent-500 hover:bg-accent-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer gap-2"
+                                        className="h-12 lg:ps-6 lg:pe-8 bg-accent-500 hover:bg-accent-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer gap-2 w-full"
                                         onClick={handleSearch}
                                     >
                                         <Search className="mr-2 h-5 w-5" />

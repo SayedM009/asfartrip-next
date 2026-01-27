@@ -5,9 +5,9 @@ import { useTranslations } from "next-intl";
 
 const services = [
     { title: "flight", path: "/flights" },
-    { title: "hotel", path: "/hotel" },
-    { title: "car", path: "/car" },
+    { title: "hotel", path: "/hotels" },
     { title: "insurance", path: "/insurance" },
+    { title: "offers", path: "/offers" },
 ];
 
 export default function ServicesLinks() {

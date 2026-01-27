@@ -1,5 +1,6 @@
 "use client";
 import { useState, useCallback } from "react";
+import { searchHotels } from "../services/searchHotels";
 
 /**
  * Custom hook for getting user's current location and city name
@@ -8,6 +9,7 @@ import { useState, useCallback } from "react";
 export default function useCurrentLocation() {
     const [city, setCity] = useState(null);
     const [country, setCountry] = useState(null);
+    const [cityObj, setCityObj] = useState({})
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [permissionDenied, setPermissionDenied] = useState(false);
@@ -64,17 +66,35 @@ export default function useCurrentLocation() {
                 data.address?.state ||
                 null;
 
-            if (cityName) {
-                setCity(cityName);
-            } else {
-                setError("city_not_found");
-            }
-
             // Extract country name
             const countryName = data.address?.country || null;
             if (countryName) {
                 setCountry(countryName);
             }
+
+            // Only search hotels if cityName exists
+            if (cityName) {
+                setCity(cityName);
+
+                try {
+                    const second_response = await searchHotels(cityName);
+
+                    // Find first valid location
+                    const location = second_response?.locations?.find(loc => loc);
+
+                    if (location) {
+                        setCityObj(location);
+                    } else {
+                        setError("city_not_found");
+                    }
+                } catch (searchError) {
+                    console.error("Hotel search error:", searchError);
+                    setError("hotel_search_failed");
+                }
+            } else {
+                setError("city_not_found");
+            }
+
         } catch (err) {
             console.error("Location error:", err);
 
@@ -103,6 +123,7 @@ export default function useCurrentLocation() {
 
     return {
         city,
+        cityObj,
         country,
         isLoading,
         error,

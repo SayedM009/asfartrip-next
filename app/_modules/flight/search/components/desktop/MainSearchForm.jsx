@@ -62,7 +62,7 @@ export default function MainSearchForm({
                         d.label_code?.length === 3 &&
                         d.city &&
                         d.country &&
-                        !d.city.toLowerCase().includes("test")
+                        !d.city.toLowerCase().includes("test"),
                 );
 
                 onResults(validResults);
@@ -73,7 +73,7 @@ export default function MainSearchForm({
                 setLoading(false);
             }
         },
-        350
+        350,
     );
 
     /**
@@ -104,7 +104,7 @@ export default function MainSearchForm({
     return (
         <>
             {/* Departure */}
-            <div className="flex-1">
+            <div className="col-span-3">
                 {isLabel && (
                     <label className="block mb-2 text-muted-foreground text-sm">
                         {t("from")}
@@ -132,18 +132,18 @@ export default function MainSearchForm({
                                             e.target.value,
                                             setDepartureSearch,
                                             setDepartureResults,
-                                            setIsDepartureLoading
+                                            setIsDepartureLoading,
                                         )
                                     }
                                     placeholder={t(
-                                        "operations.departure_search"
+                                        "operations.departure_search",
                                     )}
                                     className="h-12 pl-10 border-0 rtl:pr-10"
                                     autoFocus
                                     onBlur={(e) => {
                                         if (
                                             !e.relatedTarget?.closest(
-                                                '[role="option"]'
+                                                '[role="option"]',
                                             )
                                         ) {
                                             setTimeout(() => {
@@ -180,12 +180,12 @@ export default function MainSearchForm({
             </div>
 
             {/* Swap */}
-            <div className="flex justify-center items-center mb-2">
+            <div className="flex justify-center items-center mb-2 col-span-1">
                 <SwapButton callBack={swapCities} />
             </div>
 
             {/* Destination */}
-            <div className="flex-1">
+            <div className="col-span-3">
                 {isLabel && (
                     <label className="block mb-2 text-muted-foreground text-sm">
                         {t("to")}
@@ -213,27 +213,27 @@ export default function MainSearchForm({
                                             e.target.value,
                                             setDestinationSearch,
                                             setDestinationResults,
-                                            setIsDestinationLoading
+                                            setIsDestinationLoading,
                                         )
                                     }
                                     placeholder={t(
-                                        "operations.destination_search"
+                                        "operations.destination_search",
                                     )}
                                     className="h-12 pl-10 bg-input-background border-0 rtl:pr-10"
                                     autoFocus
                                     onBlur={(e) => {
                                         if (
                                             !e.relatedTarget?.closest(
-                                                '[role="option"]'
+                                                '[role="option"]',
                                             )
                                         ) {
                                             setTimeout(() => {
                                                 setIsSearchingDestination(
-                                                    false
+                                                    false,
                                                 );
                                                 setDestinationSearch("");
                                                 setShowDestinationResults(
-                                                    false
+                                                    false,
                                                 );
                                             }, 100);
                                         }

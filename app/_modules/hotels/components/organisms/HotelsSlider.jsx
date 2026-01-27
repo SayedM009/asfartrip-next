@@ -5,10 +5,10 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import { useTranslations } from "next-intl";
 
 import Image from "next/image";
-import useCheckLocal from "../../_hooks/useCheckLocal";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { hotelsDestinations as destinations } from "@/app/_data/destinations";
+import useCheckLocal from "@/app/_hooks/useCheckLocal";
 
 export function HotelsSlider() {
     const scrollContainerRef = useRef(null);
@@ -127,7 +127,7 @@ export function HotelsSlider() {
                             <div
                                 className={cn(
                                     "h-70 rounded-2xl p-6 relative  group cursor-pointer transition-transform duration-300 hover:scale-105 border-0.5",
-                                    card.backgroundColor
+                                    card.backgroundColor,
                                 )}
                             >
                                 {/* Background Image */}
@@ -152,7 +152,7 @@ export function HotelsSlider() {
                                         <div className="flex items-center justify-between text-sm font-normal text-gray-400">
                                             <span className="text-xs">
                                                 {t(
-                                                    `locations.${card.location}`
+                                                    `locations.${card.location}`,
                                                 )}
                                             </span>
                                             <span className="flex text-xs items-center gap-1 text-muted-foreground">

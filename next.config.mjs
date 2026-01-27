@@ -22,6 +22,18 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.pexels.com",
       },
+      {
+        protocol: "https",
+        hostname: "asfartrip.com",
+      },
+      {
+        protocol: "http",
+        hostname: "www.tboholidays.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.tboholidays.com",
+      },
     ],
   },
 

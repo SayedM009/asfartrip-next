@@ -9,21 +9,29 @@ export default function TimeoutPopup({
     redirectLink = "/",
     subText = "",
     buttonText = "",
+    refreshCurrentPage = false,
 }) {
     const [showPopup, setShowPopup] = useState(false);
     const router = useRouter();
     const t = useTranslations("Timeout");
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            setShowPopup(true);
-        }, timeoutMinutes * 60 * 1000);
+        const timeout = setTimeout(
+            () => {
+                setShowPopup(true);
+            },
+            timeoutMinutes * 60 * 1000,
+        );
 
         return () => clearTimeout(timeout);
     }, [timeoutMinutes]);
 
     const handleRedirect = () => {
         setShowPopup(false);
+        if (refreshCurrentPage) {
+            router.refresh();
+            return;
+        }
         router.push(redirectLink);
     };
 

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -7,85 +7,43 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { useDebouncedCallback } from "use-debounce";
 import { FlagTriangleRight, BedDouble } from "lucide-react";
 import { POPULAR_DESTINATIONS } from "../../constants/popularDestinations";
-import { searchHotels } from "../../services/searchHotels";
+import { useDestinationSearch } from "../../hooks/useDestinationSearch";
 import DestinationSearchDialog from "./DestinationSearchDialog";
 
 export default function DestinationSearch({ value, onChange, t }) {
-    const [searchResults, setSearchResults] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [hasSearched, setHasSearched] = useState(false);
-    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const inputRef = useRef(null);
 
-    /**
-     * Debounced hotel search - waits 350ms after user stops typing
-     * Combines locations and hotels from API response
-     */
-    const debouncedSearch = useDebouncedCallback(async (searchTerm) => {
-        if (!searchTerm || searchTerm.trim().length < 2) {
-            setSearchResults([]);
-            setIsLoading(false);
-            setHasSearched(false);
-            return;
+    const {
+        inputValue,
+        searchResults,
+        isLoading,
+        hasSearched,
+        isPopoverOpen,
+        setIsPopoverOpen,
+        isDialogOpen,
+        setIsDialogOpen,
+        handleSelectDestination,
+        handleMobileInputChange,
+        handleDesktopInputChange,
+    } = useDestinationSearch({ onChange, initialValue: value?.name || "" });
+
+    // Auto-focus input when popover opens
+    useEffect(() => {
+        if (isPopoverOpen && inputRef.current) {
+            // Small delay to ensure popover is fully rendered
+            setTimeout(() => {
+                inputRef.current?.focus();
+            }, 50);
         }
-
-        try {
-            const { locations, hotels } = await searchHotels(searchTerm.trim());
-            // Combine locations and hotels, locations first
-            setSearchResults([...locations, ...hotels]);
-            setHasSearched(true);
-        } catch (error) {
-            console.error("Error searching hotels:", error);
-            setSearchResults([]);
-            setHasSearched(true);
-        } finally {
-            setIsLoading(false);
-        }
-    }, 350);
-
-    const handleSearch = (searchTerm) => {
-        if (!searchTerm || searchTerm.trim().length < 2) {
-            setSearchResults([]);
-            setIsLoading(false);
-            setHasSearched(false);
-            return;
-        }
-
-        setIsLoading(true);
-        debouncedSearch(searchTerm);
-    };
-
-    const handleSelectDestination = (destName) => {
-        onChange(destName);
-        setSearchResults([]);
-        setHasSearched(false);
-        setIsPopoverOpen(false);
-        setIsDialogOpen(false);
-    };
-
-    // Mobile input handler - updates value and triggers debounced search
-    const handleMobileInputChange = (e) => {
-        const newValue = e.target.value;
-        onChange(newValue);
-        handleSearch(newValue);
-    };
-
-    // Desktop input handler - updates value, opens popover, and triggers debounced search
-    const handleDesktopInputChange = (e) => {
-        const newValue = e.target.value;
-        onChange(newValue);
-        setIsPopoverOpen(true);
-        handleSearch(newValue);
-    };
+    }, [isPopoverOpen]);
 
     return (
         <>
             {/* Mobile Search */}
             <DestinationSearchDialog
-                value={value}
+                value={inputValue}
                 handleMobileInputChange={handleMobileInputChange}
                 t={t}
                 isDialogOpen={isDialogOpen}
@@ -105,10 +63,11 @@ export default function DestinationSearch({ value, onChange, t }) {
                     >
                         <Label className="text-xs">{t("destination")}</Label>
                         <Input
+                            ref={inputRef}
                             className="!outline-none !ring-0 !shadow-none bg-transparent dark:bg-transparent p-0 rounded-none h-fit py-1 border-none capitalize"
                             placeholder={t("search_input_placeholder")}
                             type="search"
-                            value={value}
+                            value={inputValue}
                             onChange={handleDesktopInputChange}
                             onFocus={() => setIsPopoverOpen(true)}
                             onClick={(e) => e.stopPropagation()}
@@ -120,7 +79,8 @@ export default function DestinationSearch({ value, onChange, t }) {
                     align="start"
                     side="bottom"
                 >
-                    {!value.trim() ? (
+                    {/* Show popular destinations when: no input OR has input but no search started */}
+                    {!inputValue.trim() || (!isLoading && !hasSearched) ? (
                         <div>
                             <Label className="block w-full bg-gray-100 dark:bg-muted p-2 font-bold">
                                 {t("popular_destinations")}
@@ -128,13 +88,13 @@ export default function DestinationSearch({ value, onChange, t }) {
                             <div className="p-2 grid grid-cols-5 gap-2 text-center">
                                 {POPULAR_DESTINATIONS.map((dest) => (
                                     <p
-                                        key={dest}
+                                        key={dest.id}
                                         className="bg-gray-50 dark:bg-muted p-2 rounded-sm cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm capitalize"
                                         onClick={() =>
                                             handleSelectDestination(dest)
                                         }
                                     >
-                                        {dest}
+                                        {dest.name}
                                     </p>
                                 ))}
                             </div>
@@ -160,13 +120,13 @@ export default function DestinationSearch({ value, onChange, t }) {
                                     key={result.id}
                                     className="p-3 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer border-b last:border-b-0 transition-colors flex items-center gap-3"
                                     onClick={() =>
-                                        handleSelectDestination(result.name)
+                                        handleSelectDestination(result)
                                     }
                                 >
                                     {result.type === "location" ? (
-                                        <FlagTriangleRight className="h-4 w-4 text-blue-500 mt-0.5 shrink-0" />
+                                        <FlagTriangleRight className="h-4 w-4 text-blue-500 shrink-0" />
                                     ) : (
-                                        <BedDouble className="h-4 w-4 text-accent-500 mt-0.5 shrink-0" />
+                                        <BedDouble className="h-4 w-4 text-accent-500 shrink-0" />
                                     )}
                                     <div>
                                         <p className="font-medium text-sm">
