@@ -112,15 +112,14 @@ export default function PassengersAndClass({
                                 <Users className="h-4 w-4 text-muted-foreground" />
                                 <span className="font-medium capitalize">
                                     {totalPassengers}{" "}
-                                    {t("passengers.passengers")}
-                                    {totalPassengers !== 1 && locale !== "ar"
-                                        ? ""
-                                        : ""}
+                                    {totalPassengers === 1
+                                        ? t("passengers.passenger")
+                                        : t("passengers.passengers")}{" "}
                                     |{" "}
                                     {t(
                                         `ticket_class.${normalizeClassName(
-                                            travelClass
-                                        )}`
+                                            travelClass,
+                                        )}`,
                                     )}
                                 </span>
                             </div>
@@ -183,7 +182,7 @@ export default function PassengersAndClass({
                                                     </div>
                                                     <div className="text-muted-foreground">
                                                         {t(
-                                                            `passengers.${key}_description`
+                                                            `passengers.${key}_description`,
                                                         )}
                                                     </div>
                                                 </div>
@@ -195,13 +194,13 @@ export default function PassengersAndClass({
                                                     onClick={() =>
                                                         updatePassengers(
                                                             key,
-                                                            false
+                                                            false,
                                                         )
                                                     }
                                                     disabled={
                                                         !canRemovePassenger(
                                                             key,
-                                                            passengers
+                                                            passengers,
                                                         )
                                                     }
                                                     className="h-8 w-8 cursor-pointer"
@@ -217,13 +216,13 @@ export default function PassengersAndClass({
                                                     onClick={() =>
                                                         updatePassengers(
                                                             key,
-                                                            true
+                                                            true,
                                                         )
                                                     }
                                                     disabled={
                                                         !canAddPassenger(
                                                             key,
-                                                            passengers
+                                                            passengers,
                                                         )
                                                     }
                                                     className="h-8 w-8 cursor-pointer"
@@ -232,7 +231,7 @@ export default function PassengersAndClass({
                                                 </Button>
                                             </div>
                                         </div>
-                                    )
+                                    ),
                                 )}
                             </div>
                         </div>

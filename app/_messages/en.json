@@ -776,8 +776,8 @@
     },
     "Calender": {
         "travel_date": "Travel date",
-        "departure_date": "Departure date",
-        "return_date": "Return date",
+        "departure_date": "Departure",
+        "return_date": "Return",
         "select_date": "Select date",
         "apply": "Apply"
     },
@@ -836,7 +836,8 @@
             "casablanca": "casablanca",
             "tunis": "tunis",
             "algiers": "algiers",
-            "south africa": "South africa"
+            "south africa": "South africa",
+            "orlando": "Orlando"
         },
         "ticket_class": {
             "economy": "economy",
@@ -1485,6 +1486,7 @@
             "OA": "Olympic Airlines",
             "OB": "Boliviana de Aviacion - BoA",
             "OC": "Oriental Air Bridge Co., Ltd. (ORC)",
+            "OD": "Batik Air",
             "OF": "Air Finland",
             "OG": "One Two Go Airlines",
             "OK": "Czech Airlines",
@@ -2015,7 +2017,9 @@
             "sydney": "Sydney",
             "melbourne": "Melbourne",
             "perth": "Perth",
-            "auckland": "Auckland"
+            "auckland": "Auckland",
+            "tunis": "Tunis",
+            "orlando": "Orlando"
         }
     },
     "Footer": {

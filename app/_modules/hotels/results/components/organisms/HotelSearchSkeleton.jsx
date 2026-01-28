@@ -57,13 +57,13 @@ export default function HotelSearchSkeleton() {
 
                 {/* Results header skeleton */}
                 <div className="hidden md:flex justify-between items-center mb-4 animate-pulse">
-                    <div className="h-6 bg-gray-200 dark:bg-gray-800 rounded w-40" />
+                    <div className="h-6 bg-gray-200 dark:bg-gray-800 rounded w-48" />
                     <div className="h-10 bg-gray-200 dark:bg-gray-800 rounded w-48" />
                 </div>
 
                 {/* Mobile Sort & Filter */}
                 <div className="md:hidden flex justify-between items-center mb-4 animate-pulse">
-                    <div className="h-8 bg-gray-200 dark:bg-gray-800 rounded w-40" />
+                    <div className="h-8 bg-gray-200 dark:bg-gray-800 rounded w-48" />
                     <div className="h-8 bg-gray-200 dark:bg-gray-800 rounded w-48" />
                 </div>
 

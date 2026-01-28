@@ -120,7 +120,7 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
                                 {/* Search Button - Redesigned */}
                                 <div className="col-span-2">
                                     <Button
-                                        className="h-12 lg:ps-6 lg:pe-8 bg-accent-500 hover:bg-accent-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer gap-2 w-full"
+                                        className="h-12 lg:ps-6 lg:pe-8 bg-accent-500 hover:bg-accent-600 text-white !rounded-sm  shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer gap-2 w-full font-bold"
                                         onClick={handleSearch}
                                     >
                                         <Search className="mr-2 h-5 w-5" />

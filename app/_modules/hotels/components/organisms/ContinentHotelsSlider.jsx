@@ -11,18 +11,18 @@ import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import { useRecommendedHotels } from "../../hooks";
 
 // Hotel card skeleton
-// function HotelCardSkeleton() {
-//     return (
-//         <div className="flex-shrink-0 w-64 sm:w-72 rounded-xl overflow-hidden border bg-card">
-//             <Skeleton className="h-52 w-full" />
-//             <div className="p-4 space-y-0">
-//                 <Skeleton className="h-4 w-3/4" />
-//                 <Skeleton className="h-3 w-full" />
-//                 <Skeleton className="h-3 w-1/2" />
-//             </div>
-//         </div>
-//     );
-// }
+function HotelCardSkeleton() {
+    return (
+        <div className="flex-shrink-0 w-64 sm:w-72 rounded-xl overflow-hidden border bg-card">
+            <Skeleton className="h-52 w-full" />
+            <div className="p-4 space-y-0">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-full" />
+                <Skeleton className="h-3 w-1/2" />
+            </div>
+        </div>
+    );
+}
 
 // Hotel image with fallback
 function HotelImage({ src, alt }) {
@@ -366,10 +366,10 @@ export function ContinentHotelsSlider() {
                             {isLoading ? (
                                 // Skeleton loading
                                 <>
-                                    {/* <HotelCardSkeleton />
                                     <HotelCardSkeleton />
                                     <HotelCardSkeleton />
-                                    <HotelCardSkeleton /> */}
+                                    <HotelCardSkeleton />
+                                    <HotelCardSkeleton />
                                 </>
                             ) : hotels.length > 0 ? (
                                 // Hotels cards
