@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useLocale, useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import StarRating from "../atoms/StarRating";
 import PriceDisplay from "../atoms/PriceDisplay";
 import PropertyTypeBadge from "../atoms/PropertyTypeBadge";
@@ -24,6 +25,7 @@ const MAX_IMAGES = 5;
  */
 export function HotelCard({ hotel, nights = 1, rooms = 1, details }) {
     const locale = useLocale();
+    const searchParams = useSearchParams();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [imageError, setImageError] = useState({});
     const t = useTranslations("Hotels.results");
@@ -33,6 +35,9 @@ export function HotelCard({ hotel, nights = 1, rooms = 1, details }) {
     const hotelPrice = hotel?.HotelPrice || {};
 
     const hotelId = hotelInfo.Id;
+    // Build details URL with search params
+    const detailsUrl = `/${locale}/hotels/details/${hotelId}?${searchParams.toString()}`;
+
     const name = hotelInfo.Name || "Hotel";
     const address = hotelInfo.Address || "";
     const starRating = hotelInfo.Rating;
@@ -94,7 +99,7 @@ export function HotelCard({ hotel, nights = 1, rooms = 1, details }) {
     };
 
     return (
-        <Link href={`/${locale}/hotels/details/${hotelId}`}>
+        <Link href={detailsUrl}>
             <Card
                 className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group border-0 shadow-none md:shadow-sm py-0 
             border-b md:border-b-0 border-gray-300 !rounded-b-none md:!rounded-b-xl pb-4 md:pb-0 bg-background

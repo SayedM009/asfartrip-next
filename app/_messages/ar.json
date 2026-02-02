@@ -2724,6 +2724,37 @@
             "cancel": "إلغاء",
             "room": "غرفة",
             "rooms": "غرف"
+        },
+        "details": {
+            "metaTitle": "تفاصيل الفندق | أسفار تريب",
+            "metaDescription": "عرض تفاصيل الفندق والغرف والمرافق واحجز إقامتك",
+            "overview": "نظرة عامة",
+            "rooms": "الغرف",
+            "amenities": "المرافق",
+            "location": "الموقع",
+            "reviews": "التقييمات",
+            "select_room": "اختر الغرفة",
+            "selected": "تم الاختيار",
+            "per_night": "لليلة",
+            "total": "الإجمالي",
+            "book_now": "احجز الآن",
+            "continue_booking": "متابعة الحجز",
+            "view_all_photos": "عرض الكل",
+            "free_cancellation": "إلغاء مجاني",
+            "non_refundable": "غير قابل للاسترداد",
+            "breakfast_included": "الإفطار مشمول",
+            "no_rooms_available": "لا توجد غرف متاحة للتواريخ المحددة",
+            "select_dates": "اختر التواريخ لعرض الغرف المتاحة",
+            "select_room_to_continue": "اختر غرفة للمتابعة",
+            "get_directions": "الحصول على الاتجاهات",
+            "nearby_attractions": "المعالم السياحية القريبة",
+            "show_all_amenities": "عرض جميع المرافق",
+            "show_less": "عرض أقل",
+            "nights": "ليالي",
+            "night": "ليلة",
+            "guests": "الضيوف",
+            "check_in": "تسجيل الوصول",
+            "check_out": "تسجيل المغادرة"
         }
     }
 }

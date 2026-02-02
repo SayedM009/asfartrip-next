@@ -2713,6 +2713,37 @@
             "cancel": "Cancel",
             "room": "room",
             "rooms": "rooms"
+        },
+        "details": {
+            "metaTitle": "Hotel Details | AsfarTrip",
+            "metaDescription": "View hotel details, rooms, amenities and book your stay",
+            "overview": "Overview",
+            "rooms": "Rooms",
+            "amenities": "Amenities",
+            "location": "Location",
+            "reviews": "Reviews",
+            "select_room": "Select Room",
+            "selected": "Selected",
+            "per_night": "per night",
+            "total": "Total",
+            "book_now": "Book Now",
+            "continue_booking": "Continue to Booking",
+            "view_all_photos": "View All",
+            "free_cancellation": "Free Cancellation",
+            "non_refundable": "Non-refundable",
+            "breakfast_included": "Breakfast Included",
+            "no_rooms_available": "No rooms available for the selected dates",
+            "select_dates": "Select dates to see available rooms",
+            "select_room_to_continue": "Select a room to continue",
+            "get_directions": "Get Directions",
+            "nearby_attractions": "Nearby Attractions",
+            "show_all_amenities": "Show All Amenities",
+            "show_less": "Show Less",
+            "nights": "nights",
+            "night": "night",
+            "guests": "Guests",
+            "check_in": "Check-in",
+            "check_out": "Check-out"
         }
     }
 }

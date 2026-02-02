@@ -1,6 +1,7 @@
 import Footer from "@/app/_components/footer/Footer";
 
-function layout({ children }) {
+async function layout({ children }) {
+
     return (
         <section className="container-custom min-h-screen">
             {children}

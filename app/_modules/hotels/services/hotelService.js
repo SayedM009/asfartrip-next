@@ -163,6 +163,98 @@ class HotelService {
     }
 
     /**
+     * Generic POST request handler for form-urlencoded APIs
+     * @param {string} endpoint - API endpoint
+     * @param {Object} payload - Request body (form data)
+     * @param {string} requestId - Request ID for logging
+     * @param {number} timeout - Request timeout in ms
+     * @returns {Promise<Object>} - API response data
+     */
+    async requestPostForm(endpoint, payload, requestId = "unknown", timeout = 30000) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+        try {
+            let token = await getValidToken();
+            const username = process.env.TP_USERNAME;
+            const password = process.env.TP_PASSWORD;
+            const basicAuth = Buffer.from(`${username}:${password}`).toString("base64");
+
+            console.log(
+                ` [${new Date().toISOString()}] [${requestId}] Sending POST form request to ${endpoint}`
+            );
+
+            // Build form data with token
+            const formData = new URLSearchParams();
+            formData.append("api_token", token);
+            Object.entries(payload).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+
+            let response = await fetch(`${BASE_URL}${endpoint}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Authorization: `Basic ${basicAuth}`,
+                },
+                body: formData.toString(),
+                cache: "no-store",
+                signal: controller.signal,
+            });
+
+            clearTimeout(timeoutId);
+
+            // Handle 401/403 (Token Expired/Invalid)
+            if (response.status === 401 || response.status === 403) {
+                console.warn(` [${requestId}] Auth failed. Retrying with fresh token...`);
+                await clearAPIToken();
+                token = await getValidToken();
+
+                const retryController = new AbortController();
+                const retryTimeoutId = setTimeout(() => retryController.abort(), timeout);
+
+                const retryFormData = new URLSearchParams();
+                retryFormData.append("api_token", token);
+                Object.entries(payload).forEach(([key, value]) => {
+                    retryFormData.append(key, value);
+                });
+
+                try {
+                    response = await fetch(`${BASE_URL}${endpoint}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                            Authorization: `Basic ${basicAuth}`,
+                        },
+                        body: retryFormData.toString(),
+                        cache: "no-store",
+                        signal: retryController.signal,
+                    });
+                    clearTimeout(retryTimeoutId);
+                } catch (retryError) {
+                    clearTimeout(retryTimeoutId);
+                    throw retryError;
+                }
+            }
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error(`[${requestId}] API Error: ${response.status}`, errorText);
+                throw new Error(`API Error: ${response.status} - ${errorText}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            clearTimeout(timeoutId);
+            if (error.name === "AbortError") {
+                throw new Error(`Request timeout after ${timeout}ms`);
+            }
+            console.error(` [${requestId}] HotelService Error:`, error.message);
+            throw error;
+        }
+    }
+
+    /**
      * Search for hotels by term (city, hotel name, etc.)
      * @param {string} term - Search term
      * @param {string} requestId - Optional request ID
@@ -197,6 +289,30 @@ class HotelService {
     async getRecommendedHotels(city, country, requestId) {
         return this.requestGet("/api/hotel/v2/get_recommended_hotels", { city, country }, requestId);
     }
+
+    /**
+     * Get hotel details
+     * @param {string} hotelId - Hotel ID
+     * @param {string} requestId - Optional request ID
+     */
+    async getHotelDetails(hotelId, requestId) {
+        return this.requestPostForm("/api/hotel/v2/HotelDetails", { hotel_id: hotelId }, requestId, 30000);
+    }
+
+    /**
+     * Get rooms availability for a hotel
+     * @param {Object} payload - Rooms request payload
+     * @param {string} payload.hotel_id - Hotel ID
+     * @param {string} payload.check_in - Check-in date (yyyy-MM-dd)
+     * @param {string} payload.check_out - Check-out date (yyyy-MM-dd)
+     * @param {string} payload.nationality - Country code (e.g., 'AE')
+     * @param {Array} payload.rooms - Array of rooms [{adults: number}]
+     * @param {string} requestId - Optional request ID
+     */
+    async getRoomsAvailability(payload, requestId) {
+        return this.requestPost("/api/hotel/v2/RoomsAvailibility", payload, requestId, 60000);
+    }
 }
 
 export const hotelService = new HotelService();
+

@@ -1,6 +1,5 @@
-// Components
 import Navbar from "@/app/_components/navigation/Navbar";
-import HotelResults from "@/app/_modules/hotels/results/components/organisms/HotelResults";
+import HotelDetailsContent from "@/app/_modules/hotels/details/components/organisms/HotelDetailsContent";
 
 // Generate SEO
 import Script from "next/script";
@@ -9,40 +8,36 @@ import { generatePageMetadata, buildWebPageJsonLd } from "@/app/_libs/seo";
 import { DEFAULT_LOCALE } from "@/app/_config/i18n";
 import HotelSearch from "@/app/_modules/hotels/search/components/organisms/HotelSearch";
 
-
-
 export async function generateMetadata({ params }) {
     const locale = (await params)?.locale || DEFAULT_LOCALE;
     const dict = await getDictionary(locale);
 
     return generatePageMetadata({
         locale,
-        path: "/hotels/results",
-        title: dict.HotelPage?.results?.metaTitle,
-        description: dict.HotelPage?.results?.metaDescription,
-        keywords: dict.HotelPage?.results?.metaKeywords,
+        path: "/hotels",
+        title: dict.HotelPage?.details?.metaTitle || "Hotel Details",
+        description: dict.HotelPage?.details?.metaDescription,
+        keywords: dict.HotelPage?.details?.metaKeywords,
     });
 }
 
-
-
-export default async function HotelResultsPage({ params }) {
-
+export default async function HotelDetailsPage({ params }) {
     const locale = (await params)?.locale || DEFAULT_LOCALE;
+    const hotelId = (await params)?.hotelId;
     const dict = await getDictionary(locale);
 
     const jsonLd = buildWebPageJsonLd({
         locale,
-        path: "/hotels/results",
-        title: dict.HotelPage?.results?.metaTitle,
-        description: dict.HotelPage?.results?.metaDescription,
-        keywords: dict.HotelPage?.results?.metaKeywords,
+        path: `/hotels/details/${hotelId}`,
+        title: dict.HotelPage?.details?.metaTitle || "Hotel Details",
+        description: dict.HotelPage?.details?.metaDescription,
+        keywords: dict.HotelPage?.details?.metaKeywords,
     });
 
     return (
         <section className="min-h-screen">
             <Script
-                id="hotels/results"
+                id="hotel-details"
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
@@ -56,11 +51,10 @@ export default async function HotelResultsPage({ params }) {
                 <HotelSearch />
             </div>
 
-            {/* Main Content - Client Component handles loading/results */}
-            <div className="  pb-20 md:pb-4">
-                <HotelResults />
+            {/* Main Content */}
+            <div className="container mx-auto pb-20 md:pb-4">
+                <HotelDetailsContent hotelId={hotelId} />
             </div>
-
         </section>
     );
 }
