@@ -103,41 +103,49 @@ export default function HeroGallery({ images = [], hotelName }) {
                 ))}
             </div>
 
-            {/* Mobile Gallery Swiper */}
+            {/* Mobile Gallery Swiper with Touch Support */}
             <div className="md:hidden relative h-[280px] -mx-4 -top-4">
-                <Image
-                    src={images[currentIndex] || "/no-image.webp"}
-                    alt={hotelName}
-                    fill
-                    className="object-cover"
-                    priority
-                />
-
-                {/* Navigation Arrows */}
-                <button
-                    onClick={handlePrevious}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2"
+                <Carousel
+                    opts={{
+                        loop: true,
+                    }}
+                    className="h-full"
+                    setApi={(mobileApi) => {
+                        if (mobileApi) {
+                            mobileApi.on("select", () => {
+                                setCurrentIndex(mobileApi.selectedScrollSnap());
+                            });
+                        }
+                    }}
                 >
-                    <ChevronLeft className="h-5 w-5" />
-                </button>
-                <button
-                    onClick={handleNext}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2"
-                >
-                    <ChevronRight className="h-5 w-5" />
-                </button>
+                    <CarouselContent className="h-full -ml-0">
+                        {images.map((img, idx) => (
+                            <CarouselItem key={idx} className="h-full pl-0">
+                                <div className="relative h-[280px]">
+                                    <Image
+                                        src={img || "/no-image.webp"}
+                                        alt={`${hotelName} - ${idx + 1}`}
+                                        fill
+                                        className="object-cover"
+                                        priority={idx === 0}
+                                    />
+                                </div>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                </Carousel>
 
                 {/* Counter */}
-                <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm flex items-center gap-1 z-10">
                     <ImageIcon className="size-4 mr-1" />
                     {`${currentIndex + 1}`.padStart(2, "0")} /{" "}
                     {`${images.length}`.padStart(2, "0")}
                 </div>
             </div>
 
-            {/* Full Screen Gallery Modal with Carousel */}
+            {/* Full Screen Gallery Modal */}
             <Dialog open={showModal} onOpenChange={setShowModal}>
-                <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 bg-black border-none">
+                <DialogContent className="max-w-[95vw]  p-0 bg-black border-none ">
                     <DialogTitle className="sr-only">
                         {hotelName} Gallery
                     </DialogTitle>
@@ -152,69 +160,64 @@ export default function HeroGallery({ images = [], hotelName }) {
                         <X className="h-6 w-6" />
                     </Button>
 
-                    {/* Carousel */}
-                    <div className="w-full h-[85vh] flex flex-col">
-                        <Carousel
-                            setApi={setApi}
-                            opts={{
-                                loop: true,
-                                startIndex: currentIndex,
-                            }}
-                            className="flex-1"
+                    {/* Main Image */}
+                    <div className="relative w-full h-[80vh]">
+                        <Image
+                            src={images[currentIndex] || "/no-image.webp"}
+                            alt={`${hotelName} - ${currentIndex + 1}`}
+                            fill
+                            className="object-contain"
+                        />
+
+                        {/* Navigation */}
+                        <button
+                            onClick={() =>
+                                setCurrentIndex((prev) =>
+                                    prev === 0 ? images.length - 1 : prev - 1,
+                                )
+                            }
+                            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 rounded-full p-3"
                         >
-                            <CarouselContent className="h-full">
-                                {images.map((img, idx) => (
-                                    <CarouselItem
-                                        key={idx}
-                                        className="h-full flex items-center justify-center"
-                                    >
-                                        <div className="relative w-full h-[70vh]">
-                                            <Image
-                                                src={img || "/no-image.webp"}
-                                                alt={`${hotelName} - ${idx + 1}`}
-                                                fill
-                                                className="object-contain"
-                                            />
-                                        </div>
-                                    </CarouselItem>
-                                ))}
-                            </CarouselContent>
+                            <ChevronLeft className="h-8 w-8 text-white" />
+                        </button>
+                        <button
+                            onClick={() =>
+                                setCurrentIndex((prev) =>
+                                    prev === images.length - 1 ? 0 : prev + 1,
+                                )
+                            }
+                            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 rounded-full p-3"
+                        >
+                            <ChevronRight className="h-8 w-8 text-white" />
+                        </button>
+                    </div>
 
-                            {/* Navigation Arrows */}
-                            <CarouselPrevious className="left-4 bg-white/20 hover:bg-white/40 border-none text-white" />
-                            <CarouselNext className="right-4 bg-white/20 hover:bg-white/40 border-none text-white" />
-                        </Carousel>
+                    {/* Counter */}
+                    <div className="text-center text-white py-2 bg-black">
+                        {currentIndex + 1} / {images.length}
+                    </div>
 
-                        {/* Counter */}
-                        <div className="text-center text-white py-2">
-                            {currentIndex + 1} / {images.length}
-                        </div>
-
-                        {/* Thumbnail Strip */}
-                        <div className="flex gap-2 p-4 overflow-x-auto bg-black/80">
-                            {images.map((img, idx) => (
-                                <button
-                                    key={idx}
-                                    onClick={() => {
-                                        setCurrentIndex(idx);
-                                        api?.scrollTo(idx);
-                                    }}
-                                    className={cn(
-                                        "flex-shrink-0 relative w-20 h-14 rounded overflow-hidden border-2",
-                                        idx === currentIndex
-                                            ? "border-white"
-                                            : "border-transparent opacity-50",
-                                    )}
-                                >
-                                    <Image
-                                        src={img || "/no-image.webp"}
-                                        alt={`Thumbnail ${idx + 1}`}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </button>
-                            ))}
-                        </div>
+                    {/* Thumbnail Strip */}
+                    <div className="flex gap-2 p-4 overflow-x-auto bg-black/80">
+                        {images.map((img, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => setCurrentIndex(idx)}
+                                className={cn(
+                                    "flex-shrink-0 relative w-20 h-14 rounded overflow-hidden border-2",
+                                    idx === currentIndex
+                                        ? "border-white"
+                                        : "border-transparent opacity-50",
+                                )}
+                            >
+                                <Image
+                                    src={img || "/no-image.webp"}
+                                    alt={`Thumbnail ${idx + 1}`}
+                                    fill
+                                    className="object-cover"
+                                />
+                            </button>
+                        ))}
                     </div>
                 </DialogContent>
             </Dialog>

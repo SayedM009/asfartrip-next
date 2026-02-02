@@ -82,13 +82,6 @@ export default function HotelDetailsContent({ hotelId }) {
                 </span>
                 All properties in {hotelDetails.CityName}
             </Link>
-            {/* Mobile Header */}
-            <div className="md:hidden absolute top-0 left-0 right-0 z-10">
-                <MobileHeader
-                    hotelName={hotelDetails.Name}
-                    resultsUrl={resultsUrl}
-                />
-            </div>
 
             {/* Hotel Info + Price (Desktop) */}
             <div className="hidden md:flex items-start justify-between">
@@ -111,6 +104,13 @@ export default function HotelDetailsContent({ hotelId }) {
 
             {/* Hero Gallery - relative container for mobile header overlay */}
             <div className="relative">
+                {/* Mobile Header - positioned over gallery */}
+                <div className="md:hidden absolute top-0 left-0 right-0 z-10">
+                    <MobileHeader
+                        hotelName={hotelDetails.Name}
+                        resultsUrl={resultsUrl}
+                    />
+                </div>
                 <HeroGallery images={images} hotelName={hotelDetails.Name} />
             </div>
 
@@ -122,6 +122,13 @@ export default function HotelDetailsContent({ hotelId }) {
                     address={hotelDetails.Address}
                     cityName={hotelDetails.CityName}
                     countryName={hotelDetails.CountryName}
+                />
+                <TripAdvRating
+                    tripAdvisorRating={hotelDetails.TripAdvisorRating}
+                    parentClass="my-6"
+                    ratingClass="!px-3  text-lg"
+                    imageSize={35}
+                    showLabel={true}
                 />
             </div>
 
