@@ -51,7 +51,7 @@ export default function Dates({
                         <PopoverTrigger asChild>
                             <Button
                                 variant="outline"
-                                className="h-12 w-full justify-start bg-input-background border-0 cursor-pointer "
+                                className="h-14 w-full justify-start bg-input-background border-0 cursor-pointer "
                             >
                                 <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
                                 <span className="font-medium">
@@ -61,7 +61,7 @@ export default function Dates({
                                     {range?.from && !range?.to
                                         ? c("return_date")
                                         : formatDate(range?.to, { pattern }) ||
-                                          c("return_date")}
+                                        c("return_date")}
                                 </span>
                             </Button>
                         </PopoverTrigger>
@@ -95,6 +95,7 @@ export default function Dates({
                                         numberOfMonths={2}
                                         startMonth={new Date()}
                                         disabled={(date) => date < new Date()}
+                                        className="w-xl"
                                     />
                                 </div>
                             </div>
@@ -113,7 +114,7 @@ export default function Dates({
                         <PopoverTrigger asChild>
                             <Button
                                 variant="outline"
-                                className="h-12 w-full justify-start bg-input-background border-0 cursor-pointer "
+                                className="h-14 w-full justify-start bg-input-background border-0 cursor-pointer "
                             >
                                 <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
                                 <span className="font-medium">

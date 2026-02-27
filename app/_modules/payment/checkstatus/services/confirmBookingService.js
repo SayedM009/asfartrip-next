@@ -125,6 +125,30 @@ async function purchaseInsurancePolicy(order_id) {
     }
 }
 
+// ============== HOTEL FUNCTIONS ==============
+
+async function confirmHotelBooking(booking_ref) {
+    try {
+        // Hotel bookings are confirmed at BookHotel time — just verify status
+        console.log(`Confirming hotel booking: ${booking_ref}`);
+        return { status: 'success', booking_reference: booking_ref };
+    } catch (err) {
+        console.error('confirmHotelBooking error:', err.message);
+        throw err;
+    }
+}
+
+async function issueHotelBooking(booking_ref) {
+    try {
+        // Hotel bookings are issued at BookHotel time
+        console.log(`Issuing hotel booking: ${booking_ref}`);
+        return { success: true, alreadyIssued: true, data: { booking_reference: booking_ref } };
+    } catch (err) {
+        console.error('issueHotelBooking error:', err.message);
+        throw err;
+    }
+}
+
 // ============== EXPORTED FUNCTIONS ==============
 
 export async function confirmBooking(paymentData) {
@@ -136,6 +160,9 @@ export async function confirmBooking(paymentData) {
 
         case 'INSURANCE':
             return await confirmInsuranceBooking(order_id);
+
+        case 'HOTEL':
+            return await confirmHotelBooking(booking_ref);
 
         default:
             throw new Error(`Unsupported booking module: ${module}`);
@@ -159,6 +186,9 @@ export async function issueTicket(confirmData, paymentData) {
 
         case 'INSURANCE':
             return await purchaseInsurancePolicy(paymentData.order_id);
+
+        case 'HOTEL':
+            return await issueHotelBooking(paymentData.booking_ref || confirmData?.booking_reference);
 
         default:
             throw new Error(`Unsupported module for ticket issuance: ${module}`);

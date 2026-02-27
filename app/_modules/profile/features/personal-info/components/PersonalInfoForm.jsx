@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { format } from "date-fns";
@@ -12,7 +13,6 @@ import { updateProfileClient } from "../../../services/updateProfileClient";
 function PersonalInfo({ close }) {
     const [userInfo, setUserInfo] = useState({});
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState("");
     const [showValidation, setShowValidation] = useState(false);
 
     const { user: savedUser, updateSessionUser, updateUser } = useAuthStore();
@@ -55,7 +55,6 @@ function PersonalInfo({ close }) {
     };
 
     const handleSave = async () => {
-        setSuccess("");
         setShowValidation(true);
 
         if (
@@ -116,7 +115,6 @@ function PersonalInfo({ close }) {
                 showValidation={showValidation}
                 isLoggedIn={true}
             />
-            {success && <p className="text-green-600 mt-3">{success}</p>}
             <div className="pt-8">
                 <Button
                     className="bg-accent-500 hover:bg-[#cf5f1a] text-white text-sm py-5 rounded-full shadow-md w-full"

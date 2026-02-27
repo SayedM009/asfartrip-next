@@ -7,31 +7,59 @@ import { getDictionary } from "@/app/_libs/getDictionary";
 import { generatePageMetadata, buildWebPageJsonLd } from "@/app/_libs/seo";
 import { DEFAULT_LOCALE } from "@/app/_config/i18n";
 import HotelSearch from "@/app/_modules/hotels/search/components/organisms/HotelSearch";
+import {
+    getHotelDetails,
+    getRoomsData,
+} from "@/app/_modules/hotels/details/utils/getHotelDetails";
 
 export async function generateMetadata({ params }) {
     const locale = (await params)?.locale || DEFAULT_LOCALE;
     const dict = await getDictionary(locale);
 
+    const hotel = await getHotelDetails((await params)?.hotelId);
+
     return generatePageMetadata({
         locale,
         path: "/hotels",
-        title: dict.HotelPage?.details?.metaTitle || "Hotel Details",
-        description: dict.HotelPage?.details?.metaDescription,
-        keywords: dict.HotelPage?.details?.metaKeywords,
+        title: hotel?.data?.Name || "Hotel Details",
+        description: hotel?.data?.Description || "",
+        keywords: hotel?.data?.Keywords || "",
     });
 }
 
-export default async function HotelDetailsPage({ params }) {
+export default async function HotelDetailsPage({ params, searchParams }) {
     const locale = (await params)?.locale || DEFAULT_LOCALE;
     const hotelId = (await params)?.hotelId;
-    const dict = await getDictionary(locale);
+    const search = await searchParams;
+
+    // Parse roomDetails from search params
+    let roomsConfig = [{ adults: parseInt(search?.adults) || 2 }];
+    if (search?.roomDetails) {
+        try {
+            roomsConfig = JSON.parse(search.roomDetails);
+        } catch (e) {
+            // fallback to default
+        }
+    }
+
+    // Fetch hotel details + rooms in parallel
+    const [hotel, initialRooms] = await Promise.all([
+        getHotelDetails(hotelId),
+        getRoomsData(
+            hotelId,
+            search?.checkIn,
+            search?.checkOut,
+            search?.nationality,
+            roomsConfig
+        ),
+    ]);
 
     const jsonLd = buildWebPageJsonLd({
         locale,
         path: `/hotels/details/${hotelId}`,
-        title: dict.HotelPage?.details?.metaTitle || "Hotel Details",
-        description: dict.HotelPage?.details?.metaDescription,
-        keywords: dict.HotelPage?.details?.metaKeywords,
+        title: hotel?.data?.Name || "Hotel Details",
+        description: hotel?.data?.Description || "",
+        keywords: hotel?.data?.Keywords || "",
     });
 
     return (
@@ -52,8 +80,12 @@ export default async function HotelDetailsPage({ params }) {
             </div>
 
             {/* Main Content */}
-            <div className="container mx-auto pb-20 md:pb-4">
-                <HotelDetailsContent hotelId={hotelId} />
+            <div className="pb-20 md:pb-4">
+                <HotelDetailsContent
+                    hotelId={hotelId}
+                    initialHotelDetails={hotel?.data || null}
+                    initialRooms={initialRooms?.data || null}
+                />
             </div>
         </section>
     );

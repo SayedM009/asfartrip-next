@@ -1,23 +1,19 @@
-import LoyaltyPoints, { LoyaltyTier } from "@/app/_components/profile/LoyaltyPoints"
-import ChevronBasedOnLanguage from "@/app/_components/ui/ChevronBasedOnLanguage"
-import { BadgePercent } from "lucide-react"
+import LoyaltyPoints from "@/app/_components/profile/LoyaltyPoints"
+import LoyaltyTier from "@/app/_modules/profile/components/molecules/LoyaltyTier"
+import Offers from "@/app/_modules/profile/components/molecules/Offers"
+import { getTranslations } from "next-intl/server";
 
-function page() {
 
-    return <section className="grid grid-cols-3 gap-4">
+async function Page() {
+    const t = await getTranslations("Profile");
+    return <section className="grid-cols-3 gap-4 hidden md:grid ">
+        <h1 className="col-span-3 text-2xl font-bold mb-4">{t("dashboard")}</h1>
         <LoyaltyTier />
         <LoyaltyPoints />
         <Offers />
     </section>
 }
 
-function Offers() {
-    return <div className="shadow-lg p-4  border  rounded-xl flex flex-col  hover:cursor-pointer user-select-none hover:shadow-xl transition-all col-span-1">
-        <BadgePercent />
-        <h2 className="font-bold text-xl mt-4">Offers</h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2" >Get the best deals on hotels, flights, and more.</p>
-    </div>
 
-}
 
-export default page
+export default Page

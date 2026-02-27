@@ -1,6 +1,5 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -8,11 +7,10 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
-import { LogOut, Settings, CalendarRange, UserIcon } from "lucide-react";
+import { LogOut, CalendarRange, UserIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
-// استبدال المسار القديم
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 
 import { Squares2X2Icon, UserGroupIcon } from "@heroicons/react/24/outline";
@@ -23,6 +21,7 @@ import ShadcnAvatar from "../molecules/ShadcnAvatar";
 export default function UserDropdown() {
     const { user } = useAuthStore();
     const l = useTranslations("Login");
+    const t = useTranslations("Profile");
     const { isRTL } = useCheckLocal();
     const condition = isRTL ? "rtl" : "ltr";
 
@@ -66,7 +65,7 @@ export default function UserDropdown() {
                             className="flex items-center gap-2"
                         >
                             <Squares2X2Icon className="size-4 text-accent-500" />
-                            Dashboard
+                            {t("dashboard")}
                         </Link>
                     </DropdownMenuItem>
 
@@ -76,7 +75,7 @@ export default function UserDropdown() {
                             className="flex items-center gap-2"
                         >
                             <UserIcon className="size-4 text-accent-500" />
-                            Profile Info
+                            {t("personal_info")}
                         </Link>
                     </DropdownMenuItem>
 
@@ -91,8 +90,13 @@ export default function UserDropdown() {
                     </DropdownMenuItem>
 
                     <DropdownMenuItem className="cursor-pointer py-2 px-3 text-sm flex items-center gap-2 hover:bg-muted transition-colors hover:outline-0">
-                        <CalendarRange className="size-4 text-accent-500" />
-                        {l("my_bookings")}
+                        <Link
+                            href="/profile/flights"
+                            className="flex items-center gap-2"
+                        >
+                            <CalendarRange className="size-4 text-accent-500" />
+                            {l("my_bookings")}
+                        </Link>
                     </DropdownMenuItem>
 
                     <DropdownMenuSeparator />

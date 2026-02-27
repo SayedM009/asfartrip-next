@@ -1,3 +1,4 @@
+"use client";
 import useCheckLocal from "@/app/_hooks/useCheckLocal";
 import {
     Select,
@@ -65,7 +66,7 @@ export function DateDropdownFields({
             const date = new Date(
                 parseInt(newYear),
                 parseInt(newMonth) - 1,
-                parseInt(newDay)
+                parseInt(newDay),
             );
             onChange?.(date);
         } else {
@@ -120,7 +121,7 @@ export function DateDropdownFields({
         const daysInMonth = new Date(
             parseInt(yearVal),
             parseInt(monthVal),
-            0
+            0,
         ).getDate();
         return daysInMonth;
     };
@@ -142,7 +143,7 @@ export function DateDropdownFields({
                                 "py-6 w-full cursor-pointer",
                                 error &&
                                     !day &&
-                                    "border-red-500 focus:ring-red-500"
+                                    "border-red-500 focus:ring-red-500",
                             )}
                         >
                             <SelectValue placeholder={d("day")} />
@@ -172,7 +173,7 @@ export function DateDropdownFields({
                                 "py-6 w-full cursor-pointer",
                                 error &&
                                     !month &&
-                                    "border-red-500 focus:ring-red-500"
+                                    "border-red-500 focus:ring-red-500",
                             )}
                         >
                             <SelectValue placeholder={d("month")} />
@@ -199,7 +200,7 @@ export function DateDropdownFields({
                                 "py-6 w-full cursor-pointer",
                                 error &&
                                     !year &&
-                                    "border-red-500 focus:ring-red-500"
+                                    "border-red-500 focus:ring-red-500",
                             )}
                         >
                             <SelectValue placeholder={d("year")} />

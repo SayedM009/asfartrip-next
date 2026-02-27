@@ -5,24 +5,25 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Tabs from "@/app/_modules/profile/components/molecules/ProfileTabs";
-import HotelCard from "@/app/_components/SVG/HotelCard"; // لو عندك أيقونة فندق، أو بدلها بـ Image
+import HotelCard from "@/app/_components/SVG/HotelCard";
 import { useTranslations } from "next-intl";
-import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
+import { useAuthStore } from "@/app/_modules/auth";
 import HotelBookingCard from "./molecules/HotelBookingCard";
 import HotelBookingCardSkeleton from "./molecules/HotelBookingCardSkeleton";
 import { useDashboardBookingsStore } from "../../../store/dashboardBookingStore";
 
 export default function HotelBookings() {
     const p = useTranslations("Profile");
-    const { formatPrice } = useCurrency();
+    const { user } = useAuthStore();
     const { fetchBookings, hotelBookings, loading } =
         useDashboardBookingsStore();
 
     const [activeTab, setActiveTab] = useState("upcoming");
 
     useEffect(() => {
-        fetchBookings(52, 2, activeTab);
-    }, [activeTab, fetchBookings]);
+        if (!user?.id || !user?.usertype) return;
+        fetchBookings(user.id, user.usertype, activeTab);
+    }, [activeTab, fetchBookings, user?.id, user?.usertype]);
 
     return (
         <div className="flex flex-col h-[calc(100vh-50px)]">

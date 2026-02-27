@@ -42,6 +42,13 @@ const MODULES = {
             PNR: confirmData?.PNR || issueData?.data?.PNR || '',
         }),
 
+        // Step labels for payment check UI
+        stepLabels: {
+            step1: 'stepPaymentVerified',
+            step2: 'stepBookingConfirmed',
+            step3: 'stepTicketIssuance',
+        },
+
         // Translation keys
         translations: {
             issueSuccess: 'ticketIssuedRedirecting',
@@ -69,6 +76,13 @@ const MODULES = {
             policy_id: issueData?.data?.policy_id || confirmData?.policy_id || '',
         }),
 
+        // Step labels for payment check UI
+        stepLabels: {
+            step1: 'stepPaymentVerified',
+            step2: 'stepBookingConfirmed',
+            step3: 'stepPolicyPurchased',
+        },
+
         translations: {
             issueSuccess: 'policyPurchasedRedirecting',
             alreadyIssued: 'policyAlreadyPurchasedRedirecting',
@@ -76,27 +90,53 @@ const MODULES = {
         },
     },
 
-    // ============================================
-    //  Add new modules here (e.g., HOTEL)
-    // ============================================
-    // HOTEL: {
-    //     name: 'HOTEL',
-    //     displayName: 'Hotel',
-    //     endpoints: {
-    //         confirm: '/api/hotel/confirm',
-    //         issue: '/api/hotel/voucher',
-    //     },
-    //     statusPage: '/hotels/status/success',
-    //     isIssueSuccess: (issueData) => issueData?.data?.confirmation_number,
-    //     getRedirectParams: (confirmData, issueData) => ({
-    //         confirmation_number: issueData?.data?.confirmation_number || '',
-    //     }),
-    //     translations: {
-    //         issueSuccess: 'voucherIssuedRedirecting',
-    //         alreadyIssued: 'voucherAlreadyIssuedRedirecting',
-    //         pending: 'paymentReceivedVoucherPending',
-    //     },
-    // },
+    HOTEL: {
+        name: 'HOTEL',
+        displayName: 'Hotel',
+
+        endpoints: {
+            confirm: null,   // Hotel bookings are confirmed at BookHotel time
+            issue: null,     // No separate issuance step for hotels
+        },
+
+        statusPage: '/hotels/status/success',
+
+        // Hotel bookings are always "issued" at book time
+        isIssueSuccess: (issueData) => {
+            return issueData?.success || issueData?.alreadyIssued;
+        },
+
+        getRedirectParams: (confirmData, issueData) => {
+            // Pass booking_no from the hotel booking store
+            // Note: booking_ref (AFT format) is already in commonParams and is used as pnr_no
+            try {
+                const { default: useHotelBookingStore } = require('@/app/_modules/hotels/booking/store/hotelBookingStore');
+                const state = useHotelBookingStore.getState();
+                return {
+                    pnr_no: state.bookingPNR || confirmData?.booking_reference || '',
+                    booking_no: state.bookingPNR || confirmData?.booking_reference || '',
+                };
+            } catch {
+                return {
+                    pnr_no: confirmData?.booking_reference || '',
+                    booking_no: confirmData?.booking_reference || '',
+                };
+            }
+        },
+
+        // Step labels for payment check UI
+        stepLabels: {
+            step1: 'stepPaymentVerified',
+            step2: 'stepBookingConfirmed',
+            step3: 'stepVoucherIssued',
+        },
+
+        translations: {
+            issueSuccess: 'hotelBookingConfirmedRedirecting',
+            alreadyIssued: 'hotelBookingAlreadyConfirmedRedirecting',
+            pending: 'paymentReceivedHotelPending',
+        },
+    },
 };
 
 // ============================================

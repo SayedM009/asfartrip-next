@@ -104,7 +104,7 @@ export default function MainSearchForm({
     return (
         <>
             {/* Departure */}
-            <div className="col-span-3">
+            <div className="flex-1">
                 {isLabel && (
                     <label className="block mb-2 text-muted-foreground text-sm">
                         {t("from")}
@@ -118,7 +118,7 @@ export default function MainSearchForm({
                         <div
                             role="button"
                             tabIndex={0}
-                            className="relative cursor-pointer hover:bg-input-background/5 transition-colors min-w-30"
+                            className="relative cursor-pointer hover:bg-input-background/5 transition-colors min-w-30 "
                             onClick={() => {
                                 setIsSearchingDeparture(true);
                                 setShowDepartureResults(true);
@@ -138,7 +138,7 @@ export default function MainSearchForm({
                                     placeholder={t(
                                         "operations.departure_search",
                                     )}
-                                    className="h-12 pl-10 border-0 rtl:pr-10"
+                                    className="h-14 pl-10 border-0 rtl:pr-10"
                                     autoFocus
                                     onBlur={(e) => {
                                         if (
@@ -155,7 +155,7 @@ export default function MainSearchForm({
                                     }}
                                 />
                             ) : (
-                                <div className="h-12 bg-input-background dark:bg-input-background/5 rounded-md border-0 rtl:pr-10 py-2 pl-10 flex items-center">
+                                <div className="h-14 bg-input-background dark:bg-input-background/5 rounded-md border-0 rtl:pr-10 py-2 pl-10 flex items-center">
                                     <span className="font-medium text-foreground capitalize">
                                         {departure?.city ||
                                             t("operations.departure_search")}
@@ -180,12 +180,12 @@ export default function MainSearchForm({
             </div>
 
             {/* Swap */}
-            <div className="flex justify-center items-center mb-2 col-span-1">
+            <div className="flex justify-center items-center mb-2 col-span-0.5">
                 <SwapButton callBack={swapCities} />
             </div>
 
             {/* Destination */}
-            <div className="col-span-3">
+            <div className="flex-1">
                 {isLabel && (
                     <label className="block mb-2 text-muted-foreground text-sm">
                         {t("to")}
@@ -219,7 +219,7 @@ export default function MainSearchForm({
                                     placeholder={t(
                                         "operations.destination_search",
                                     )}
-                                    className="h-12 pl-10 bg-input-background border-0 rtl:pr-10"
+                                    className="h-14 pl-10 bg-input-background border-0 rtl:pr-10"
                                     autoFocus
                                     onBlur={(e) => {
                                         if (
@@ -240,7 +240,7 @@ export default function MainSearchForm({
                                     }}
                                 />
                             ) : (
-                                <div className="h-12 bg-input-background dark:bg-input-background/5 rounded-md border-0 rtl:pr-10 py-2 pl-10 flex items-center">
+                                <div className="h-14 bg-input-background dark:bg-input-background/5 rounded-md border-0 rtl:pr-10 py-2 pl-10 flex items-center">
                                     <span className="font-medium text-foreground capitalize">
                                         {destination?.city ||
                                             t("operations.destination_search")}

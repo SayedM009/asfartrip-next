@@ -11,7 +11,7 @@ import { useTravellersManager } from "@/app/_modules/profile/hooks/useTravellers
 export default function Travellers() {
     const p = useTranslations("Profile");
     const { user } = useAuthStore();
-    const { travellers, isLoading } = useTravellersManager(user?.id);
+    const { travellers, isLoading } = useTravellersManager(user?.id, p);
 
     return (
         <div className="flex flex-col justify-start min-h-[calc(100vh-80px)]">

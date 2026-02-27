@@ -12,9 +12,10 @@ export default function MobileBookingBar({ selectedRoom, rooms, hotelId }) {
     const router = useRouter();
 
     // Get minimum price from rooms
+    const hotelRooms = rooms?.HotelRooms || (Array.isArray(rooms) ? rooms : []);
     const minPrice =
-        rooms.length > 0
-            ? Math.min(...rooms?.map((r) => r.Price || r.TotalPrice || 0))
+        hotelRooms.length > 0
+            ? Math.min(...hotelRooms.map((r) => r.RoomPrice?.Price || 0))
             : 0;
 
     const handleBook = () => {
@@ -39,12 +40,13 @@ export default function MobileBookingBar({ selectedRoom, rooms, hotelId }) {
                         <>
                             <p className="text-lg font-bold text-accent-600">
                                 {formatPrice(
+                                    selectedRoom.RoomPrice?.Price ||
                                     selectedRoom.TotalPrice ||
-                                        selectedRoom.Price,
+                                    selectedRoom.Price,
                                 )}
                             </p>
                             <p className="text-xs text-muted-foreground">
-                                {selectedRoom.RoomName || "Selected Room"}
+                                {selectedRoom.Name || "Selected Room"}
                             </p>
                         </>
                     ) : minPrice > 0 ? (

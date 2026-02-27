@@ -93,8 +93,8 @@ export default function BookingSidebar({
                         </span>
                         <span>
                             {formatPrice(
-                                selectedRoom.TotalPrice ||
-                                    selectedRoom.Price * nights,
+                                (selectedRoom.RoomPrice?.Price ||
+                                    selectedRoom.Price) * nights,
                             )}
                         </span>
                     </div>
@@ -102,8 +102,8 @@ export default function BookingSidebar({
                         <span>Total</span>
                         <span className="text-accent-600">
                             {formatPrice(
-                                selectedRoom.TotalPrice ||
-                                    selectedRoom.Price * nights,
+                                (selectedRoom.RoomPrice?.Price ||
+                                    selectedRoom.Price) * nights,
                             )}
                         </span>
                     </div>

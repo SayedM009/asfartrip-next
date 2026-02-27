@@ -24,12 +24,13 @@ import ContactInfo from "../molecules/ContactInfo";
 /**
  * Main hotel details content component
  */
-export default function HotelDetailsContent({ hotelId }) {
-    const { hotelDetails, rooms, loading, roomsLoading, error, searchParams } =
-        useHotelDetails(hotelId);
+export default function HotelDetailsContent({ hotelId, initialHotelDetails, initialRooms }) {
+    const { hotelDetails, rooms, hotelRooms, loading, roomsLoading, error, searchParams, searchPayload } =
+        useHotelDetails(hotelId, initialHotelDetails, initialRooms);
     const [selectedRoom, setSelectedRoom] = useState(null);
     const urlSearchParams = useSearchParams();
     const t = useTranslations("Hotels.details");
+
 
     // Build results URL with search params
     const resultsUrl = useMemo(() => {
@@ -38,9 +39,9 @@ export default function HotelDetailsContent({ hotelId }) {
 
     // Get min price from rooms
     const minRoomPrice = useMemo(() => {
-        if (!rooms || !Array.isArray(rooms) || rooms.length === 0) return null;
-        return Math.min(...rooms.map((r) => r.Price || r.TotalPrice || 0));
-    }, [rooms]);
+        if (!hotelRooms || hotelRooms.length === 0) return null;
+        return Math.min(...hotelRooms.map((r) => r.RoomPrice?.Price || 0));
+    }, [hotelRooms]);
 
     // Loading state
     if (loading) {
@@ -160,11 +161,13 @@ export default function HotelDetailsContent({ hotelId }) {
                             {t("select_room")}
                         </h2>
                         <RoomsList
-                            rooms={rooms}
+                            hotelRooms={hotelRooms}
                             loading={roomsLoading}
                             selectedRoom={selectedRoom}
                             onSelectRoom={setSelectedRoom}
                             searchParams={searchParams}
+                            searchPayload={searchPayload}
+                            hotelDetails={hotelDetails}
                         />
                     </section>
 
@@ -204,11 +207,11 @@ export default function HotelDetailsContent({ hotelId }) {
             </div>
 
             {/* Mobile Booking Bar */}
-            <MobileBookingBar
+            {/* <MobileBookingBar
                 selectedRoom={selectedRoom}
                 rooms={rooms}
                 hotelId={hotelId}
-            />
+            /> */}
         </section>
     );
 }

@@ -6,12 +6,7 @@ import AddEditTraveller from "../organisms/AddEditTraveller";
 import DeleteTravellerDialog from "../organisms/DeleteTravellerDialog";
 import { getPassportStatus } from "@/app/_modules/profile/utils/getPassportStatus";
 
-export default function TravellerCard({
-    traveller,
-    userId,
-    userType,
-    onDelete,
-}) {
+export default function TravellerCard({ traveller, userId, userType }) {
     const p = useTranslations("Profile");
     const c = useTranslations("Countries");
     const data = JSON.parse(traveller.json_list || "{}");

@@ -17,13 +17,11 @@
             "metaDescription": "View the best flight deals from top airlines on AsfarTrip. Compare prices, flight times, and routes to book your perfect trip quickly and securely online.",
             "metaKeywords": "compare flight prices, flight search, best flight deals, cheap air tickets, flight comparison, airfare search, online flight finder, airline prices, search flights UAE"
         },
-
         "Booking": {
             "metaTitle": "Flight Booking | Secure & Fast Online Flight Reservations | AsfarTrip",
             "metaDescription": "Complete your flight booking on AsfarTrip with our secure and fast online reservation system. Review your itinerary, select seats, and make payments with ease.",
             "metaKeywords": "flight booking online, secure flight reservation, book flight tickets, travel itinerary, select seats, confirm booking, online payment flights, reserve airline tickets"
         },
-
         "Status": {
             "metaTitle": "Flight Booking Status | Check Flight Reservation Status | AsfarTrip",
             "metaDescription": "Check the status of your flight booking on AsfarTrip. Get real-time updates on your reservation, including confirmation, payment status, and itinerary details.",
@@ -117,15 +115,14 @@
             "metaKeywords": "hotel search results, book hotels online, best hotel deals, luxury hotels, budget accommodation, AsfarTrip hotels, compare hotel prices"
         }
     },
-
     "Profile": {
         "metaTitle": "My Account & Profile | Manage Bookings & Travel Details | AsfarTrip",
         "metaDescription": "Manage your AsfarTrip account, update personal information, view your booking history, save traveller details, and access exclusive member features for a smoother travel experience.",
         "metaKeywords": "asfartrip account, my account, user profile, manage bookings, booking history, personal information, saved travellers, travel profile, manage travel details, user dashboard, member account, account settings, update profile, travel preferences, profile management",
         "welcome_back": "Welcome back,",
-        "greeding_morning": "Good morning",
-        "greeding_afternoon": "Good afternoon",
-        "greeding_evening": "Good evening",
+        "greeting_morning": "Good morning",
+        "greeting_afternoon": "Good afternoon",
+        "greeting_evening": "Good evening",
         "delete_account": "Delete Account",
         "delete_account_confirmation": "Are you sure you want to delete your account? This action cannot be undone.",
         "delete_account_success": "Your account has been successfully deleted. We are sorry to see you go!",
@@ -155,7 +152,7 @@
         "no_bookings": "No {tab} bookings",
         "no_upcoming_bookings": "Once you have booked any flights, you will see them here.",
         "no_completed_bookings": "Your completed bookings will be shown here.",
-        "no_cancelled_bookings": "Looks good! You don’t have any cancelled booking yet.",
+        "no_cancelled_bookings": "Looks good! You don't have any cancelled booking yet.",
         "new_booking": "New booking",
         "travel_date": "Travel Date",
         "CREATED": "Completed",
@@ -177,15 +174,37 @@
         "valid": "Valid",
         "action_needed": "Action Needed",
         "expired": "Expired",
+        "unknown": "Unknown",
         "dob": "Date of Birth",
         "passport_number": "Passport Number",
         "no_travellers": "No travellers added yet.",
         "add_traveller_description": " Add traveller information to make future bookings easier.",
         "saving_not_available": "Saving is not available right now",
         "failed_saving": "Failed to save traveller.",
-        "traveller_added_successfully": "Traveller added successfully."
+        "traveller_added_successfully": "Traveller added successfully.",
+        "failed_load_travellers": "Failed to load travellers.",
+        "confirm_delete_traveller": "Are you sure you want to delete this traveller?",
+        "traveller_deleted": "Traveller deleted successfully.",
+        "failed_delete_traveller": "Failed to delete traveller.",
+        "check_in": "Check-in",
+        "check_out": "Check-out",
+        "room": "Room",
+        "hotel_name_not_provided": "Hotel Name Not Provided",
+        "adults": "Adults",
+        "children": "Children",
+        "infants": "Infants",
+        "scheme_id": "Scheme ID",
+        "quote_id": "Quote ID",
+        "plan": "Plan",
+        "standard_cover": "Standard Cover",
+        "dashboard": "Dashboard",
+        "offers": "Offers",
+        "offers_description": "Get the best deals on hotels, flights, and more.",
+        "hotels": "Hotels",
+        "flights": "Flights",
+        "insurance": "Insurance",
+        "travellers": "Travellers"
     },
-
     "About": {
         "metaTitle": "About Us | AsfarTrip | Leading UAE Travel Platform for Flights, Hotels & Travel Services",
         "metaDescription": "AsfarTrip is a UAE-based digital travel platform offering flights, hotels, travel insurance, and holiday packages across the Middle East. Learn about our mission, vision, and how our advanced technology delivers fast, reliable, and secure travel experiences for millions of travelers. Book with confidence on AsfarTrip.",
@@ -194,12 +213,10 @@
             "title": "About AsfarTrip.com",
             "subtitle": "AsfarTrip.com is a UAE-based online travel platform delivering end-to-end travel solutions, including flights, hotels, travel insurance, and holiday packages. Built on advanced technology and supported by a network of global suppliers, AsfarTrip ensures real-time fares, fast bookings, and secure payment options for both individual travelers and business partners. Our mission is to make travel simpler, faster, and more accessible while maintaining the highest standards of reliability, transparency, and customer support."
         },
-
         "about": {
             "title": "Who We Are",
             "body": "Founded in the UAE, AsfarTrip aims to simplify travel through technology and trust. We connect travelers to global experiences via seamless booking services, secure payments, and 24/7 support."
         },
-
         "services": {
             "title": "Our Services",
             "flights": "Flights",
@@ -211,19 +228,15 @@
             "car_rental": "Car Rental",
             "esim": "eSIM"
         },
-
         "soon": "Coming Soon",
-
         "vision": {
             "title": "Our Vision",
             "content": "We strive to become the leading digital travel destination in the Middle East by delivering advanced technology solutions and fast, reliable booking experiences that support and empower travelers with confidence on every journey."
         },
-
         "mission": {
             "title": "Our Mission",
             "content": "Our mission is to simplify the travel experience by delivering innovative technology, diverse travel options, and exceptional customer support—empowering every traveler to plan their journey with confidence and peace of mind."
         },
-
         "values": {
             "title": "Our Values",
             "items": [
@@ -234,7 +247,6 @@
                 "Trust: We work to be a dependable partner for individuals and businesses."
             ]
         },
-
         "why": {
             "title": "Why Choose Us",
             "items": [
@@ -245,21 +257,17 @@
                 "Trusted by thousands of travelers across the Middle East."
             ]
         },
-
         "promise": {
             "title": "Our Promise",
             "body": "We are committed to delivering a safe, reliable, and transparent travel experience.\nWe promise to support you at every step, provide clear information, and ensure your bookings are handled with care and professionalism."
         },
-
         "b2b": {
             "title": "Corporate & B2B Travel Solutions",
             "body": "AsfarTrip provides dedicated travel solutions for travel agencies and businesses, including access to special fares, API integrations, customized booking tools, and priority support—empowering partners to manage bookings efficiently and scale their operations."
         },
-
         "partners": {
             "title": "Our Trusted Partners"
         },
-
         "cta": {
             "title": "Ready to plan your next trip?",
             "subtitle": "Start exploring with AsfarTrip — simple, fast, and reliable.",
@@ -273,24 +281,18 @@
         "support_badge": "24/7 Support",
         "hero_title": "Contact Us",
         "hero_subtitle": "Reach us anytime — We're here to help.",
-
         "cards_whatsapp_title": "WhatsApp Support",
         "cards_whatsapp_subtitle": "Chat with us instantly",
         "cards_whatsapp_value": "+971 04 340 9933",
-
         "cards_email_title": "Email Support",
         "cards_email_subtitle": "We reply as fast as possible",
         "cards_email_value": "info@asfartrip.com",
-
         "cards_office_title": "Our Office",
         "cards_office_subtitle": "Visit us anytime",
         "cards_office_value": "10 39th St - Al Karama - Dubai",
-
         "social_title": "Follow Us",
         "social_subtitle": "Stay connected with us on social media",
-
         "map_title": "Find us on the map",
-
         "social_instagram": "Instagram",
         "social_facebook": "Facebook",
         "social_tiktok": "TikTok",
@@ -301,19 +303,15 @@
         "metaTitle": "FAQs | AsfarTrip | Travel Booking Help & Support",
         "metaDescription": "Find answers to common questions about booking flights, hotels, travel insurance, and holiday packages on AsfarTrip. Get help with your travel plans and bookings with our comprehensive FAQ section.",
         "metaKeywords": "asfartrip faqs, travel booking help, flight booking questions, hotel booking support, travel insurance faq, holiday package inquiries, travel agency support, booking assistance, common travel questions, asfartrip help center, travel faq uae",
-
         "hero_title": "FAQs",
         "hero_subtitle": "Find answers to the most common questions about our services.",
-
         "tab_flights": "Flights",
         "tab_hotels": "Hotels",
         "tab_insurance": "Insurance",
         "tab_others": "Other services",
-
         "coming_soon_badge": "COMING SOON",
         "coming_soon_title": "{tab} FAQs coming soon",
         "coming_soon_subtitle": "We are working on adding detailed frequently asked questions for this section. Please check back again soon.",
-
         "before_title": "Before booking",
         "before_q1": "Are flight prices fixed?",
         "before_a1": "Flight prices may change at any time depending on seat availability and airline rules. A fare is only guaranteed after payment is successfully completed.",
@@ -321,7 +319,6 @@
         "before_a2": "Yes. Displayed fares include basic travel taxes and airline charges. Optional services such as baggage upgrades, meals, or seat selection may have additional fees.",
         "before_q3": "Can I complete a booking without entering passport details?",
         "before_a3": "Most bookings can be completed using basic personal information. However, some airlines may require passport details before ticket issuance or online check-in.",
-
         "after_title": "After booking",
         "after_q1": "How do I know my booking is confirmed?",
         "after_a1": "Once payment is completed, you will receive a confirmation email with your booking reference and details. If the airline requires additional verification, we will notify you.",
@@ -329,7 +326,6 @@
         "after_a2": "Please check your spam or junk folder first. If your email address was entered incorrectly, you can request a resend through our support team.",
         "after_q3": "When will my ticket be issued after payment?",
         "after_a3": "In most cases, your e-ticket is issued shortly after successful payment, typically within 3 hours. In some situations, additional checks from the airline may cause delays; if that happens, we will notify you as soon as your ticket is issued.",
-
         "payment_title": "Payments",
         "payment_q1": "What payment methods are available?",
         "payment_a1": "You can pay using major credit or debit cards and selected digital wallets. Available methods may vary by country or currency.",
@@ -337,7 +333,6 @@
         "payment_a2": "Payments may fail due to an expired session, insufficient balance, bank rejection, or a temporary technical issue. You can try again or use a different card.",
         "payment_q3": "Are there any extra payment fees?",
         "payment_a3": "AsfarTrip does not add extra payment fees. However, your bank may charge international transaction or currency conversion fees.",
-
         "baggage_title": "Baggage",
         "baggage_q1": "Does my ticket include checked baggage?",
         "baggage_a1": "Baggage allowance depends on the selected fare and airline policy. The included allowance is shown clearly during the booking process.",
@@ -345,7 +340,6 @@
         "baggage_a2": "Yes. Extra baggage can usually be purchased during or after booking. Prices and availability are set by the airline.",
         "baggage_q3": "What is the hand baggage allowance?",
         "baggage_a3": "Most airlines allow one piece of cabin baggage, typically between 7 and 10 kg. Exact limits depend on the airline and fare type.",
-
         "changes_title": "Changes & cancellations",
         "changes_q1": "Can I change my flight date?",
         "changes_a1": "Yes, date changes are possible depending on the airline’s fare rules. Change fees and any fare difference may apply.",
@@ -355,7 +349,6 @@
         "changes_a3": "Refunds generally take several business days. Some airlines may require additional processing time. Once approved, the amount is returned to the original payment method.",
         "changes_q4": "Can I edit the passenger name after booking?",
         "changes_a4": "Minor name corrections may be allowed depending on the airline’s rules and ticket type. Some airlines do not permit any name changes after ticket issuance, so please review passenger details carefully before booking.",
-
         "checkin_title": "Check-in",
         "checkin_q1": "Can I check in online?",
         "checkin_a1": "Most airlines allow online check-in 24–48 hours before departure through their website or mobile app.",
@@ -363,7 +356,6 @@
         "checkin_a2": "For international flights, please arrive at least 3 hours before departure. For domestic flights, 2 hours is usually sufficient.",
         "checkin_q3": "What happens if I miss the boarding time?",
         "checkin_a3": "If you arrive after the gate has closed, boarding may be denied and the ticket may be considered non-refundable based on airline rules.",
-
         "requirements_title": "Travel requirements",
         "requirements_q1": "Do I need a visa to travel?",
         "requirements_a1": "Visa requirements depend on your nationality and destination. Please check the entry rules of your travel destination before booking.",
@@ -371,7 +363,6 @@
         "requirements_a2": "Some destinations may require vaccinations, health forms, or travel insurance. Requirements vary by country and airline.",
         "requirements_q3": "Do I need travel insurance?",
         "requirements_a3": "Travel insurance is recommended for all international trips and may be mandatory for some destinations.",
-
         "special_title": "Special cases",
         "special_q1": "Can I travel with infants and children?",
         "special_a1": "Yes. Infants usually travel on an adult’s lap with reduced fares, while older children require a separate seat according to airline rules.",
@@ -386,29 +377,24 @@
         "hero_title": "Terms & Conditions",
         "hero_subtitle": "Please read these Terms carefully before using asfartrip.com.",
         "last_updated": "Last updated: {date}",
-
         "sec_intro_title": "1. Introduction",
         "intro_p1": "This Website is operated by Asfar Travel Agency LLC, a company incorporated under the laws of the United Arab Emirates, with its registered office at 10 39th St – Al Karama – Dubai (\"AsfarTrip\", \"we\", \"us\", \"our\").",
         "intro_p2": "By accessing or using AsfarTrip.com (the \"Website\") or any of the services offered through it (the \"Services\"), you agree to be bound by these Terms & Conditions (the \"Terms\"). If you do not agree with these Terms, you must stop using the Website and Services immediately.",
         "intro_p3": "AsfarTrip may update these Terms from time to time without prior notice. Your continued use of the Website after such changes are posted will constitute your acceptance of the updated Terms.",
         "intro_p4": "United Arab Emirates is our country of domicile.",
         "intro_p5": "Any purchase, dispute or claim arising out of or in connection with this website shall be governed and construed in accordance with the laws of UAE.",
-
         "sec_role_title": "2. Our Role as an Intermediary",
         "role_p1": "AsfarTrip acts solely as an intermediary between you and independent third-party travel service providers, including but not limited to airlines, hotels, activity providers, insurance companies and other travel suppliers (collectively, the \"Suppliers\").",
         "role_p2": "We do not own or operate aircraft, hotels or any of the travel services displayed on the Website. All bookings made through AsfarTrip are fulfilled directly by the relevant Supplier and are subject to that Supplier's terms and conditions, including fare rules, conditions of carriage and policies on changes, cancellations and refunds.",
         "role_p3": "AsfarTrip is not responsible for any act or omission of any Supplier, including but not limited to schedule changes, delays, cancellations, overbookings, denials of boarding, baggage issues, quality of service, or any other operational decision taken by the Supplier.",
-
         "sec_use_title": "3. Use of the Website",
         "use_p1": "You agree to use the Website only for legitimate travel bookings for yourself or for another person for whom you are legally authorized to act. You warrant that all information you provide to us is true, accurate, current and complete.",
         "use_p2": "You are responsible for safeguarding your account credentials and any activity carried out under your account. If you suspect any unauthorized use of your account, you must notify us immediately.",
         "use_p3": "AsfarTrip reserves the right, at its sole discretion, to deny access to the Website or Services to anyone, at any time and for any reason, including but not limited to violation of these Terms or suspected fraudulent, abusive or illegal activity.",
-
         "sec_booking_title": "4. Bookings & Ticket Issuance",
         "booking_p1": "All bookings made through AsfarTrip are subject to availability and confirmation by the relevant Supplier. A booking is not considered final until full payment is received and the Supplier has confirmed and issued the ticket or voucher.",
         "booking_p2": "After successful payment, tickets are usually issued within a reasonable time, typically within up to 3 hours. However, issuance may be delayed due to airline system checks, fare validation, security reviews, payment verification or technical issues on the Supplier side. AsfarTrip does not guarantee immediate issuance and shall not be liable for delays caused by the Supplier or any third party.",
         "booking_p3": "If the Supplier does not confirm your booking or rejects the fare, AsfarTrip reserves the right to cancel the booking and refund the amount paid to the original method of payment without any further liability.",
-
         "sec_payments_title": "5. Payments",
         "payments_p1": "You must ensure that you are using a valid payment method with sufficient funds when completing a booking. By submitting your payment details, you authorize AsfarTrip or its payment partners to charge the full amount of the booking and any applicable taxes or fees.",
         "payments_p2": "A payment may fail or be declined for various reasons including, but not limited to, insufficient funds, bank rejection, expired session, technical error or suspected fraud. AsfarTrip is not responsible for any costs or consequences resulting from a failed payment.",
@@ -416,46 +402,37 @@
         "payments_p4": "Visa or MasterCard debit and credit cards in AED will be accepted for payment.",
         "payments_p5": "The displayed price and currency at the checkout page will be the same price and currency printed on the transaction receipt and the amount charged to the card will be shown in your card currency.",
         "payments_p6": "Customers under the age of 18 shall not register as a User of the Website and shall not transact on the Website.",
-
         "sec_unused_title": "6. Unused Tickets",
         "unused_p1": "If you do not use your ticket for any reason, including but not limited to no-show at the airport, visa rejection, passport expiry, late arrival, failure to check in, incorrect travel documents or personal circumstances, AsfarTrip bears no responsibility or liability for the unused ticket.",
         "unused_p2": "Eligibility for a refund, if any, is determined solely in accordance with the fare rules of the airline or Supplier. Some tickets may be fully non-refundable if unused, and no amount will be returned.",
         "unused_p3": "AsfarTrip has no obligation to compensate, rebook, reschedule or provide any financial reimbursement for unused or partially used tickets under any circumstances once the ticket has been issued by the Supplier.",
-
         "sec_changes_title": "7. Changes, Cancellations & Refunds",
         "changes_p1": "All requests for changes, cancellations or refunds are strictly governed by the fare rules and conditions of the relevant Supplier. Not all tickets are changeable or refundable, and some may be totally non-refundable or subject to significant penalties.",
         "changes_p2": "Where permitted by the Supplier, changes or cancellations may be subject to change fees, no-show fees, fare differences, service charges or other costs. Any refund amount will be calculated according to the Supplier's policy after deducting applicable charges.",
         "changes_p3": "Once a refund is approved by the Supplier, it may take several business days, and in some cases longer, for the amount to be processed by banks and payment gateways. AsfarTrip is not responsible for delays caused by financial institutions or Suppliers.",
         "changes_p4": "Refunds will be done only through the original mode of payment and will be processed within 10 to 45 days depending on the issuing bank of the credit card.",
-
         "sec_liability_title": "8. Limitation of Liability",
         "liability_p1": "To the maximum extent permitted by applicable law in the United Arab Emirates, AsfarTrip shall not be liable for any indirect, incidental, consequential, punitive or special damages, including loss of profits, revenue, goodwill or data, arising out of or in connection with your use of the Website or Services.",
         "liability_p2": "AsfarTrip is not liable for any loss, damage, expense or injury arising from acts or omissions of any Supplier, including but not limited to changes in schedules, delays, cancellations, overbookings, denials of boarding, force majeure events, operational decisions or immigration and security decisions.",
         "liability_p3": "In all cases, the total aggregate liability of AsfarTrip for any claim related to a booking shall be limited to the total amount paid to AsfarTrip for that specific booking.",
         "liability_p4": "We will not trade with or provide any services to OFAC and sanctioned countries.",
-
         "sec_content_title": "9. Website Content & Intellectual Property",
         "content_p1": "All content and materials on the Website, including text, images, logos, icons, graphics, software and other elements, are owned by or licensed to AsfarTrip and are protected by copyright, trademark and other intellectual property laws.",
         "content_p2": "You may view and print limited extracts of the Website solely for personal, non-commercial use related to your travel bookings. Any other use, including copying, modifying, distributing, publishing or creating derivative works, is strictly prohibited without our prior written consent.",
         "content_p3": "Nothing on the Website shall be interpreted as granting any license or right to use any trademark, logo or service mark displayed on the Website without the express written permission of AsfarTrip or the relevant owner.",
-
         "sec_conduct_title": "10. User Obligations & Acceptable Use",
         "conduct_p1": "You agree not to misuse the Website or interfere with its normal operation. In particular, you must not upload any harmful code, attempt to gain unauthorized access, or use automated systems such as bots or scrapers without our written consent.",
         "conduct_p2": "You must not post, upload or transmit any content that is unlawful, defamatory, obscene, offensive, infringing, misleading or otherwise objectionable, or that violates the rights of any third party.",
         "conduct_p3": "You must not make speculative, false or fraudulent bookings, or make bookings in anticipation of demand. AsfarTrip reserves the right to cancel any booking that it reasonably believes violates these obligations.",
         "conduct_p4": "Cardholder must retain a copy of transaction records and merchant policies and rules.",
-
         "sec_security_title": "11. Security & Fraud Prevention",
         "security_p1": "AsfarTrip may, at its sole discretion, verify payments, request additional documentation or cancel bookings where fraudulent activity, misuse of payment cards or suspicious behavior is detected.",
         "security_p2": "If your account or booking shows signs of fraud, abuse or suspicious activity, AsfarTrip may cancel any related reservations and close any associated accounts. AsfarTrip reserves the right to take any legal action necessary to protect its interests.",
-
         "sec_vat_title": "12. VAT Policy",
         "vat_p1": "Value Added Tax (VAT) may apply to certain products and services purchased through AsfarTrip, in accordance with the laws and regulations of the United Arab Emirates.",
         "vat_p2": "Where applicable, VAT will be included or clearly displayed as part of the total price. You are responsible for complying with any tax obligations in your country of residence.",
-
         "sec_privacy_title": "13. Privacy Policy",
         "privacy_p1": "Your use of the Website is also governed by our Privacy Policy, which explains how we collect, use and protect your personal data. By using the Website, you agree to the processing of your data as described in the Privacy Policy.",
-
         "sec_notice_title": "14. Notices",
         "notice_p1": "AsfarTrip may send you notices and communications by email, SMS, phone call or by posting updates on the Website. Any legal notices to AsfarTrip must be sent in writing to our registered office address at 10 39th St – Al Karama – Dubai, United Arab Emirates.",
         "sec_grievance_title": "15. Grievance Policy",
@@ -470,22 +447,18 @@
         "hero_title": "Privacy Policy",
         "hero_subtitle": "Learn how we collect, use, and protect your personal information when you use AsfarTrip.com.",
         "last_updated": "Last updated: {date}",
-
         "sec_intro_title": "1. Introduction",
         "intro_p1": "This Privacy Policy explains how Asfar Travel Agency LLC, operating as \"AsfarTrip\" (\"AsfarTrip\", \"we\", \"us\", \"our\"), collects, uses, stores, and protects your personal information when you access or use our website, mobile site, mobile application, or any of our sales channels (together, the \"Platform\"). Our registered office is located at 10 39th St – Al Karama – Dubai, United Arab Emirates.",
         "intro_p2": "By accessing or using the Platform, you agree to this Privacy Policy and consent to the collection and use of your information as described herein. If you do not agree with this Privacy Policy, you must stop using the Platform and our services immediately.",
         "intro_p3": "United Arab Emirates is our country of domicile, and any dispute arising out of or in connection with this Privacy Policy shall be governed and construed in accordance with the laws of the UAE.",
-
         "sec_scope_title": "2. Scope of this Privacy Policy",
         "scope_p1": "This Privacy Policy applies to individuals who browse our Platform, create an account, book travel services, contact our customer support, or otherwise interact with AsfarTrip through our online or offline channels (including website, mobile site, mobile app, call center, and retail office).",
         "scope_p2": "This Privacy Policy does not apply to third-party websites, mobile sites, or mobile apps, even if they are linked from our Platform. We recommend that you review the privacy policies of any third-party services you use.",
-
         "sec_info_title": "3. Information We Collect",
         "info_p1": "We collect different types of information depending on how you interact with the Platform. In many cases, we need certain information in order to provide you with travel-related services, process bookings, and comply with legal and regulatory requirements.",
         "info_p2": "Personal Information: This includes information that can identify you as an individual, such as your full name, contact details (email, phone number, address), date of birth, nationality, passport or ID details, visa information, booking details, passenger names, frequent flyer or loyalty numbers, and any other information you provide to complete a booking or manage your travel.",
         "info_p3": "Technical and Usage Data: When you visit or use our Platform, we may automatically collect information such as your IP address, device type, operating system, browser type, language settings, pages visited, time spent on pages, links clicked, and general clickstream data. This information helps us understand how users interact with the Platform and improve its performance and security.",
         "info_p4": "Cookies and Similar Technologies: We use cookies and similar tracking technologies to remember your preferences, maintain your session, analyze traffic, and personalize content and offers. Cookies do not typically contain information that directly identifies you, but they may be linked to a user profile or booking account when you are logged in.",
-
         "sec_use_title": "4. How We Use Your Information",
         "use_p1": "We use your personal information only for legitimate business purposes and in accordance with applicable laws.",
         "use_p2": "Providing Travel Services: We use your information to process bookings, issue tickets and vouchers, manage reservations, communicate with airlines and other suppliers, and provide you with customer support before, during, and after your trip.",
@@ -493,43 +466,34 @@
         "use_p4": "Communication and Support: We use your contact details to send booking confirmations, updates about your reservations, important travel information, and to respond to your inquiries or support requests.",
         "use_p5": "Improvement of Our Platform: We use aggregated and anonymized data to analyze performance, understand usage patterns, improve our services, develop new features, and enhance the overall user experience.",
         "use_p6": "Legal and Compliance: We may use your information to comply with legal obligations, respond to lawful requests from authorities, enforce our Terms & Conditions, and protect the rights, property, or safety of AsfarTrip, our customers, and partners.",
-
         "sec_share_title": "5. Sharing of Your Information",
         "share_p1": "AsfarTrip does not sell or rent your personal information to third parties. We share your information only when necessary and in accordance with this Privacy Policy.",
         "share_p2": "Travel Service Providers: To complete your bookings, we share relevant information with airlines, hotels, car rental companies, insurance providers, activity operators, and other travel suppliers involved in your reservation. These parties use your data in accordance with their own terms and privacy policies.",
         "share_p3": "Service Providers and Vendors: We may share limited information with third-party service providers who support our operations, such as IT and hosting providers, customer support tools, payment processors, email and SMS gateways, analytics services, and security or fraud prevention systems. These parties are contractually required to protect your information and use it only for the services they perform for us.",
         "share_p4": "Business Partners and Marketing: With your consent where required, we may share limited information (such as contact data and booking segments) with selected partners to offer co-branded services, loyalty benefits, travel insurance, or special promotions that may be relevant to you.",
         "share_p5": "Legal Requirements: We may disclose your information when required by law, regulation, court order, or at the request of government or law enforcement authorities, or when we believe in good faith that such disclosure is necessary to protect our rights, investigate fraud, or respond to security issues.",
-
         "sec_payments_title": "6. Payments, Card Information and Security",
         "pay_p1": "All online payments made through AsfarTrip are processed via secure, PCI DSS-compliant payment gateways. AsfarTrip itself does not store your full debit/credit card number, CVV, or other sensitive payment authentication data on its servers.",
         "pay_p2": "All credit/debit cards’ details and personally identifiable information will NOT be stored, sold, shared, rented or leased to any third parties.",
         "pay_p3": "asfartrip.com will not pass any debit/credit card details to third parties, except to the authorized and secure payment gateway for the purpose of processing your transaction.",
         "pay_p4": "asfartrip.com takes appropriate steps to ensure data privacy and security, including through various hardware and software methodologies. However, asfartrip.com cannot guarantee the security of any information that is disclosed online, and you share information at your own risk.",
         "pay_p5": "We may use risk-based tools and fraud detection systems to monitor transactions and may request additional verification or documentation in case of suspected fraud, misuse, or high-risk activity.",
-
         "sec_retention_title": "7. Data Retention",
         "retention_p1": "We retain your personal information only for as long as necessary to fulfill the purposes described in this Privacy Policy, including providing services to you, maintaining business and accounting records, complying with legal obligations, and resolving disputes.",
         "retention_p2": "In the travel industry, booking and transaction records are often kept for a number of years (for example, up to 7 years) to comply with tax, audit, regulatory, and airline reporting requirements.",
-
         "sec_marketing_title": "8. Marketing Communications",
         "marketing_p1": "You may receive emails, SMS messages, or notifications from us about fare deals, special offers, new services, or other travel-related content that we believe may be of interest to you.",
         "marketing_p2": "You can opt out of marketing communications at any time by using the unsubscribe link in our emails, updating your account preferences (where available), or contacting us using the details in the Contact section below.",
         "marketing_p3": "Even if you opt out of marketing messages, we may still send you non-promotional communications related to your bookings, account, or important updates about our services.",
-
         "sec_rights_title": "9. Your Rights and Choices",
         "rights_p1": "Depending on the laws applicable in your jurisdiction, you may have certain rights regarding your personal information, such as the right to access, correct, update, or delete certain data we hold about you, or to object to or restrict certain processing activities.",
         "rights_p2": "To exercise any of these rights (where available), you can contact us via the contact details provided in this Privacy Policy. We may need to verify your identity before processing your request and may be unable to fulfill requests that conflict with our legal obligations or legitimate business interests.",
-
         "sec_thirdparty_title": "10. Third-Party Websites and Services",
         "third_p1": "Our Platform may contain links to third-party websites, apps, or services that are not operated by AsfarTrip. We are not responsible for the privacy practices, content, or security of such third-party services. We encourage you to review the privacy policies of any third-party websites or services you visit or use.",
-
         "sec_children_title": "11. Children’s Privacy",
         "children_p1": "Our Platform is not intended for use by individuals under the age of 18. Customers under the age of 18 shall not register as Users of the Website and shall not transact on the Website. We do not knowingly collect personal information from minors. If we become aware that we have collected personal data from a minor without appropriate consent, we will take steps to delete such information.",
-
         "sec_updates_title": "12. Changes to this Privacy Policy",
         "update_p1": "We may update this Privacy Policy from time to time to reflect changes in our practices, legal requirements, or operational needs. The updated version will be posted on this page with a revised \"Last updated\" date. We recommend that you review this Privacy Policy periodically to stay informed about how we protect your information.",
-
         "sec_contact_title": "13. Contact and Privacy Queries",
         "contact_p1": "If you have any questions, concerns, or requests regarding this Privacy Policy or how we handle your personal information, you can contact us at: privacy@asfartrip.com.",
         "contact_p2": "You may also write to us at our registered office address: Asfar Travel Agency LLC, 10 39th St – Al Karama – Dubai, United Arab Emirates. We will do our best to respond to reasonable requests within a reasonable timeframe."
@@ -542,12 +506,10 @@
         "hero_title": "Cancellation Policy",
         "hero_subtitle": "Please read this Cancellation Policy carefully before requesting any change or refund.",
         "last_updated": "Last updated: {date}",
-
         "sec_general_title": "1. General Cancellation Terms",
         "general_p1": "All bookings made through AsfarTrip are governed by the fare rules and policies of the airline. AsfarTrip acts solely as an intermediary between you and the airline and cannot override, change, or waive any airline rules.",
         "general_p2": "Eligibility for cancellation, the possibility of a refund, the amount to be refunded, and any applicable penalties are always determined by the airline's fare rules for your specific ticket.",
         "general_p3": "AsfarTrip may charge a service fee for processing cancellation or refund requests, in addition to any penalties, no-show charges, or differences in fare imposed by the airline. Service fees charged by AsfarTrip are non-refundable in all cases.",
-
         "sec_lcc_title": "2. Low-Cost Carriers (LCC) – Mostly Non-Refundable",
         "lcc_p1": "For bookings made with low-cost airlines such as FlyDubai, Air Arabia, FlyNas, WizzAir and similar carriers, most tickets are sold under non-refundable conditions.",
         "lcc_p2": "In many cases, low-cost carriers do not allow refunds after ticket issuance, except in very limited circumstances defined by the airline, such as involuntary changes or cancellations initiated by the airline.",
@@ -556,12 +518,10 @@
         "lcc_item_1": "Tickets are typically non-refundable.",
         "lcc_item_2": "Name changes, route changes, or airline changes are usually not allowed.",
         "lcc_item_3": "Any exception to the above is solely at the discretion of the airline.",
-
         "sec_fsc_title": "3. Full-Service Airlines – Subject to Fare Rules",
         "fsc_p1": "For full-service airlines such as Emirates, Saudia, Etihad, Qatar Airways, Gulf Air and others, cancellation and refund options depend entirely on the fare type and conditions of the ticket you purchased.",
         "fsc_p2": "Some tickets may be refundable with penalties, some may be partially refundable, and others may be completely non-refundable. These conditions are shown during booking and form part of your contract with the airline.",
         "fsc_p3": "Any permitted change or cancellation must always be for the same passenger and the same airline. Route changes or upgrades are subject to availability, fare difference, and airline approval.",
-
         "sec_changes_title": "4. Flight Changes",
         "changes_p1": "You cannot change your booking from one airline to another through AsfarTrip. If you wish to travel with a different airline, you must cancel your existing booking (if allowed by the airline) and make a new booking with the new airline.",
         "changes_p2": "Where the airline allows changes, change penalties and fare differences will apply in accordance with the airline's rules. AsfarTrip does not have any control over these charges.",
@@ -571,7 +531,6 @@
         "changes_item_2": "All changes are subject to airline approval and availability.",
         "changes_item_3": "Airline penalties and fare differences may be charged in addition to AsfarTrip service fees.",
         "changes_item_4": "If the airline does not permit changes for your ticket type, no modification can be processed.",
-
         "sec_void_title": "5. Same-Day Void (Where Available)",
         "void_p1": "Some airlines may allow a same-day void (cancellation shortly after ticket issuance), subject to their own rules, conditions, and time limits. Not all airlines offer this option.",
         "void_p2": "Where a void is permitted by the airline, AsfarTrip can assist with processing the request, subject to the applicable airline conditions.",
@@ -579,7 +538,6 @@
         "void_item_1": "AsfarTrip service fee for processing a void is 30 AED per passenger, which is non-refundable.",
         "void_item_2": "The airline may have strict time windows for void (for example, same day of issuance only, or within a few hours).",
         "void_item_3": "If the airline does not allow a void for your ticket, the booking can only be handled according to their standard cancellation rules.",
-
         "sec_refunds_title": "6. Refunds & Cancellations",
         "refunds_p1": "If your ticket is eligible for a refund according to the airline's fare rules, the refundable amount will always be calculated by the airline after deducting applicable penalties, no-show charges if any, and any non-refundable components of the fare.",
         "refunds_p2": "In addition to airline penalties, AsfarTrip charges a processing fee for handling refund or cancellation requests. This fee is separate and is not imposed by the airline.",
@@ -589,7 +547,6 @@
         "refunds_item_2": "AsfarTrip service fee for processing a refund or cancellation is 50 AED per passenger, up to a maximum of 200 AED per booking for 5 or more passengers.",
         "refunds_item_3": "All AsfarTrip service fees are non-refundable, even if the airline refuses the refund or only returns taxes.",
         "refunds_item_4": "Refunds will be done only through the original mode of payment and may take between 10 and 45 days to reflect in your account, depending on the issuing bank and payment provider.",
-
         "sec_noshow_title": "7. No-Show Policy",
         "noshow_p1": "If a passenger fails to use their ticket as scheduled, the booking may be treated as a no-show by the airline. In most cases, no-show tickets are fully non-refundable.",
         "noshow_p2": "AsfarTrip has no control over no-show rules and cannot guarantee any refund or waiver where the airline has classified the booking as no-show.",
@@ -598,11 +555,9 @@
         "noshow_item_2": "Fails to complete online check-in where required.",
         "noshow_item_3": "Does not hold valid visa, passport, or required travel documents.",
         "noshow_item_4": "Is denied boarding by the airline for reasons related to documentation, immigration, security or passenger conduct.",
-
         "sec_unused_title": "8. Unused or Partially Used Tickets",
         "unused_p1": "AsfarTrip is not responsible for any unused or partially used tickets, including where the passenger decides not to travel, leaves the journey after commencement, or misses onward connections.",
         "unused_p2": "Any refund for unused or partially used tickets, if permitted at all, will be processed strictly in accordance with the airline's fare rules and may be very limited or not available.",
-
         "sec_legal_title": "9. Important Legal Notes",
         "legal_p1": "United Arab Emirates is our country of domicile, and any purchase, dispute, or claim arising out of or in connection with this website shall be governed and construed in accordance with the laws of the UAE.",
         "legal_p2": "We will not trade with or provide any services to OFAC and sanctioned countries, and we reserve the right to cancel any booking that violates such restrictions.",
@@ -620,29 +575,24 @@
         "hero_title": "Refund Policy",
         "hero_subtitle": "Please review this Refund Policy to understand how refunds are handled for your bookings on AsfarTrip.com.",
         "last_updated": "Last updated: {date}",
-
         "sec_intro_title": "1. Introduction",
         "intro_p1": "This Refund Policy explains how refunds are handled for flight tickets and related travel services booked through AsfarTrip.com.",
         "intro_p2": "By making a booking or submitting a refund request through our platform, you agree that all refunds are subject to this Policy, the airline's fare rules and applicable laws and regulations.",
         "intro_p3": "AsfarTrip acts only as an intermediary between you and the airline or supplier and does not guarantee that any ticket is refundable.",
-
         "sec_general_title": "2. General Refund Rules",
         "general_p1": "All refunds are strictly governed by the fare rules of the airline or travel supplier that issued the ticket. AsfarTrip cannot change or override these rules.",
         "general_p2": "Refund eligibility, refund amount and refund timeline are fully controlled by the airline or supplier, not by AsfarTrip.",
         "general_li1": "Some tickets may be fully non-refundable.",
         "general_li2": "Some tickets may be refundable with airline penalties and service fees.",
         "general_li3": "In some cases, only a portion of the taxes may be refundable.",
-
         "sec_fees_title": "3. AsfarTrip Processing Fees",
         "fees_p1": "In addition to any airline penalties, AsfarTrip charges a refund processing fee for each refund request submitted on your behalf:",
         "fees_li1": "AED 50 per passenger (up to 4 passengers per booking).",
         "fees_li2": "For bookings with 5 passengers or more, a maximum of AED 200 per booking will apply.",
         "fees_p2": "All AsfarTrip service and processing fees are non-refundable in all cases.",
-
         "sec_void_title": "4. Void (Same-Day Cancellation)",
         "void_p1": "If your ticket is eligible for same-day void, AsfarTrip will charge a void handling fee of AED 30 (or equivalent), in addition to any airline rules and charges.",
         "void_p2": "Void eligibility depends entirely on the airline's conditions, time limits and booking status. Some airlines do not support void at all.",
-
         "sec_nonref_title": "5. Non-Refundable Tickets",
         "nonref_p1": "The following situations are generally considered non-refundable, unless the airline explicitly allows a refund:",
         "nonref_li1": "Most Low-Cost Carrier (LCC) tickets (such as FlyDubai, Air Arabia, Flynas, Jazeera Airways, IndiGo, etc.).",
@@ -651,21 +601,17 @@
         "nonref_li4": "Visa rejection, passport issues or invalid travel documents.",
         "nonref_li5": "Passenger mistakes such as incorrect names, dates or routes, where airline rules do not allow changes or refunds.",
         "nonref_li6": "Partially used tickets where one or more segments have already been flown.",
-
         "sec_timeline_title": "6. Refund Timeline",
         "timeline_p1": "Once the refund is approved by the airline or supplier, AsfarTrip will process it back to the original method of payment.",
         "timeline_p2": "Refunds will be done only through the Original Mode of Payment and will be processed within 10 to 45 days, depending on the issuing bank of the credit card and the airline's internal processing time.",
-
         "sec_amount_title": "7. Refund Amount",
         "amount_p1": "The final refund amount you receive may be lower than the original ticket price due to airline penalties, no-show fees, fare differences, non-refundable taxes, service charges and AsfarTrip processing fees.",
         "amount_p2": "AsfarTrip is not responsible for any fare differences, exchange rate variations or additional charges applied by airlines, banks or payment providers.",
-
         "sec_process_title": "8. How to Request a Refund",
         "process_p1": "To request a refund, you must contact AsfarTrip customer support using the official channels published on our Website.",
         "process_li1": "Provide your Booking ID and passenger details.",
         "process_li2": "Indicate whether you are requesting a cancellation, refund or both.",
         "process_li3": "Share the reason for your request and any supporting documents, if applicable (for example, medical reports or official notices).",
-
         "sec_liability_title": "9. Limitation of Liability",
         "liability_p1": "AsfarTrip is an online travel intermediary and does not own or operate any airline or travel service. All operational decisions, including refund approvals or rejections, are made solely by the airline or supplier.",
         "liability_p2": "AsfarTrip is not liable for any refusal by the airline to refund, any delays in processing a refund, or any loss arising from non-refundable tickets or partially used services.",
@@ -698,7 +644,6 @@
         "title": "Change Language",
         "sub_title": "Select your preferred language  for the best experience.",
         "select_language": "Select language",
-
         "apply": "Apply",
         "cancel": "Cancel"
     },
@@ -759,7 +704,6 @@
         "travelers": "Travelers",
         "points": "Points"
     },
-
     "Services": {
         "Flights": "Flights",
         "Hotels": "Hotels",
@@ -907,7 +851,6 @@
             "need_assistance": "Need assistance?",
             "contact_support": "Contact Support"
         },
-
         "errors": {
             "same_city": "Cannot select the same city twice: {city}",
             "departure_required": "Departure city is required",
@@ -1908,7 +1851,8 @@
         "tamara": "Tamara",
         "tamara_description": "Buy now, pay later",
         "crypto": "Cryptocurrency",
-        "crypto_description": "Pay with Bitcoin or other crypto"
+        "crypto_description": "Pay with Bitcoin or other crypto",
+        "payment_methods": "Payment Methods"
     },
     "Offers_slider": {
         "title": "special offers",
@@ -2322,7 +2266,6 @@
         "message": "Please check the latest flights to continue ",
         "button": "Back to Search Results"
     },
-
     "Loyalty": {
         "inline_points": "Earn <bold>{points}</bold> points",
         "Banner": {
@@ -2337,7 +2280,10 @@
         "Bronze": "Bronze",
         "Silver": "Silver",
         "Gold": "Gold",
-        "Platinum": "Platinum"
+        "Platinum": "Platinum",
+        "complete_bookings_to_upgrade": "Complete bookings within {points} points to upgrade to the next tier",
+        "points_balance": "Points Balance",
+        "points_value": "You will get  Trip Coins for 1 booking once your trip is completed."
     },
     "Installments": {
         "installments_available": "Installments"
@@ -2428,6 +2374,42 @@
         "meals": "Meals",
         "insurance": "Insurance"
     },
+    "HotelStatus": {
+        "booking_confirmed": "Hotel Booking Confirmed!",
+        "booking_confirmed_desc": "Your hotel reservation has been confirmed successfully.",
+        "processing_booking": "Processing Booking",
+        "processing_booking_desc": "Your payment is confirmed. Booking confirmation is being processed.",
+        "booking_failed": "Booking Failed",
+        "booking_failed_desc": "The transaction could not be completed. Please try again.",
+        "pnr": "PNR",
+        "booking_no": "Booking No",
+        "booking_ref": "Booking Ref",
+        "hotel_details": "Hotel Details",
+        "hotel_booking_summary": "Your hotel booking summary",
+        "check_in": "Check-in",
+        "check_out": "Check-out",
+        "stay_info": "Stay Info",
+        "nights": "Nights",
+        "rooms": "Rooms",
+        "guest_details": "Guest Details",
+        "lead_guest": "Lead Guest",
+        "adult": "Adult",
+        "child": "Child",
+        "contact_info": "Contact Information",
+        "payment_details": "Payment Details",
+        "total_amount": "Total Amount",
+        "vat": "VAT",
+        "gateway_charges": "Gateway Charges",
+        "payment_gateway": "Payment Gateway",
+        "transaction_id": "Transaction ID",
+        "payment_status": "Payment Status",
+        "card_type": "Card Type",
+        "transaction_date": "Transaction Date",
+        "booking_status": "Booking Status",
+        "booking": "Booking",
+        "voucher_status": "Voucher Status",
+        "no_booking_data": "No booking data available"
+    },
     "PaymentPage": {
         "aiAgentCoordinating": "Our AI agent is coordinating with the payment gateway and airline systems.",
         "paymentDeductedProcessing": "Your payment has been deducted successfully. We are processing your ticket and it will be sent to your email within maximum 3 hours.",
@@ -2441,6 +2423,8 @@
         "stepPaymentVerified": "1. Payment Verified",
         "stepBookingConfirmed": "2. Booking Confirmed",
         "stepTicketIssuance": "3. Ticket Issuance",
+        "stepPolicyPurchased": "3. Policy Purchased",
+        "stepVoucherIssued": "3. Voucher Issued",
         "missingBookingRef": "Missing booking reference.",
         "checkingPaymentStatus": "Checking payment status…",
         "paymentFailedCancelled": "Payment failed or cancelled.",
@@ -2455,7 +2439,10 @@
         "recheckingPaymentStatus": "Rechecking payment status...",
         "unableToDetermineStatus": "Unable to determine payment status.",
         "networkIssueRetrying": "Network issue. Retrying...",
-        "networkError": "Network error. Please try again."
+        "networkError": "Network error. Please try again.",
+        "hotelBookingConfirmedRedirecting": "Hotel booking confirmed. Redirecting…",
+        "hotelBookingAlreadyConfirmedRedirecting": "Your hotel booking is already confirmed. Redirecting…",
+        "paymentReceivedHotelPending": "Payment received successfully. Your hotel booking will be confirmed shortly."
     },
     "ErrorPage": {
         "title": "Something Went Wrong",
@@ -2509,7 +2496,6 @@
             "children": "Children",
             "seniors": "Seniors",
             "search": "Search",
-
             "passengers_details_label": "Select number of travelers",
             "age": "Age",
             "errors": {
@@ -2743,7 +2729,54 @@
             "night": "night",
             "guests": "Guests",
             "check_in": "Check-in",
-            "check_out": "Check-out"
+            "check_out": "Check-out",
+            "all": "All",
+            "room_only": "Room Only",
+            "half_board_plus": "Half Board+",
+            "only_x_left": "Only {count} left!"
+        },
+        "booking": {
+            "metaTitle": "Hotel Booking | AsfarTrip",
+            "metaDescription": "Complete your hotel reservation",
+            "room_selection": "Room Selection",
+            "guest_information": "Guest Information",
+            "payment": "Payment",
+            "complated": "Completed",
+            "lead_guest": "Lead Guest",
+            "lead_guest_desc": "Primary guest who will check in",
+            "other_guests": "Other Guests",
+            "salutation": "Title",
+            "select": "Select",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "email": "Email Address",
+            "email_placeholder": "your@email.com",
+            "phone_number": "Phone Number",
+            "phone_placeholder": "Phone number",
+            "address": "Address",
+            "address_placeholder": "Street address",
+            "country": "Country",
+            "select_country": "Select Country",
+            "guests": "Guests",
+            "adult": "Adult",
+            "child": "Child",
+            "room_details": "Room Details",
+            "stay_dates": "Stay Dates",
+            "check_in": "Check-in",
+            "check_out": "Check-out",
+            "night": "night",
+            "nights": "nights",
+            "free_cancellation": "Free Cancellation",
+            "non_refundable": "Non-refundable",
+            "total": "Total",
+            "room": "room",
+            "rooms": "rooms",
+            "proceed_to_payment": "Proceed to Payment",
+            "view_details": "View Details",
+            "booking_summary": "Booking Summary",
+            "step_1": "Room Selection",
+            "step_2": "Guest Information",
+            "step_3": "Payment"
         }
     }
 }

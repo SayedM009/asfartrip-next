@@ -9,14 +9,26 @@ import { getModuleConfig } from "../registry/moduleRegistry";
 export function usePaymentCheck({ booking_ref, gateway, order_ref, module: moduleFromUrl }) {
     const router = useRouter();
     const t = useTranslations("PaymentPage");
+
+    // Get module-specific step labels from registry
+    const getStepsForModule = useCallback((moduleName) => {
+        const config = getModuleConfig(moduleName || 'FLIGHT');
+        const labels = config.stepLabels || {
+            step1: 'stepPaymentVerified',
+            step2: 'stepBookingConfirmed',
+            step3: 'stepTicketIssuance',
+        };
+        return [
+            { label: t(labels.step1), status: "pending" },
+            { label: t(labels.step2), status: "pending" },
+            { label: t(labels.step3), status: "pending" },
+        ];
+    }, [t]);
+
     const [status, setStatus] = useState("loading");
     const [statusMessage, setStatusMessage] = useState(t("verifyingPayment"));
     const [retryCount, setRetryCount] = useState(0);
-    const [steps, setSteps] = useState([
-        { label: t("stepPaymentVerified"), status: "pending" },
-        { label: t("stepBookingConfirmed"), status: "pending" },
-        { label: t("stepTicketIssuance"), status: "pending" },
-    ]);
+    const [steps, setSteps] = useState(() => getStepsForModule(moduleFromUrl));
 
     const MAX_RETRIES = 2;
 
@@ -260,12 +272,8 @@ export function usePaymentCheck({ booking_ref, gateway, order_ref, module: modul
     const retry = useCallback(() => {
         setRetryCount(0);
         setStatus("loading");
-        setSteps([
-            { label: t("stepPaymentVerified"), status: "pending" },
-            { label: t("stepBookingConfirmed"), status: "pending" },
-            { label: t("stepTicketIssuance"), status: "pending" },
-        ]);
-    }, [t]);
+        setSteps(getStepsForModule(moduleFromUrl));
+    }, [getStepsForModule, moduleFromUrl]);
 
     return {
         status,

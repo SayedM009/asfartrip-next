@@ -61,10 +61,10 @@ export default function DateSelector({ value, onChange, t }) {
                         <span className="text-sm font-bold">
                             {formatDate(
                                 value?.to ||
-                                    new Date(
-                                        new Date().getTime() +
-                                            24 * 60 * 60 * 1000,
-                                    ),
+                                new Date(
+                                    new Date().getTime() +
+                                    24 * 60 * 60 * 1000,
+                                ),
                                 { pattern },
                             )}
                         </span>
@@ -77,7 +77,7 @@ export default function DateSelector({ value, onChange, t }) {
                     side="bottom"
                 >
                     <Calendar
-                        className="w-full"
+                        className="w-xl"
                         mode="range"
                         numberOfMonths={2}
                         selected={value}

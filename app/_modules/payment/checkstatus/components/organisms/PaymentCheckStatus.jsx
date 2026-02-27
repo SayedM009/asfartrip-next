@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import useBookingStore from "@/app/_modules/flight/booking/store/bookingStore";
+import useHotelBookingStore from "@/app/_modules/hotels/booking/store/hotelBookingStore";
 import { usePaymentCheck } from "../../hooks/usePaymentCheck";
 import AIOrb from "../atoms/AIOrb";
 import StepStatus from "../molecules/StepStatus";
@@ -32,6 +33,9 @@ export default function PaymentCheckStatus({ params, searchParams }) {
         searchURL,
         sameBookingURL,
     } = useBookingStore();
+
+    // For HOTEL module, get data from hotel store
+    const hotelSearchURL = useHotelBookingStore((state) => state.searchURL);
 
     // Safely extract ifrurl - may be null when coming from non-flight modules (e.g., insurance)
     const ifrurl = bookingGateway?.ifrurl;
@@ -91,27 +95,27 @@ export default function PaymentCheckStatus({ params, searchParams }) {
 
                             {(status === "success" ||
                                 status === "partial-success") && (
-                                <motion.div
-                                    key="success"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                    transition={{ duration: 0.45 }}
-                                    className="text-center"
-                                >
-                                    <div className="flex items-start justify-center gap-1 sm:gap-2 text-emerald-700">
-                                        <CheckCircle2 className="w-6 h-6 text-emerald-500" />
-                                        <span className="tracking-wide font-medium">
-                                            {statusMessage}
-                                        </span>
-                                    </div>
-                                    <p className="mt-2 text-sm text-gray-700 dark:text-gray-200">
-                                        {status === "partial-success"
-                                            ? t("paymentDeductedProcessing")
-                                            : t("finalizingItinerary")}
-                                    </p>
-                                </motion.div>
-                            )}
+                                    <motion.div
+                                        key="success"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.45 }}
+                                        className="text-center"
+                                    >
+                                        <div className="flex items-start justify-center gap-1 sm:gap-2 text-emerald-700">
+                                            <CheckCircle2 className="w-6 h-6 text-emerald-500" />
+                                            <span className="tracking-wide font-medium">
+                                                {statusMessage}
+                                            </span>
+                                        </div>
+                                        <p className="mt-2 text-sm text-gray-700 dark:text-gray-200">
+                                            {status === "partial-success"
+                                                ? t("paymentDeductedProcessing")
+                                                : t("finalizingItinerary")}
+                                        </p>
+                                    </motion.div>
+                                )}
 
                             {status === "error" && (
                                 <motion.div
@@ -134,8 +138,8 @@ export default function PaymentCheckStatus({ params, searchParams }) {
                                         {gateway !== "TELR" && ifrurl && (
                                             <button
                                                 onClick={() =>
-                                                    (window.location.href =
-                                                        ifrurl)
+                                                (window.location.href =
+                                                    ifrurl)
                                                 }
                                                 className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium text-sm cursor-pointer transition-all duration-200 hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
                                             >
@@ -153,14 +157,25 @@ export default function PaymentCheckStatus({ params, searchParams }) {
                                             >
                                                 {t("backToInsurance")}
                                             </button>
+                                        ) : moduleFromUrl === "HOTEL" ? (
+                                            <button
+                                                onClick={() =>
+                                                    hotelSearchURL
+                                                        ? router.push(hotelSearchURL)
+                                                        : router.push("/hotels")
+                                                }
+                                                className="w-full py-3 rounded-lg bg-gradient-to-r from-teal-400 to-emerald-600 text-white font-medium text-sm cursor-pointer transition-all duration-200 hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+                                            >
+                                                {t("backToHotels") || "Back to Hotels"}
+                                            </button>
                                         ) : (
                                             <div className="grid grid-cols-2 gap-3">
                                                 <button
                                                     onClick={() =>
                                                         sameBookingURL
                                                             ? router.push(
-                                                                  sameBookingURL
-                                                              )
+                                                                sameBookingURL
+                                                            )
                                                             : router.push("/")
                                                     }
                                                     className="w-full py-3 rounded-lg bg-gradient-to-r from-orange-500 to-amber-400 text-white font-semibold text-sm cursor-pointer transition-all duration-200 hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
@@ -172,8 +187,8 @@ export default function PaymentCheckStatus({ params, searchParams }) {
                                                     onClick={() =>
                                                         searchURL
                                                             ? router.push(
-                                                                  searchURL
-                                                              )
+                                                                searchURL
+                                                            )
                                                             : router.push("/")
                                                     }
                                                     className="w-full py-3 rounded-lg bg-gradient-to-r from-teal-400 to-emerald-600 text-white font-medium text-sm cursor-pointer transition-all duration-200 hover:brightness-110 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"

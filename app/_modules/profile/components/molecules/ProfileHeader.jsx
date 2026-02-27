@@ -20,9 +20,9 @@ export default function Header() {
 
     useEffect(() => {
         const hour = new Date().getHours();
-        if (hour < 12) setGreeting(p("greeding_morning"));
-        else if (hour < 18) setGreeting(p("greeding_afternoon"));
-        else setGreeting(p("greeding_evening"));
+        if (hour < 12) setGreeting(p("greeting_morning"));
+        else if (hour < 18) setGreeting(p("greeting_afternoon"));
+        else setGreeting(p("greeting_evening"));
     }, [p]);
 
     return (

@@ -3,8 +3,6 @@ import { Link } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
-// Stores
-import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 // Components
 import Tabs from "@/app/_modules/profile/components/molecules/ProfileTabs";
 import { Button } from "@/components/ui/button";
@@ -17,7 +15,6 @@ import { useDashboardBookingsStore } from "../../../store/dashboardBookingStore"
 
 export default function InsuranceBookings() {
     const p = useTranslations("Profile");
-    const { formatPrice } = useCurrency();
     const { user } = useAuthStore();
     const { fetchBookings, insuranceBookings, loading } =
         useDashboardBookingsStore();

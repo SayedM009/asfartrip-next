@@ -25,7 +25,7 @@ function DeleteAccount({ showDeleteDialog, onOpenChange }) {
                 <div className="flex justify-end gap-3 mt-6 ">
                     <Button
                         variant="outline"
-                        onClick={() => setShowDeleteDialog(false)}
+                        onClick={() => onOpenChange(false)}
                     >
                         {p("cancel")}
                     </Button>

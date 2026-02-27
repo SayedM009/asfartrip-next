@@ -4,9 +4,13 @@ import { useTranslations } from "next-intl";
 import { PlaneTakeoff, CalendarDays, Infinity } from "lucide-react";
 
 const plansData = [
-    { id: "single", icon: <PlaneTakeoff className="w-8 h-8 text-primary" /> },
-    { id: "annual", icon: <CalendarDays className="w-8 h-8 text-primary" /> },
-    { id: "biennial", icon: <Infinity className="w-8 h-8 text-primary" /> },
+    {
+        id: "single",
+        icon: PlaneTakeoff,
+        color: "from-yellow-400 to-yellow-200",
+    },
+    { id: "annual", icon: CalendarDays, color: "from-green-400 to-green-200" },
+    { id: "biennial", icon: Infinity, color: "from-blue-400 to-blue-200" },
 ];
 
 export default function PlansSection() {
@@ -47,7 +51,12 @@ export default function PlansSection() {
                             <div className="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors" />
 
                             <div className="mb-6 p-5  rounded-2xl  group-hover:text-white transition-colors duration-300">
-                                {plan.icon}
+                                <div
+                                    className={`flex items-center justify-center w-12 h-12 rounded-xl
+              bg-gradient-to-br ${plan.color} bg-opacity-20`}
+                                >
+                                    <plan.icon className="w-6 h-6 text-white" />
+                                </div>
                             </div>
 
                             <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">

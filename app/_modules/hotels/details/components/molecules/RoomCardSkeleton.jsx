@@ -8,10 +8,10 @@ import { Skeleton } from "@/components/ui/skeleton";
  */
 export default function RoomCardSkeleton() {
     return (
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden py-0">
             <div className="flex flex-col md:flex-row animate-pulse">
                 {/* Image */}
-                <div className="w-full md:w-48 h-40 bg-gray-200 dark:bg-gray-800" />
+                <div className="w-full md:w-48 h-48 bg-gray-200 dark:bg-gray-800" />
 
                 {/* Content */}
                 <div className="flex-1 p-4 space-y-3">

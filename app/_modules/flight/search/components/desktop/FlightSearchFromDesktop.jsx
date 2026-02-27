@@ -88,7 +88,7 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
                                 setTripType={setTripType}
                             />
                             {/* Main Search Form - All fields on one line */}
-                            <div className="grid grid-cols-15 gap-2 items-end">
+                            <div className="flex gap-2 items-end">
                                 <MainSearchForm
                                     departure={departure}
                                     setDeparture={setDeparture}
@@ -97,7 +97,7 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
                                     isLabel={isLabel}
                                 />
                                 {/* Dates - Combined for Round Trip */}
-                                <div className="col-span-3">
+                                <div className="flex-1">
                                     <Dates
                                         tripType={tripType}
                                         departDate={departDate}
@@ -108,7 +108,7 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
                                     />
                                 </div>
                                 {/* Passengers & Class */}
-                                <div className="col-span-3">
+                                <div className="flex-1">
                                     <PassengersAndClass
                                         passengers={passengers}
                                         setPassengers={setPassengers}
@@ -118,9 +118,9 @@ export function FlightSearchFormDesktop({ isLabel = true }) {
                                     />
                                 </div>
                                 {/* Search Button - Redesigned */}
-                                <div className="col-span-2">
+                                <div >
                                     <Button
-                                        className="h-12 lg:ps-6 lg:pe-8 bg-accent-500 hover:bg-accent-600 text-white !rounded-sm  shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer gap-2 w-full font-bold"
+                                        className="h-14 lg:ps-6 lg:pe-8 bg-accent-500 !px-8 hover:bg-accent-600 text-white !rounded-sm  shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer gap-2 w-full font-bold"
                                         onClick={handleSearch}
                                     >
                                         <Search className="mr-2 h-5 w-5" />

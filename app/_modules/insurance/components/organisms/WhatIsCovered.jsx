@@ -4,10 +4,10 @@ import { useTranslations } from "next-intl";
 import { HeartPulse, Briefcase, Ban, Globe } from "lucide-react";
 
 const coverageItems = [
-    { id: "medical", icon: <HeartPulse className="w-6 h-6" /> },
-    { id: "luggage", icon: <Briefcase className="w-6 h-6" /> },
-    { id: "cancellation", icon: <Ban className="w-6 h-6" /> },
-    { id: "repatriation", icon: <Globe className="w-6 h-6" /> },
+    { id: "medical", icon: HeartPulse, color: "from-red-400 to-red-200" },
+    { id: "luggage", icon: Briefcase, color: "from-green-400 to-green-200" },
+    { id: "cancellation", icon: Ban, color: "from-red-600 to-red-400" },
+    { id: "repatriation", icon: Globe, color: "from-blue-400 to-blue-200" },
 ];
 
 export default function WhatIsCovered() {
@@ -38,8 +38,11 @@ export default function WhatIsCovered() {
                             transition={{ duration: 0.4, delay: index * 0.1 }}
                             className=" p-6 rounded-xl border border-slate-100 flex flex-col items-center text-center shadow-sm"
                         >
-                            <div className="mb-4 text-primary bg-primary/5 p-3 rounded-full">
-                                {item.icon}
+                            <div
+                                className={`flex items-center justify-center w-12 h-12 rounded-xl mb-4
+                                    bg-gradient-to-br ${item.color} bg-opacity-20`}
+                            >
+                                <item.icon className="w-6 h-6 text-white" />
                             </div>
                             <h3 className="font-bold mb-2">
                                 {t(`items.${item.id}.title`)}

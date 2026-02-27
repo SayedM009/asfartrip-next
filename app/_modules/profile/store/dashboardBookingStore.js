@@ -29,7 +29,6 @@ export const useDashboardBookingsStore = create((set, get) => ({
                 lastFetched: cache.timestamp,
                 loading: false,
             });
-            console.log("📦 Loaded bookings from cache");
             return; // نستخدم الكاش فقط
         }
 
@@ -71,8 +70,6 @@ export const useDashboardBookingsStore = create((set, get) => ({
                     [tab]: { data: fetchedData, timestamp: now },
                 },
             }));
-
-            console.log("🌐 Fetched bookings from API");
         } catch (error) {
             console.error("Booking fetch error:", error);
             set({ error: error.message, loading: false });

@@ -16,12 +16,12 @@ export default function HotelBookingCard({ booking }) {
             {/* Header Row */}
             <div
                 className={`flex items-center justify-between px-4 py-2 text-xs font-semibold ${booking.ticket_status === "CONFIRMED" ||
-                        booking.ticket_status === "CREATED"
-                        ? "bg-green-50 text-green-700"
-                        : booking.ticket_status === "CANCELLED" ||
-                            booking.ticket_status === "FAILURE"
-                            ? "bg-red-50 text-red-600"
-                            : "bg-yellow-50 text-yellow-700"
+                    booking.ticket_status === "CREATED"
+                    ? "bg-green-50 text-green-700"
+                    : booking.ticket_status === "CANCELLED" ||
+                        booking.ticket_status === "FAILURE"
+                        ? "bg-red-50 text-red-600"
+                        : "bg-yellow-50 text-yellow-700"
                     }`}
             >
                 <div className="flex items-center gap-2 ">
@@ -57,7 +57,7 @@ export default function HotelBookingCard({ booking }) {
                 <div className="mt-2">
                     <div className="text-md text-gray-700 dark:text-gray-50 flex items-center gap-2 font-semibold">
                         {booking.details?.hotel_name ||
-                            "Hotel Name Not Provided"}{" "}
+                            p("hotel_name_not_provided")}{" "}
                         {booking.details?.traveler_country && (
                             <>
                                 <ChevronBasedOnLanguage icon="arrow" />
@@ -67,7 +67,7 @@ export default function HotelBookingCard({ booking }) {
                     </div>
 
                     <div className="text-xs text-gray-400 mt-1">
-                        Check-in:{" "}
+                        {p("check_in")}:{" "}
                         {formatDisplayDate(
                             booking.details?.request?.check_in ||
                             booking.travel_date,
@@ -78,7 +78,7 @@ export default function HotelBookingCard({ booking }) {
                         )}
                     </div>
                     <div className="text-xs text-gray-400 mt-1">
-                        Check-out:{" "}
+                        {p("check_out")}:{" "}
                         {formatDisplayDate(
                             booking.details?.request?.check_out,
                             { withYear: true }
@@ -86,7 +86,7 @@ export default function HotelBookingCard({ booking }) {
                     </div>
 
                     <div className="text-xs text-gray-400 mt-1">
-                        Room: {booking.details?.room_name} –{" "}
+                        {p("room")}: {booking.details?.room_name} –{" "}
                         {booking.details?.board_name}
                     </div>
                 </div>

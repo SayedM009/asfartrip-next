@@ -312,6 +312,33 @@ class HotelService {
     async getRoomsAvailability(payload, requestId) {
         return this.requestPost("/api/hotel/v2/RoomsAvailibility", payload, requestId, 60000);
     }
+
+    /**
+     * Get rate info for a selected room
+     * @param {Object} payload - { RoomLoad, SearchPayLoad }
+     * @param {string} requestId - Optional request ID
+     */
+    async getRateInfo(payload, requestId) {
+        return this.requestPostForm("/api/hotel/v2/RateInfo", payload, requestId, 30000);
+    }
+
+    /**
+     * Book a hotel room
+     * @param {Object} payload - { cart_id, salutation, first_name, last_name, email, phone_number, address, country_code, guests }
+     * @param {string} requestId - Optional request ID
+     */
+    async bookHotel(payload, requestId) {
+        return this.requestPostForm("/api/hotel/v2/BookHotel", payload, requestId, 60000);
+    }
+
+    /**
+     * Get booking details
+     * @param {Object} payload - { pnr_no, booking_no }
+     * @param {string} requestId - Optional request ID
+     */
+    async getBookingDetails(payload, requestId) {
+        return this.requestPostForm("/api/hotel/v2/BookingDetails", payload, requestId, 30000);
+    }
 }
 
 export const hotelService = new HotelService();

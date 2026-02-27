@@ -62,7 +62,7 @@ export default function AddEditTraveller({
                 </DialogTrigger>
             )}
 
-            <DialogContent className="max-w-none h-screen bg-white dark:bg-[#111] p-4 overflow-y-auto rounded-none open-slide-left close-slide-left">
+            <DialogContent className="max-w-none h-screen md:h-fit md:rounded bg-white dark:bg-[#111] p-4 overflow-y-auto rounded-none open-slide-left close-slide-left">
                 <DialogHeader className="flex flex-row h-10 ">
                     <DialogTitle className="text-lg font-semibold">
                         {traveller
@@ -89,8 +89,8 @@ export default function AddEditTraveller({
                     {loading
                         ? p("saving")
                         : traveller
-                        ? p("edit_traveller") || "Edit Traveller"
-                        : p("save_information") || "Save Information"}
+                          ? p("edit_traveller") || "Edit Traveller"
+                          : p("save_information") || "Save Information"}
                 </Button>
             </DialogContent>
         </Dialog>

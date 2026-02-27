@@ -9,13 +9,14 @@ import {
 } from "lucide-react";
 
 const featureKeys = [
-    { id: "fast", icon: <Zap className="w-6 h-6 text-primary" /> },
-    { id: "price", icon: <ShieldCheck className="w-6 h-6 text-primary" /> },
+    { id: "fast", icon: Zap, color: "from-yellow-400 to-yellow-200" },
+    { id: "price", icon: ShieldCheck, color: "from-green-400 to-green-200" },
     {
         id: "decide",
-        icon: <MousePointerClick className="w-6 h-6 text-primary" />,
+        icon: MousePointerClick,
+        color: "from-blue-400 to-blue-200",
     },
-    { id: "insure", icon: <CheckCircle2 className="w-6 h-6 text-primary" /> },
+    { id: "insure", icon: CheckCircle2, color: "from-pink-400 to-pink-200" },
 ];
 
 export default function FeaturesSection() {
@@ -57,7 +58,12 @@ export default function FeaturesSection() {
                     >
                         <div className="flex items-center gap-4 mb-4">
                             <div className="p-2  rounded-lg group-hover:bg-primary/10 transition-colors">
-                                {item.icon}
+                                <div
+                                    className={`flex items-center justify-center w-12 h-12 rounded-xl
+              bg-gradient-to-br ${item.color} bg-opacity-20`}
+                                >
+                                    <item.icon className="w-6 h-6 text-white" />
+                                </div>
                             </div>
                             <h3 className="font-bold text-xl  tracking-wide uppercase">
                                 {t(`items.${item.id}.title`)}

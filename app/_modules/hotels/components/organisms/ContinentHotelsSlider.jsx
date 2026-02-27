@@ -254,7 +254,7 @@ export function ContinentHotelsSlider() {
                                 : "outline"
                         }
                         className={cn(
-                            "flex-shrink-0 transition-all px-4",
+                            "flex-shrink-0 transition-all px-4 cursor-pointer",
                             selectedContinent === continent.id &&
                                 "bg-accent-500 text-white hover:bg-accent-600",
                         )}
@@ -386,7 +386,7 @@ export function ContinentHotelsSlider() {
                                             {/* Rating badge - bottom right (LTR) / bottom left (RTL) */}
                                             {hotel.reviewScore && (
                                                 <span
-                                                    className={`absolute bottom-2 ${isRTL ? "left-2" : "right-2"} bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded`}
+                                                    className={`absolute bottom-2 ${isRTL ? "left-2" : "right-2"} bg-[#23bd85] text-white text-xs font-bold px-2 py-1 rounded`}
                                                 >
                                                     {hotel.reviewScore}/5
                                                 </span>

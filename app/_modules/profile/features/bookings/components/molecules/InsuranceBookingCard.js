@@ -16,11 +16,11 @@ export default function InsuranceBookingCard({ booking }) {
             {/* Header Row */}
             <div
                 className={`flex items-center justify-between px-4 py-2 text-xs font-semibold ${booking.booking_status === "CREATED"
-                        ? "bg-green-50 text-green-700"
-                        : booking.booking_status === "CANCELLED" ||
-                            booking.booking_status === null
-                            ? "bg-red-50 text-red-600"
-                            : "bg-yellow-50 text-yellow-700"
+                    ? "bg-green-50 text-green-700"
+                    : booking.booking_status === "CANCELLED" ||
+                        booking.booking_status === null
+                        ? "bg-red-50 text-red-600"
+                        : "bg-yellow-50 text-yellow-700"
                     }`}
             >
                 <div className="flex items-center gap-2">
@@ -64,22 +64,22 @@ export default function InsuranceBookingCard({ booking }) {
                     </div>
 
                     <div className="text-xs text-gray-400 mt-1">
-                        Adults: {booking.request?.ADT || 0}, Children:{" "}
-                        {booking.request?.CHD || 0}, Infants:{" "}
+                        {p("adults")}: {booking.request?.ADT || 0}, {p("children")}:{" "}
+                        {booking.request?.CHD || 0}, {p("infants")}:{" "}
                         {booking.request?.INF || 0}
                     </div>
 
                     <div className="text-xs text-gray-400 mt-1">
-                        Scheme ID: {booking.scheme_id || "—"} | Quote ID:{" "}
+                        {p("scheme_id")}: {booking.scheme_id || "—"} | {p("quote_id")}:{" "}
                         {booking.quote_id || "—"}
                     </div>
 
                     {booking.insurance_quote && (
                         <div className="text-xs text-gray-400 mt-1">
-                            Plan:{" "}
+                            {p("plan")}:{" "}
                             {JSON.parse(booking.insurance_quote)?.quotes?.[
                                 booking.scheme_id
-                            ]?.name || "Standard Cover"}
+                            ]?.name || p("standard_cover")}
                         </div>
                     )}
                 </div>

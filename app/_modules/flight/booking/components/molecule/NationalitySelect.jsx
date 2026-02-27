@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+"use client";
+import { useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -244,7 +245,7 @@ export function NationalitySelect({ value, onValueChange }) {
                                             "ltr:mr-2 rtl:ml-2 h-4 w-4",
                                             value === country.code
                                                 ? "opacity-100"
-                                                : "opacity-0"
+                                                : "opacity-0",
                                         )}
                                     />
                                     <span className="text-lg ltr:mr-2 rtl:ml-2">

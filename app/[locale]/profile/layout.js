@@ -2,15 +2,10 @@ import Footer from "@/app/_components/footer/Footer"
 import Navbar from "@/app/_components/navigation/Navbar"
 import { auth } from "@/app/_libs/auth"
 import ShadcnAvatar from "@/app/_modules/auth/components/molecules/ShadcnAvatar"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Link } from "@/i18n/navigation"
-import { Squares2X2Icon, UserGroupIcon } from "@heroicons/react/24/outline"
-import { BedDouble, CalendarRange, Mail, Plane, Shield, UserIcon } from "lucide-react"
+import { getTranslations } from "next-intl/server"
+import ProfileNavLinks from "@/app/_modules/profile/components/molecules/ProfileNavLinks"
 
 async function layout({ children }) {
-
-
-
     return <section className="container-custom">
         <div className="hidden md:block">
             <Navbar />
@@ -27,9 +22,20 @@ async function layout({ children }) {
 }
 
 async function PagesNavigation() {
+    const p = await getTranslations("Profile")
+    const translations = {
+        dashboard: p("dashboard"),
+        personal_info: p("personal_info"),
+        travellers: p("travellers"),
+        my_bookings: p("my_bookings"),
+        hotels: p("hotels"),
+        flights: p("flights"),
+        insurance: p("insurance"),
+        contact_support: p("contact_support"),
+    }
     return <div>
         <Profile />
-        <Links />
+        <ProfileNavLinks translations={translations} />
     </div>
 }
 
@@ -41,36 +47,6 @@ async function Profile() {
             <h1 className="capitalize font-bold text-lg">{session.user.name.toLocaleLowerCase()}</h1>
             <p className="text-sm text-gray-500">{session.user.email}</p>
         </div>
-    </div>
-}
-
-
-function Links() {
-
-    const style = "flex items-center gap-5 text-xl hover:bg-gray-100 dark:hover:bg-gray-800 p-2"
-
-    return <div className="flex flex-col gap-5 mt-10">
-        <Link href="/profile/dashboard" className={style}><Squares2X2Icon className="size-6 text-black dark:text-white" /> Dashboard</Link>
-        <Link href="/profile/profile-info" className={style}><UserIcon className="size-6 text-black dark:text-white" /> Profile Info</Link>
-        <Link href="/profile/travellers" className={style}><UserGroupIcon className="size-6 text-black dark:text-white" /> Travellers</Link>
-        <Accordion
-            type="single"
-            collapsible
-            className="w-full "
-        >
-            <AccordionItem value="item-1" className="p-0 ">
-                <AccordionTrigger className="p-0 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center gap-5">
-                    <div className={style} ><CalendarRange className="size-6 text-black dark:text-white" /> My Bookings</div>
-                </AccordionTrigger>
-                <AccordionContent className="flex flex-col gap-4 text-balance pl-6">
-                    <Link href="/profile/hotels" className={style}><BedDouble className="size-6 text-black dark:text-white" /> Hotels</Link>
-                    <Link href="/profile/flights" className={style}><Plane className="size-6 text-black dark:text-white" /> Flight</Link>
-                    <Link href="/profile/insurance" className={style}><Shield className="size-6 text-black dark:text-white" /> Insurance</Link>
-                </AccordionContent>
-            </AccordionItem>
-
-        </Accordion>
-        <Link href="/contact-us" className={style} target="_blank"><Mail className="size-6 text-black dark:text-white" /> Contact us</Link>
     </div>
 }
 

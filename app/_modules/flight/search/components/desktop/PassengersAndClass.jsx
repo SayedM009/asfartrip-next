@@ -106,7 +106,7 @@ export default function PassengersAndClass({
                     <PopoverTrigger asChild>
                         <Button
                             variant="outline"
-                            className="h-12 w-full justify-between bg-input-background border-0 cursor-pointer "
+                            className="h-14 w-full justify-between bg-input-background border-0 cursor-pointer "
                         >
                             <div className="flex items-center space-x-2">
                                 <Users className="h-4 w-4 text-muted-foreground" />

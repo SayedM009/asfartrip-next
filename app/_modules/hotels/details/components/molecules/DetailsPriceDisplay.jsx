@@ -3,6 +3,7 @@
 import { useCurrency } from "@/app/_modules/currency/hooks/useCurrency";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
 
 /**
  * Price display component for hotel details page
@@ -15,6 +16,7 @@ export default function DetailsPriceDisplay({
 }) {
     const { formatPrice, convertPrice, currentCurrency } = useCurrency();
     const t = useTranslations("Hotels.details");
+    const { theme } = useTheme();
 
     const hasDiscount = originalPrice && originalPrice > price;
 
@@ -25,6 +27,8 @@ export default function DetailsPriceDisplay({
         }
         onSelectRooms?.();
     };
+
+
 
     return (
         <div className="flex items-center gap-4">
@@ -37,8 +41,8 @@ export default function DetailsPriceDisplay({
                     </span>
                 )}
                 {/* Current price */}
-                <span className="text-xl md:text-3xl font-bold text-primary">
-                    {formatPrice(price)}
+                <span className="text-xl md:text-4xl font-bold  ">
+                    {formatPrice(price, theme == 'dark' ? 'white' : 'black', 25)}
                 </span>
             </div>
 

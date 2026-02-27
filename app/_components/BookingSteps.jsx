@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 export default function BookingSteps({ steps, currentStep, t }) {
     return (
         <div className="hidden lg:block bg-transparent border-b border-border">
-            <div className="max-w-7xl mx-auto py-4">
+            <div className="py-4">
                 <div className="flex items-center justify-between">
                     {steps?.map((step, index) => (
                         <React.Fragment key={step.id}>
@@ -18,8 +18,8 @@ export default function BookingSteps({ steps, currentStep, t }) {
                                         step.id < currentStep
                                             ? "bg-green-600 text-white"
                                             : step.id === currentStep
-                                            ? "bg-accent-500 text-white"
-                                            : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+                                                ? "bg-accent-500 text-white"
+                                                : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
                                     )}
                                 >
                                     {step.id < currentStep ? (
