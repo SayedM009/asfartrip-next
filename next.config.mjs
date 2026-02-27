@@ -8,31 +8,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "lh3.googleusercontent.com",
-      },
-      {
-        protocol: "https",
-        hostname: "github.com",
-      },
-      {
-        protocol: "https",
-        hostname: "images.kiwi.com",
-      },
-      {
-        protocol: "https",
-        hostname: "images.pexels.com",
-      },
-      {
-        protocol: "https",
-        hostname: "asfartrip.com",
+        hostname: "**",
       },
       {
         protocol: "http",
-        hostname: "www.tboholidays.com",
-      },
-      {
-        protocol: "https",
-        hostname: "www.tboholidays.com",
+        hostname: "**",
       },
     ],
   },

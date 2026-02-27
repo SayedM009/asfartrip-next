@@ -44,9 +44,16 @@ export async function getRoomsData(
             `ssr-rooms-${hotelId}`
         );
 
-        const roomsData =
-            result?.response?.RoomsAvailibility || result?.response || null;
-        return { success: true, data: roomsData };
+        const fullResponse = result?.response || {};
+        const roomsData = fullResponse?.RoomsAvailibility || null;
+
+        // Return rooms + SearchPayLoad so the hook can set searchPayload from SSR
+        return {
+            success: true,
+            data: roomsData
+                ? { ...roomsData, SearchPayLoad: fullResponse.SearchPayLoad }
+                : null,
+        };
     } catch (err) {
         console.error("[SSR getRoomsData Error]:", err);
         return { success: false, data: null };
