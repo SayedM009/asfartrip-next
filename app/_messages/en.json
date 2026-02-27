@@ -2733,7 +2733,9 @@
             "all": "All",
             "room_only": "Room Only",
             "half_board_plus": "Half Board+",
-            "only_x_left": "Only {count} left!"
+            "only_x_left": "Only {count} left!",
+            "session_expired": "Your search session has expired. The page will reload with fresh results.",
+            "rate_info_error": "Failed to get room details. Please try again."
         },
         "booking": {
             "metaTitle": "Hotel Booking | AsfarTrip",

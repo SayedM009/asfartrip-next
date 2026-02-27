@@ -19,7 +19,18 @@ export async function POST(request) {
             requestId
         );
 
-        return NextResponse.json({ success: true, data: result?.response || result });
+        // Check for API-level errors (e.g. "Search Session has expired")
+        const response = result?.response || result;
+        if (response?.status === "Error" || response?.error) {
+            const errMsg = response?.error?.message || response?.error || "Rate info request failed";
+            const isSessionExpired = response?.error?.code === "04" || errMsg.toLowerCase().includes("session");
+            return NextResponse.json(
+                { success: false, error: errMsg, sessionExpired: isSessionExpired },
+                { status: 400 }
+            );
+        }
+
+        return NextResponse.json({ success: true, data: response });
     } catch (error) {
         console.error("RateInfo API error:", error.message);
         return NextResponse.json(

@@ -34,7 +34,7 @@ export default function HotelBookingDetails({ booking }) {
             className="space-y-8"
         >
             {/* Hotel & Room Details */}
-            <section className="relative overflow-hidden rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xl p-6 sm:p-10">
+            <section className="relative overflow-hidden rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800  p-6 sm:p-10">
                 <div className="flex items-center gap-3 mb-8">
                     <div className="p-3 bg-gradient-to-br from-accent-500 to-accent-600 rounded-2xl shadow-lg shadow-accent-500/30">
                         <Hotel className="w-6 h-6 text-white" />
@@ -137,7 +137,7 @@ export default function HotelBookingDetails({ booking }) {
             {/* Guests & Contact + Payment */}
             <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Guests */}
-                <div className="rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xl p-6 sm:p-8">
+                <div className="rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800  p-6 sm:p-8">
                     <div className="flex items-center gap-3 mb-6">
                         <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg shadow-blue-500/30">
                             <Users className="w-5 h-5 text-white" />
@@ -202,7 +202,7 @@ export default function HotelBookingDetails({ booking }) {
                 </div>
 
                 {/* Payment */}
-                <div className="rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xl p-6 sm:p-8">
+                <div className="rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800  p-6 sm:p-8">
                     <div className="flex items-center gap-3 mb-6">
                         <div className="p-3 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg shadow-emerald-500/30">
                             <CreditCard className="w-5 h-5 text-white" />

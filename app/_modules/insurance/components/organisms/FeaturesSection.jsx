@@ -23,8 +23,7 @@ export default function FeaturesSection() {
     const t = useTranslations("InsurancePage.features");
 
     return (
-        <section className="py-16 max-w-7xl mx-auto px-4">
-            {/* العنوان الرئيسي */}
+        <section className="py-16  mx-auto px-4">
             <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -38,20 +37,16 @@ export default function FeaturesSection() {
                 <p className="text-muted-foreground text-lg">{t("subtitle")}</p>
             </motion.div>
 
-            {/* شبكة العناصر */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {featureKeys.map((item, index) => (
                     <motion.div
                         key={item.id}
-                        // الإعدادات هنا لكل كارت على حدة
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        // تفعيل viewport لكل عنصر بشكل مستقل
                         viewport={{ once: true, amount: 0.3 }}
                         transition={{
                             duration: 0.6,
                             ease: "easeOut",
-                            // هنا نستخدم الـ index لعمل تأخير بسيط إذا ظهر كارتين معاً في نفس السطر
                             delay: (index % 2) * 0.1,
                         }}
                         className="flex flex-col p-8 border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 group"

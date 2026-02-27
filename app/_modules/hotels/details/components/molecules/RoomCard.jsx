@@ -113,7 +113,13 @@ export default function RoomCard({ room, isSelected, onSelect, nights = 1, searc
             router.push("/hotels/booking");
         } catch (error) {
             console.error("Failed to get rate info:", error);
-            // TODO: show error toast
+            if (error.sessionExpired) {
+                // Session expired — reload to get fresh room data
+                alert(t("session_expired") || "Your search session has expired. The page will reload with fresh results.");
+                window.location.reload();
+            } else {
+                alert(error.message || t("rate_info_error") || "Failed to get room details. Please try again.");
+            }
         } finally {
             setBookingLoading(false);
         }
@@ -254,14 +260,15 @@ export default function RoomCard({ room, isSelected, onSelect, nights = 1, searc
                         <p className="text-xs text-muted-foreground">
                             {t("per_night")}
                         </p>
-                        {nights > 1 && (
+                        {/* Display total price if more than one night   */}
+                        {/* {nights > 1 && (
                             <p className="text-sm font-medium text-foreground mt-1">
                                 {formatPrice(totalPrice)}{" "}
                                 <span className="text-xs text-muted-foreground">
                                     {t("total")}
                                 </span>
                             </p>
-                        )}
+                        )} */}
                     </div>
 
                     <Button
@@ -271,7 +278,7 @@ export default function RoomCard({ room, isSelected, onSelect, nights = 1, searc
                         className={cn(
                             "mt-2",
                             isSelected &&
-                            "bg-accent-500 hover:bg-accent-600 text-white"
+                            "bg-accent-500 hover:bg-accent-600 text-white "
                         )}
                         onClick={handleBookRoom}
                     >

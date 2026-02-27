@@ -48,13 +48,13 @@ export default function HotelStatusHero({ status, bookingRef, pnrNo, bookingNo }
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className={`relative p-8 rounded-3xl bg-gradient-to-br ${gradient} border ${borderColor} shadow-xl overflow-hidden flex sm:block`}
+            className={`relative p-8 rounded-3xl bg-gradient-to-br ${gradient} border ${borderColor}  overflow-hidden flex sm:block`}
         >
             {/* Background accent glow */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(232,107,30,0.05),transparent_70%)] dark:bg-[radial-gradient(circle_at_50%_30%,rgba(232,107,30,0.1),transparent_70%)]" />
 
             <div className="relative z-10 flex flex-col sm:flex-row sm:justify-between sm:items-center">
-                <div className="flex items-center sm:flex-row sm:items-center gap-2 mb-4">
+                <div className="flex items-start md:items-center sm:flex-row sm:items-center gap-2 mb-4">
                     <Icon className={`sm:w-16 sm:h-16 w-8 h-8 ${iconColor} flex-shrink-0`} />
                     <div className="sm:flex-1">
                         <h1 className="text-lg sm:text-3xl font-bold text-gray-900 dark:text-white">

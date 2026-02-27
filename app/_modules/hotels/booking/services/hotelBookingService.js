@@ -18,7 +18,9 @@ export async function getRateInfo(roomLoad, searchPayLoad) {
 
     const data = await res.json();
     if (!res.ok || !data.success) {
-        throw new Error(data.error || "Failed to get rate info");
+        const error = new Error(data.error || "Failed to get rate info");
+        error.sessionExpired = !!data.sessionExpired;
+        throw error;
     }
     return data.data;
 }
