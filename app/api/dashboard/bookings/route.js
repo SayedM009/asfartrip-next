@@ -17,10 +17,8 @@ export async function POST(req) {
         const username = process.env.TP_USERNAME;
         const password = process.env.TP_PASSWORD;
         const baseUrl =
-            process.env.API_BASE_URL ||
-            "https://uat-api.travelsprovider.com";
+            process.env.API_BASE_URL
 
-        // إعداد body بالطريقة المطلوبة
         const body = new URLSearchParams({
             user_id,
             user_type,
@@ -38,7 +36,6 @@ export async function POST(req) {
             cache: "no-store",
         });
 
-        //  نتأكد إن في body قبل نحاول نحوله JSON
         const text = await response.text();
         let data;
         try {

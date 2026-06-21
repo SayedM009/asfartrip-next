@@ -1,14 +1,9 @@
 "use server";
 
-/**
- * Fetches detailed hotel information from the API
- * @param {string} hotelId - The hotel ID to fetch details for
- * @returns {Promise<{success: boolean, data: object|null, error: string|null}>}
- */
 export async function getHotelDetails(hotelId) {
     try {
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/hotel/v2/HotelDetails`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/hotel/v2/HotelDetails`,
             {
                 method: "POST",
                 headers: {

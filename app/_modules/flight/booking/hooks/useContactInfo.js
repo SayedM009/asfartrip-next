@@ -7,7 +7,6 @@ import { useTranslations } from "next-intl";
 
 export function useContactInfo() {
     const t = useTranslations("Traveler");
-    // نقرأ الـ contactInfo و الأكشن من الـ store
     const contactInfo = useBookingStore((s) => s.contactInfo);
     const updateContactInfo = useBookingStore((s) => s.updateContactInfo);
 
@@ -46,10 +45,8 @@ export function useContactInfo() {
 
     const setField = useCallback(
         (key, value) => {
-            // نحدث الـ store (هو اللي مسؤول عن isDataModified)
             updateContactInfo({ [key]: value });
 
-            // نعمل validate على الفورم الجديد
             const nextForm = { ...contactInfo, [key]: value };
             validate(nextForm);
         },
